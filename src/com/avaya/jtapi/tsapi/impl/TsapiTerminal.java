@@ -67,7 +67,7 @@
 /*   84 */     TsapiTrace.traceExit("getDirectoryName[]", this);
 /*   85 */     return name; } 
 /*      */   // ERROR //
-/*      */   public final javax.telephony.Provider getProvider() { // Byte code:
+/*      */   public final javax.telephony.Provider getProvider() { return null;}// Byte code:
 /*      */     //   0: ldc 9
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -134,7 +134,7 @@
 /*      */     {
 /*  140 */       this.privData = null; }  } 
 /*      */   // ERROR //
-/*      */   public final TerminalConnection[] getTerminalConnections() { // Byte code:
+/*      */   public final TerminalConnection[] getTerminalConnections() { return null;}// Byte code:
 /*      */     //   0: ldc 22
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -520,7 +520,7 @@
 /*      */     }
 /*  542 */     TsapiTrace.traceExit("setDoNotDisturb[boolean enable]", this); } 
 /*      */   // ERROR //
-/*      */   public final TerminalConnection pickup(javax.telephony.Connection pickConnection, Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { // Byte code:
+/*      */   public final TerminalConnection pickup(javax.telephony.Connection pickConnection, Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { return null;}// Byte code:
 /*      */     //   0: ldc 76
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -616,7 +616,7 @@
 /*      */     //   6	113	156	finally
 /*      */     //   116	161	156	finally } 
 /*      */   // ERROR //
-/*      */   public final TerminalConnection pickup(TerminalConnection pickTermConn, Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { // Byte code:
+/*      */   public final TerminalConnection pickup(TerminalConnection pickTermConn, Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { return null;}// Byte code:
 /*      */     //   0: ldc 91
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -712,7 +712,7 @@
 /*      */     //   6	113	156	finally
 /*      */     //   116	161	156	finally } 
 /*      */   // ERROR //
-/*      */   public final TerminalConnection pickup(Address pickAddress, Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { // Byte code:
+/*      */   public final TerminalConnection pickup(Address pickAddress, Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { return null;}// Byte code:
 /*      */     //   0: ldc 97
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -817,7 +817,7 @@
 /*      */     {
 /*  709 */       this.privData = null; }  } 
 /*      */   // ERROR //
-/*      */   public final TerminalConnection pickupFromGroup(Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { // Byte code:
+/*      */   public final TerminalConnection pickupFromGroup(Address terminalAddress) throws TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException, TsapiPrivilegeViolationException, TsapiResourceUnavailableException { return null;}// Byte code:
 /*      */     //   0: ldc 106
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -895,7 +895,7 @@
 /*      */     {
 /*  762 */       this.privData = null; }  } 
 /*      */   // ERROR //
-/*      */   public final Agent addAgent(Address agentAddress, ACDAddress acdAddress, int initialState, String agentID, String password) throws TsapiInvalidArgumentException, TsapiInvalidStateException { // Byte code:
+/*      */   public final Agent addAgent(Address agentAddress, ACDAddress acdAddress, int initialState, String agentID, String password) throws TsapiInvalidArgumentException, TsapiInvalidStateException { return null;}// Byte code:
 /*      */     //   0: ldc 110
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -1017,7 +1017,7 @@
 /*  844 */     TsapiTrace.traceExit("addAgent[LucentAddress agentAddress, ACDAddress acdAddress, int initialState, int workMode, String agentID, String password]", this);
 /*  845 */     return agent; } 
 /*      */   // ERROR //
-/*      */   public final Agent addAgent(LucentAddress agentAddress, ACDAddress acdAddress, int initialState, int workMode, int reasonCode, String agentID, String password) throws TsapiInvalidArgumentException, TsapiInvalidStateException { // Byte code:
+/*      */   public final Agent addAgent(LucentAddress agentAddress, ACDAddress acdAddress, int initialState, int workMode, int reasonCode, String agentID, String password) throws TsapiInvalidArgumentException, TsapiInvalidStateException { return null;}// Byte code:
 /*      */     //   0: ldc 121
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -1166,7 +1166,7 @@
 /*      */     }
 /*  956 */     TsapiTrace.traceExit("removeAgent[Agent agent, int reasonCode]", this); } 
 /*      */   // ERROR //
-/*      */   public final Agent[] getAgents() { // Byte code:
+/*      */   public final Agent[] getAgents() { return null;}// Byte code:
 /*      */     //   0: ldc 133
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V

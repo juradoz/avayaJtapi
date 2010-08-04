@@ -49,7 +49,7 @@
 /*     */     {
 /*  61 */       this.privData = null; }  } 
 /*     */   // ERROR //
-/*     */   public final Terminal getTerminal() { // Byte code:
+/*     */   public final Terminal getTerminal() { return null;}// Byte code:
 /*     */     //   0: ldc 7
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -94,7 +94,7 @@
 /*     */     //   6	38	52	finally
 /*     */     //   40	57	52	finally } 
 /*     */   // ERROR //
-/*     */   public final javax.telephony.Connection getConnection() { // Byte code:
+/*     */   public final javax.telephony.Connection getConnection() { return null;}// Byte code:
 /*     */     //   0: ldc 14
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -475,7 +475,7 @@
 /*     */     {
 /* 532 */       this.privData = null; }  } 
 /*     */   // ERROR //
-/*     */   public final void stopPlaying() { // Byte code:
+/*     */   public final void stopPlaying() { }// Byte code:
 /*     */     //   0: ldc 67
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -508,7 +508,7 @@
 /*     */     {
 /* 560 */       this.privData = null; }  } 
 /*     */   // ERROR //
-/*     */   public final void stopRecording() { // Byte code:
+/*     */   public final void stopRecording() { }// Byte code:
 /*     */     //   0: ldc 69
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V

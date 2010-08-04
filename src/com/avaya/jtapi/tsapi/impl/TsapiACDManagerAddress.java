@@ -19,7 +19,7 @@
 /*     */   // ERROR //
 /*     */   public final javax.telephony.callcenter.ACDAddress[] getACDAddresses()
 /*     */     throws TsapiMethodNotSupportedException
-/*     */   {
+/*     */   {return null;
 /*     */     // Byte code:
 /*     */     //   0: ldc 1
 /*     */     //   2: aload_0

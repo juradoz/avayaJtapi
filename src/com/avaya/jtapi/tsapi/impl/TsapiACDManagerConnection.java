@@ -10,7 +10,7 @@
 /*    */   // ERROR //
 /*    */   public final javax.telephony.callcenter.ACDConnection[] getACDConnections()
 /*    */     throws com.avaya.jtapi.tsapi.TsapiMethodNotSupportedException
-/*    */   {
+/*    */   {return null;
 /*    */     // Byte code:
 /*    */     //   0: ldc 1
 /*    */     //   2: aload_0

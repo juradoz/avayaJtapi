@@ -68,7 +68,7 @@
 /*      */ 
 /*      */   // ERROR //
 /*      */   public final Connection[] getConnections()
-/*      */   {
+/*      */   {return null;
 /*      */     // Byte code:
 /*      */     //   0: ldc 1
 /*      */     //   2: aload_0
@@ -171,7 +171,7 @@
 /*      */ 
 /*      */   // ERROR //
 /*      */   public final javax.telephony.Provider getProvider()
-/*      */   {
+/*      */   {return null;
 /*      */     // Byte code:
 /*      */     //   0: ldc 13
 /*      */     //   2: aload_0
@@ -237,7 +237,7 @@
 /*      */     {
 /*  162 */       this.privData = null; }  } 
 /*      */   // ERROR //
-/*      */   public final Connection[] connect(Terminal origterm, Address origaddr, String dialedDigits) throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException { // Byte code:
+/*      */   public final Connection[] connect(Terminal origterm, Address origaddr, String dialedDigits) throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException {return null;} // Byte code:
 /*      */     //   0: ldc 21
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -1087,7 +1087,7 @@
 /*      */     {
 /* 1055 */       this.privData = null; }  } 
 /*      */   // ERROR //
-/*      */   public final Connection[] consult(TerminalConnection termconn, String address) throws TsapiInvalidStateException, TsapiInvalidArgumentException, TsapiMethodNotSupportedException, TsapiResourceUnavailableException, TsapiPrivilegeViolationException { // Byte code:
+/*      */   public final Connection[] consult(TerminalConnection termconn, String address) throws TsapiInvalidStateException, TsapiInvalidArgumentException, TsapiMethodNotSupportedException, TsapiResourceUnavailableException, TsapiPrivilegeViolationException { return null;}// Byte code:
 /*      */     //   0: ldc 162
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -1353,7 +1353,7 @@
 /* 1286 */     TsapiTrace.traceExit("consultSupervisorAssist[LucentTerminalConnection termconn, ACDAddress split, String address, UserToUserInfo userInfo]", this);
 /* 1287 */     return conns; } 
 /*      */   // ERROR //
-/*      */   public final Connection[] connectPredictive(Terminal originatorTerminal, Address origAddress, String dialedDigits, int connectionState, int maxRings, int answeringTreatment, int answeringEndpointType) throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException { // Byte code:
+/*      */   public final Connection[] connectPredictive(Terminal originatorTerminal, Address origAddress, String dialedDigits, int connectionState, int maxRings, int answeringTreatment, int answeringEndpointType) throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException { return null;}// Byte code:
 /*      */     //   0: ldc 187
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -1520,7 +1520,7 @@
 /*      */     //   213	280	291	finally
 /*      */     //   283	296	291	finally } 
 /*      */   // ERROR //
-/*      */   public final Connection[] connectPredictive(LucentTerminal originatorTerminal, LucentAddress origAddress, String dialedDigits, int connectionState, int maxRings, int answeringTreatment, int answeringEndpointType, boolean priorityCall, UserToUserInfo userInfo) throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException { // Byte code:
+/*      */   public final Connection[] connectPredictive(LucentTerminal originatorTerminal, LucentAddress origAddress, String dialedDigits, int connectionState, int maxRings, int answeringTreatment, int answeringEndpointType, boolean priorityCall, UserToUserInfo userInfo) throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException { return null;}// Byte code:
 /*      */     //   0: ldc 192
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -1696,7 +1696,7 @@
 /*      */     {
 /* 1466 */       this.privData = null; }  } 
 /*      */   // ERROR //
-/*      */   public final CallCenterTrunk[] getTrunks() { // Byte code:
+/*      */   public final CallCenterTrunk[] getTrunks() { return null;}// Byte code:
 /*      */     //   0: ldc 197
 /*      */     //   2: aload_0
 /*      */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -2269,7 +2269,7 @@
 /*      */   // ERROR //
 /*      */   public final Connection fastConnect(Terminal origterm, Address origaddr, String dialedDigits, boolean priorityCall, UserToUserInfo userInfo, String destRoute)
 /*      */     throws TsapiResourceUnavailableException, TsapiPrivilegeViolationException, TsapiInvalidPartyException, TsapiInvalidArgumentException, TsapiInvalidStateException, TsapiMethodNotSupportedException
-/*      */   {
+/*      */   {return null;
 /*      */     // Byte code:
 /*      */     //   0: ldc_w 263
 /*      */     //   3: aload_0

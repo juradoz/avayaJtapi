@@ -53,7 +53,7 @@
 /*     */     {
 /*  64 */       this.privData = null; }  } 
 /*     */   // ERROR //
-/*     */   public final javax.telephony.Call getCall() { // Byte code:
+/*     */   public final javax.telephony.Call getCall() { return null;}// Byte code:
 /*     */     //   0: ldc 7
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -98,7 +98,7 @@
 /*     */     //   6	38	52	finally
 /*     */     //   40	57	52	finally } 
 /*     */   // ERROR //
-/*     */   public final Address getAddress() { // Byte code:
+/*     */   public final Address getAddress() { return null;}// Byte code:
 /*     */     //   0: ldc 14
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V
@@ -143,7 +143,7 @@
 /*     */     //   6	38	52	finally
 /*     */     //   40	57	52	finally } 
 /*     */   // ERROR //
-/*     */   public final javax.telephony.TerminalConnection[] getTerminalConnections() { // Byte code:
+/*     */   public final javax.telephony.TerminalConnection[] getTerminalConnections() { return null;}// Byte code:
 /*     */     //   0: ldc 18
 /*     */     //   2: aload_0
 /*     */     //   3: invokestatic 2	com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry	(Ljava/lang/String;Ljava/lang/Object;)V

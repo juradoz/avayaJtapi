@@ -39,7 +39,7 @@
 /*     */ 
 /*     */   // ERROR //
 /*     */   public final javax.telephony.callcenter.RouteAddress getRouteAddress()
-/*     */   {
+/*     */   {return null;
 /*     */     // Byte code:
 /*     */     //   0: ldc 1
 /*     */     //   2: aload_0
