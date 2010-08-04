@@ -422,7 +422,8 @@ import com.avaya.jtapi.tsapi.util.JtapiUtils;
 /*     */         do
 /*     */         {
 /* 571 */           if (!classpath.hasMoreTokens())
-/*     */             break label176;
+///*     */             break label176;
+	return in;
 /* 573 */           propfile = new File(classpath.nextToken(), resource);
 /* 574 */         }while (!propfile.canRead());
 /*     */ 

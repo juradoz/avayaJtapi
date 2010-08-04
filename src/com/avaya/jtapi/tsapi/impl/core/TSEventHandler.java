@@ -1503,19 +1503,21 @@ import org.apache.log4j.Logger;
 /* 1941 */       break;
 /*      */     default:
 /* 1943 */       workMode = 0;
-/* 1944 */       break label205:
+///* 1944 */       break label205:
+break;
+}
 /*      */ 
-/* 1947 */       if (privateData instanceof LucentLoggedOffEvent)
-/*      */       {
-/* 1949 */         reasonCode = ((LucentLoggedOffEvent)privateData).getReasonCode();
-/*      */       }
-/* 1951 */       else if (privateData instanceof LucentAgentModeChangeEvent)
-/*      */       {
-/* 1953 */         reasonCode = ((LucentAgentModeChangeEvent)privateData).getReasonCode();
-/*      */       }
-/*      */     }
+///* 1947 */       if (privateData instanceof LucentLoggedOffEvent)
+///*      */       {
+///* 1949 */         reasonCode = ((LucentLoggedOffEvent)privateData).getReasonCode();
+///*      */       }
+///* 1951 */       else if (privateData instanceof LucentAgentModeChangeEvent)
+///*      */       {
+///* 1953 */         reasonCode = ((LucentAgentModeChangeEvent)privateData).getReasonCode();
+///*      */       }
+///*      */     }
 /*      */ 
-/* 1957 */     label205: agent.updateState(agentState, workMode, reasonCode, eventList);
+/* 1957 */     agent.updateState(agentState, workMode, reasonCode, eventList);
 /*      */ 
 /* 1959 */     if (privateData instanceof LucentLoggedOnEvent)
 /*      */     {

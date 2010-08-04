@@ -121,7 +121,8 @@
 /*     */         do
 /*     */         {
 /* 222 */           if (!classpath.hasMoreTokens())
-/*     */             break label138;
+///*     */             break label138;
+	break;
 /* 224 */           tsFile = new File(classpath.nextToken(), tsFileName);
 /* 225 */         }while (!tsFile.canRead());
 /*     */ 

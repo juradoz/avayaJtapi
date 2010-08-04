@@ -2346,7 +2346,8 @@ continue;
 /*      */         }
 /*      */         catch (TsapiPlatformException e)
 /*      */         {
-/* 2930 */           break label215:
+///* 2930 */           break label215:
+	break;
 /*      */         }
 /*      */ 
 /* 2933 */         label215: if (!newCalls.contains(call)) {

@@ -7,8 +7,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.net.SocketFactory;
-
-import sun.applet.AppletSecurityException;
 /*    */ 
 /*    */ final class NsBr extends GenericBrowser
 /*    */ {
@@ -25,20 +23,21 @@ import sun.applet.AppletSecurityException;
 /*    */   {
 /*    */     try
 /*    */     {
-/* 29 */       if (grantedUniversalConnect)
-/* 30 */         PrivilegeManager.enablePrivilege("UniversalConnect");
+///* 29 */       if (grantedUniversalConnect)
+///* 30 */         PrivilegeManager.enablePrivilege("UniversalConnect");
 /* 31 */       return super.trySocket(addr, sf);
 /*    */     }
-/*    */     catch (AppletSecurityException e)
+///*    */     catch (AppletSecurityException e)
+catch(Exception e)
 /*    */     {
-/* 35 */       if (!askedForUniversalConnect)
+///* 35 */       if (!askedForUniversalConnect)
 /*    */       {
-/* 37 */         askedForUniversalConnect = true;
-/* 38 */         PrivilegeManager.enablePrivilege("UniversalConnect");
-/* 39 */         grantedUniversalConnect = true;
+///* 37 */         askedForUniversalConnect = true;
+///* 38 */         PrivilegeManager.enablePrivilege("UniversalConnect");
+///* 39 */         grantedUniversalConnect = true;
 /* 40 */         return super.trySocket(addr, sf);
 /*    */       }
-/* 42 */       throw e;
+///* 42 */       throw e;
 /*    */     }
 /*    */   }
 /*    */ 
@@ -48,10 +47,11 @@ import sun.applet.AppletSecurityException;
 /*    */     {
 /* 50 */       return super.findProperties();
 /*    */     }
-/*    */     catch (AppletSecurityException e)
+///*    */     catch (AppletSecurityException e)
+catch(Exception e)
 /*    */     {
-/* 54 */       PrivilegeManager.enablePrivilege("UniversalPropertyRead");
-/* 55 */       PrivilegeManager.enablePrivilege("UniversalFileRead");
+///* 54 */       PrivilegeManager.enablePrivilege("UniversalPropertyRead");
+///* 55 */       PrivilegeManager.enablePrivilege("UniversalFileRead");
 /* 56 */     }return super.findProperties();
 /*    */   }
 /*    */ }

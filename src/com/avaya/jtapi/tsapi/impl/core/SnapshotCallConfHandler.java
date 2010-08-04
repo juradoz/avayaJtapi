@@ -122,7 +122,7 @@
 /*      */ 
 /* 6378 */           if (device == null)
 /*      */           {
-/*      */             break label502;
+/*      */             break;
 /*      */           }
 /*      */ 
 /* 6384 */           if (device.isForExternalDeviceMatchingLocalExtensionNumber(extDevID)) {
@@ -158,7 +158,7 @@
 /* 6421 */           newConns.addElement(connection);
 /*      */         }
 /*      */ 
-/* 6425 */         label502: device.addConnection(connection);
+/* 6425 */         device.addConnection(connection);
 /*      */       }
 /*      */ 
 /* 6430 */       this.call.replaceConnections(newConns, null);

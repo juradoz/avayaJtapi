@@ -2147,7 +2147,8 @@ continue;
 /*      */         {
 /* 2823 */           event = this.tsapi.getDeviceList(index, level[i]);
 /*      */         } catch (Exception e) {
-/* 2825 */           break label164:
+///* 2825 */           break label164:
+	break;
 /*      */         }
 /* 2827 */         if (event != null) {
 /* 2828 */           CSTAGetDeviceListConfEvent getDeviceListConf = (CSTAGetDeviceListConfEvent)event.getEvent();

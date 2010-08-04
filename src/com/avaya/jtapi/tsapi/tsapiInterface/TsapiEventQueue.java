@@ -119,7 +119,7 @@
 /*     */ 
 /*     */   // ERROR //
 /*     */   private CSTAEvent get()
-/*     */   {
+/*     */   { return null;
 /*     */     // Byte code:
 /*     */     //   0: aload_0
 /*     */     //   1: dup

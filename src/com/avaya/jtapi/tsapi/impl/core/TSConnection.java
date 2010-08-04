@@ -1506,14 +1506,15 @@
 /* 1762 */       break;
 /*      */     case 0:
 /* 1764 */       if (!this.provider.isLucent())
-/*      */         break label195;
+///*      */         break label195;
+	break;
 /* 1766 */       log.info("NULL localCallState implies BRIDGED for " + this);
 /* 1767 */       setConnectionState(88, null);
 /* 1768 */       setTermConnState(100, null);
 /* 1769 */       break;
 /*      */     case -1:
 /*      */     default:
-/* 1774 */       label195: setConnectionState(91, null);
+/* 1774 */       setConnectionState(91, null);
 /* 1775 */       setTermConnState(103, null);
 /*      */     }
 /*      */   }

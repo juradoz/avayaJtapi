@@ -18,14 +18,14 @@ import javax.net.SocketFactory;
 /*    */   Socket trySocket(InetSocketAddress addr, SocketFactory sf)
 /*    */     throws UnknownHostException, IOException
 /*    */   {
-/* 21 */     PolicyEngine.assertPermission(PermissionID.NETIO);
+///* 21 */     PolicyEngine.assertPermission(PermissionID.NETIO);
 /*    */ 
 /* 23 */     return super.trySocket(addr, sf);
 /*    */   }
 /*    */ 
 /*    */   InputStream findProperties()
 /*    */   {
-/* 28 */     PolicyEngine.assertPermission(PermissionID.FILEIO);
+///* 28 */     PolicyEngine.assertPermission(PermissionID.FILEIO);
 /*    */ 
 /* 30 */     return super.findProperties();
 /*    */   }
