@@ -2,52 +2,55 @@ package javax.telephony;
 
 import javax.telephony.capabilities.AddressCapabilities;
 
-public abstract interface Address
-{
-  public abstract String getName();
+public abstract interface Address {
+	public abstract void addAddressListener(AddressListener paramAddressListener)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-  public abstract Provider getProvider();
+	public abstract void addCallListener(CallListener paramCallListener)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-  public abstract Terminal[] getTerminals();
+	public abstract void addCallObserver(CallObserver paramCallObserver)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-  public abstract Connection[] getConnections();
+	public abstract void addObserver(AddressObserver paramAddressObserver)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-  public abstract void addObserver(AddressObserver paramAddressObserver)
-    throws ResourceUnavailableException, MethodNotSupportedException;
+	/** @deprecated */
+	@Deprecated
+	public abstract AddressCapabilities getAddressCapabilities(
+			Terminal paramTerminal) throws InvalidArgumentException,
+			PlatformException;
 
-  public abstract AddressObserver[] getObservers();
+	public abstract AddressListener[] getAddressListeners();
 
-  public abstract void removeObserver(AddressObserver paramAddressObserver);
+	public abstract CallListener[] getCallListeners();
 
-  public abstract void addCallObserver(CallObserver paramCallObserver)
-    throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract CallObserver[] getCallObservers();
 
-  public abstract CallObserver[] getCallObservers();
+	public abstract AddressCapabilities getCapabilities();
 
-  public abstract void removeCallObserver(CallObserver paramCallObserver);
+	public abstract Connection[] getConnections();
 
-  public abstract AddressCapabilities getCapabilities();
+	public abstract String getName();
 
-  /** @deprecated */
-  public abstract AddressCapabilities getAddressCapabilities(Terminal paramTerminal)
-    throws InvalidArgumentException, PlatformException;
+	public abstract AddressObserver[] getObservers();
 
-  public abstract void addAddressListener(AddressListener paramAddressListener)
-    throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract Provider getProvider();
 
-  public abstract AddressListener[] getAddressListeners();
+	public abstract Terminal[] getTerminals();
 
-  public abstract void removeAddressListener(AddressListener paramAddressListener);
+	public abstract void removeAddressListener(
+			AddressListener paramAddressListener);
 
-  public abstract void addCallListener(CallListener paramCallListener)
-    throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract void removeCallListener(CallListener paramCallListener);
 
-  public abstract CallListener[] getCallListeners();
+	public abstract void removeCallObserver(CallObserver paramCallObserver);
 
-  public abstract void removeCallListener(CallListener paramCallListener);
+	public abstract void removeObserver(AddressObserver paramAddressObserver);
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.Address
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.Address JD-Core Version: 0.5.4
  */

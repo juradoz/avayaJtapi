@@ -1,19 +1,19 @@
 package javax.telephony.mobile;
 
-public abstract interface MobileNetwork
-{
-  public abstract boolean isAvailable();
+public abstract interface MobileNetwork {
+	public abstract String getCode();
 
-  public abstract boolean isCurrent();
+	public abstract String[] getNames();
 
-  public abstract boolean isRestricted();
+	public abstract boolean isAvailable();
 
-  public abstract String[] getNames();
+	public abstract boolean isCurrent();
 
-  public abstract String getCode();
+	public abstract boolean isRestricted();
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.mobile.MobileNetwork
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.mobile.MobileNetwork JD-Core Version: 0.5.4
  */

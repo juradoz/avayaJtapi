@@ -1,24 +1,24 @@
- package com.avaya.jtapi.tsapi.impl.events.terminal;
- 
- import javax.telephony.Terminal;
- import javax.telephony.callcenter.Agent;
- import javax.telephony.callcenter.events.AgentTermBusyEv;
- 
- public final class TsapiTermBusyEv extends TsapiAgentTermEv
-   implements AgentTermBusyEv
- {
-   public int getID()
-   {
-     return 308;
-   }
- 
-   public TsapiTermBusyEv(Terminal _device, Agent _agent, int _cause, int _metaCode, Object _privateData)
-   {
-     super(_device, _agent, _cause, _metaCode, _privateData);
-   }
- }
+package com.avaya.jtapi.tsapi.impl.events.terminal;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.impl.events.terminal.TsapiTermBusyEv
- * JD-Core Version:    0.5.4
+import javax.telephony.Terminal;
+import javax.telephony.callcenter.Agent;
+import javax.telephony.callcenter.events.AgentTermBusyEv;
+
+public final class TsapiTermBusyEv extends TsapiAgentTermEv implements
+		AgentTermBusyEv {
+	public TsapiTermBusyEv(Terminal _device, Agent _agent, int _cause,
+			int _metaCode, Object _privateData) {
+		super(_device, _agent, _cause, _metaCode, _privateData);
+	}
+
+	public int getID() {
+		return 308;
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.impl.events.terminal.TsapiTermBusyEv JD-Core Version:
+ * 0.5.4
  */

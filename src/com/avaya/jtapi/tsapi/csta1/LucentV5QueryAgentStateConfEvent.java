@@ -1,68 +1,71 @@
- package com.avaya.jtapi.tsapi.csta1;
- 
- import com.avaya.jtapi.tsapi.asn1.ASNInteger;
- import java.io.InputStream;
- import java.io.OutputStream;
- import java.util.ArrayList;
- import java.util.Collection;
- 
- public class LucentV5QueryAgentStateConfEvent extends LucentQueryAgentStateConfEvent
- {
-   int reasonCode;
-   static final int PDU = 88;
- 
-   public static LucentQueryAgentStateConfEvent decode(InputStream in, CSTATSProvider prov)
-   {
-     LucentV5QueryAgentStateConfEvent _this = new LucentV5QueryAgentStateConfEvent();
-     _this.doDecode(in);
- 
-     return _this;
-   }
- 
-   public void decodeMembers(InputStream memberStream)
-   {
-     super.decodeMembers(memberStream);
-     this.reasonCode = ASNInteger.decode(memberStream);
-   }
- 
-   public void encodeMembers(OutputStream memberStream) {
-     super.encodeMembers(memberStream);
-     ASNInteger.encode(this.reasonCode, memberStream);
-   }
- 
-   public Collection<String> print()
-   {
-     Collection lines = new ArrayList();
- 
-     lines.add("LucentV5QueryAgentStateConfEvent ::=");
-     lines.add("{");
- 
-     String indent = "  ";
- 
-     lines.addAll(LucentWorkMode.print(this.workMode, "workMode", indent));
-     lines.addAll(LucentTalkState.print(this.talkState, "talkState", indent));
-     lines.addAll(ASNInteger.print(this.reasonCode, "reasonCode", indent));
- 
-     lines.add("}");
-     return lines;
-   }
- 
-   public int getPDU()
-   {
-     return 88;
-   }
- 
-   public int getReasonCode()
-   {
-     return this.reasonCode;
-   }
- 
-   public void setReasonCode(int reasonCode) {
-     this.reasonCode = reasonCode;
-   }
- }
+package com.avaya.jtapi.tsapi.csta1;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.csta1.LucentV5QueryAgentStateConfEvent
- * JD-Core Version:    0.5.4
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+
+public class LucentV5QueryAgentStateConfEvent extends
+		LucentQueryAgentStateConfEvent {
+	int reasonCode;
+	static final int PDU = 88;
+
+	public static LucentQueryAgentStateConfEvent decode(InputStream in,
+			CSTATSProvider prov) {
+		LucentV5QueryAgentStateConfEvent _this = new LucentV5QueryAgentStateConfEvent();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	@Override
+	public void decodeMembers(InputStream memberStream) {
+		super.decodeMembers(memberStream);
+		reasonCode = ASNInteger.decode(memberStream);
+	}
+
+	@Override
+	public void encodeMembers(OutputStream memberStream) {
+		super.encodeMembers(memberStream);
+		ASNInteger.encode(reasonCode, memberStream);
+	}
+
+	@Override
+	public int getPDU() {
+		return 88;
+	}
+
+	public int getReasonCode() {
+		return reasonCode;
+	}
+
+	@Override
+	public Collection<String> print() {
+		Collection lines = new ArrayList();
+
+		lines.add("LucentV5QueryAgentStateConfEvent ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
+		lines.addAll(LucentTalkState.print(talkState, "talkState", indent));
+		lines.addAll(ASNInteger.print(reasonCode, "reasonCode", indent));
+
+		lines.add("}");
+		return lines;
+	}
+
+	public void setReasonCode(int reasonCode) {
+		this.reasonCode = reasonCode;
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.csta1.LucentV5QueryAgentStateConfEvent JD-Core Version:
+ * 0.5.4
  */

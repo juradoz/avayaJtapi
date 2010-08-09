@@ -2,35 +2,38 @@ package javax.telephony;
 
 import javax.telephony.capabilities.ConnectionCapabilities;
 
-public abstract interface Connection
-{
-  public static final int IDLE = 48;
-  public static final int INPROGRESS = 49;
-  public static final int ALERTING = 50;
-  public static final int CONNECTED = 51;
-  public static final int DISCONNECTED = 52;
-  public static final int FAILED = 53;
-  public static final int UNKNOWN = 54;
+public abstract interface Connection {
+	public static final int IDLE = 48;
+	public static final int INPROGRESS = 49;
+	public static final int ALERTING = 50;
+	public static final int CONNECTED = 51;
+	public static final int DISCONNECTED = 52;
+	public static final int FAILED = 53;
+	public static final int UNKNOWN = 54;
 
-  public abstract int getState();
+	public abstract void disconnect() throws PrivilegeViolationException,
+			ResourceUnavailableException, MethodNotSupportedException,
+			InvalidStateException;
 
-  public abstract Call getCall();
+	public abstract Address getAddress();
 
-  public abstract Address getAddress();
+	public abstract Call getCall();
 
-  public abstract TerminalConnection[] getTerminalConnections();
+	public abstract ConnectionCapabilities getCapabilities();
 
-  public abstract void disconnect()
-    throws PrivilegeViolationException, ResourceUnavailableException, MethodNotSupportedException, InvalidStateException;
+	/** @deprecated */
+	@Deprecated
+	public abstract ConnectionCapabilities getConnectionCapabilities(
+			Terminal paramTerminal, Address paramAddress)
+			throws InvalidArgumentException, PlatformException;
 
-  public abstract ConnectionCapabilities getCapabilities();
+	public abstract int getState();
 
-  /** @deprecated */
-  public abstract ConnectionCapabilities getConnectionCapabilities(Terminal paramTerminal, Address paramAddress)
-    throws InvalidArgumentException, PlatformException;
+	public abstract TerminalConnection[] getTerminalConnections();
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.Connection
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.Connection JD-Core Version: 0.5.4
  */

@@ -1,86 +1,89 @@
- package com.avaya.jtapi.tsapi.csta1;
- 
- import java.io.InputStream;
- import java.io.OutputStream;
- import java.util.ArrayList;
- import java.util.Collection;
- 
- public final class CSTARouteEndRequestInv extends CSTARequest
- {
-   int routeRegisterReqID;
-   int routingCrossRefID;
-   short errorValue;
-   public static final int PDU = 133;
- 
-   public CSTARouteEndRequestInv()
-   {
-   }
- 
-   public CSTARouteEndRequestInv(int _routeRegisterReqID, int _routingCrossRefID, short _errorValue)
-   {
-     this.routeRegisterReqID = _routeRegisterReqID;
-     this.routingCrossRefID = _routingCrossRefID;
-     this.errorValue = _errorValue;
-   }
- 
-   public static CSTARouteEndRequestInv decode(InputStream in) {
-     CSTARouteEndRequestInv _this = new CSTARouteEndRequestInv();
-     _this.doDecode(in);
- 
-     return _this;
-   }
- 
-   public void decodeMembers(InputStream memberStream)
-   {
-     this.routeRegisterReqID = RouteRegisterReqID.decode(memberStream);
-     this.routingCrossRefID = RoutingCrossRefID.decode(memberStream);
-     this.errorValue = CSTAUniversalFailure.decode(memberStream);
-   }
- 
-   public void encodeMembers(OutputStream memberStream) {
-     RouteRegisterReqID.encode(this.routeRegisterReqID, memberStream);
-     RoutingCrossRefID.encode(this.routingCrossRefID, memberStream);
-     CSTAUniversalFailure.encode(this.errorValue, memberStream);
-   }
- 
-   public Collection<String> print()
-   {
-     Collection lines = new ArrayList();
-     lines.add("CSTARouteEndRequestInv ::=");
-     lines.add("{");
- 
-     String indent = "  ";
- 
-     lines.addAll(RouteRegisterReqID.print(this.routeRegisterReqID, "routeRegisterReqID", indent));
-     lines.addAll(RoutingCrossRefID.print(this.routingCrossRefID, "routingCrossRefID", indent));
-     lines.addAll(CSTAUniversalFailure.print(this.errorValue, "errorValue", indent));
- 
-     lines.add("}");
-     return lines;
-   }
- 
-   public int getPDU()
-   {
-     return 133;
-   }
- 
-   public short getErrorValue()
-   {
-     return this.errorValue;
-   }
- 
-   public int getRouteRegisterReqID()
-   {
-     return this.routeRegisterReqID;
-   }
- 
-   public int getRoutingCrossRefID()
-   {
-     return this.routingCrossRefID;
-   }
- }
+package com.avaya.jtapi.tsapi.csta1;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.csta1.CSTARouteEndRequestInv
- * JD-Core Version:    0.5.4
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+
+public final class CSTARouteEndRequestInv extends CSTARequest {
+	int routeRegisterReqID;
+	int routingCrossRefID;
+	short errorValue;
+	public static final int PDU = 133;
+
+	public static CSTARouteEndRequestInv decode(InputStream in) {
+		CSTARouteEndRequestInv _this = new CSTARouteEndRequestInv();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	public CSTARouteEndRequestInv() {
+	}
+
+	public CSTARouteEndRequestInv(int _routeRegisterReqID,
+			int _routingCrossRefID, short _errorValue) {
+		routeRegisterReqID = _routeRegisterReqID;
+		routingCrossRefID = _routingCrossRefID;
+		errorValue = _errorValue;
+	}
+
+	@Override
+	public void decodeMembers(InputStream memberStream) {
+		routeRegisterReqID = ASNInteger.decode(memberStream);
+		routingCrossRefID = ASNInteger.decode(memberStream);
+		errorValue = ASNEnumerated.decode(memberStream);
+	}
+
+	@Override
+	public void encodeMembers(OutputStream memberStream) {
+		ASNInteger.encode(routeRegisterReqID, memberStream);
+		ASNInteger.encode(routingCrossRefID, memberStream);
+		ASNEnumerated.encode(errorValue, memberStream);
+	}
+
+	public short getErrorValue() {
+		return errorValue;
+	}
+
+	@Override
+	public int getPDU() {
+		return 133;
+	}
+
+	public int getRouteRegisterReqID() {
+		return routeRegisterReqID;
+	}
+
+	public int getRoutingCrossRefID() {
+		return routingCrossRefID;
+	}
+
+	@Override
+	public Collection<String> print() {
+		Collection lines = new ArrayList();
+		lines.add("CSTARouteEndRequestInv ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
+				indent));
+		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
+				indent));
+		lines.addAll(CSTAUniversalFailure.print(errorValue, "errorValue",
+				indent));
+
+		lines.add("}");
+		return lines;
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.csta1.CSTARouteEndRequestInv JD-Core Version: 0.5.4
  */

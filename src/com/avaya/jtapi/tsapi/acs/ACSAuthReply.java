@@ -1,70 +1,69 @@
- package com.avaya.jtapi.tsapi.acs;
- 
- import com.avaya.jtapi.tsapi.asn1.ASNInteger;
- import java.io.InputStream;
- import java.util.ArrayList;
- import java.util.Collection;
- 
- public final class ACSAuthReply extends ACSConfirmation
- {
-   int objectID;
-   byte[] key;
-   ACSAuthInfo authInfo;
-   public static final int PDU = 12;
- 
-   public ACSAuthInfo getAuthInfo()
-   {
-     return this.authInfo;
-   }
- 
-   public byte[] getKey()
-   {
-     return this.key;
-   }
- 
-   public int getObjectID()
-   {
-     return this.objectID;
-   }
- 
-   public static ACSAuthReply decode(InputStream in)
-   {
-     ACSAuthReply _this = new ACSAuthReply();
-     _this.doDecode(in);
- 
-     return _this;
-   }
- 
-   public void decodeMembers(InputStream memberStream)
-   {
-     this.objectID = ASNInteger.decode(memberStream);
-     this.key = ChallengeKey.decode(memberStream);
-     this.authInfo = ACSAuthInfo.decode(memberStream);
-   }
- 
-   public Collection<String> print()
-   {
-     Collection lines = new ArrayList();
-     lines.add("ACSAuthReply ::=");
-     lines.add("{");
- 
-     String indent = "  ";
- 
-     lines.addAll(ASNInteger.print(this.objectID, "objectID", indent));
-     lines.addAll(ChallengeKey.print(this.key, "key", indent));
-     lines.addAll(ACSAuthInfo.print(this.authInfo, "authInfo", indent));
- 
-     lines.add("}");
-     return lines;
-   }
- 
-   public int getPDU()
-   {
-     return 12;
-   }
- }
+package com.avaya.jtapi.tsapi.acs;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.acs.ACSAuthReply
- * JD-Core Version:    0.5.4
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
+
+public final class ACSAuthReply extends ACSConfirmation {
+	public static ACSAuthReply decode(InputStream in) {
+		ACSAuthReply _this = new ACSAuthReply();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	int objectID;
+	byte[] key;
+	ACSAuthInfo authInfo;
+
+	public static final int PDU = 12;
+
+	@Override
+	public void decodeMembers(InputStream memberStream) {
+		objectID = ASNInteger.decode(memberStream);
+		key = ASNOctetString.decode(memberStream);
+		authInfo = ACSAuthInfo.decode(memberStream);
+	}
+
+	public ACSAuthInfo getAuthInfo() {
+		return authInfo;
+	}
+
+	public byte[] getKey() {
+		return key;
+	}
+
+	public int getObjectID() {
+		return objectID;
+	}
+
+	@Override
+	public int getPDU() {
+		return 12;
+	}
+
+	@Override
+	public Collection<String> print() {
+		Collection lines = new ArrayList();
+		lines.add("ACSAuthReply ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(ASNInteger.print(objectID, "objectID", indent));
+		lines.addAll(ASNOctetString.print(key, "key", indent));
+		lines.addAll(ACSAuthInfo.print(authInfo, "authInfo", indent));
+
+		lines.add("}");
+		return lines;
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.acs.ACSAuthReply JD-Core Version: 0.5.4
  */

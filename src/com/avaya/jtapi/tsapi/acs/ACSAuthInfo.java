@@ -1,70 +1,71 @@
- package com.avaya.jtapi.tsapi.acs;
- 
- import com.avaya.jtapi.tsapi.asn1.ASNSequence;
- import java.io.InputStream;
- import java.io.OutputStream;
- import java.util.ArrayList;
- import java.util.Collection;
- 
- public final class ACSAuthInfo extends ASNSequence
- {
-   short authType;
-   String authLoginID;
- 
-   ACSAuthInfo()
-   {
-   }
- 
-   public ACSAuthInfo(short _authType, String _authLoginID)
-   {
-     this.authType = _authType;
-     this.authLoginID = _authLoginID;
-   }
- 
-   static ACSAuthInfo decode(InputStream in)
-   {
-     ACSAuthInfo _this = new ACSAuthInfo();
-     _this.doDecode(in);
- 
-     return _this;
-   }
- 
-   public void decodeMembers(InputStream memberStream)
-   {
-     this.authType = ACSAuthType.decode(memberStream);
-     this.authLoginID = LoginID.decode(memberStream);
-   }
- 
-   public void encodeMembers(OutputStream memberStream)
-   {
-     ACSAuthType.encode(this.authType, memberStream);
-     LoginID.encode(this.authLoginID, memberStream);
-   }
- 
-   static Collection<String> print(ACSAuthInfo _this, String name, String _indent)
-   {
-     Collection lines = new ArrayList();
-     if (_this == null)
-     {
-       lines.add(_indent + name + " <null>");
-       return lines;
-     }
-     if (name != null) {
-       lines.add(_indent + name);
-     }
-     lines.add(_indent + "{");
- 
-     String indent = _indent + "  ";
- 
-     lines.addAll(ACSAuthType.print(_this.authType, "authType", indent));
-     lines.addAll(LoginID.print(_this.authLoginID, "authLoginID", indent));
- 
-     lines.add(_indent + "}");
-     return lines;
-   }
- }
+package com.avaya.jtapi.tsapi.acs;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.acs.ACSAuthInfo
- * JD-Core Version:    0.5.4
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
+import com.avaya.jtapi.tsapi.asn1.ASNSequence;
+
+public final class ACSAuthInfo extends ASNSequence {
+	static ACSAuthInfo decode(InputStream in) {
+		ACSAuthInfo _this = new ACSAuthInfo();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	static Collection<String> print(ACSAuthInfo _this, String name,
+			String _indent) {
+		Collection lines = new ArrayList();
+		if (_this == null) {
+			lines.add(_indent + name + " <null>");
+			return lines;
+		}
+		if (name != null) {
+			lines.add(_indent + name);
+		}
+		lines.add(_indent + "{");
+
+		String indent = _indent + "  ";
+
+		lines.addAll(ACSAuthType.print(_this.authType, "authType", indent));
+		lines.addAll(ASNIA5String.print(_this.authLoginID, "authLoginID",
+				indent));
+
+		lines.add(_indent + "}");
+		return lines;
+	}
+
+	short authType;
+
+	String authLoginID;
+
+	ACSAuthInfo() {
+	}
+
+	public ACSAuthInfo(short _authType, String _authLoginID) {
+		authType = _authType;
+		authLoginID = _authLoginID;
+	}
+
+	@Override
+	public void decodeMembers(InputStream memberStream) {
+		authType = ASNEnumerated.decode(memberStream);
+		authLoginID = ASNIA5String.decode(memberStream);
+	}
+
+	@Override
+	public void encodeMembers(OutputStream memberStream) {
+		ASNEnumerated.encode(authType, memberStream);
+		ASNIA5String.encode(authLoginID, memberStream);
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.acs.ACSAuthInfo JD-Core Version: 0.5.4
  */

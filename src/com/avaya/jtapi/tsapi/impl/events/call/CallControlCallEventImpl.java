@@ -1,45 +1,41 @@
- package com.avaya.jtapi.tsapi.impl.events.call;
- 
- import javax.telephony.Address;
- import javax.telephony.MetaEvent;
- import javax.telephony.Terminal;
- import javax.telephony.callcontrol.CallControlCallEvent;
- 
- public class CallControlCallEventImpl extends CallEventImpl
-   implements CallControlCallEvent
- {
-   public CallControlCallEventImpl(CallEventParams params, MetaEvent event, int eventId)
-   {
-     super(params, event, eventId);
-   }
- 
-   public Address getCalledAddress()
-   {
-     return this.callEventParams.getCalledAddress();
-   }
- 
-   public Address getCallingAddress()
-   {
-     return this.callEventParams.getCallingAddress();
-   }
- 
-   public Terminal getCallingTerminal()
-   {
-     return this.callEventParams.getCallingTerminal();
-   }
- 
-   public Address getLastRedirectedAddress()
-   {
-     return this.callEventParams.getLastRedirectionAddress();
-   }
- 
-   public int getCallControlCause()
-   {
-     return this.callEventParams.getCause();
-   }
- }
+package com.avaya.jtapi.tsapi.impl.events.call;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.impl.events.call.CallControlCallEventImpl
- * JD-Core Version:    0.5.4
+import javax.telephony.Address;
+import javax.telephony.MetaEvent;
+import javax.telephony.Terminal;
+import javax.telephony.callcontrol.CallControlCallEvent;
+
+public class CallControlCallEventImpl extends CallEventImpl implements
+		CallControlCallEvent {
+	public CallControlCallEventImpl(CallEventParams params, MetaEvent event,
+			int eventId) {
+		super(params, event, eventId);
+	}
+
+	public int getCallControlCause() {
+		return callEventParams.getCause();
+	}
+
+	public Address getCalledAddress() {
+		return callEventParams.getCalledAddress();
+	}
+
+	public Address getCallingAddress() {
+		return callEventParams.getCallingAddress();
+	}
+
+	public Terminal getCallingTerminal() {
+		return callEventParams.getCallingTerminal();
+	}
+
+	public Address getLastRedirectedAddress() {
+		return callEventParams.getLastRedirectionAddress();
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.impl.events.call.CallControlCallEventImpl JD-Core
+ * Version: 0.5.4
  */

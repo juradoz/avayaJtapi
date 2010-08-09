@@ -6,24 +6,29 @@ import javax.telephony.callcenter.Agent;
 import javax.telephony.events.TermEv;
 
 /** @deprecated */
-public abstract interface AgentTermEv extends CallCentEv, TermEv
-{
-  public abstract Agent getAgent();
+@Deprecated
+public abstract interface AgentTermEv extends CallCentEv, TermEv {
+	/** @deprecated */
+	@Deprecated
+	public abstract ACDAddress getACDAddress();
 
-  /** @deprecated */
-  public abstract ACDAddress getACDAddress();
+	public abstract Agent getAgent();
 
-  /** @deprecated */
-  public abstract String getAgentID();
+	/** @deprecated */
+	@Deprecated
+	public abstract Address getAgentAddress();
 
-  /** @deprecated */
-  public abstract int getState();
+	/** @deprecated */
+	@Deprecated
+	public abstract String getAgentID();
 
-  /** @deprecated */
-  public abstract Address getAgentAddress();
+	/** @deprecated */
+	@Deprecated
+	public abstract int getState();
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.callcenter.events.AgentTermEv
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.callcenter.events.AgentTermEv JD-Core Version: 0.5.4
  */

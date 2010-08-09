@@ -7,90 +7,104 @@ import javax.telephony.capabilities.ProviderCapabilities;
 import javax.telephony.capabilities.TerminalCapabilities;
 import javax.telephony.capabilities.TerminalConnectionCapabilities;
 
-public abstract interface Provider
-{
-  public static final int IN_SERVICE = 16;
-  public static final int OUT_OF_SERVICE = 17;
-  public static final int SHUTDOWN = 18;
+public abstract interface Provider {
+	public static final int IN_SERVICE = 16;
+	public static final int OUT_OF_SERVICE = 17;
+	public static final int SHUTDOWN = 18;
 
-  public abstract int getState();
+	public abstract void addObserver(ProviderObserver paramProviderObserver)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-  public abstract String getName();
+	public abstract void addProviderListener(
+			ProviderListener paramProviderListener)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-  public abstract Call[] getCalls()
-    throws ResourceUnavailableException;
+	public abstract Call createCall() throws ResourceUnavailableException,
+			InvalidStateException, PrivilegeViolationException,
+			MethodNotSupportedException;
 
-  public abstract Address getAddress(String paramString)
-    throws InvalidArgumentException;
+	public abstract Address getAddress(String paramString)
+			throws InvalidArgumentException;
 
-  public abstract Address[] getAddresses()
-    throws ResourceUnavailableException;
+	public abstract AddressCapabilities getAddressCapabilities();
 
-  public abstract Terminal[] getTerminals()
-    throws ResourceUnavailableException;
+	/** @deprecated */
+	@Deprecated
+	public abstract AddressCapabilities getAddressCapabilities(
+			Terminal paramTerminal) throws InvalidArgumentException,
+			PlatformException;
 
-  public abstract Terminal getTerminal(String paramString)
-    throws InvalidArgumentException;
+	public abstract Address[] getAddresses()
+			throws ResourceUnavailableException;
 
-  public abstract void shutdown();
+	public abstract CallCapabilities getCallCapabilities();
 
-  public abstract Call createCall()
-    throws ResourceUnavailableException, InvalidStateException, PrivilegeViolationException, MethodNotSupportedException;
+	/** @deprecated */
+	@Deprecated
+	public abstract CallCapabilities getCallCapabilities(
+			Terminal paramTerminal, Address paramAddress)
+			throws InvalidArgumentException, PlatformException;
 
-  public abstract void addObserver(ProviderObserver paramProviderObserver)
-    throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract Call[] getCalls() throws ResourceUnavailableException;
 
-  public abstract ProviderObserver[] getObservers();
+	public abstract ProviderCapabilities getCapabilities();
 
-  public abstract void removeObserver(ProviderObserver paramProviderObserver);
+	public abstract ConnectionCapabilities getConnectionCapabilities();
 
-  public abstract ProviderCapabilities getProviderCapabilities();
+	/** @deprecated */
+	@Deprecated
+	public abstract ConnectionCapabilities getConnectionCapabilities(
+			Terminal paramTerminal, Address paramAddress)
+			throws InvalidArgumentException, PlatformException;
 
-  public abstract CallCapabilities getCallCapabilities();
+	public abstract String getName();
 
-  public abstract AddressCapabilities getAddressCapabilities();
+	public abstract ProviderObserver[] getObservers();
 
-  public abstract TerminalCapabilities getTerminalCapabilities();
+	public abstract ProviderCapabilities getProviderCapabilities();
 
-  public abstract ConnectionCapabilities getConnectionCapabilities();
+	/** @deprecated */
+	@Deprecated
+	public abstract ProviderCapabilities getProviderCapabilities(
+			Terminal paramTerminal) throws InvalidArgumentException,
+			PlatformException;
 
-  public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities();
+	public abstract ProviderListener[] getProviderListeners();
 
-  public abstract ProviderCapabilities getCapabilities();
+	public abstract int getState();
 
-  /** @deprecated */
-  public abstract ProviderCapabilities getProviderCapabilities(Terminal paramTerminal)
-    throws InvalidArgumentException, PlatformException;
+	public abstract Terminal getTerminal(String paramString)
+			throws InvalidArgumentException;
 
-  /** @deprecated */
-  public abstract CallCapabilities getCallCapabilities(Terminal paramTerminal, Address paramAddress)
-    throws InvalidArgumentException, PlatformException;
+	public abstract TerminalCapabilities getTerminalCapabilities();
 
-  /** @deprecated */
-  public abstract ConnectionCapabilities getConnectionCapabilities(Terminal paramTerminal, Address paramAddress)
-    throws InvalidArgumentException, PlatformException;
+	/** @deprecated */
+	@Deprecated
+	public abstract TerminalCapabilities getTerminalCapabilities(
+			Terminal paramTerminal) throws InvalidArgumentException,
+			PlatformException;
 
-  /** @deprecated */
-  public abstract AddressCapabilities getAddressCapabilities(Terminal paramTerminal)
-    throws InvalidArgumentException, PlatformException;
+	public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities();
 
-  /** @deprecated */
-  public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities(Terminal paramTerminal)
-    throws InvalidArgumentException, PlatformException;
+	/** @deprecated */
+	@Deprecated
+	public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities(
+			Terminal paramTerminal) throws InvalidArgumentException,
+			PlatformException;
 
-  /** @deprecated */
-  public abstract TerminalCapabilities getTerminalCapabilities(Terminal paramTerminal)
-    throws InvalidArgumentException, PlatformException;
+	public abstract Terminal[] getTerminals()
+			throws ResourceUnavailableException;
 
-  public abstract void addProviderListener(ProviderListener paramProviderListener)
-    throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract void removeObserver(ProviderObserver paramProviderObserver);
 
-  public abstract ProviderListener[] getProviderListeners();
+	public abstract void removeProviderListener(
+			ProviderListener paramProviderListener);
 
-  public abstract void removeProviderListener(ProviderListener paramProviderListener);
+	public abstract void shutdown();
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.Provider
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.Provider JD-Core Version: 0.5.4
  */

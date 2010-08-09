@@ -6,21 +6,23 @@ import javax.telephony.callcenter.CallCenterTrunk;
 import javax.telephony.events.CallEv;
 
 /** @deprecated */
-public abstract interface CallCentCallEv extends CallCentEv, CallEv
-{
-  public abstract Address getCallingAddress();
+@Deprecated
+public abstract interface CallCentCallEv extends CallCentEv, CallEv {
+	public abstract Address getCalledAddress();
 
-  public abstract Terminal getCallingTerminal();
+	public abstract Address getCallingAddress();
 
-  public abstract Address getCalledAddress();
+	public abstract Terminal getCallingTerminal();
 
-  public abstract Address getLastRedirectedAddress();
+	public abstract Address getLastRedirectedAddress();
 
-  /** @deprecated */
-  public abstract CallCenterTrunk[] getTrunks();
+	/** @deprecated */
+	@Deprecated
+	public abstract CallCenterTrunk[] getTrunks();
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.callcenter.events.CallCentCallEv
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.callcenter.events.CallCentCallEv JD-Core Version: 0.5.4
  */

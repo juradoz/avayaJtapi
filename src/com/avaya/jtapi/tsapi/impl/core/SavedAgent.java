@@ -1,18 +1,17 @@
- package com.avaya.jtapi.tsapi.impl.core;
- 
- final class SavedAgent
- {
-   TSAgent agent;
-   long saveTime;
- 
-   SavedAgent(TSAgent _agent)
-   {
-     this.agent = _agent;
-     this.saveTime = System.currentTimeMillis();
-   }
- }
+package com.avaya.jtapi.tsapi.impl.core;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.impl.core.SavedAgent
- * JD-Core Version:    0.5.4
+final class SavedAgent {
+	TSAgent agent;
+	long saveTime;
+
+	SavedAgent(TSAgent _agent) {
+		agent = _agent;
+		saveTime = System.currentTimeMillis();
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.impl.core.SavedAgent JD-Core Version: 0.5.4
  */

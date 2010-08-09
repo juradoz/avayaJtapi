@@ -4,40 +4,45 @@ import javax.telephony.Call;
 import javax.telephony.TerminalConnection;
 import javax.telephony.capabilities.CallCapabilities;
 
-public abstract interface CallControlCallCapabilities extends CallCapabilities
-{
-  public abstract boolean canDrop();
+public abstract interface CallControlCallCapabilities extends CallCapabilities {
+	public abstract boolean canAddParty();
 
-  public abstract boolean canOffHook();
+	public abstract boolean canConference();
 
-  public abstract boolean canSetConferenceController();
+	/** @deprecated */
+	@Deprecated
+	public abstract boolean canConsult();
 
-  public abstract boolean canSetTransferController();
+	public abstract boolean canConsult(
+			TerminalConnection paramTerminalConnection);
 
-  public abstract boolean canSetTransferEnable();
+	public abstract boolean canConsult(
+			TerminalConnection paramTerminalConnection, String paramString);
 
-  public abstract boolean canSetConferenceEnable();
+	public abstract boolean canDrop();
 
-  /** @deprecated */
-  public abstract boolean canTransfer();
+	public abstract boolean canOffHook();
 
-  public abstract boolean canTransfer(Call paramCall);
+	public abstract boolean canSetConferenceController();
 
-  public abstract boolean canTransfer(String paramString);
+	public abstract boolean canSetConferenceEnable();
 
-  public abstract boolean canConference();
+	public abstract boolean canSetTransferController();
 
-  public abstract boolean canAddParty();
+	public abstract boolean canSetTransferEnable();
 
-  /** @deprecated */
-  public abstract boolean canConsult();
+	/** @deprecated */
+	@Deprecated
+	public abstract boolean canTransfer();
 
-  public abstract boolean canConsult(TerminalConnection paramTerminalConnection, String paramString);
+	public abstract boolean canTransfer(Call paramCall);
 
-  public abstract boolean canConsult(TerminalConnection paramTerminalConnection);
+	public abstract boolean canTransfer(String paramString);
 }
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     javax.telephony.callcontrol.capabilities.CallControlCallCapabilities
- * JD-Core Version:    0.5.4
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * javax.telephony.callcontrol.capabilities.CallControlCallCapabilities JD-Core
+ * Version: 0.5.4
  */

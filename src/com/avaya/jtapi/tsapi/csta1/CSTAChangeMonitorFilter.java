@@ -1,74 +1,80 @@
- package com.avaya.jtapi.tsapi.csta1;
- 
- import java.io.InputStream;
- import java.io.OutputStream;
- import java.util.ArrayList;
- import java.util.Collection;
- 
- public final class CSTAChangeMonitorFilter extends CSTARequest
- {
-   int monitorCrossRefID;
-   CSTAMonitorFilter monitorFilter;
-   public static final int PDU = 115;
- 
-   public CSTAChangeMonitorFilter(int _monitorCrossRefID, CSTAMonitorFilter _monitorFilter)
-   {
-     this.monitorCrossRefID = _monitorCrossRefID;
-     this.monitorFilter = _monitorFilter;
-   }
-   public CSTAChangeMonitorFilter() {
-   }
- 
-   public void encodeMembers(OutputStream memberStream) {
-     CSTAMonitorCrossRefID.encode(this.monitorCrossRefID, memberStream);
-     CSTAMonitorFilter.encode(this.monitorFilter, memberStream);
-   }
- 
-   public static CSTAChangeMonitorFilter decode(InputStream in)
-   {
-     CSTAChangeMonitorFilter _this = new CSTAChangeMonitorFilter();
-     _this.doDecode(in);
- 
-     return _this;
-   }
- 
-   public void decodeMembers(InputStream memberStream) {
-     this.monitorCrossRefID = CSTAMonitorCrossRefID.decode(memberStream);
-     this.monitorFilter = CSTAMonitorFilter.decode(memberStream);
-   }
- 
-   public Collection<String> print()
-   {
-     Collection lines = new ArrayList();
-     lines.add("CSTAChangeMonitorFilter ::=");
-     lines.add("{");
- 
-     String indent = "  ";
- 
-     lines.addAll(CSTAMonitorCrossRefID.print(this.monitorCrossRefID, "monitorCrossRefID", indent));
-     lines.addAll(CSTAMonitorFilter.print(this.monitorFilter, "monitorFilter", indent));
- 
-     lines.add("}");
-     return lines;
-   }
- 
-   public int getPDU()
-   {
-     return 115;
-   }
- 
-   public int getMonitorCrossRefID()
-   {
-     return this.monitorCrossRefID;
-   }
- 
-   public CSTAMonitorFilter getMonitorFilter()
-   {
-     return this.monitorFilter;
-   }
- }
+package com.avaya.jtapi.tsapi.csta1;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.csta1.CSTAChangeMonitorFilter
- * JD-Core Version:    0.5.4
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+import com.avaya.jtapi.tsapi.asn1.ASNSequence;
+
+public final class CSTAChangeMonitorFilter extends CSTARequest {
+	public static CSTAChangeMonitorFilter decode(InputStream in) {
+		CSTAChangeMonitorFilter _this = new CSTAChangeMonitorFilter();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	int monitorCrossRefID;
+	CSTAMonitorFilter monitorFilter;
+
+	public static final int PDU = 115;
+
+	public CSTAChangeMonitorFilter() {
+	}
+
+	public CSTAChangeMonitorFilter(int _monitorCrossRefID,
+			CSTAMonitorFilter _monitorFilter) {
+		monitorCrossRefID = _monitorCrossRefID;
+		monitorFilter = _monitorFilter;
+	}
+
+	@Override
+	public void decodeMembers(InputStream memberStream) {
+		monitorCrossRefID = ASNInteger.decode(memberStream);
+		monitorFilter = CSTAMonitorFilter.decode(memberStream);
+	}
+
+	@Override
+	public void encodeMembers(OutputStream memberStream) {
+		ASNInteger.encode(monitorCrossRefID, memberStream);
+		ASNSequence.encode(monitorFilter, memberStream);
+	}
+
+	public int getMonitorCrossRefID() {
+		return monitorCrossRefID;
+	}
+
+	public CSTAMonitorFilter getMonitorFilter() {
+		return monitorFilter;
+	}
+
+	@Override
+	public int getPDU() {
+		return 115;
+	}
+
+	@Override
+	public Collection<String> print() {
+		Collection lines = new ArrayList();
+		lines.add("CSTAChangeMonitorFilter ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(ASNInteger.print(monitorCrossRefID, "monitorCrossRefID",
+				indent));
+		lines.addAll(CSTAMonitorFilter.print(monitorFilter, "monitorFilter",
+				indent));
+
+		lines.add("}");
+		return lines;
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.csta1.CSTAChangeMonitorFilter JD-Core Version: 0.5.4
  */

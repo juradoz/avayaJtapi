@@ -1,77 +1,79 @@
- package com.avaya.jtapi.tsapi.csta1;
- 
- import java.io.InputStream;
- import java.io.OutputStream;
- import java.util.ArrayList;
- import java.util.Collection;
- 
- public final class CSTAMonitorDevice extends CSTARequest
- {
-   String deviceID;
-   CSTAMonitorFilter monitorFilter;
-   public static final int PDU = 111;
- 
-   public CSTAMonitorDevice(String _deviceID, CSTAMonitorFilter _monitorFilter)
-   {
-     this.deviceID = _deviceID;
-     this.monitorFilter = _monitorFilter;
-   }
- 
-   public CSTAMonitorDevice() {
-   }
- 
-   public void encodeMembers(OutputStream memberStream) {
-     DeviceID.encode(this.deviceID, memberStream);
-     CSTAMonitorFilter.encode(this.monitorFilter, memberStream);
-   }
- 
-   public static CSTAMonitorDevice decode(InputStream in)
-   {
-     CSTAMonitorDevice _this = new CSTAMonitorDevice();
-     _this.doDecode(in);
- 
-     return _this;
-   }
- 
-   public void decodeMembers(InputStream memberStream)
-   {
-     this.deviceID = DeviceID.decode(memberStream);
-     this.monitorFilter = CSTAMonitorFilter.decode(memberStream);
-   }
- 
-   public Collection<String> print()
-   {
-     Collection lines = new ArrayList();
- 
-     lines.add("CSTAMonitorDevice ::=");
-     lines.add("{");
- 
-     String indent = "  ";
- 
-     lines.addAll(DeviceID.print(this.deviceID, "deviceID", indent));
-     lines.addAll(CSTAMonitorFilter.print(this.monitorFilter, "monitorFilter", indent));
- 
-     lines.add("}");
-     return lines;
-   }
- 
-   public int getPDU()
-   {
-     return 111;
-   }
- 
-   public String getDeviceID()
-   {
-     return this.deviceID;
-   }
- 
-   public CSTAMonitorFilter getMonitorFilter()
-   {
-     return this.monitorFilter;
-   }
- }
+package com.avaya.jtapi.tsapi.csta1;
 
-/* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
- * Qualified Name:     com.avaya.jtapi.tsapi.csta1.CSTAMonitorDevice
- * JD-Core Version:    0.5.4
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
+import com.avaya.jtapi.tsapi.asn1.ASNSequence;
+
+public final class CSTAMonitorDevice extends CSTARequest {
+	public static CSTAMonitorDevice decode(InputStream in) {
+		CSTAMonitorDevice _this = new CSTAMonitorDevice();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	String deviceID;
+	CSTAMonitorFilter monitorFilter;
+
+	public static final int PDU = 111;
+
+	public CSTAMonitorDevice() {
+	}
+
+	public CSTAMonitorDevice(String _deviceID, CSTAMonitorFilter _monitorFilter) {
+		deviceID = _deviceID;
+		monitorFilter = _monitorFilter;
+	}
+
+	@Override
+	public void decodeMembers(InputStream memberStream) {
+		deviceID = ASNIA5String.decode(memberStream);
+		monitorFilter = CSTAMonitorFilter.decode(memberStream);
+	}
+
+	@Override
+	public void encodeMembers(OutputStream memberStream) {
+		ASNIA5String.encode(deviceID, memberStream);
+		ASNSequence.encode(monitorFilter, memberStream);
+	}
+
+	public String getDeviceID() {
+		return deviceID;
+	}
+
+	public CSTAMonitorFilter getMonitorFilter() {
+		return monitorFilter;
+	}
+
+	@Override
+	public int getPDU() {
+		return 111;
+	}
+
+	@Override
+	public Collection<String> print() {
+		Collection lines = new ArrayList();
+
+		lines.add("CSTAMonitorDevice ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(ASNIA5String.print(deviceID, "deviceID", indent));
+		lines.addAll(CSTAMonitorFilter.print(monitorFilter, "monitorFilter",
+				indent));
+
+		lines.add("}");
+		return lines;
+	}
+}
+
+/*
+ * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
+ * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
+ * com.avaya.jtapi.tsapi.csta1.CSTAMonitorDevice JD-Core Version: 0.5.4
  */
