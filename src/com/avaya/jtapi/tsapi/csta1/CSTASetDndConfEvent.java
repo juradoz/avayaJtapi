@@ -1,53 +1,53 @@
-/*    */ package com.avaya.jtapi.tsapi.csta1;
-/*    */ 
-/*    */ import com.avaya.jtapi.tsapi.asn1.ASNNull;
-/*    */ import java.io.InputStream;
-/*    */ import java.io.OutputStream;
-/*    */ import java.util.ArrayList;
-/*    */ import java.util.Collection;
-/*    */ 
-/*    */ public final class CSTASetDndConfEvent extends CSTAConfirmation
-/*    */ {
-/*    */   public static final int PDU = 46;
-/*    */ 
-/*    */   public static CSTASetDndConfEvent decode(InputStream in)
-/*    */   {
-/* 16 */     CSTASetDndConfEvent _this = new CSTASetDndConfEvent();
-/* 17 */     _this.doDecode(in);
-/*    */ 
-/* 19 */     return _this;
-/*    */   }
-/*    */ 
-/*    */   public void decodeMembers(InputStream memberStream)
-/*    */   {
-/* 24 */     ASNNull.decode(memberStream);
-/*    */   }
-/*    */ 
-/*    */   public void encodeMembers(OutputStream memberStream)
-/*    */   {
-/* 29 */     ASNNull.encode(memberStream);
-/*    */   }
-/*    */ 
-/*    */   public Collection<String> print()
-/*    */   {
-/* 34 */     Collection lines = new ArrayList();
-/*    */ 
-/* 36 */     lines.add("CSTASetDndConfEvent ::=");
-/* 37 */     lines.add("{");
-/*    */ 
-/* 39 */     String indent = "  ";
-/*    */ 
-/* 41 */     lines.addAll(ASNNull.print(indent));
-/*    */ 
-/* 43 */     lines.add("}");
-/* 44 */     return lines;
-/*    */   }
-/*    */ 
-/*    */   public int getPDU()
-/*    */   {
-/* 49 */     return 46;
-/*    */   }
-/*    */ }
+ package com.avaya.jtapi.tsapi.csta1;
+ 
+ import com.avaya.jtapi.tsapi.asn1.ASNNull;
+ import java.io.InputStream;
+ import java.io.OutputStream;
+ import java.util.ArrayList;
+ import java.util.Collection;
+ 
+ public final class CSTASetDndConfEvent extends CSTAConfirmation
+ {
+   public static final int PDU = 46;
+ 
+   public static CSTASetDndConfEvent decode(InputStream in)
+   {
+     CSTASetDndConfEvent _this = new CSTASetDndConfEvent();
+     _this.doDecode(in);
+ 
+     return _this;
+   }
+ 
+   public void decodeMembers(InputStream memberStream)
+   {
+     ASNNull.decode(memberStream);
+   }
+ 
+   public void encodeMembers(OutputStream memberStream)
+   {
+     ASNNull.encode(memberStream);
+   }
+ 
+   public Collection<String> print()
+   {
+     Collection lines = new ArrayList();
+ 
+     lines.add("CSTASetDndConfEvent ::=");
+     lines.add("{");
+ 
+     String indent = "  ";
+ 
+     lines.addAll(ASNNull.print(indent));
+ 
+     lines.add("}");
+     return lines;
+   }
+ 
+   public int getPDU()
+   {
+     return 46;
+   }
+ }
 
 /* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
  * Qualified Name:     com.avaya.jtapi.tsapi.csta1.CSTASetDndConfEvent

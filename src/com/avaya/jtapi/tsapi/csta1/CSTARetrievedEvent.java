@@ -1,101 +1,101 @@
-/*     */ package com.avaya.jtapi.tsapi.csta1;
-/*     */ 
-/*     */ import java.io.InputStream;
-/*     */ import java.io.OutputStream;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.Collection;
-/*     */ 
-/*     */ public final class CSTARetrievedEvent extends CSTAUnsolicited
-/*     */ {
-/*     */   CSTAConnectionID retrievedConnection;
-/*     */   CSTAExtendedDeviceID retrievingDevice;
-/*     */   short localConnectionInfo;
-/*     */   short cause;
-/*     */   public static final int PDU = 65;
-/*     */ 
-/*     */   public static CSTARetrievedEvent decode(InputStream in)
-/*     */   {
-/*  20 */     CSTARetrievedEvent _this = new CSTARetrievedEvent();
-/*  21 */     _this.doDecode(in);
-/*     */ 
-/*  23 */     return _this;
-/*     */   }
-/*     */ 
-/*     */   public void decodeMembers(InputStream memberStream)
-/*     */   {
-/*  28 */     this.retrievedConnection = CSTAConnectionID.decode(memberStream);
-/*  29 */     this.retrievingDevice = CSTAExtendedDeviceID.decode(memberStream);
-/*  30 */     this.localConnectionInfo = LocalConnectionState.decode(memberStream);
-/*  31 */     this.cause = CSTAEventCause.decode(memberStream);
-/*     */   }
-/*     */ 
-/*     */   public void encodeMembers(OutputStream memberStream)
-/*     */   {
-/*  36 */     CSTAConnectionID.encode(this.retrievedConnection, memberStream);
-/*  37 */     CSTAExtendedDeviceID.encode(this.retrievingDevice, memberStream);
-/*  38 */     LocalConnectionState.encode(this.localConnectionInfo, memberStream);
-/*  39 */     CSTAEventCause.encode(this.cause, memberStream);
-/*     */   }
-/*     */ 
-/*     */   public Collection<String> print()
-/*     */   {
-/*  44 */     Collection lines = new ArrayList();
-/*     */ 
-/*  46 */     lines.add("CSTARetrievedEvent ::=");
-/*  47 */     lines.add("{");
-/*     */ 
-/*  49 */     String indent = "  ";
-/*  50 */     lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
-/*  51 */     lines.addAll(CSTAConnectionID.print(this.retrievedConnection, "retrievedConnection", indent));
-/*  52 */     lines.addAll(CSTAExtendedDeviceID.print(this.retrievingDevice, "retrievingDevice", indent));
-/*  53 */     lines.addAll(LocalConnectionState.print(this.localConnectionInfo, "localConnectionInfo", indent));
-/*  54 */     lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
-/*     */ 
-/*  56 */     lines.add("}");
-/*  57 */     return lines;
-/*     */   }
-/*     */ 
-/*     */   public int getPDU()
-/*     */   {
-/*  62 */     return 65;
-/*     */   }
-/*     */ 
-/*     */   public short getCause()
-/*     */   {
-/*  68 */     return this.cause;
-/*     */   }
-/*     */ 
-/*     */   public short getLocalConnectionInfo()
-/*     */   {
-/*  76 */     return this.localConnectionInfo;
-/*     */   }
-/*     */ 
-/*     */   public CSTAConnectionID getRetrievedConnection()
-/*     */   {
-/*  84 */     return this.retrievedConnection;
-/*     */   }
-/*     */ 
-/*     */   public CSTAExtendedDeviceID getRetrievingDevice()
-/*     */   {
-/*  92 */     return this.retrievingDevice;
-/*     */   }
-/*     */ 
-/*     */   public void setLocalConnectionInfo(short localConnectionInfo) {
-/*  96 */     this.localConnectionInfo = localConnectionInfo;
-/*     */   }
-/*     */ 
-/*     */   public void setRetrievedConnection(CSTAConnectionID retrievedConnection) {
-/* 100 */     this.retrievedConnection = retrievedConnection;
-/*     */   }
-/*     */ 
-/*     */   public void setRetrievingDevice(CSTAExtendedDeviceID retrievingDevice) {
-/* 104 */     this.retrievingDevice = retrievingDevice;
-/*     */   }
-/*     */ 
-/*     */   public void setCause(short cause) {
-/* 108 */     this.cause = cause;
-/*     */   }
-/*     */ }
+ package com.avaya.jtapi.tsapi.csta1;
+ 
+ import java.io.InputStream;
+ import java.io.OutputStream;
+ import java.util.ArrayList;
+ import java.util.Collection;
+ 
+ public final class CSTARetrievedEvent extends CSTAUnsolicited
+ {
+   CSTAConnectionID retrievedConnection;
+   CSTAExtendedDeviceID retrievingDevice;
+   short localConnectionInfo;
+   short cause;
+   public static final int PDU = 65;
+ 
+   public static CSTARetrievedEvent decode(InputStream in)
+   {
+     CSTARetrievedEvent _this = new CSTARetrievedEvent();
+     _this.doDecode(in);
+ 
+     return _this;
+   }
+ 
+   public void decodeMembers(InputStream memberStream)
+   {
+     this.retrievedConnection = CSTAConnectionID.decode(memberStream);
+     this.retrievingDevice = CSTAExtendedDeviceID.decode(memberStream);
+     this.localConnectionInfo = LocalConnectionState.decode(memberStream);
+     this.cause = CSTAEventCause.decode(memberStream);
+   }
+ 
+   public void encodeMembers(OutputStream memberStream)
+   {
+     CSTAConnectionID.encode(this.retrievedConnection, memberStream);
+     CSTAExtendedDeviceID.encode(this.retrievingDevice, memberStream);
+     LocalConnectionState.encode(this.localConnectionInfo, memberStream);
+     CSTAEventCause.encode(this.cause, memberStream);
+   }
+ 
+   public Collection<String> print()
+   {
+     Collection lines = new ArrayList();
+ 
+     lines.add("CSTARetrievedEvent ::=");
+     lines.add("{");
+ 
+     String indent = "  ";
+     lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+     lines.addAll(CSTAConnectionID.print(this.retrievedConnection, "retrievedConnection", indent));
+     lines.addAll(CSTAExtendedDeviceID.print(this.retrievingDevice, "retrievingDevice", indent));
+     lines.addAll(LocalConnectionState.print(this.localConnectionInfo, "localConnectionInfo", indent));
+     lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
+ 
+     lines.add("}");
+     return lines;
+   }
+ 
+   public int getPDU()
+   {
+     return 65;
+   }
+ 
+   public short getCause()
+   {
+     return this.cause;
+   }
+ 
+   public short getLocalConnectionInfo()
+   {
+     return this.localConnectionInfo;
+   }
+ 
+   public CSTAConnectionID getRetrievedConnection()
+   {
+     return this.retrievedConnection;
+   }
+ 
+   public CSTAExtendedDeviceID getRetrievingDevice()
+   {
+     return this.retrievingDevice;
+   }
+ 
+   public void setLocalConnectionInfo(short localConnectionInfo) {
+     this.localConnectionInfo = localConnectionInfo;
+   }
+ 
+   public void setRetrievedConnection(CSTAConnectionID retrievedConnection) {
+     this.retrievedConnection = retrievedConnection;
+   }
+ 
+   public void setRetrievingDevice(CSTAExtendedDeviceID retrievingDevice) {
+     this.retrievingDevice = retrievingDevice;
+   }
+ 
+   public void setCause(short cause) {
+     this.cause = cause;
+   }
+ }
 
 /* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
  * Qualified Name:     com.avaya.jtapi.tsapi.csta1.CSTARetrievedEvent

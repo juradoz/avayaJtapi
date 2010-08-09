@@ -1,16 +1,16 @@
-/*    */ package com.avaya.jtapi.tsapi;
-/*    */ 
-/*    */ public class LucentAgentStateInfo
-/*    */ {
-/*    */   public int state;
-/*    */   public int workMode;
-/*    */ 
-/*    */   public LucentAgentStateInfo(int _state, int _workMode)
-/*    */   {
-/* 20 */     this.state = _state;
-/* 21 */     this.workMode = _workMode;
-/*    */   }
-/*    */ }
+ package com.avaya.jtapi.tsapi;
+ 
+ public class LucentAgentStateInfo
+ {
+   public int state;
+   public int workMode;
+ 
+   public LucentAgentStateInfo(int _state, int _workMode)
+   {
+     this.state = _state;
+     this.workMode = _workMode;
+   }
+ }
 
 /* Location:           C:\Documents and Settings\Daniel Jurado\Meus documentos\My Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar
  * Qualified Name:     com.avaya.jtapi.tsapi.LucentAgentStateInfo
