@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
+import com.avaya.jtapi.tsapi.TSProvider;
 import com.avaya.jtapi.tsapi.TsapiPlatformException;
 import com.avaya.jtapi.tsapi.csta1.CSTAEvent;
 import com.avaya.jtapi.tsapi.util.JTAPILoggingAdapter;
@@ -37,143 +38,34 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 		}
 	}
 
+	private static int LONG_TIME = 180000;
+
 	// ERROR //
 	private CSTAEvent get() {
-		return null;
-		// Byte code:
-		// 0: aload_0
-		// 1: dup
-		// 2: astore_2
-		// 3: monitorenter
-		// 4: iconst_0
-		// 5: istore_3
-		// 6: aload_0
-		// 7: getfield 4
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:keepRunning Z
-		// 10: iconst_1
-		// 11: if_icmpne +31 -> 42
-		// 14: aload_0
-		// 15: getfield 8
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:fifo
-		// Ljava/util/Vector;
-		// 18: invokevirtual 16 java/util/Vector:size ()I
-		// 21: dup
-		// 22: istore_3
-		// 23: ifne +19 -> 42
-		// 26: aload_0
-		// 27: getstatic 49
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:DEFAULT_TIMEOUT
-		// I
-		// 30: i2l
-		// 31: invokevirtual 50 java/lang/Object:wait (J)V
-		// 34: goto -28 -> 6
-		// 37: astore 4
-		// 39: goto -33 -> 6
-		// 42: aload_0
-		// 43: getfield 4
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:keepRunning Z
-		// 46: ifne +7 -> 53
-		// 49: aconst_null
-		// 50: aload_2
-		// 51: monitorexit
-		// 52: areturn
-		// 53: aload_0
-		// 54: getfield 8
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:fifo
-		// Ljava/util/Vector;
-		// 57: iload_3
-		// 58: iconst_1
-		// 59: isub
-		// 60: invokevirtual 52 java/util/Vector:elementAt (I)Ljava/lang/Object;
-		// 63: checkcast 53 com/avaya/jtapi/tsapi/csta1/CSTAEvent
-		// 66: astore_1
-		// 67: aload_0
-		// 68: getfield 8
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:fifo
-		// Ljava/util/Vector;
-		// 71: iload_3
-		// 72: iconst_1
-		// 73: isub
-		// 74: invokevirtual 54 java/util/Vector:removeElementAt (I)V
-		// 77: aload_2
-		// 78: monitorexit
-		// 79: goto +10 -> 89
-		// 82: astore 5
-		// 84: aload_2
-		// 85: monitorexit
-		// 86: aload 5
-		// 88: athrow
-		// 89: getstatic 23
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:log
-		// Lorg/apache/log4j/Logger;
-		// 92: new 27 java/lang/StringBuilder
-		// 95: dup
-		// 96: invokespecial 28 java/lang/StringBuilder:<init> ()V
-		// 99: ldc 55
-		// 101: invokevirtual 30 java/lang/StringBuilder:append
-		// (Ljava/lang/String;)Ljava/lang/StringBuilder;
-		// 104: aload_1
-		// 105: invokevirtual 31 java/lang/StringBuilder:append
-		// (Ljava/lang/Object;)Ljava/lang/StringBuilder;
-		// 108: ldc 35
-		// 110: invokevirtual 30 java/lang/StringBuilder:append
-		// (Ljava/lang/String;)Ljava/lang/StringBuilder;
-		// 113: aload_0
-		// 114: getfield 5
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:debugID
-		// Ljava/lang/String;
-		// 117: invokevirtual 30 java/lang/StringBuilder:append
-		// (Ljava/lang/String;)Ljava/lang/StringBuilder;
-		// 120: invokevirtual 36 java/lang/StringBuilder:toString
-		// ()Ljava/lang/String;
-		// 123: invokevirtual 37 org/apache/log4j/Logger:info
-		// (Ljava/lang/Object;)V
-		// 126: invokestatic 20
-		// com/avaya/jtapi/tsapi/util/JTAPILoggingAdapter:isPerformanceLoggingEnabled
-		// ()Z
-		// 129: ifeq +22 -> 151
-		// 132: getstatic 23
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:log
-		// Lorg/apache/log4j/Logger;
-		// 135: ldc 56
-		// 137: invokevirtual 25 org/apache/log4j/Logger:debug
-		// (Ljava/lang/Object;)V
-		// 140: invokestatic 18 java/lang/System:currentTimeMillis ()J
-		// 143: aload_1
-		// 144: invokevirtual 57
-		// com/avaya/jtapi/tsapi/csta1/CSTAEvent:getQueuedTimeStamp ()J
-		// 147: lsub
-		// 148: invokestatic 58
-		// com/avaya/jtapi/tsapi/util/PerfStatisticsCollector:updateMessageLatency
-		// (J)V
-		// 151: invokestatic 20
-		// com/avaya/jtapi/tsapi/util/JTAPILoggingAdapter:isPerformanceLoggingEnabled
-		// ()Z
-		// 154: ifeq +21 -> 175
-		// 157: getstatic 23
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:log
-		// Lorg/apache/log4j/Logger;
-		// 160: ldc 59
-		// 162: invokevirtual 25 org/apache/log4j/Logger:debug
-		// (Ljava/lang/Object;)V
-		// 165: getstatic 43
-		// com/avaya/jtapi/tsapi/tsapiInterface/TsapiEventQueue:queueLength
-		// Ljava/util/concurrent/atomic/AtomicInteger;
-		// 168: invokevirtual 60
-		// java/util/concurrent/atomic/AtomicInteger:decrementAndGet ()I
-		// 171: i2l
-		// 172: invokestatic 45
-		// com/avaya/jtapi/tsapi/util/PerfStatisticsCollector:updateQueueLength
-		// (J)V
-		// 175: aload_1
-		// 176: areturn
-		//
-		// Exception table:
-		// from to target type
-		// 26 34 37 java/lang/InterruptedException
-		// 4 52 82 finally
-		// 53 79 82 finally
-		// 82 86 82 finally
+		CSTAEvent event;
+		synchronized (this) {
+			int size = 0;
+
+			while ((this.keepRunning == true)
+					&& ((size = this.fifo.size()) == 0))
+				try {
+					super.wait(LONG_TIME);
+				} catch (InterruptedException e) {
+				}
+			if (!this.keepRunning) {
+				return null;
+			}
+
+			event = (CSTAEvent) this.fifo.elementAt(size - 1);
+			this.fifo.removeElementAt(size - 1);
+		}
+
+		// if (TSProvider.debugLevelIsActive(TSProvider.DEBUGLEVEL_HANDLER))
+		// {
+		// Tsapi.log.println("Getting event " + event + " for " + this.debugID);
+		// }
+
+		return event;
 	}
 
 	public void handleEvent(CSTAEvent event) {

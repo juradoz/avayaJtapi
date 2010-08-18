@@ -4,6 +4,7 @@ import javax.telephony.Call;
 import javax.telephony.callcenter.ACDAddress;
 import javax.telephony.callcenter.CallCenterAddress;
 import javax.telephony.callcenter.CallCenterTrunk;
+import javax.telephony.callcenter.RouteAddress;
 import javax.telephony.privatedata.PrivateData;
 
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
@@ -25,6 +26,7 @@ import com.avaya.jtapi.tsapi.csta1.LucentUserProvidedCode;
 import com.avaya.jtapi.tsapi.csta1.LucentUserToUserInfo;
 import com.avaya.jtapi.tsapi.csta1.LucentV6RouteSelect;
 import com.avaya.jtapi.tsapi.csta1.LucentV7RouteSelect;
+import com.avaya.jtapi.tsapi.impl.core.TSDevice;
 import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.impl.core.TSRouteSession;
 import com.avaya.jtapi.tsapi.impl.core.TSTrunk;
@@ -228,62 +230,19 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 
 	// ERROR //
 	public final javax.telephony.callcenter.RouteAddress getRouteAddress() {
-		return null;
-		// Byte code:
-		// 0: ldc 1
-		// 2: aload_0
-		// 3: invokestatic 2 com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry
-		// (Ljava/lang/String;Ljava/lang/Object;)V
-		// 6: aload_0
-		// 7: getfield 3
-		// com/avaya/jtapi/tsapi/impl/TsapiRouteSession:tsRouteSession
-		// Lcom/avaya/jtapi/tsapi/impl/core/TSRouteSession;
-		// 10: invokevirtual 4
-		// com/avaya/jtapi/tsapi/impl/core/TSRouteSession:getTSRouteDevice
-		// ()Lcom/avaya/jtapi/tsapi/impl/core/TSDevice;
-		// 13: astore_1
-		// 14: aload_1
-		// 15: ifnull +25 -> 40
-		// 18: aload_1
-		// 19: iconst_1
-		// 20: invokestatic 5
-		// com/avaya/jtapi/tsapi/impl/TsapiCreateObject:getTsapiObject
-		// (Ljava/lang/Object;Z)Ljava/lang/Object;
-		// 23: checkcast 6 javax/telephony/callcenter/RouteAddress
-		// 26: astore_2
-		// 27: ldc 1
-		// 29: aload_0
-		// 30: invokestatic 7 com/avaya/jtapi/tsapi/util/TsapiTrace:traceExit
-		// (Ljava/lang/String;Ljava/lang/Object;)V
-		// 33: aload_2
-		// 34: astore_3
-		// 35: jsr +25 -> 60
-		// 38: aload_3
-		// 39: areturn
-		// 40: new 8 com/avaya/jtapi/tsapi/TsapiPlatformException
-		// 43: dup
-		// 44: iconst_4
-		// 45: iconst_0
-		// 46: ldc 9
-		// 48: invokespecial 10
-		// com/avaya/jtapi/tsapi/TsapiPlatformException:<init>
-		// (IILjava/lang/String;)V
-		// 51: athrow
-		// 52: astore 4
-		// 54: jsr +6 -> 60
-		// 57: aload 4
-		// 59: athrow
-		// 60: astore 5
-		// 62: aload_0
-		// 63: aconst_null
-		// 64: putfield 11 com/avaya/jtapi/tsapi/impl/TsapiRouteSession:privData
-		// Lcom/avaya/jtapi/tsapi/csta1/CSTAPrivate;
-		// 67: ret 5
-		//
-		// Exception table:
-		// from to target type
-		// 6 38 52 finally
-		// 40 57 52 finally
+		try {
+			TSDevice tsRouteDevice = this.tsRouteSession.getTSRouteDevice();
+			RouteAddress localRouteAddress;
+			if (tsRouteDevice != null) {
+				localRouteAddress = (RouteAddress) TsapiCreateObject
+						.getTsapiObject(tsRouteDevice, true);
+
+				this.privData = null;
+			}
+			throw new TsapiPlatformException(4, 0, "could not locate address");
+		} finally {
+			this.privData = null;
+		}
 	}
 
 	public final int getRouteCrossRefID() {

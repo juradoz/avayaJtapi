@@ -3,6 +3,7 @@ package com.avaya.jtapi.tsapi.impl;
 import java.net.URL;
 
 import javax.telephony.Address;
+import javax.telephony.Connection;
 import javax.telephony.InvalidArgumentException;
 import javax.telephony.PlatformException;
 import javax.telephony.Terminal;
@@ -28,6 +29,7 @@ import com.avaya.jtapi.tsapi.csta1.LucentClearConnection;
 import com.avaya.jtapi.tsapi.csta1.LucentUserToUserInfo;
 import com.avaya.jtapi.tsapi.csta1.LucentV6ClearConnection;
 import com.avaya.jtapi.tsapi.impl.core.TSConnection;
+import com.avaya.jtapi.tsapi.impl.core.TSDevice;
 import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.impl.core.TsapiPromoter;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
@@ -42,60 +44,6 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceConstruction(this, TsapiTerminalConnection.class);
 	}
 
-	// 0: ldc 14
-	// 2: aload_0
-	// 3: invokestatic 2 com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 6: aload_0
-	// 7: getfield 3
-	// com/avaya/jtapi/tsapi/impl/TsapiTerminalConnection:tsConnection
-	// Lcom/avaya/jtapi/tsapi/impl/core/TSConnection;
-	// 10: invokevirtual 15
-	// com/avaya/jtapi/tsapi/impl/core/TSConnection:getTSConnection
-	// ()Lcom/avaya/jtapi/tsapi/impl/core/TSConnection;
-	// 13: astore_1
-	// 14: aload_1
-	// 15: ifnull +25 -> 40
-	// 18: aload_1
-	// 19: iconst_1
-	// 20: invokestatic 9
-	// com/avaya/jtapi/tsapi/impl/TsapiCreateObject:getTsapiObject
-	// (Ljava/lang/Object;Z)Ljava/lang/Object;
-	// 23: checkcast 16 javax/telephony/Connection
-	// 26: astore_2
-	// 27: ldc 14
-	// 29: aload_0
-	// 30: invokestatic 5 com/avaya/jtapi/tsapi/util/TsapiTrace:traceExit
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 33: aload_2
-	// 34: astore_3
-	// 35: jsr +25 -> 60
-	// 38: aload_3
-	// 39: areturn
-	// 40: new 11 com/avaya/jtapi/tsapi/TsapiPlatformException
-	// 43: dup
-	// 44: iconst_4
-	// 45: iconst_0
-	// 46: ldc 17
-	// 48: invokespecial 13 com/avaya/jtapi/tsapi/TsapiPlatformException:<init>
-	// (IILjava/lang/String;)V
-	// 51: athrow
-	// 52: astore 4
-	// 54: jsr +6 -> 60
-	// 57: aload 4
-	// 59: athrow
-	// 60: astore 5
-	// 62: aload_0
-	// 63: aconst_null
-	// 64: putfield 6
-	// com/avaya/jtapi/tsapi/impl/TsapiTerminalConnection:privData
-	// Lcom/avaya/jtapi/tsapi/csta1/CSTAPrivate;
-	// 67: ret 5
-	//
-	// Exception table:
-	// from to target type
-	// 6 38 52 finally
-	// 40 57 52 finally }
 	public final void answer() throws TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException, TsapiInvalidStateException {
@@ -201,64 +149,25 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
-	// 0: ldc 7
-	// 2: aload_0
-	// 3: invokestatic 2 com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 6: aload_0
-	// 7: getfield 3
-	// com/avaya/jtapi/tsapi/impl/TsapiTerminalConnection:tsConnection
-	// Lcom/avaya/jtapi/tsapi/impl/core/TSConnection;
-	// 10: invokevirtual 8
-	// com/avaya/jtapi/tsapi/impl/core/TSConnection:getTSDevice
-	// ()Lcom/avaya/jtapi/tsapi/impl/core/TSDevice;
-	// 13: astore_1
-	// 14: aload_1
-	// 15: ifnull +25 -> 40
-	// 18: aload_1
-	// 19: iconst_0
-	// 20: invokestatic 9
-	// com/avaya/jtapi/tsapi/impl/TsapiCreateObject:getTsapiObject
-	// (Ljava/lang/Object;Z)Ljava/lang/Object;
-	// 23: checkcast 10 javax/telephony/Terminal
-	// 26: astore_2
-	// 27: ldc 7
-	// 29: aload_0
-	// 30: invokestatic 5 com/avaya/jtapi/tsapi/util/TsapiTrace:traceExit
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 33: aload_2
-	// 34: astore_3
-	// 35: jsr +25 -> 60
-	// 38: aload_3
-	// 39: areturn
-	// 40: new 11 com/avaya/jtapi/tsapi/TsapiPlatformException
-	// 43: dup
-	// 44: iconst_4
-	// 45: iconst_0
-	// 46: ldc 12
-	// 48: invokespecial 13 com/avaya/jtapi/tsapi/TsapiPlatformException:<init>
-	// (IILjava/lang/String;)V
-	// 51: athrow
-	// 52: astore 4
-	// 54: jsr +6 -> 60
-	// 57: aload 4
-	// 59: athrow
-	// 60: astore 5
-	// 62: aload_0
-	// 63: aconst_null
-	// 64: putfield 6
-	// com/avaya/jtapi/tsapi/impl/TsapiTerminalConnection:privData
-	// Lcom/avaya/jtapi/tsapi/csta1/CSTAPrivate;
-	// 67: ret 5
-	//
-	// Exception table:
-	// from to target type
-	// 6 38 52 finally
-	// 40 57 52 finally }
 	// ERROR //
 	public final javax.telephony.Connection getConnection() {
-		return null;
-	}// Byte code:
+		try
+		/*     */     {
+		/*  72 */       TSConnection tsConn = this.tsConnection.getTSConnection();
+		/*     */       Connection localConnection;
+		/*  73 */       if (tsConn != null)
+		/*     */       {
+		/*  75 */         localConnection = (Connection)TsapiCreateObject.getTsapiObject(tsConn, true);
+		/*     */ 
+		/*  84 */         this.privData = null;
+		/*     */       }
+		/*  79 */       throw new TsapiPlatformException(4, 0, "could not locate connection");
+		/*     */     }
+		/*     */     finally
+		/*     */     {
+		/*  84 */       this.privData = null;
+		/*     */     }
+	}
 
 	public final int getMediaAvailability() {
 		TsapiTrace.traceEntry("getMediaAvailability[]", this);
@@ -302,8 +211,23 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 
 	// ERROR //
 	public final Terminal getTerminal() {
-		return null;
-	}// Byte code:
+		try
+		/*     */     {
+		/*  49 */       TSDevice tsDevice = this.tsConnection.getTSDevice();
+		/*     */       Terminal localTerminal;
+		/*  50 */       if (tsDevice != null)
+		/*     */       {
+		/*  52 */         localTerminal = (Terminal)TsapiCreateObject.getTsapiObject(tsDevice, false);
+		/*     */ 
+		/*  61 */         this.privData = null;
+		/*     */       }
+		/*  56 */       throw new TsapiPlatformException(4, 0, "could not locate terminal");
+		/*     */     }
+		/*     */     finally
+		/*     */     {
+		/*  61 */       this.privData = null;
+		/*     */     }
+	}
 
 	public final TerminalConnectionCapabilities getTerminalConnectionCapabilities(
 			Terminal terminal, Address address)
@@ -481,33 +405,6 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
-	// 0: ldc 69
-	// 2: aload_0
-	// 3: invokestatic 2 com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 6: jsr +12 -> 18
-	// 9: goto +17 -> 26
-	// 12: astore_1
-	// 13: jsr +5 -> 18
-	// 16: aload_1
-	// 17: athrow
-	// 18: astore_2
-	// 19: aload_0
-	// 20: aconst_null
-	// 21: putfield 6
-	// com/avaya/jtapi/tsapi/impl/TsapiTerminalConnection:privData
-	// Lcom/avaya/jtapi/tsapi/csta1/CSTAPrivate;
-	// 24: ret 2
-	// 26: ldc 69
-	// 28: aload_0
-	// 29: invokestatic 5 com/avaya/jtapi/tsapi/util/TsapiTrace:traceExit
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 32: return
-	//
-	// Exception table:
-	// from to target type
-	// 6 9 12 finally
-	// 12 16 12 finally }
 	public final void setDtmfDetection(boolean enable)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("setDtmfDetection[boolean enable]", this);
@@ -541,33 +438,6 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
-	// 0: ldc 67
-	// 2: aload_0
-	// 3: invokestatic 2 com/avaya/jtapi/tsapi/util/TsapiTrace:traceEntry
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 6: jsr +12 -> 18
-	// 9: goto +17 -> 26
-	// 12: astore_1
-	// 13: jsr +5 -> 18
-	// 16: aload_1
-	// 17: athrow
-	// 18: astore_2
-	// 19: aload_0
-	// 20: aconst_null
-	// 21: putfield 6
-	// com/avaya/jtapi/tsapi/impl/TsapiTerminalConnection:privData
-	// Lcom/avaya/jtapi/tsapi/csta1/CSTAPrivate;
-	// 24: ret 2
-	// 26: ldc 67
-	// 28: aload_0
-	// 29: invokestatic 5 com/avaya/jtapi/tsapi/util/TsapiTrace:traceExit
-	// (Ljava/lang/String;Ljava/lang/Object;)V
-	// 32: return
-	//
-	// Exception table:
-	// from to target type
-	// 6 9 12 finally
-	// 12 16 12 finally }
 	public final void startRecording() throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("startRecording[]", this);
 		try {
