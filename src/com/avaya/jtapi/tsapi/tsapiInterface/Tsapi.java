@@ -270,7 +270,8 @@ public class Tsapi {
 		String[] services = new String[0];
 		if (sessionFac != null) {
 			validate(servers);
-			Vector<ACSNameAddr> serv = sessionFac.enumServices(servers, useTLinkIP);
+			Vector<ACSNameAddr> serv = sessionFac.enumServices(servers,
+					useTLinkIP);
 			services = new String[serv.size()];
 
 			for (int i = 0; i < serv.size(); ++i) {

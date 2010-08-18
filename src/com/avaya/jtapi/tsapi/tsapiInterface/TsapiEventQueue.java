@@ -43,18 +43,18 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 		synchronized (this) {
 			int size = 0;
 
-			while ((this.keepRunning == true)
-					&& ((size = this.fifo.size()) == 0))
+			while ((keepRunning == true) && ((size = fifo.size()) == 0)) {
 				try {
 					super.wait(DEFAULT_TIMEOUT);
 				} catch (InterruptedException e) {
 				}
-			if (!this.keepRunning) {
+			}
+			if (!keepRunning) {
 				return null;
 			}
 
-			event = (CSTAEvent) this.fifo.elementAt(size - 1);
-			this.fifo.removeElementAt(size - 1);
+			event = fifo.elementAt(size - 1);
+			fifo.removeElementAt(size - 1);
 		}
 
 		// if (TSProvider.debugLevelIsActive(TSProvider.DEBUGLEVEL_HANDLER)) {

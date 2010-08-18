@@ -132,7 +132,7 @@ class TLSServerCertificateValidator {
 
 		Iterator<List<?>> iterator = altNames.iterator();
 		while (iterator.hasNext()) {
-			List<?> indexAndNamePair = (List<?>) iterator.next();
+			List<?> indexAndNamePair = iterator.next();
 			Integer index = (Integer) indexAndNamePair.get(0);
 			if (index.intValue() == 2) {
 				commonName = (String) indexAndNamePair.get(1);

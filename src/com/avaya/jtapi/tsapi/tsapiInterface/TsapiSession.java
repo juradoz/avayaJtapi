@@ -901,7 +901,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 				while (vendEnum.hasMoreElements()) {
 					TsapiVendor vendor;
 					try {
-						vendor = (TsapiVendor) vendEnum.nextElement();
+						vendor = vendEnum.nextElement();
 					} catch (NoSuchElementException e) {
 						log.error(e.getMessage(), e);
 						continue;

@@ -27,8 +27,7 @@ final class ClearCallConfHandler implements ConfHandler {
 		if (eventList.size() > 0) {
 			Vector<TsapiCallMonitor> observers = call.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = (TsapiCallMonitor) observers
-						.elementAt(j);
+				TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 		}

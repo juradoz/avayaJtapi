@@ -242,7 +242,8 @@ public final class TSConnection {
 		DisconnectedConfHandler handler = new DisconnectedConfHandler(this, 10);
 		try {
 			if ((provider.isLucent()) && (termConns != null)) {
-				Vector<TSConnection> tcArray = new Vector<TSConnection>(termConns);
+				Vector<TSConnection> tcArray = new Vector<TSConnection>(
+						termConns);
 
 				handler.handleIt = false;
 				for (int i = 0; i < tcArray.size(); ++i) {
@@ -330,7 +331,8 @@ public final class TSConnection {
 		if ((isTermConn) && (provider.isLucent())
 				&& (_connectionAddress != null)) {
 			device.addConnection(this);
-			Vector<TSConnection> connVector = new Vector<TSConnection>(call.getConnections());
+			Vector<TSConnection> connVector = new Vector<TSConnection>(call
+					.getConnections());
 			TSConnection addressConnection = null;
 			found = false;
 			for (int i = 0; i < connVector.size(); ++i) {
@@ -1371,7 +1373,8 @@ public final class TSConnection {
 			if ((connection == null) || (connection.termConns == null)) {
 				return;
 			}
-			Vector<TSConnection> conns = new Vector<TSConnection>(connection.termConns);
+			Vector<TSConnection> conns = new Vector<TSConnection>(
+					connection.termConns);
 			for (int i = 0; i < conns.size(); ++i) {
 				TSConnection conn = (TSConnection) conns.elementAt(i);
 				if (conn == this) {

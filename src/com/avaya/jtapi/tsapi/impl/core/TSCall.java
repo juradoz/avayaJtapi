@@ -265,7 +265,8 @@ public final class TSCall implements IDomainCall {
 		}
 
 		if (_cvdObservers != null) {
-			Vector<TsapiCallMonitor> cvdObservers = new Vector<TsapiCallMonitor>(_cvdObservers);
+			Vector<TsapiCallMonitor> cvdObservers = new Vector<TsapiCallMonitor>(
+					_cvdObservers);
 			for (int i = 0; i < cvdObservers.size(); ++i) {
 				found = false;
 				callback = (TsapiCallMonitor) cvdObservers.elementAt(i);
@@ -332,7 +333,8 @@ public final class TSCall implements IDomainCall {
 
 			devWithType = new DevWithType(tsDevice, false);
 
-			Vector<TsapiCallMonitor> addressObservers = new Vector<TsapiCallMonitor>(_addressObservers);
+			Vector<TsapiCallMonitor> addressObservers = new Vector<TsapiCallMonitor>(
+					_addressObservers);
 
 			for (int i = 0; i < addressObservers.size(); ++i) {
 				callback = (TsapiCallMonitor) addressObservers.elementAt(i);
@@ -407,7 +409,8 @@ public final class TSCall implements IDomainCall {
 
 		devWithType = new DevWithType(tsDevice, true);
 
-		Vector<TsapiCallMonitor> terminalObservers = new Vector<TsapiCallMonitor>(_terminalObservers);
+		Vector<TsapiCallMonitor> terminalObservers = new Vector<TsapiCallMonitor>(
+				_terminalObservers);
 
 		for (int i = 0; i < terminalObservers.size(); ++i) {
 			callback = (TsapiCallMonitor) terminalObservers.elementAt(i);
@@ -663,7 +666,8 @@ public final class TSCall implements IDomainCall {
 						if (termConns == null) {
 							continue;
 						}
-						Vector<TSConnection> tcs = new Vector<TSConnection>(termConns);
+						Vector<TSConnection> tcs = new Vector<TSConnection>(
+								termConns);
 						for (int j = 0; j < tcs.size(); ++j) {
 							termConn = (TSConnection) tcs.elementAt(j);
 							if ((termConn.getCallControlTermConnState() != 98)
@@ -1106,7 +1110,8 @@ public final class TSCall implements IDomainCall {
 		Vector<TSEvent> eventList = new Vector<TSEvent>();
 		termconn.setTermConnState(99, eventList);
 		if (eventList.size() > 0) {
-			Vector<TsapiCallMonitor> observers = termconn.getTSCall().getObservers();
+			Vector<TsapiCallMonitor> observers = termconn.getTSCall()
+					.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
 				TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);
@@ -1685,7 +1690,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	TSConnection findTSConnectionForDevice(TSDevice device) {
-		Vector<TSConnection> clonedConnsToCheck = new Vector<TSConnection>(connections);
+		Vector<TSConnection> clonedConnsToCheck = new Vector<TSConnection>(
+				connections);
 
 		for (int j = 0; j < clonedConnsToCheck.size(); ++j) {
 			TSConnection conn = (TSConnection) clonedConnsToCheck.elementAt(j);
@@ -1844,7 +1850,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	Vector<TsapiCallMonitor> getObservers() {
-		Vector<TsapiCallMonitor> allObservers = new Vector<TsapiCallMonitor>(monitorThreads);
+		Vector<TsapiCallMonitor> allObservers = new Vector<TsapiCallMonitor>(
+				monitorThreads);
 		synchronized (deviceObsVector) {
 			for (int i = 0; i < deviceObsVector.size(); ++i) {
 				if (!allObservers.contains(((DeviceObs) deviceObsVector
@@ -2773,12 +2780,14 @@ public final class TSCall implements IDomainCall {
 			saveCall.callID = saveCallID;
 			provider.addCallToHash(saveCall);
 
-			Vector<TSConnection> conns = new Vector<TSConnection>(saveCall.connections);
+			Vector<TSConnection> conns = new Vector<TSConnection>(
+					saveCall.connections);
 			for (int i = 0; i < conns.size(); ++i) {
 				TSConnection conn = (TSConnection) conns.elementAt(i);
 				Vector<TSConnection> cv = conn.getTermConns();
 				if ((cv != null) && (cv.size() > 0)) {
-					Vector<TSConnection> termConns = new Vector<TSConnection>(cv);
+					Vector<TSConnection> termConns = new Vector<TSConnection>(
+							cv);
 					for (int j = 0; j < termConns.size(); ++j) {
 						TSConnection tc = (TSConnection) termConns.elementAt(j);
 						CSTAConnectionID connID = tc.getConnID();
@@ -3268,7 +3277,8 @@ public final class TSCall implements IDomainCall {
 						if (termConns == null) {
 							continue;
 						}
-						Vector<TSConnection> tcs = new Vector<TSConnection>(termConns);
+						Vector<TSConnection> tcs = new Vector<TSConnection>(
+								termConns);
 						for (int j = 0; j < tcs.size(); ++j) {
 							termConn = (TSConnection) tcs.elementAt(j);
 							if ((termConn.getCallControlTermConnState() != 98)
@@ -3413,7 +3423,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	void updateConnectionCallIDs(int newCallID) {
-		Vector<TSConnection> clonedConnectionsToUpdate = new Vector<TSConnection>(connections);
+		Vector<TSConnection> clonedConnectionsToUpdate = new Vector<TSConnection>(
+				connections);
 
 		for (int j = 0; j < clonedConnectionsToUpdate.size(); ++j) {
 			TSConnection conn = (TSConnection) clonedConnectionsToUpdate

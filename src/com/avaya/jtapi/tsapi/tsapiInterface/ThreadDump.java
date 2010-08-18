@@ -30,7 +30,7 @@ public class ThreadDump extends Thread {
 					+ t.getPriority() + " tid=" + t.getId() + " state="
 					+ t.getState() + " " + alive + " " + interrupted;
 			log.info(heading);
-			StackTraceElement[] stes = (StackTraceElement[]) map.get(t);
+			StackTraceElement[] stes = map.get(t);
 			for (int j = 0; j < stes.length; ++j) {
 				StackTraceElement ste = stes[j];
 				String line = ste.getClassName() + "." + ste.getMethodName()

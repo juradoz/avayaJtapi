@@ -36,27 +36,26 @@ class TsapiACDManagerConnection extends TsapiConnection implements
 			throws com.avaya.jtapi.tsapi.TsapiMethodNotSupportedException {
 		try {
 			Vector<TSConnection> tsconn = null;
-			tsconn = this.tsConnection.getACDConns();
+			tsconn = tsConnection.getACDConns();
 			if (tsconn == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsconn) {
 				if (tsconn.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				ACDConnection[] tsapiConn = new ACDConnection[tsconn.size()];
 				for (int i = 0; i < tsconn.size(); ++i) {
 					tsapiConn[i] = ((ACDConnection) TsapiCreateObject
-							.getTsapiObject((TSConnection) tsconn.elementAt(i),
-									true));
+							.getTsapiObject(tsconn.elementAt(i), true));
 				}
-				this.privData = null;
+				privData = null;
 				return tsapiConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 }

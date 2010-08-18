@@ -46,8 +46,7 @@ final class TSInitializationThread extends Thread {
 				Vector<TsapiProviderMonitor> observers = provider.getMonitors();
 
 				for (int j = 0; j < observers.size(); ++j) {
-					TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
-							.elementAt(j);
+					TsapiProviderMonitor callback = observers.elementAt(j);
 					callback.deliverEvents(eventList, false);
 				}
 			}

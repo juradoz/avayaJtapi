@@ -84,7 +84,8 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 			throws TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("addObserver[ProviderObserver observer]", this);
 
-		Vector<TsapiProviderMonitor> monitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> monitors = tsProvider
+				.getProviderMonitorThreads();
 
 		TsapiProviderMonitor monitor = null;
 		synchronized (monitors) {
@@ -111,7 +112,8 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 		TsapiTrace.traceEntry("addProviderListener[ProviderListener listener]",
 				this);
 
-		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider
+				.getProviderMonitorThreads();
 
 		TsapiProviderMonitor monitor = null;
 		synchronized (tsapiProviderMonitors) {
@@ -463,7 +465,8 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public ProviderObserver[] getObservers() {
 		TsapiTrace.traceEntry("getObservers[]", this);
-		Vector<TsapiProviderMonitor> monitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> monitors = tsProvider
+				.getProviderMonitorThreads();
 
 		if ((monitors == null) || (monitors.size() == 0)) {
 			TsapiTrace.traceExit("getObservers[]", this);
@@ -520,7 +523,8 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public ProviderListener[] getProviderListeners() {
 		TsapiTrace.traceEntry("getProviderListeners[]", this);
-		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider
+				.getProviderMonitorThreads();
 
 		if ((tsapiProviderMonitors == null)
 				|| (tsapiProviderMonitors.size() == 0)) {
@@ -802,7 +806,8 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 	public void removeObserver(ProviderObserver observer) {
 		TsapiTrace
 				.traceEntry("removeObserver[ProviderObserver observer]", this);
-		Vector<TsapiProviderMonitor> monitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> monitors = tsProvider
+				.getProviderMonitorThreads();
 
 		if ((monitors == null) || (monitors.size() == 0)) {
 			TsapiTrace.traceExit("removeObserver[ProviderObserver observer]",
@@ -830,7 +835,8 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 	public void removeProviderListener(ProviderListener listener) {
 		TsapiTrace.traceEntry(
 				"removeProviderListener[ProviderListener listener]", this);
-		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider
+				.getProviderMonitorThreads();
 
 		if ((tsapiProviderMonitors == null)
 				|| (tsapiProviderMonitors.size() == 0)) {

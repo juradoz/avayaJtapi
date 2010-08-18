@@ -50,7 +50,7 @@ class TsapiACDManagerAddress extends TsapiAddress implements
 
 			synchronized (observers) {
 				for (int i = 0; i < observers.size(); ++i) {
-					obs = (TsapiCallMonitor) observers.elementAt(i);
+					obs = observers.elementAt(i);
 					if (obs.getObserver() != observer) {
 						continue;
 					}
@@ -113,27 +113,26 @@ class TsapiACDManagerAddress extends TsapiAddress implements
 	public final javax.telephony.callcenter.ACDAddress[] getACDAddresses()
 			throws TsapiMethodNotSupportedException {
 		try {
-			Vector<TSDevice> tsACDDevices = this.tsDevice.getTSACDDevices();
+			Vector<TSDevice> tsACDDevices = tsDevice.getTSACDDevices();
 			if (tsACDDevices == null) {
-				this.privData = null;
+				privData = null;
 			}
 			synchronized (tsACDDevices) {
 				if (tsACDDevices.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				ACDAddress[] tsapiAddress = new ACDAddress[tsACDDevices.size()];
 				for (int i = 0; i < tsACDDevices.size(); ++i) {
 					tsapiAddress[i] = ((ACDAddress) TsapiCreateObject
-							.getTsapiObject((TSDevice) tsACDDevices
-									.elementAt(i), true));
+							.getTsapiObject(tsACDDevices.elementAt(i), true));
 				}
 
-				this.privData = null;
+				privData = null;
 				return tsapiAddress;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 }

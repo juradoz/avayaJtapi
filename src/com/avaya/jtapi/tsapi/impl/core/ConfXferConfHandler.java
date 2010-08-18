@@ -76,7 +76,7 @@ final class ConfXferConfHandler implements ConfHandler {
 
 		if (foundTSConn != null) {
 			for (int m = 0; m < tempEventList.size(); ++m) {
-				priEventList.addElement((TSEvent) tempEventList.elementAt(m));
+				priEventList.addElement(tempEventList.elementAt(m));
 			}
 			conn.setConnectionState(foundTSConn.getCallControlConnState(),
 					priEventList);
@@ -88,7 +88,7 @@ final class ConfXferConfHandler implements ConfHandler {
 			}
 
 			for (int m = 0; m < tempEventList.size(); ++m) {
-				priEventList.addElement((TSEvent) tempEventList.elementAt(m));
+				priEventList.addElement(tempEventList.elementAt(m));
 			}
 			conn.setConnectionState(91, priEventList);
 			conn.setTermConnState(103, priEventList);
@@ -276,8 +276,7 @@ final class ConfXferConfHandler implements ConfHandler {
 			Vector<TsapiCallMonitor> observers = otherCall.getObservers();
 			addOldCallParams(otherEventList);
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = (TsapiCallMonitor) observers
-						.elementAt(j);
+				TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(otherEventList, cause, false);
 			}
 		}
@@ -296,8 +295,8 @@ final class ConfXferConfHandler implements ConfHandler {
 			SnapshotCallExtraConfHandler handler = new XferConfSnapshotCallConfHandler(
 					call, cause, null, snapConnections);
 
-			call.doSnapshot(((TSConnection) snapConnections.elementAt(0))
-					.getConnID(), handler, false);
+			call.doSnapshot((snapConnections.elementAt(0)).getConnID(),
+					handler, false);
 		}
 
 		if (eventList.size() <= 0) {
@@ -306,8 +305,7 @@ final class ConfXferConfHandler implements ConfHandler {
 		Vector<TsapiCallMonitor> observers = call.getObservers();
 		addOldCallParams(eventList);
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiCallMonitor callback = (TsapiCallMonitor) observers
-					.elementAt(j);
+			TsapiCallMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, cause, false);
 		}
 	}

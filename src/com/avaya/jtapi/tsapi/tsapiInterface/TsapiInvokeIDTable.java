@@ -50,7 +50,7 @@ public class TsapiInvokeIDTable {
 	public void requestTimeOut(ConfHandler handler) {
 		Iterator<TSInvokeID> ids = invokeIDTbl.values().iterator();
 		while (ids.hasNext()) {
-			TSInvokeID id = (TSInvokeID) ids.next();
+			TSInvokeID id = ids.next();
 			if (id.getConfHandler().equals(handler)) {
 				deallocTSInvokeID(id);
 				return;
@@ -61,7 +61,7 @@ public class TsapiInvokeIDTable {
 	public void shutdown() {
 		Iterator<TSInvokeID> ids = invokeIDTbl.values().iterator();
 		while (ids.hasNext()) {
-			TSInvokeID id = (TSInvokeID) ids.next();
+			TSInvokeID id = ids.next();
 			id.setConf(null);
 		}
 	}

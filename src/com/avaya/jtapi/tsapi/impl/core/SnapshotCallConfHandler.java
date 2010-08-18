@@ -168,8 +168,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 			if (call.confController != null) {
 				synchronized (connections) {
 					for (int i = 0; i < connections.size(); ++i) {
-						TSConnection conn = (TSConnection) connections
-								.elementAt(i);
+						TSConnection conn = connections.elementAt(i);
 						Vector<TSConnection> termConns = conn.getTermConns();
 						if ((termConns == null)
 								|| (!termConns.contains(call.confController))) {
@@ -188,8 +187,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 			if (call.xferController != null) {
 				synchronized (connections) {
 					for (int i = 0; i < connections.size(); ++i) {
-						TSConnection conn = (TSConnection) connections
-								.elementAt(i);
+						TSConnection conn = connections.elementAt(i);
 						Vector<TSConnection> termConns = conn.getTermConns();
 						if ((termConns == null)
 								|| (!termConns.contains(call.xferController))) {

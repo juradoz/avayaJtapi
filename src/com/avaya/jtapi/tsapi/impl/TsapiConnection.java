@@ -130,38 +130,36 @@ class TsapiConnection implements ITsapiConnection, PrivateData,
 	// ERROR //
 	public final Address getAddress() {
 		try {
-			TSDevice tsDevice = this.tsConnection.getTSDevice();
+			TSDevice tsDevice = tsConnection.getTSDevice();
 			Address localAddress;
 			if (tsDevice != null) {
-				localAddress = (Address) TsapiCreateObject
-						.getTsapiObject(tsDevice, true);
+				localAddress = (Address) TsapiCreateObject.getTsapiObject(
+						tsDevice, true);
 
-				this.privData = null;
+				privData = null;
 				return localAddress;
 			}
-			throw new TsapiPlatformException(4, 0,
-					"could not locate address");
+			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
 	// ERROR //
 	public final javax.telephony.Call getCall() {
 		try {
-			TSCall tsCall = this.tsConnection.getTSCall();
+			TSCall tsCall = tsConnection.getTSCall();
 			Call localCall;
 			if (tsCall != null) {
-				localCall = (Call) TsapiCreateObject.getTsapiObject(
-						tsCall, false);
+				localCall = (Call) TsapiCreateObject.getTsapiObject(tsCall,
+						false);
 
-				this.privData = null;
+				privData = null;
 				return localCall;
 			}
-			throw new TsapiPlatformException(4, 0,
-					"could not locate call");
+			throw new TsapiPlatformException(4, 0, "could not locate call");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -227,29 +225,28 @@ class TsapiConnection implements ITsapiConnection, PrivateData,
 	public final javax.telephony.TerminalConnection[] getTerminalConnections() {
 		try {
 			Vector<TSConnection> tsTermConns = null;
-			tsTermConns = this.tsConnection.getTSTermConns();
+			tsTermConns = tsConnection.getTSTermConns();
 			if (tsTermConns == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsTermConns) {
 				if (tsTermConns.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				TerminalConnection[] tsapiTermConn = new TerminalConnection[tsTermConns
 						.size()];
 				for (int i = 0; i < tsTermConns.size(); ++i) {
 					tsapiTermConn[i] = ((TerminalConnection) TsapiCreateObject
-							.getTsapiObject((TSConnection) tsTermConns
-									.elementAt(i), false));
+							.getTsapiObject(tsTermConns.elementAt(i), false));
 				}
 
-				this.privData = null;
+				privData = null;
 				return tsapiTermConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 

@@ -966,7 +966,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					+ _soughtObj + " by device name(s) [" + alias_names + "]");
 		} else {
 			if (keys_pointing_elsewhere > 0) {
-				Iterator<String> key_iter = keys_pointing_at.keySet().iterator();
+				Iterator<String> key_iter = keys_pointing_at.keySet()
+						.iterator();
 
 				while (key_iter.hasNext()) {
 					String d = (String) key_iter.next();
@@ -1657,8 +1658,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 							listOfMonitorableDevices.add(device);
 						}
 					}
-//					label164: 
-						index = getDeviceListConf.getIndex();
+					// label164:
+					index = getDeviceListConf.getIndex();
 				}
 			} while (index != GET_DEVICE_NO_MORE_INDEX);
 		}
@@ -1721,7 +1722,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	String getProviderVersionDetails() {
-//		String std_string = "production build";
+		// String std_string = "production build";
 
 		String stdver = "5.2.0.483";
 
@@ -2244,7 +2245,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	void removeMonitors(int cause, Object privateData) {
-		Vector<TsapiProviderMonitor> obs = new Vector<TsapiProviderMonitor>(monitors);
+		Vector<TsapiProviderMonitor> obs = new Vector<TsapiProviderMonitor>(
+				monitors);
 		for (int i = 0; i < obs.size(); ++i) {
 			removeMonitor((TsapiProviderMonitor) obs.elementAt(i), cause,
 					privateData);

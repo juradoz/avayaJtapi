@@ -55,8 +55,7 @@ final class MWIConfHandler implements ConfHandler {
 		}
 		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
-					.elementAt(j);
+			TsapiAddressMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}

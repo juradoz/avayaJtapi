@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public final class TsapiAlternateTlinkEntriesList {
-//	private static final int MAX_TLINK_ALTERNATE_ENTRIES = 16;
+	// private static final int MAX_TLINK_ALTERNATE_ENTRIES = 16;
 	private static TsapiAlternateTlinkEntriesList _instance = null;
 
 	public static synchronized TsapiAlternateTlinkEntriesList Instance() {
@@ -43,18 +43,18 @@ public final class TsapiAlternateTlinkEntriesList {
 	public synchronized int getAlternateTlinkIndex(String preferredTlinkName,
 			String tlinkName) {
 		try {
-			Iterator<TsapiAlternateTlinkEntry> entryIterator = entries.iterator();
+			Iterator<TsapiAlternateTlinkEntry> entryIterator = entries
+					.iterator();
 
 			while (entryIterator.hasNext()) {
-				TsapiAlternateTlinkEntry entry = (TsapiAlternateTlinkEntry) entryIterator
-						.next();
+				TsapiAlternateTlinkEntry entry = entryIterator.next();
 				if (entry.getPreferredTlinkName().compareToIgnoreCase(
 						preferredTlinkName) == 0) {
 					Iterator<String> alternatesIterator = entry
 							.getAlternateTlinkNames().iterator();
 
 					for (int index = 0; alternatesIterator.hasNext(); ++index) {
-						String alternate = (String) alternatesIterator.next();
+						String alternate = alternatesIterator.next();
 						if (alternate.compareToIgnoreCase(tlinkName) == 0) {
 							return index;
 						}

@@ -30,8 +30,7 @@ final class HoldConfHandler implements ConfHandler {
 		}
 		Vector<TsapiCallMonitor> observers = conn.getTSCall().getObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiCallMonitor callback = (TsapiCallMonitor) observers
-					.elementAt(j);
+			TsapiCallMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, 100, false);
 		}
 	}

@@ -1,7 +1,6 @@
 package com.avaya.jtapi.tsapi.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.telephony.Address;
@@ -326,25 +325,24 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
 			if ((tsDevice != null) && (tsDevice1 != null)) {
 				if (tsDevice.equals(tsDevice1)) {
-					this.tsCall = this.tsCall.getHandOff();
-					tsConn = this.tsCall.connect(tsDevice, dialedDigits,
-							this.privData);
-				} else
-
+					tsCall = tsCall.getHandOff();
+					tsConn = tsCall.connect(tsDevice, dialedDigits, privData);
+				} else {
 					throw new TsapiInvalidArgumentException(3, 0,
 							"orig Terminal not associated with orig Address");
-			} else
-
+				}
+			} else {
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
+			}
 			if (tsConn == null) {
 
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Connection[] tsapiConn = new Connection[tsConn.size()];
@@ -353,11 +351,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 							.getTsapiObject((TSConnection) tsConn.elementAt(i),
 									true));
 				}
-				this.privData = null;
+				privData = null;
 				return tsapiConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -467,22 +465,22 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 							"originator Terminal not associated with orig Address");
 				}
 
-				this.tsCall = this.tsCall.getHandOff();
-				tsConn = this.tsCall.connectPredictive(tsDevice, dialedDigits,
+				tsCall = tsCall.getHandOff();
+				tsConn = tsCall.connectPredictive(tsDevice, dialedDigits,
 						connectionState, maxRings, answeringTreatment,
 						answeringEndpointType, null, priorityCall, userInfo,
-						this.privData);
+						privData);
 			} else {
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
 			}
 			if (tsConn == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Connection[] tsapiConn = new Connection[tsConn.size()];
@@ -492,11 +490,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 									true));
 				}
 
-				this.privData = null;
+				privData = null;
 				return tsapiConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -533,23 +531,21 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 							"originator Terminal not associated with originator Address");
 				}
 
-				this.tsCall = this.tsCall.getHandOff();
-				tsConn = this.tsCall
-						.connectPredictive(tsDevice, dialedDigits,
-								connectionState, maxRings, answeringTreatment,
-								answeringEndpointType, null, false, null,
-								this.privData);
+				tsCall = tsCall.getHandOff();
+				tsConn = tsCall.connectPredictive(tsDevice, dialedDigits,
+						connectionState, maxRings, answeringTreatment,
+						answeringEndpointType, null, false, null, privData);
 			} else {
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
 			}
 			if (tsConn == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Connection[] tsapiConn = new Connection[tsConn.size()];
@@ -558,11 +554,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 							.getTsapiObject((TSConnection) tsConn.elementAt(i),
 									true));
 				}
-				this.privData = null;
+				privData = null;
 				return tsapiConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -646,21 +642,20 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			TSConnection tsConn = ((TsapiTerminalConnection) termconn)
 					.getTSConnection();
 			if (tsConn != null) {
-				this.tsCall = this.tsCall.getHandOff();
-				tsConnVector = this.tsCall.consult(tsConn, address,
-						this.privData);
+				tsCall = tsCall.getHandOff();
+				tsConnVector = tsCall.consult(tsConn, address, privData);
 			} else {
 				throw new TsapiPlatformException(4, 0,
 						"could not locate terminal connection");
 			}
 			if (tsConnVector == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsConnVector) {
 				if (tsConnVector.size() == 0) {
 
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Connection[] tsapiConn = new Connection[tsConnVector.size()];
@@ -670,11 +665,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 									.elementAt(i), true));
 				}
 
-				this.privData = null;
+				privData = null;
 				return tsapiConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -980,35 +975,35 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				if (tsDevice.equals(tsDevice1)) {
 					if ((destRoute == null) && (!priorityCall)
 							&& (userInfo == null)) {
-						this.privData = null;
+						privData = null;
 					} else {
 						lmc = createLucentMakeCall(destRoute, priorityCall,
 								userInfo);
-						this.privData = lmc.makeTsapiPrivate();
+						privData = lmc.makeTsapiPrivate();
 					}
 
-					this.tsCall = this.tsCall.getHandOff();
-					tsConn = this.tsCall.fastConnect(tsDevice, dialedDigits,
-							this.privData);
-				} else
-
+					tsCall = tsCall.getHandOff();
+					tsConn = tsCall.fastConnect(tsDevice, dialedDigits,
+							privData);
+				} else {
 					throw new TsapiInvalidArgumentException(3, 0,
 							"orig Terminal not associated with orig Address");
-			} else
-
+				}
+			} else {
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
+			}
 
 			if (tsConn == null) {
 				lmc = null;
 
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
 
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Connection tsapiConn = (Connection) TsapiCreateObject
@@ -1017,11 +1012,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 
 				Connection localConnection1 = tsapiConn;
 
-				this.privData = null;
+				privData = null;
 				return localConnection1;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -1211,15 +1206,15 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	public final Connection[] getConnections() {
 		try {
 			Vector<TSConnection> tsconn = null;
-			this.tsCall = this.tsCall.getHandOff();
-			tsconn = this.tsCall.getTSConnections();
+			tsCall = tsCall.getHandOff();
+			tsconn = tsCall.getTSConnections();
 			if (tsconn == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsconn) {
 				if (tsconn.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Connection[] tsapiConn = new Connection[tsconn.size()];
@@ -1229,11 +1224,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 									true));
 				}
 
-				this.privData = null;
+				privData = null;
 				return tsapiConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -1350,9 +1345,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 
 			ArrayList<CallObserver> observers = new ArrayList<CallObserver>();
 
-			for (Iterator<TsapiCallMonitor> i$ = tsapiCallObservers.iterator(); i$
-					.hasNext();) {
-				TsapiCallMonitor obs = (TsapiCallMonitor) i$.next();
+			for (TsapiCallMonitor tsapiCallMonitor : tsapiCallObservers) {
+				TsapiCallMonitor obs = (TsapiCallMonitor) tsapiCallMonitor;
 				if (obs.getObserver() != null) {
 					observers.add(obs.getObserver());
 				}
@@ -1390,19 +1384,19 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	// ERROR //
 	public final javax.telephony.Provider getProvider() {
 		try {
-			this.tsCall = this.tsCall.getHandOff();
-			TSProvider tsProvider = this.tsCall.getTSProviderImpl();
+			tsCall = tsCall.getHandOff();
+			TSProvider tsProvider = tsCall.getTSProviderImpl();
 			Provider localProvider;
 			if (tsProvider != null) {
 				localProvider = (Provider) TsapiCreateObject.getTsapiObject(
 						tsProvider, false);
 
-				this.privData = null;
+				privData = null;
 				return localProvider;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -1482,16 +1476,16 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	public final CallCenterTrunk[] getTrunks() {
 		try {
 			Vector<TSTrunk> tstrunk = null;
-			this.tsCall = this.tsCall.getHandOff();
-			tstrunk = this.tsCall.getTSTrunks();
+			tsCall = tsCall.getHandOff();
+			tstrunk = tsCall.getTSTrunks();
 			if (tstrunk == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tstrunk) {
 				if (tstrunk.size() == 0) {
 
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				TsapiTrunk[] tsapiTrunk = new TsapiTrunk[tstrunk.size()];
@@ -1500,11 +1494,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 							.getTsapiObject(tstrunk.elementAt(i), false));
 				}
 
-				this.privData = null;
+				privData = null;
 				return tsapiTrunk;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 

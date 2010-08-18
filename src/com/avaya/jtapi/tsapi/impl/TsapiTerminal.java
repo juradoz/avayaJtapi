@@ -119,7 +119,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"agent address is not an instanceof ITsapiAddress");
 			}
 
-			if (this.tsDevice != ((TsapiAddress) agentAddress).getTSDevice()) {
+			if (tsDevice != ((TsapiAddress) agentAddress).getTSDevice()) {
 				throw new TsapiInvalidArgumentException(3, 0,
 						"agent address name must be the same as this terminal's name");
 			}
@@ -141,20 +141,20 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"both acd address and agentID were null");
 			}
 
-			TSAgent tsAgent = this.tsDevice.addTSAgent(tsACDDevice,
-					initialState, 0, 0, agentID, password, this.privData);
+			TSAgent tsAgent = tsDevice.addTSAgent(tsACDDevice, initialState, 0,
+					0, agentID, password, privData);
 			Agent localAgent;
 			if (tsAgent != null) {
 				localAgent = (Agent) TsapiCreateObject.getTsapiObject(tsAgent,
 						false);
 
-				this.privData = null;
+				privData = null;
 				return localAgent;
 			}
 			throw new TsapiPlatformException(4, 0,
 					"could not locate agent to return");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -407,14 +407,14 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	// ERROR //
 	public final Agent[] getAgents() {
 		try {
-			Vector<TSAgent> tsAgents = this.tsDevice.getTSAgentsForAgentTerm();
+			Vector<TSAgent> tsAgents = tsDevice.getTSAgentsForAgentTerm();
 			if (tsAgents == null) {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsAgents) {
 				if (tsAgents.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				Agent[] agents = new Agent[tsAgents.size()];
@@ -422,11 +422,11 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 					agents[i] = ((Agent) TsapiCreateObject.getTsapiObject(
 							(TSAgent) tsAgents.elementAt(i), false));
 				}
-				this.privData = null;
+				privData = null;
 				return agents;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -576,19 +576,19 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	// ERROR //
 	public final javax.telephony.Provider getProvider() {
 		try {
-			TSProvider tsProvider = this.tsDevice.getTSProviderImpl();
+			TSProvider tsProvider = tsDevice.getTSProviderImpl();
 			Provider localProvider;
 			if (tsProvider != null) {
 				localProvider = (Provider) TsapiCreateObject.getTsapiObject(
 						tsProvider, false);
 
-				this.privData = null;
+				privData = null;
 
 				return localProvider;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -610,16 +610,16 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public final TerminalConnection[] getTerminalConnections() {
 		try {
 			Vector<TSConnection> tsconn = null;
-			Vector<TSConnection> vec = this.tsDevice.getTSTerminalConnections();
+			Vector<TSConnection> vec = tsDevice.getTSTerminalConnections();
 			if (vec != null) {
 				tsconn = (Vector) vec.clone();
 			} else {
-				this.privData = null;
+				privData = null;
 				return null;
 			}
 			synchronized (tsconn) {
 				if (tsconn.size() == 0) {
-					this.privData = null;
+					privData = null;
 					return null;
 				}
 				TerminalConnection[] tsapiTermConn = new TerminalConnection[tsconn
@@ -629,11 +629,11 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 							.getTsapiObject((TSConnection) tsconn.elementAt(i),
 									false));
 				}
-				this.privData = null;
+				privData = null;
 				return tsapiTermConn;
 			}
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -700,8 +700,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			TSDevice tsDevice1 = ((TsapiAddress) pickAddress).getTSDevice();
 			TSDevice tsDevice2 = ((TsapiAddress) terminalAddress).getTSDevice();
 			if ((tsDevice1 != null) && (tsDevice2 != null)) {
-				TSConnection conn = this.tsDevice.pickup(tsDevice1, tsDevice2,
-						this.privData);
+				TSConnection conn = tsDevice.pickup(tsDevice1, tsDevice2,
+						privData);
 				if (conn != null) {
 					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
@@ -711,12 +711,13 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate terminal connection to return");
 			}
 
-			if (tsDevice1 == null)
+			if (tsDevice1 == null) {
 				;
+			}
 			throw new TsapiPlatformException(4, 0,
 					"could not locate terminal address");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -741,8 +742,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 					.getTSConnection();
 			TSDevice tsDevice = ((TsapiAddress) terminalAddress).getTSDevice();
 			if ((tsConn != null) && (tsDevice != null)) {
-				TSConnection conn = tsDevice.pickup(tsConn, tsDevice,
-						this.privData);
+				TSConnection conn = tsDevice.pickup(tsConn, tsDevice, privData);
 				if (conn != null) {
 					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
@@ -752,11 +752,12 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate terminal connection to return");
 			}
 
-			if (tsConn == null)
+			if (tsConn == null) {
 				;
+			}
 			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -780,8 +781,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 					.getTSConnection();
 			TSDevice tsDevice = ((TsapiAddress) terminalAddress).getTSDevice();
 			if ((tsConn != null) && (tsDevice != null)) {
-				TSConnection conn = tsDevice.pickup(tsConn, tsDevice,
-						this.privData);
+				TSConnection conn = tsDevice.pickup(tsConn, tsDevice, privData);
 				if (conn != null) {
 					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
@@ -791,11 +791,12 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate terminal connection to return");
 			}
 
-			if (tsConn == null)
+			if (tsConn == null) {
 				;
+			}
 			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -812,8 +813,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 
 			TSDevice tsDevice = ((TsapiAddress) terminalAddress).getTSDevice();
 			if (tsDevice != null) {
-				TSConnection conn = tsDevice.groupPickup(tsDevice,
-						this.privData);
+				TSConnection conn = tsDevice.groupPickup(tsDevice, privData);
 				if (conn != null) {
 					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
@@ -822,7 +822,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 

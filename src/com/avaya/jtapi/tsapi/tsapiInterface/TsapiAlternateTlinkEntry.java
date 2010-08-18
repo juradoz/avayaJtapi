@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class TsapiAlternateTlinkEntry {
-//	private static final int MAX_TLINK_ALTERNATES_PER_ENTRY = 4;
-//	private static final int ACS_MAX_SERVICEID = 48;
+	// private static final int MAX_TLINK_ALTERNATES_PER_ENTRY = 4;
+	// private static final int ACS_MAX_SERVICEID = 48;
 	private String preferredTlinkName;
 	private final List<String> alternateTlinks;
 

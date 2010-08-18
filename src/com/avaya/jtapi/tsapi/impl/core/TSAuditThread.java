@@ -41,7 +41,7 @@ final class TSAuditThread extends Thread {
 		while (callEnum.hasMoreElements()) {
 			SavedCall call;
 			try {
-				call = (SavedCall) callEnum.nextElement();
+				call = callEnum.nextElement();
 			} catch (NoSuchElementException e) {
 				log.error(e.getMessage(), e);
 				continue;
@@ -55,7 +55,7 @@ final class TSAuditThread extends Thread {
 		while (connEnum.hasMoreElements()) {
 			SavedConn conn;
 			try {
-				conn = (SavedConn) connEnum.nextElement();
+				conn = connEnum.nextElement();
 			} catch (NoSuchElementException e) {
 				log.error(e.getMessage(), e);
 				continue;
@@ -69,7 +69,7 @@ final class TSAuditThread extends Thread {
 		while (agentEnum.hasMoreElements()) {
 			SavedAgent agent;
 			try {
-				agent = (SavedAgent) agentEnum.nextElement();
+				agent = agentEnum.nextElement();
 			} catch (NoSuchElementException e) {
 				log.error(e.getMessage(), e);
 				continue;
@@ -104,7 +104,8 @@ final class TSAuditThread extends Thread {
 			log.info("AUDIT (dumpCall): removing call " + sCall.call + " for "
 					+ provider);
 		}
-		Hashtable<CSTAConnectionID, SavedConn> keepHash = new Hashtable<CSTAConnectionID, SavedConn>(20);
+		Hashtable<CSTAConnectionID, SavedConn> keepHash = new Hashtable<CSTAConnectionID, SavedConn>(
+				20);
 
 		synchronized (saveConnHash) {
 			Enumeration<SavedConn> my_enum = saveConnHash.elements();
@@ -112,7 +113,7 @@ final class TSAuditThread extends Thread {
 			while (my_enum.hasMoreElements()) {
 				SavedConn sConn;
 				try {
-					sConn = (SavedConn) my_enum.nextElement();
+					sConn = my_enum.nextElement();
 				} catch (NoSuchElementException e) {
 					log.error(e.getMessage(), e);
 					continue;
@@ -145,7 +146,9 @@ final class TSAuditThread extends Thread {
 			log.info("AUDIT (dumpConn): removing conn " + sConn.conn + " for "
 					+ provider);
 		}
-	}TSAgent getAgent(TSAgentKey agentKey) {
+	}
+
+	TSAgent getAgent(TSAgentKey agentKey) {
 		SavedAgent sAgent = saveAgentHash.get(agentKey);
 		if (sAgent != null) {
 			log.info("Found agent in audit hash: " + sAgent.agent + " for "
@@ -235,12 +238,13 @@ final class TSAuditThread extends Thread {
 				long curTime = System.currentTimeMillis();
 
 				synchronized (saveCallHash) {
-					Hashtable<Integer, SavedCall> keepHash = new Hashtable<Integer, SavedCall>(20);
+					Hashtable<Integer, SavedCall> keepHash = new Hashtable<Integer, SavedCall>(
+							20);
 					Enumeration<SavedCall> my_enum = saveCallHash.elements();
 					while (my_enum.hasMoreElements()) {
 						SavedCall sCall;
 						try {
-							sCall = (SavedCall) my_enum.nextElement();
+							sCall = my_enum.nextElement();
 
 							if ((!sCall.call.needsSnapshot())
 									&& (curTime - sCall.saveTime > 3600000L)) {
@@ -269,12 +273,13 @@ final class TSAuditThread extends Thread {
 				}
 
 				synchronized (saveConnHash) {
-					Hashtable<CSTAConnectionID, SavedConn> keepHash = new Hashtable<CSTAConnectionID, SavedConn>(20);
+					Hashtable<CSTAConnectionID, SavedConn> keepHash = new Hashtable<CSTAConnectionID, SavedConn>(
+							20);
 					Enumeration<SavedConn> my_enum = saveConnHash.elements();
 					while (my_enum.hasMoreElements()) {
 						SavedConn sConn;
 						try {
-							sConn = (SavedConn) my_enum.nextElement();
+							sConn = my_enum.nextElement();
 						} catch (NoSuchElementException e) {
 							log.error(e.getMessage(), e);
 							continue;
@@ -302,12 +307,13 @@ final class TSAuditThread extends Thread {
 				}
 
 				synchronized (saveAgentHash) {
-					Hashtable<TSAgentKey, SavedAgent> keepHash = new Hashtable<TSAgentKey, SavedAgent>(20);
+					Hashtable<TSAgentKey, SavedAgent> keepHash = new Hashtable<TSAgentKey, SavedAgent>(
+							20);
 					Enumeration<SavedAgent> my_enum = saveAgentHash.elements();
 					while (my_enum.hasMoreElements()) {
 						SavedAgent sAgent;
 						try {
-							sAgent = (SavedAgent) my_enum.nextElement();
+							sAgent = my_enum.nextElement();
 						} catch (NoSuchElementException e) {
 							log.error(e.getMessage(), e);
 							continue;

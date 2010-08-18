@@ -231,19 +231,19 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	// ERROR //
 	public final javax.telephony.callcenter.RouteAddress getRouteAddress() {
 		try {
-			TSDevice tsRouteDevice = this.tsRouteSession.getTSRouteDevice();
+			TSDevice tsRouteDevice = tsRouteSession.getTSRouteDevice();
 			RouteAddress localRouteAddress;
 			if (tsRouteDevice != null) {
 				localRouteAddress = (RouteAddress) TsapiCreateObject
 						.getTsapiObject(tsRouteDevice, true);
 
-				this.privData = null;
-				
+				privData = null;
+
 				return localRouteAddress;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 

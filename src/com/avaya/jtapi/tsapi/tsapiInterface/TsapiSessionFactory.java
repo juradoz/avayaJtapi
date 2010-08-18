@@ -62,7 +62,7 @@ public abstract class TsapiSessionFactory {
 		while (eserv.hasMoreElements()) {
 			InetSocketAddress addr;
 			try {
-				addr = (InetSocketAddress) eserv.nextElement();
+				addr = eserv.nextElement();
 			} catch (NoSuchElementException e) {
 				log.error(e.getMessage(), e);
 				continue;
@@ -126,11 +126,12 @@ public abstract class TsapiSessionFactory {
 		int alternateIndex = -1;
 		ACSNameAddr alternateACSNameAddr = new ACSNameAddr();
 
-		Enumeration<ACSNameAddr> services = enumServices(servers, useTLinkIP).elements();
+		Enumeration<ACSNameAddr> services = enumServices(servers, useTLinkIP)
+				.elements();
 		while (services.hasMoreElements()) {
 			ACSNameAddr nameAddr;
 			try {
-				nameAddr = (ACSNameAddr) services.nextElement();
+				nameAddr = services.nextElement();
 			} catch (NoSuchElementException e) {
 				log.error(e.getMessage(), e);
 				continue;
@@ -157,8 +158,8 @@ public abstract class TsapiSessionFactory {
 		}
 
 		throw new TsapiPlatformException(4, 0, "server "
-				+ new ArrayList<InetSocketAddress>(servers) + " with tlink '" + tlink
-				+ "' not found");
+				+ new ArrayList<InetSocketAddress>(servers) + " with tlink '"
+				+ tlink + "' not found");
 	}
 
 	public abstract TsapiSession getLightweightTsapiSession(

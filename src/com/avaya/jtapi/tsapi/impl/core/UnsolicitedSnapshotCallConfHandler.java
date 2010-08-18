@@ -179,7 +179,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 							++index;
 						}
 						for (int i = 0; i < snapEventList.size(); ++i) {
-							eventList.insertElementAt((TSEvent) snapEventList
+							eventList.insertElementAt(snapEventList
 									.elementAt(i), index);
 							++index;
 						}
@@ -196,7 +196,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 							++index;
 						}
 						for (int i = 0; i < snapEventList.size(); ++i) {
-							eventList.insertElementAt((TSEvent) snapEventList
+							eventList.insertElementAt(snapEventList
 									.elementAt(i), index);
 							++index;
 						}
@@ -214,8 +214,8 @@ final class UnsolicitedSnapshotCallConfHandler implements
 						++index;
 					}
 					for (int i = 0; i < snapEventList.size(); ++i) {
-						eventList.insertElementAt((TSEvent) snapEventList
-								.elementAt(i), index);
+						eventList.insertElementAt(snapEventList.elementAt(i),
+								index);
 						++index;
 					}
 

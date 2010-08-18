@@ -37,8 +37,7 @@ final class PickupConfHandler implements ConfHandler {
 			TSCall pickCall = pickConnection.getTSCall();
 			Vector<TsapiCallMonitor> observers = pickCall.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = (TsapiCallMonitor) observers
-						.elementAt(j);
+				TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 
@@ -51,8 +50,7 @@ final class PickupConfHandler implements ConfHandler {
 			TSCall pickCall = pickConnection.getTSCall();
 			Vector<TsapiCallMonitor> observers = pickCall.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = (TsapiCallMonitor) observers
-						.elementAt(j);
+				TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 		}

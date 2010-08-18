@@ -152,20 +152,20 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	// ERROR //
 	public final javax.telephony.Connection getConnection() {
 		try {
-			TSConnection tsConn = this.tsConnection.getTSConnection();
+			TSConnection tsConn = tsConnection.getTSConnection();
 			Connection localConnection;
 			if (tsConn != null) {
 				localConnection = (Connection) TsapiCreateObject
 						.getTsapiObject(tsConn, true);
 
-				this.privData = null;
+				privData = null;
 
 				return localConnection;
 			}
 			throw new TsapiPlatformException(4, 0,
 					"could not locate connection");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 
@@ -212,18 +212,18 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	// ERROR //
 	public final Terminal getTerminal() {
 		try {
-			TSDevice tsDevice = this.tsConnection.getTSDevice();
+			TSDevice tsDevice = tsConnection.getTSDevice();
 			Terminal localTerminal;
 			if (tsDevice != null) {
 				localTerminal = (Terminal) TsapiCreateObject.getTsapiObject(
 						tsDevice, false);
 
-				this.privData = null;
+				privData = null;
 				return localTerminal;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate terminal");
 		} finally {
-			this.privData = null;
+			privData = null;
 		}
 	}
 

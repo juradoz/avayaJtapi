@@ -89,7 +89,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						"could not locate provider");
 			}
 
-			Vector<TsapiAddressMonitor> observers = prov.getAddressMonitorThreads();
+			Vector<TsapiAddressMonitor> observers = prov
+					.getAddressMonitorThreads();
 
 			TsapiAddressMonitor obs = null;
 
@@ -237,7 +238,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						"could not locate provider");
 			}
 
-			Vector<TsapiAddressMonitor> observers = prov.getAddressMonitorThreads();
+			Vector<TsapiAddressMonitor> observers = prov
+					.getAddressMonitorThreads();
 
 			TsapiAddressMonitor obs = null;
 
@@ -288,7 +290,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry(
 				"cancelRouteCallback[RouteCallback routeCallback]", this);
 		try {
-			Vector<TsapiRouteMonitor> tsapiRouteObservers = tsDevice.getRouteObservers();
+			Vector<TsapiRouteMonitor> tsapiRouteObservers = tsDevice
+					.getRouteObservers();
 
 			if ((tsapiRouteObservers == null)
 					|| (tsapiRouteObservers.size() == 0)) {
@@ -384,7 +387,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public AddressListener[] getAddressListeners() {
 		TsapiTrace.traceEntry("getAddressListeners[]", this);
 		try {
-			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice
+					.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
@@ -566,7 +570,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getForwarding[]", this);
 		try {
-			Vector<TsapiCallControlForwarding> fwdVector = tsDevice.getForwarding();
+			Vector<TsapiCallControlForwarding> fwdVector = tsDevice
+					.getForwarding();
 
 			if ((fwdVector == null) || (fwdVector.size() == 0)) {
 				TsapiTrace.traceExit("getForwarding[]", this);
@@ -644,7 +649,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final AddressObserver[] getObservers() {
 		TsapiTrace.traceEntry("getObservers[]", this);
 		try {
-			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice
+					.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
@@ -707,7 +713,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final RouteCallback[] getRouteCallback() {
 		TsapiTrace.traceEntry("getRouteCallback[]", this);
 		try {
-			Vector<TsapiRouteMonitor> tsapiRouteObservers = tsDevice.getRouteObservers();
+			Vector<TsapiRouteMonitor> tsapiRouteObservers = tsDevice
+					.getRouteObservers();
 			if ((tsapiRouteObservers == null)
 					|| (tsapiRouteObservers.size() == 0)) {
 				TsapiTrace.traceExit("getRouteCallback[]", this);
@@ -822,7 +829,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry(
 				"removeAddressListener[AddressListener listener]", this);
 		try {
-			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice
+					.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
@@ -915,7 +923,8 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final void removeObserver(AddressObserver observer) {
 		TsapiTrace.traceEntry("removeObserver[AddressObserver observer]", this);
 		try {
-			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice
+					.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {

@@ -47,14 +47,13 @@ final class DNDConfHandler implements ConfHandler {
 		}
 		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
-					.elementAt(j);
+			TsapiAddressMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
-		Vector<TsapiTerminalMonitor> terminalObservers = device.getTerminalObservers();
+		Vector<TsapiTerminalMonitor> terminalObservers = device
+				.getTerminalObservers();
 		for (int j = 0; j < terminalObservers.size(); ++j) {
-			TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
-					.elementAt(j);
+			TsapiTerminalMonitor callback = terminalObservers.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}

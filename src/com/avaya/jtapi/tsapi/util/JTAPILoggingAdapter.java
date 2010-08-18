@@ -17,34 +17,40 @@ public class JTAPILoggingAdapter {
 	private static String traceLoggerLevel;
 	private static String altTraceFile;
 	private static String traceFileCount;
-//	private static final String DEFAULT_TRACE_FILE_COUNT = "9";
+	// private static final String DEFAULT_TRACE_FILE_COUNT = "9";
 	private static String traceFileSize;
-//	private static final String DEFAULT_TRACE_FILE_SIZE = "50MB";
+	// private static final String DEFAULT_TRACE_FILE_SIZE = "50MB";
 	private static String errorFile;
 	private static String errorFileCount;
-//	private static final String DEFAULT_ERROR_FILE_COUNT = "9";
+	// private static final String DEFAULT_ERROR_FILE_COUNT = "9";
 	private static String errorFileSize;
-//	private static final String DEFAULT_ERROR_FILE_SIZE = "50MB";
+	// private static final String DEFAULT_ERROR_FILE_SIZE = "50MB";
 	private static String perfFile;
 	private static String perfFileCount;
-//	private static final String DEFAULT_PERFORMANCE_FILE_COUNT = "9";
+	// private static final String DEFAULT_PERFORMANCE_FILE_COUNT = "9";
 	private static String perfFileSize;
-//	private static final String DEFAULT_PERFORMANCE_FILE_SIZE = "50MB";
-//	private static final String JTAPI_APPENDER = "org.apache.log4j.RollingFileAppender";
-//	private static final String JTAPI_DEFAULT_APPENDER = "org.apache.log4j.ConsoleAppender";
-//	private static final String JTAPI_APPENDER_LAYOUT = "org.apache.log4j.PatternLayout";
-//	private static final String JTAPI_APPENDER_LAYOUT_PATTERN = "%d [%t] %-5p %c{1} - %m%n";
-//	private static final String PROP_ALT_TRACE_FILE = "altTraceFile";
-//	private static final String PROP_TRACE_FILE_COUNT = "traceFileCount";
-//	private static final String PROP_TRACE_FILE_SIZE = "traceFileSize";
-//	private static final String PROP_ERROR_FILE = "errorFile";
-//	private static final String PROP_ERROR_FILE_COUNT = "errorFileCount";
-//	private static final String PROP_ERROR_FILE_SIZE = "errorFileSize";
-//	private static final String PROP_TRACE_LEVEL = "traceLoggerLevel";
-//	private static final String PROP_PERFORMANCE_FILE = "perfFile";
-//	private static final String PROP_PERFORMANCE_FILE_COUNT = "perfFileCount";
-//	private static final String PROP_PERFORMANCE_FILE_SIZE = "perfFileSize";
-//	private static final String PERFORMANCE_LOGGER = "log4j.logger.jtapi.performanceLogger";
+	// private static final String DEFAULT_PERFORMANCE_FILE_SIZE = "50MB";
+	// private static final String JTAPI_APPENDER =
+	// "org.apache.log4j.RollingFileAppender";
+	// private static final String JTAPI_DEFAULT_APPENDER =
+	// "org.apache.log4j.ConsoleAppender";
+	// private static final String JTAPI_APPENDER_LAYOUT =
+	// "org.apache.log4j.PatternLayout";
+	// private static final String JTAPI_APPENDER_LAYOUT_PATTERN =
+	// "%d [%t] %-5p %c{1} - %m%n";
+	// private static final String PROP_ALT_TRACE_FILE = "altTraceFile";
+	// private static final String PROP_TRACE_FILE_COUNT = "traceFileCount";
+	// private static final String PROP_TRACE_FILE_SIZE = "traceFileSize";
+	// private static final String PROP_ERROR_FILE = "errorFile";
+	// private static final String PROP_ERROR_FILE_COUNT = "errorFileCount";
+	// private static final String PROP_ERROR_FILE_SIZE = "errorFileSize";
+	// private static final String PROP_TRACE_LEVEL = "traceLoggerLevel";
+	// private static final String PROP_PERFORMANCE_FILE = "perfFile";
+	// private static final String PROP_PERFORMANCE_FILE_COUNT =
+	// "perfFileCount";
+	// private static final String PROP_PERFORMANCE_FILE_SIZE = "perfFileSize";
+	// private static final String PERFORMANCE_LOGGER =
+	// "log4j.logger.jtapi.performanceLogger";
 	private static Hashtable<String, Boolean> propertyStatusTable = new Hashtable<String, Boolean>();
 
 	static {
@@ -430,8 +436,8 @@ public class JTAPILoggingAdapter {
 		Set<String> keySet = propertyStatusTable.keySet();
 		Iterator<String> keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
-			String key = (String) keySetIterator.next();
-			Boolean value = (Boolean) propertyStatusTable.get(key);
+			String key = keySetIterator.next();
+			Boolean value = propertyStatusTable.get(key);
 			if (!value.booleanValue()) {
 				if (key.equals("altTraceFile")) {
 					setAltTraceFile(null);

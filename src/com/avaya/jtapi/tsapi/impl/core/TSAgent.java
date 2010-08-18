@@ -280,14 +280,14 @@ public final class TSAgent {
 		getEvent(state, localEventList);
 
 		for (int i = 0; i < localEventList.size(); ++i) {
-			TSEvent ev = (TSEvent) localEventList.elementAt(i);
+			TSEvent ev = localEventList.elementAt(i);
 			ev.setSkillDevice(skillDevice);
 		}
-		Vector<TsapiAddressMonitor> observers = skillDevice.getAddressObservers();
+		Vector<TsapiAddressMonitor> observers = skillDevice
+				.getAddressObservers();
 
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
-					.elementAt(j);
+			TsapiAddressMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(localEventList, true);
 		}
 	}
@@ -407,7 +407,7 @@ public final class TSAgent {
 					if (acdDevice != null) {
 						observers = acdDevice.getAddressObservers();
 						for (int j = 0; j < observers.size(); ++j) {
-							TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+							TsapiAddressMonitor callback = observers
 									.elementAt(j);
 							callback.deliverEvents(localEventList, false);
 						}
@@ -417,8 +417,7 @@ public final class TSAgent {
 							TSDevice skillDevice = skillsVector.elementAt(i);
 							observers = skillDevice.getAddressObservers();
 							for (int j = 0; j < localEventList.size(); ++j) {
-								TSEvent ev = (TSEvent) localEventList
-										.elementAt(j);
+								TSEvent ev = localEventList.elementAt(j);
 								Object tsTarget = ev.getEventTarget();
 								if (!(tsTarget instanceof TSAgent)) {
 									continue;
@@ -427,7 +426,7 @@ public final class TSAgent {
 							}
 
 							for (int j = 0; j < observers.size(); ++j) {
-								TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+								TsapiAddressMonitor callback = observers
 										.elementAt(j);
 								callback.deliverEvents(localEventList, false);
 							}
@@ -436,15 +435,14 @@ public final class TSAgent {
 
 					Vector<TsapiTerminalMonitor> tObservers = getTerminalObservers();
 					for (int j = 0; j < tObservers.size(); ++j) {
-						TsapiTerminalMonitor callback = (TsapiTerminalMonitor) tObservers
-								.elementAt(j);
+						TsapiTerminalMonitor callback = tObservers.elementAt(j);
 						callback.deliverEvents(localEventList, false);
 					}
 				}
 			} else {
 				int i;
 				for (i = 0; i < localEventList.size(); ++i) {
-					eventList.addElement((TSEvent) localEventList.elementAt(i));
+					eventList.addElement(localEventList.elementAt(i));
 				}
 			}
 		}

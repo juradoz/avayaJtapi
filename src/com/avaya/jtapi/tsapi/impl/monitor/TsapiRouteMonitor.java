@@ -92,7 +92,7 @@ public final class TsapiRouteMonitor implements TsapiMonitor {
 					.hasMoreElements();) {
 				TSRouteSession tsRouteSession;
 				try {
-					tsRouteSession = (TSRouteSession) e.nextElement();
+					tsRouteSession = e.nextElement();
 				} catch (NoSuchElementException e1) {
 					log.error(e1.getMessage(), e1);
 					continue;
