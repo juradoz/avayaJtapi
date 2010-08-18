@@ -715,7 +715,7 @@ public class Tsapi {
 
 	private TsapiSession session = null;
 
-	private static TsapiSessionFactory sessionFac = null;
+	private static TsapiSessionFactory sessionFac;
 
 	private static int refreshIntervalForTsapiPro;
 
