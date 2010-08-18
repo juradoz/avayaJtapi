@@ -11,7 +11,7 @@ public abstract class ASNSequenceOf extends ASN1 {
 	protected Vector<Object> vec;
 
 	public ASNSequenceOf() {
-		vec = new Vector();
+		vec = new Vector<Object>();
 	}
 
 	public Object decodeMember(InputStream in) {

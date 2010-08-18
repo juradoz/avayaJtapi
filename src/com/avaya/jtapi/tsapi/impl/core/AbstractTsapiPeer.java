@@ -14,7 +14,7 @@ public abstract class AbstractTsapiPeer {
 
 	public void addVendor(String name, String versions) {
 		if (vendors == null) {
-			vendors = new Vector();
+			vendors = new Vector<TsapiVendor>();
 		}
 		vendors.addElement(new TsapiVendor(name, versions));
 	}

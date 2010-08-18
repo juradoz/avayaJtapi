@@ -56,7 +56,7 @@ public abstract class ASNSequence extends ASN1 {
 	}
 
 	public Collection<String> print() {
-		return new ArrayList();
+		return new ArrayList<String>();
 	}
 
 }
