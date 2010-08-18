@@ -23,7 +23,7 @@ public abstract class LucentPrivateData extends ASNSequence {
 			ByteArrayInputStream decodeStream = new ByteArrayInputStream(
 					priv.data);
 
-			if ((decodeStream.read() != 2) || (decodeStream.read() != 0)) {
+			if ((decodeStream.read() != ENC_DIS_LO) || (decodeStream.read() != ENC_DIS_HI)) {
 				return null;
 			}
 
@@ -373,10 +373,10 @@ public abstract class LucentPrivateData extends ASNSequence {
 	}
 
 	public static boolean isAvayaVendor(String vendor_name) {
-		if ("ECS".equals(vendor_name)) {
+		if (AVAYA_VENDOR_STRING.equals(vendor_name)) {
 			return true;
 		}
-		return "AT&T Definity G3".equals(vendor_name);
+		return LUCENT_VENDOR_STRING.equals(vendor_name);
 	}
 
 	int tsType;
@@ -408,8 +408,8 @@ public abstract class LucentPrivateData extends ASNSequence {
 		ByteArrayOutputStream encodeStream = new ByteArrayOutputStream();
 		int pdunum = getPDU();
 
-		encodeStream.write(2);
-		encodeStream.write(0);
+		encodeStream.write(ENC_DIS_LO);
+		encodeStream.write(ENC_DIS_HI);
 
 		encodeStream.write(pdunum >> 0 & 0xFF);
 		encodeStream.write(pdunum >> 8 & 0xFF);
