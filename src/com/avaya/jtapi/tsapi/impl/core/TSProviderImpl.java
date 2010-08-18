@@ -193,28 +193,28 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 		state = 0;
 
-		devHash = new Hashtable(10);
-		trkHash = new Hashtable(10);
-		agentHash = new Hashtable(10);
+		devHash = new Hashtable<String, TSDevice>(10);
+		trkHash = new Hashtable<String, TSTrunk>(10);
+		agentHash = new Hashtable<TSAgentKey, TSAgent>(10);
 
-		connHash = new Hashtable(20);
+		connHash = new Hashtable<CSTAConnectionID, TSConnection>(20);
 
 		TtConnHash("ctor", "NO OBJECT", "NO CONNID");
-		callHash = new Hashtable(10);
-		nonCallHash = new Hashtable(10);
-		xrefHash = new Hashtable(3);
+		callHash = new Hashtable<Integer, TSCall>(10);
+		nonCallHash = new Hashtable<Integer, TSCall>(10);
+		xrefHash = new Hashtable<Integer, Object>(3);
 
 		TtXrefHash("ctor", 0, "NO OBJECT");
-		routeRegHash = new Hashtable(3);
-		privXrefHash = new Hashtable(3);
-		tsMonitorableDevices = new Vector();
-		tsRouteDevices = new Vector();
-		monitors = new Vector();
-		providerMonitorThreads = new Vector();
-		addressMonitorThreads = new Vector();
-		terminalMonitorThreads = new Vector();
-		callMonitorThreads = new Vector();
-		routeMonitorThreads = new Vector();
+		routeRegHash = new Hashtable<Integer, Object>(3);
+		privXrefHash = new Hashtable<Integer, Object>(3);
+		tsMonitorableDevices = new Vector<String>();
+		tsRouteDevices = new Vector<String>();
+		monitors = new Vector<TsapiProviderMonitor>();
+		providerMonitorThreads = new Vector<TsapiProviderMonitor>();
+		addressMonitorThreads = new Vector<TsapiAddressMonitor>();
+		terminalMonitorThreads = new Vector<TsapiTerminalMonitor>();
+		callMonitorThreads = new Vector<TsapiCallMonitor>();
+		routeMonitorThreads = new Vector<TsapiRouteMonitor>();
 
 		obsSync = new Object();
 		nonCallIDArray = new int[100];
@@ -483,7 +483,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	void callCleanup() {
-		Enumeration callEnum = callHash.elements();
+		Enumeration<TSCall> callEnum = callHash.elements();
 
 		while (callEnum.hasMoreElements()) {
 			TSCall call;
@@ -505,7 +505,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 						- call.getCallClearedTransferReceiptTime() < 3000L) {
 					continue;
 				}
-				Vector eventList = new Vector();
+				Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 				call.setState(34, eventList);
 
@@ -911,7 +911,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 	void deleteDeviceFromHash(TSDevice device) {
 		synchronized (devHash) {
-			Vector keys = device.getKeys();
+			Vector<CSTAExtendedDeviceID> keys = device.getKeys();
 			for (int i = 0; i < keys.size(); ++i) {
 				String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
 						.getDeviceID();
@@ -925,7 +925,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	void deleteInstanceOfDeviceFromHash(TSDevice _soughtObj) {
 		int keys_not_in_hash = 0;
 		int keys_pointing_elsewhere = 0;
-		Hashtable keys_pointing_at = new Hashtable();
+		Hashtable<String, Object> keys_pointing_at = new Hashtable<String, Object>();
 
 		StringBuffer alias_names = new StringBuffer();
 
@@ -934,7 +934,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		StringBuffer not_in_hash_names = new StringBuffer();
 
 		synchronized (devHash) {
-			Vector keys = _soughtObj.getKeys();
+			Vector<CSTAExtendedDeviceID> keys = _soughtObj.getKeys();
 			for (int i = 0; i < keys.size(); ++i) {
 				String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
 						.getDeviceID();
@@ -966,7 +966,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					+ _soughtObj + " by device name(s) [" + alias_names + "]");
 		} else {
 			if (keys_pointing_elsewhere > 0) {
-				Iterator key_iter = keys_pointing_at.keySet().iterator();
+				Iterator<String> key_iter = keys_pointing_at.keySet().iterator();
 
 				while (key_iter.hasNext()) {
 					String d = (String) key_iter.next();
@@ -1056,7 +1056,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				+ getProviderVersionDetails());
 
 		log.trace(indent + "TSProvider calls: ");
-		Enumeration callEnum = callHash.elements();
+		Enumeration<TSCall> callEnum = callHash.elements();
 
 		while (callEnum.hasMoreElements()) {
 			TSCall call;
@@ -1070,7 +1070,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			call.dump(indent + " ");
 		}
 		log.trace(indent + "TSProvider non calls: ");
-		Enumeration nonCallEnum = nonCallHash.elements();
+		Enumeration<TSCall> nonCallEnum = nonCallHash.elements();
 
 		while (nonCallEnum.hasMoreElements()) {
 			TSCall nonCall;
@@ -1089,7 +1089,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		dumpDomainData(indent);
 
 		log.trace(indent + "TSProvider devices: ");
-		Enumeration deviceEnum = devHash.elements();
+		Enumeration<TSDevice> deviceEnum = devHash.elements();
 
 		while (deviceEnum.hasMoreElements()) {
 			TSDevice device;
@@ -1103,7 +1103,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			device.dump(indent + " ");
 		}
 		log.trace(indent + "TSProvider conns: ");
-		Enumeration connEnum = connHash.elements();
+		Enumeration<TSConnection> connEnum = connHash.elements();
 
 		while (connEnum.hasMoreElements()) {
 			TSConnection conn;
@@ -1117,7 +1117,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			conn.dump(indent + " ");
 		}
 		log.trace(indent + "TSProvider agents: ");
-		Enumeration agentEnum = agentHash.elements();
+		Enumeration<TSAgent> agentEnum = agentHash.elements();
 
 		while (agentEnum.hasMoreElements()) {
 			TSAgent agent;
@@ -1131,7 +1131,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			agent.dump(indent + " ");
 		}
 		log.trace(indent + "TSProvider trunks: ");
-		Enumeration trkEnum = trkHash.elements();
+		Enumeration<TSTrunk> trkEnum = trkHash.elements();
 
 		while (trkEnum.hasMoreElements()) {
 			TSTrunk trk;
@@ -1145,7 +1145,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			trk.dump(indent + " ");
 		}
 		log.trace(indent + "TSProvider xrefs: ");
-		Enumeration xrefEnum = xrefHash.elements();
+		Enumeration<Object> xrefEnum = xrefHash.elements();
 		while (xrefEnum.hasMoreElements()) {
 			try {
 				log.trace(indent + "xref object: " + xrefEnum.nextElement());
@@ -1630,7 +1630,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	List<String> getMonitorableDevices() {
 		short[] level = { 1, 2, 3 };
 
-		List listOfMonitorableDevices = new ArrayList();
+		List<String> listOfMonitorableDevices = new ArrayList<String>();
 		for (int i = 0; i < level.length; ++i) {
 			int index = GET_DEVICE_INITIAL_INDEX;
 			do {
@@ -1657,7 +1657,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 							listOfMonitorableDevices.add(device);
 						}
 					}
-					label164: index = getDeviceListConf.getIndex();
+//					label164: 
+						index = getDeviceListConf.getIndex();
 				}
 			} while (index != GET_DEVICE_NO_MORE_INDEX);
 		}
@@ -1673,6 +1674,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return xrefHash.get(new Integer(xrefID));
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getMonitoredObjects() {
 		StringBuffer buffer = new StringBuffer();
 		for (Map.Entry entry : xrefHash.entrySet()) {
@@ -1682,7 +1684,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	public Vector<TsapiProviderMonitor> getMonitors() {
-		return new Vector(monitors);
+		return new Vector<TsapiProviderMonitor>(monitors);
 	}
 
 	public String getName() {
@@ -1719,7 +1721,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	String getProviderVersionDetails() {
-		String std_string = "production build";
+//		String std_string = "production build";
 
 		String stdver = "5.2.0.483";
 
@@ -1750,7 +1752,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			int jtapiState = 16;
 
 			if (tsCaps.sysStatReq != 0) {
-				Vector eventList = new Vector();
+				Vector<TSEvent> eventList = new Vector<TSEvent>();
 				SysStatHandler handler = new SysStatHandler();
 				try {
 					tsapi.requestSystemStatus(null, handler);
@@ -1766,7 +1768,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					jtapiState = 17;
 				}
 				if (eventList.size() > 0) {
-					Vector observers = getMonitors();
+					Vector<TsapiProviderMonitor> observers = getMonitors();
 					for (int j = 0; j < observers.size(); ++j) {
 						TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 								.elementAt(j);
@@ -1866,7 +1868,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered ACD addresses can be accessed.");
 		}
 
-		Vector tsDeviceVector = new Vector();
+		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
@@ -1897,7 +1899,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered ACD Manager addresses can be accessed.");
 		}
 
-		Vector tsDeviceVector = new Vector();
+		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
@@ -1922,7 +1924,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered Addesses can be accessed.");
 		}
 
-		Vector tsDeviceVector = new Vector();
+		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
@@ -1968,6 +1970,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return new TsapiTerminalCapabilities(tsCaps);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Vector<TSCall> getTSCalls() {
 		Vector tsCallVector = new Vector();
 		Vector tsDevCallVector = null;
@@ -1986,7 +1989,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				}
 			}
 		}
-		Enumeration callEnum;
+		Enumeration<TSCall> callEnum;
 		synchronized (nonCallHash) {
 			callEnum = nonCallHash.elements();
 			while (callEnum.hasMoreElements()) {
@@ -2034,7 +2037,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered Route addresses can be accessed.");
 		}
 
-		Vector tsDeviceVector = new Vector();
+		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
@@ -2059,7 +2062,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered Terminals can be accessed.");
 		}
 
-		Vector tsDeviceVector = new Vector();
+		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
@@ -2162,7 +2165,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		String serverID = _url;
 		String loginID = "";
 		String passwd = "";
-		Collection telephonyServers = new LinkedHashSet();
+		Collection<InetSocketAddress> telephonyServers = new LinkedHashSet<InetSocketAddress>();
 		int firstSemiColon_index = _url.indexOf(';');
 		serverID = _url.substring(0, firstSemiColon_index);
 		if (firstSemiColon_index >= 0) {
@@ -2241,7 +2244,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	void removeMonitors(int cause, Object privateData) {
-		Vector obs = new Vector(monitors);
+		Vector<TsapiProviderMonitor> obs = new Vector<TsapiProviderMonitor>(monitors);
 		for (int i = 0; i < obs.size(); ++i) {
 			removeMonitor((TsapiProviderMonitor) obs.elementAt(i), cause,
 					privateData);
@@ -2338,7 +2341,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			return;
 		}
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		switch (state) {
 		case 2:
@@ -2612,7 +2615,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 			}
 
-			Enumeration xrefEnum = xrefHash.elements();
+			Enumeration<Object> xrefEnum = xrefHash.elements();
 			Object monitored = null;
 
 			while (xrefEnum.hasMoreElements()) {
@@ -2699,7 +2702,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				}
 			}
 
-			Vector eventList = new Vector();
+			Vector<TSEvent> eventList = new Vector<TSEvent>();
 			synchronized (eventList) {
 				setState(3, eventList);
 
@@ -2718,7 +2721,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				}
 
 				if (eventList.size() > 0) {
-					Vector observers = getMonitors();
+					Vector<TsapiProviderMonitor> observers = getMonitors();
 					for (int j = 0; j < observers.size(); ++j) {
 						TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 								.elementAt(j);
@@ -2751,7 +2754,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	public void updateAddresses() {
-		List monitorableDevices = getMonitorableDevices();
+		List<String> monitorableDevices = getMonitorableDevices();
 		if ((monitorableDevices != null) && (monitorableDevices.size() != 0)) {
 			synchronized (tsMonitorableDevices) {
 				for (Object element : monitorableDevices) {

@@ -21,7 +21,7 @@ public class Tt {
 
 		m_trigger_file = null;
 
-		m_trigger_file_name = "/tmp/enable_jtapi_tracing.txt";
+		m_trigger_file_name = m_TRIGGER_DEFAULT_FILE_NAME;
 	}
 
 	public static boolean isEnabled() {

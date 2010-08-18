@@ -15,6 +15,7 @@ import com.avaya.jtapi.tsapi.UserEnteredCode;
 import com.avaya.jtapi.tsapi.UserToUserInfo;
 import com.avaya.jtapi.tsapi.impl.events.TsapiObserverEvent;
 
+@SuppressWarnings("deprecation")
 public abstract class TsapiCallEvent extends TsapiObserverEvent implements
 		PrivateCallEv, ITsapiCallEvent {
 	protected CallEventParams params = null;

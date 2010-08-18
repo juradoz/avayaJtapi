@@ -146,19 +146,19 @@ public final class TSDevice implements IDomainDevice {
 		deviceType = 0;
 		g_CreationCnt += 1;
 
-		devNameVector = new Vector();
+		devNameVector = new Vector<CSTAExtendedDeviceID>();
 		devNameVector.addElement(deviceID);
-		connections = new Vector();
-		terminalConnections = new Vector();
-		internalDeviceMonitors = new Vector();
-		terminalMonitorThreads = new Vector();
-		addressMonitorThreads = new Vector();
-		callsViaAddressMonitorThreads = new Vector();
-		callsAtAddressMonitorThreads = new Vector();
-		callsAtTerminalMonitorThreads = new Vector();
-		tsACDVector = new Vector();
-		tsAgentTermVector = new Vector();
-		fwdVector = new Vector();
+		connections = new Vector<TSConnection>();
+		terminalConnections = new Vector<TSConnection>();
+		internalDeviceMonitors = new Vector<TSCall>();
+		terminalMonitorThreads = new Vector<TsapiTerminalMonitor>();
+		addressMonitorThreads = new Vector<TsapiAddressMonitor>();
+		callsViaAddressMonitorThreads = new Vector<TsapiCallMonitor>();
+		callsAtAddressMonitorThreads = new Vector<TsapiCallMonitor>();
+		callsAtTerminalMonitorThreads = new Vector<TsapiCallMonitor>();
+		tsACDVector = new Vector<TSAgent>();
+		tsAgentTermVector = new Vector<TSAgent>();
+		fwdVector = new Vector<TsapiCallControlForwarding>();
 
 		curState = new TSDeviceStateActive();
 
@@ -668,7 +668,7 @@ public final class TSDevice implements IDomainDevice {
 
 	boolean cleanUCIDsInCallsInConnections() {
 		boolean bfound = false;
-		Vector conns = new Vector(connections);
+		Vector<TSConnection> conns = new Vector<TSConnection>(connections);
 		for (int i = 0; i < conns.size(); ++i) {
 			TSConnection conn = (TSConnection) conns.elementAt(i);
 			TSCall call = conn.getTSCall();
@@ -795,7 +795,7 @@ public final class TSDevice implements IDomainDevice {
 			return false;
 		}
 
-		Vector newCalls = new Vector();
+		Vector<TSCall> newCalls = new Vector<TSCall>();
 
 		if (handler.info != null) {
 			TSCall call = null;
@@ -820,7 +820,8 @@ public final class TSDevice implements IDomainDevice {
 					break;
 				}
 
-				label215: if (!newCalls.contains(call)) {
+				// label215:
+				if (!newCalls.contains(call)) {
 					newCalls.addElement(call);
 				}
 
@@ -828,7 +829,7 @@ public final class TSDevice implements IDomainDevice {
 
 		}
 
-		Vector conns = new Vector(connections);
+		Vector<TSConnection> conns = new Vector<TSConnection>(connections);
 		for (int i = 0; i < conns.size(); ++i) {
 			TSConnection conn = (TSConnection) conns.elementAt(i);
 			if (newCalls.contains(conn.getTSCall())) {
@@ -837,7 +838,7 @@ public final class TSDevice implements IDomainDevice {
 			conn.setConnectionState(89, null);
 		}
 
-		conns = new Vector(terminalConnections);
+		conns = new Vector<TSConnection>(terminalConnections);
 		for (int i = 0; i < conns.size(); ++i) {
 			TSConnection conn = (TSConnection) conns.elementAt(i);
 			if (newCalls.contains(conn.getTSCall())) {
@@ -861,6 +862,7 @@ public final class TSDevice implements IDomainDevice {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	void dump(String indent) {
 		log.trace(indent + "***** DEVICE DUMP *****");
 		log.trace(indent + "TSDevice: " + this);
@@ -872,7 +874,8 @@ public final class TSDevice implements IDomainDevice {
 		}
 
 		log.trace(indent + "TSDevice connections: ");
-		Vector connectionsClone = (Vector) connections.clone();
+		Vector<TSConnection> connectionsClone = (Vector<TSConnection>) connections
+				.clone();
 		int i;
 		for (i = 0; i < connectionsClone.size(); ++i) {
 			TSConnection conn = (TSConnection) connectionsClone.elementAt(i);
@@ -880,7 +883,8 @@ public final class TSDevice implements IDomainDevice {
 		}
 
 		log.trace(indent + "TSDevice terminalConnections: ");
-		Vector terminalConnectionsClone = (Vector) terminalConnections.clone();
+		Vector<TSConnection> terminalConnectionsClone = (Vector<TSConnection>) terminalConnections
+				.clone();
 		TSConnection conn = null;
 		for (i = 0; i < terminalConnectionsClone.size(); ++i) {
 			conn = (TSConnection) terminalConnectionsClone.elementAt(i);
@@ -888,7 +892,8 @@ public final class TSDevice implements IDomainDevice {
 		}
 
 		log.trace(indent + "TSDevice ACD Agents: ");
-		Vector tsACDVectorClone = (Vector) tsACDVector.clone();
+		Vector<TSAgent> tsACDVectorClone = (Vector<TSAgent>) tsACDVector
+				.clone();
 
 		for (i = 0; i < tsACDVectorClone.size(); ++i) {
 			TSAgent agent = (TSAgent) tsACDVectorClone.elementAt(i);
@@ -906,7 +911,8 @@ public final class TSDevice implements IDomainDevice {
 		if (sessionHash != null) {
 			log.trace(indent + "TSDevice Route Sessions: ");
 			synchronized (sessionHash) {
-				Enumeration sessionEnum = sessionHash.elements();
+				Enumeration<TSRouteSession> sessionEnum = sessionHash
+						.elements();
 
 				while (sessionEnum.hasMoreElements()) {
 					TSRouteSession routeSession;
@@ -924,7 +930,7 @@ public final class TSDevice implements IDomainDevice {
 		}
 		log.trace(indent + "TSDevice Terminal Monitor Threads: ");
 
-		Vector terminalMonitorThreadsClone = (Vector) terminalMonitorThreads
+		Vector<TsapiTerminalMonitor> terminalMonitorThreadsClone = (Vector<TsapiTerminalMonitor>) terminalMonitorThreads
 				.clone();
 		int j;
 		for (j = 0; j < terminalMonitorThreadsClone.size(); ++j) {
@@ -935,7 +941,7 @@ public final class TSDevice implements IDomainDevice {
 
 		log.trace(indent + "TSDevice Address Monitor Threads: ");
 
-		Vector addressMonitorThreadsClone = (Vector) addressMonitorThreads
+		Vector<TsapiAddressMonitor> addressMonitorThreadsClone = (Vector<TsapiAddressMonitor>) addressMonitorThreads
 				.clone();
 		int k;
 		for (k = 0; k < addressMonitorThreadsClone.size(); ++k) {
@@ -945,7 +951,7 @@ public final class TSDevice implements IDomainDevice {
 		}
 
 		log.trace(indent + "TSDevice Calls At Address Monitor Threads: ");
-		Vector callsAtAddressMonitorThreadsClone = (Vector) callsAtAddressMonitorThreads
+		Vector<TsapiCallMonitor> callsAtAddressMonitorThreadsClone = (Vector<TsapiCallMonitor>) callsAtAddressMonitorThreads
 				.clone();
 
 		for (i = 0; i < callsAtAddressMonitorThreadsClone.size(); ++i) {
@@ -955,7 +961,7 @@ public final class TSDevice implements IDomainDevice {
 		}
 
 		log.trace(indent + "TSDevice Calls Via Address Monitor Threads: ");
-		Vector callsViaAddressMonitorThreadsClone = (Vector) callsViaAddressMonitorThreads
+		Vector<TsapiCallMonitor> callsViaAddressMonitorThreadsClone = (Vector<TsapiCallMonitor>) callsViaAddressMonitorThreads
 				.clone();
 
 		for (i = 0; i < callsViaAddressMonitorThreadsClone.size(); ++i) {
@@ -965,7 +971,7 @@ public final class TSDevice implements IDomainDevice {
 		}
 
 		log.trace(indent + "TSDevice Calls At Terminal Monitor Threads: ");
-		Vector callsAtTerminalMonitorThreadsClone = (Vector) callsAtTerminalMonitorThreads
+		Vector<TsapiCallMonitor> callsAtTerminalMonitorThreadsClone = (Vector<TsapiCallMonitor>) callsAtTerminalMonitorThreads
 				.clone();
 
 		for (i = 0; i < callsAtTerminalMonitorThreadsClone.size(); ++i) {
@@ -986,10 +992,12 @@ public final class TSDevice implements IDomainDevice {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Vector<TsapiCallMonitor> getAddressCallObservers() {
 		recreate();
 
-		Vector obs = (Vector) callsViaAddressMonitorThreads.clone();
+		Vector<TsapiCallMonitor> obs = (Vector) callsViaAddressMonitorThreads
+				.clone();
 		for (int i = 0; i < callsAtAddressMonitorThreads.size(); ++i) {
 			obs.addElement(callsAtAddressMonitorThreads.elementAt(i));
 		}
@@ -999,7 +1007,7 @@ public final class TSDevice implements IDomainDevice {
 	public Vector<TsapiAddressMonitor> getAddressObservers() {
 		recreate();
 
-		return new Vector(addressMonitorThreads);
+		return new Vector<TsapiAddressMonitor>(addressMonitorThreads);
 	}
 
 	public Object getAddrPrivateData() {
@@ -1082,16 +1090,19 @@ public final class TSDevice implements IDomainDevice {
 		return associatedDevice;
 	}
 
+	@SuppressWarnings("unchecked")
 	Vector<TSConnection> getConns() {
 		recreate();
 
-		return (Vector) (Vector) connections.clone();
+		return (Vector<TSConnection>) (Vector) connections.clone();
 	}
 
+	@SuppressWarnings("unchecked")
 	Vector<TsapiCallMonitor> getCVDObservers() {
 		recreate();
 
-		Vector obs = (Vector) callsViaAddressMonitorThreads.clone();
+		Vector<TsapiCallMonitor> obs = (Vector<TsapiCallMonitor>) callsViaAddressMonitorThreads
+				.clone();
 		return obs;
 	}
 
@@ -1238,7 +1249,7 @@ public final class TSDevice implements IDomainDevice {
 	public Vector<TsapiRouteMonitor> getRouteObservers() {
 		recreate();
 
-		Vector obs = new Vector(1);
+		Vector<TsapiRouteMonitor> obs = new Vector<TsapiRouteMonitor>(1);
 		if (tsRouteCallback != null) {
 			obs.addElement(tsRouteCallback);
 		}
@@ -1252,8 +1263,8 @@ public final class TSDevice implements IDomainDevice {
 			return null;
 		}
 
-		Vector sessionVector = new Vector();
-		Enumeration sessionEnum = sessionHash.elements();
+		Vector<TSRouteSession> sessionVector = new Vector<TSRouteSession>();
+		Enumeration<TSRouteSession> sessionEnum = sessionHash.elements();
 		while (sessionEnum.hasMoreElements()) {
 			try {
 				sessionVector.addElement((TSRouteSession) sessionEnum
@@ -1266,16 +1277,19 @@ public final class TSDevice implements IDomainDevice {
 		return sessionVector;
 	}
 
+	@SuppressWarnings("unchecked")
 	Vector<TSConnection> getTermConns() {
 		recreate();
 
-		return (Vector) (Vector) terminalConnections.clone();
+		return (Vector<TSConnection>) (Vector<TSConnection>) terminalConnections
+				.clone();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Vector<TsapiCallMonitor> getTerminalCallObservers() {
 		recreate();
 
-		return (Vector) callsAtTerminalMonitorThreads.clone();
+		return (Vector<TsapiCallMonitor>) callsAtTerminalMonitorThreads.clone();
 	}
 
 	TerminalCapabilities getTerminalCapabilities(TSDevice cevice)
@@ -1288,7 +1302,7 @@ public final class TSDevice implements IDomainDevice {
 	public Vector<TsapiTerminalMonitor> getTerminalObservers() {
 		recreate();
 
-		return new Vector(terminalMonitorThreads);
+		return new Vector<TsapiTerminalMonitor>(terminalMonitorThreads);
 	}
 
 	Object getTermPrivateData() {
@@ -1319,7 +1333,7 @@ public final class TSDevice implements IDomainDevice {
 	public Vector<TSDevice> getTSAddressDevices() {
 		recreate();
 
-		Vector devVector = new Vector();
+		Vector<TSDevice> devVector = new Vector<TSDevice>();
 
 		devVector.addElement(this);
 		return devVector;
@@ -1486,7 +1500,7 @@ public final class TSDevice implements IDomainDevice {
 	public Vector<TSDevice> getTSTerminalDevices() {
 		recreate();
 
-		Vector devVector = new Vector();
+		Vector<TSDevice> devVector = new Vector<TSDevice>();
 		if (isTerminal()) {
 			devVector.addElement(this);
 		}
@@ -1566,7 +1580,8 @@ public final class TSDevice implements IDomainDevice {
 	}
 
 	synchronized void internalRecreate() {
-		Vector keys = new Vector(devNameVector);
+		Vector<CSTAExtendedDeviceID> keys = new Vector<CSTAExtendedDeviceID>(
+				devNameVector);
 		log.info("Recreating deleted device " + this);
 		for (int i = 0; i < keys.size(); ++i) {
 			String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
@@ -1828,7 +1843,7 @@ public final class TSDevice implements IDomainDevice {
 					"registerRouteCallback failure");
 		}
 		provider.addRoute(registerReqID, this);
-		sessionHash = new Hashtable(3);
+		sessionHash = new Hashtable<Integer, TSRouteSession>(3);
 	}
 
 	public void removeAddressCallMonitor(TsapiCallMonitor obs) {
@@ -1880,7 +1895,8 @@ public final class TSDevice implements IDomainDevice {
 
 		synchronized (this) {
 			synchronized (devNameVector) {
-				Vector keys = new Vector(devNameVector);
+				Vector<CSTAExtendedDeviceID> keys = new Vector<CSTAExtendedDeviceID>(
+						devNameVector);
 				for (int i = 0; i < keys.size(); ++i) {
 					CSTAExtendedDeviceID devID = (CSTAExtendedDeviceID) keys
 							.elementAt(i);
@@ -1941,17 +1957,19 @@ public final class TSDevice implements IDomainDevice {
 			}
 		}
 
-		Vector observers = new Vector(addressMonitorThreads);
+		Vector<TsapiAddressMonitor> observers = new Vector<TsapiAddressMonitor>(
+				addressMonitorThreads);
 		for (int i = 0; i < observers.size(); ++i) {
 			removeAddressMonitor((TsapiAddressMonitor) observers.elementAt(i),
 					cause, privateData);
 		}
-		Vector terminalObservers = new Vector(terminalMonitorThreads);
+		Vector<TsapiTerminalMonitor> terminalObservers = new Vector<TsapiTerminalMonitor>(
+				terminalMonitorThreads);
 		for (int i = 0; i < terminalObservers.size(); ++i) {
 			removeTerminalMonitor((TsapiTerminalMonitor) terminalObservers
 					.elementAt(i), cause, privateData);
 		}
-		Vector callsViaAddressObservers = new Vector(
+		Vector<TsapiCallMonitor> callsViaAddressObservers = new Vector<TsapiCallMonitor>(
 				callsViaAddressMonitorThreads);
 		for (int i = 0; i < callsViaAddressObservers.size(); ++i) {
 			removeAddressCallMonitor(
@@ -1959,14 +1977,14 @@ public final class TSDevice implements IDomainDevice {
 					cause, privateData);
 		}
 
-		Vector callsAtAddressObservers = new Vector(
+		Vector<TsapiCallMonitor> callsAtAddressObservers = new Vector<TsapiCallMonitor>(
 				callsAtAddressMonitorThreads);
 		for (int i = 0; i < callsAtAddressObservers.size(); ++i) {
 			removeAddressCallMonitor((TsapiCallMonitor) callsAtAddressObservers
 					.elementAt(i), cause, privateData);
 		}
 
-		Vector callsAtTerminalObservers = new Vector(
+		Vector<TsapiCallMonitor> callsAtTerminalObservers = new Vector<TsapiCallMonitor>(
 				callsAtTerminalMonitorThreads);
 		for (int i = 0; i < callsAtTerminalObservers.size(); ++i) {
 			removeTerminalCallMonitor(
@@ -2049,7 +2067,7 @@ public final class TSDevice implements IDomainDevice {
 						"No agents logged into specified Terminal");
 			}
 
-			Vector agentVector = new Vector(tsAgentTermVector);
+			Vector<TSAgent> agentVector = new Vector<TSAgent>(tsAgentTermVector);
 			for (int i = 0; i < agentVector.size(); ++i) {
 				tsAgent = (TSAgent) agentVector.elementAt(i);
 				if (tsAgent.getState() == 2) {
@@ -2080,7 +2098,7 @@ public final class TSDevice implements IDomainDevice {
 			return;
 		}
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		eventList.addElement(new TSEvent(37, this));
 		eventList.addElement(new TSEvent(38, this));
@@ -2103,7 +2121,7 @@ public final class TSDevice implements IDomainDevice {
 			return;
 		}
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		if (forTerminal) {
 			synchronized (terminalConnections) {
@@ -2161,7 +2179,7 @@ public final class TSDevice implements IDomainDevice {
 			return;
 		}
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		eventList.addElement(new TSEvent(58, this));
 

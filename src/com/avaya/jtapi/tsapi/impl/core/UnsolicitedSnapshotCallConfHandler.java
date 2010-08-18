@@ -75,7 +75,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 		}
 
 		if (eventList == null) {
-			eventList = new Vector();
+			eventList = new Vector<TSEvent>();
 		}
 		TSConnection connection;
 		int oldConnState;
@@ -169,7 +169,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 					if (!foundTC) {
 						tcToCheck.setTermConnState(termConnState, null);
 					}
-					Vector snapEventList = new Vector();
+					Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 					connToCheck.getSnapshot(snapEventList);
 					int index = 0;
 					if (eventList.size() == 0) {
@@ -186,7 +186,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 					}
 				} else if (!foundTC) {
 					tcToCheck.setTermConnState(termConnState, null);
-					Vector snapEventList = new Vector();
+					Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 					tcToCheck.getSnapshot(snapEventList);
 					int index = 0;
 					if (eventList.size() == 0) {
@@ -204,7 +204,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 				}
 			} else if (!foundConn) {
 				connToCheck.setConnectionState(connState, null);
-				Vector snapEventList = new Vector();
+				Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 				connToCheck.getSnapshot(snapEventList);
 				int index = 0;
 				if (eventList.size() == 0) {

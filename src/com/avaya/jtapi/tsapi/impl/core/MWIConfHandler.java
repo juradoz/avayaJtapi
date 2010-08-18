@@ -46,14 +46,14 @@ final class MWIConfHandler implements ConfHandler {
 
 		device.replyAddrPriv = event.getPrivData();
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		device.updateMessageWaitingBits(bits, eventList);
 
 		if (eventList.size() <= 0) {
 			return;
 		}
-		Vector observers = device.getAddressObservers();
+		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
 			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
 					.elementAt(j);

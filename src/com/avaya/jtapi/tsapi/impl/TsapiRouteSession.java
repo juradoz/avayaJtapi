@@ -238,6 +238,8 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						.getTsapiObject(tsRouteDevice, true);
 
 				this.privData = null;
+				
+				return localRouteAddress;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {

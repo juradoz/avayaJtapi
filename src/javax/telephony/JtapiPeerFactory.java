@@ -6,6 +6,7 @@ public class JtapiPeerFactory {
 		return JtapiPeerName;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static synchronized JtapiPeer getJtapiPeer(String jtapiPeerName)
 			throws JtapiPeerUnavailableException {
 		if ((jtapiPeerName == null) || (jtapiPeerName.length() == 0)) {

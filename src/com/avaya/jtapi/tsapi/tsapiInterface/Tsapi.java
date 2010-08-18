@@ -96,10 +96,10 @@ public class Tsapi {
 
 		prePopulateJtapiProperties();
 
-		servers = new Vector();
+		servers = new Vector<InetSocketAddress>();
 		try {
 			if (System.getProperty("com.avaya.jtapi.tsapi.servers") != null) {
-				Collection serverEntries = JtapiUtils
+				Collection<InetSocketAddress> serverEntries = JtapiUtils
 						.parseTelephonyServerEntry(System.getProperty(
 								"com.avaya.jtapi.tsapi.servers").trim(), 450);
 
@@ -167,6 +167,7 @@ public class Tsapi {
 		showImplementationVersion();
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void displayProperties(Properties systemProperties,
 			Properties jtapiProperties) {
 		Set list = null;
@@ -269,7 +270,7 @@ public class Tsapi {
 		String[] services = new String[0];
 		if (sessionFac != null) {
 			validate(servers);
-			Vector serv = sessionFac.enumServices(servers, useTLinkIP);
+			Vector<ACSNameAddr> serv = sessionFac.enumServices(servers, useTLinkIP);
 			services = new String[serv.size()];
 
 			for (int i = 0; i < serv.size(); ++i) {
@@ -483,7 +484,7 @@ public class Tsapi {
 
 	private static void initClass(InetSocketAddress address, Properties prop)
 			throws IOException {
-		Enumeration eprop = prop.propertyNames();
+		Enumeration<?> eprop = prop.propertyNames();
 
 		while (eprop.hasMoreElements()) {
 			String tsapiProperty = (String) eprop.nextElement();
@@ -654,11 +655,11 @@ public class Tsapi {
 	}
 
 	public static void setCallCleanupRate(int callCleanupRate) {
-		callCleanupRate = callCleanupRate;
+		Tsapi.callCleanupRate = callCleanupRate;
 	}
 
 	public static void setCallCompletionTimeout(int callCompletionTimeout) {
-		callCompletionTimeout = callCompletionTimeout;
+		Tsapi.callCompletionTimeout = callCompletionTimeout;
 	}
 
 	static void showImplementationVersion() {
@@ -683,7 +684,7 @@ public class Tsapi {
 
 			prePopulateJtapiProperties();
 
-			Enumeration eprop = prop.propertyNames();
+			Enumeration<?> eprop = prop.propertyNames();
 
 			isEnableAuditDump = false;
 

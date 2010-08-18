@@ -39,7 +39,7 @@ public class TsapiSessionFactoryOio extends TsapiSessionFactory {
 
 	@Override
 	public void configure(Properties props) {
-		Enumeration eprop = props.propertyNames();
+		Enumeration<?> eprop = props.propertyNames();
 
 		while (eprop.hasMoreElements()) {
 			String tsapiProperty = (String) eprop.nextElement();

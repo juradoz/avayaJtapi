@@ -195,7 +195,7 @@ public class GenericBrowser {
 	private Properties merge(Properties fsProps, Properties sysProps) {
 		Properties defaults = new Properties();
 		defaults.putAll(fsProps);
-		for (Map.Entry entry : sysProps.entrySet()) {
+		for (Map.Entry<Object, Object> entry : sysProps.entrySet()) {
 			if (!defaults.containsKey(entry.getKey())) {
 				defaults.put(entry.getKey(), entry.getValue());
 			}
@@ -215,7 +215,7 @@ public class GenericBrowser {
 							+ "' as a system resource at location '"
 							+ tsapiProLocation + "'");
 				}
-				label176: return in;
+				return in;
 			}
 
 		} catch (NoSuchMethodError e) {
@@ -368,7 +368,7 @@ public class GenericBrowser {
 	}
 
 	private boolean systemPropertiesChanged() {
-		for (Map.Entry entry : sysSnapshot.entrySet()) {
+		for (Map.Entry<Object, Object> entry : sysSnapshot.entrySet()) {
 			String lhs = System.getProperty((String) entry.getKey());
 			String rhs = (String) entry.getValue();
 			if (((lhs != null) && (rhs == null))

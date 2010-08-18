@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 class TSDomainTracker implements IDomainTracker {
 	private static Logger log = Logger.getLogger(TSDomainTracker.class);
 	private IDomainContainer m_container;
-	private final Map<Integer, IDomainDevice> m_callsToDomainDevices = new HashMap();
+	private final Map<Integer, IDomainDevice> m_callsToDomainDevices = new HashMap<Integer, IDomainDevice>();
 
 	TSDomainTracker(IDomainContainer container) {
 		m_container = container;
@@ -71,17 +71,18 @@ class TSDomainTracker implements IDomainTracker {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void dumpDomainData(String indent) {
-		HashMap dup = null;
+		HashMap<Integer, IDomainDevice> dup = null;
 
 		int found_count = 0;
 
 		synchronized (this) {
-			dup = new HashMap(m_callsToDomainDevices);
+			dup = new HashMap<Integer, IDomainDevice>(m_callsToDomainDevices);
 		}
 
-		Set entries = dup.entrySet();
-		Iterator current = entries.iterator();
+		Set<?> entries = dup.entrySet();
+		Iterator<?> current = entries.iterator();
 		log.trace("DomainTracker begins:");
 		while (current.hasNext()) {
 			Map.Entry an_entry = (Map.Entry) current.next();
@@ -118,14 +119,15 @@ class TSDomainTracker implements IDomainTracker {
 		return getDomainCallIsIn(c) != null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized void removeAllCallsForDomain(IDomainDevice d) {
 		int found_count = 0;
 
 		internallyLog("removeAllCallsForDomain: to clean calls for domain " + d);
 
 		if (m_callsToDomainDevices.containsValue(d)) {
-			Set entries = m_callsToDomainDevices.entrySet();
-			Iterator current = entries.iterator();
+			Set<?> entries = m_callsToDomainDevices.entrySet();
+			Iterator<?> current = entries.iterator();
 			while (current.hasNext()) {
 				Map.Entry an_entry = (Map.Entry) current.next();
 

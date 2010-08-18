@@ -150,6 +150,7 @@ import com.avaya.jtapi.tsapi.impl.events.termConn.TsapiTermConnUnknownEvent;
 import com.avaya.jtapi.tsapi.impl.events.termConn.TsapiTermConnUnknownEventCC;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 public final class TsapiCallMonitor implements TsapiMonitor {
 	private static Logger log = Logger.getLogger(TsapiCallMonitor.class);
 	TSProviderImpl provider;
@@ -167,7 +168,7 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 		provider = _provider;
 		observer = null;
 		callListener = listener;
-		listenerEventList = new Vector();
+		listenerEventList = new Vector<Event>();
 		eventList = null;
 		provider.addCallMonitorThread(this);
 
@@ -180,7 +181,7 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 		provider = _provider;
 		observer = _observer;
 		callListener = null;
-		eventList = new Vector();
+		eventList = new Vector<CallEv>();
 		listenerEventList = null;
 		provider.addCallMonitorThread(this);
 
@@ -491,7 +492,7 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 			int metaCode, Object privateData, ArrayList<TSCall> oldCalls,
 			TSEvent tsEvent) {
 		CallEventParams callEventParams = new CallEventParams();
-		ArrayList oldCallList = new ArrayList();
+		ArrayList<Call> oldCallList = new ArrayList<Call>();
 		for (TSCall tsCall : oldCalls) {
 			oldCallList.add((Call) TsapiCreateObject.getTsapiObject(tsCall,
 					false));
@@ -527,7 +528,7 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 		}
 
 		ConnEventParams params = new ConnEventParams();
-		ArrayList oldCallList = new ArrayList();
+		ArrayList<Call> oldCallList = new ArrayList<Call>();
 		for (TSCall tsCall : oldCalls) {
 			oldCallList.add((Call) TsapiCreateObject.getTsapiObject(tsCall,
 					false));

@@ -3,8 +3,9 @@ package com.avaya.jtapi.tsapi.tsapiInterface;
 import java.util.Vector;
 
 public class TsapiFactory {
-	private static final String OVERRIDE_IMPL = "tsapi_impl_class_name";
+	// private static final String OVERRIDE_IMPL = "tsapi_impl_class_name";
 
+	@SuppressWarnings("unchecked")
 	public static Tsapi getTsapi(String tlink, String login, String passwd,
 			Vector<TsapiVendor> vendors, TsapiUnsolicitedHandler handler) {
 		Tsapi tsapi = null;

@@ -14,10 +14,10 @@ public class ThreadDump extends Thread {
 	private static Logger log = Logger.getLogger(ThreadDump.class);
 
 	public static void dumpJavaThreadsByAPI() {
-		Map map = Thread.getAllStackTraces();
+		Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();
 		log.info(Integer.valueOf(map.size()));
 
-		Set keySet = map.keySet();
+		Set<Thread> keySet = map.keySet();
 		Thread[] threads = new Thread[keySet.size()];
 		keySet.toArray(threads);
 

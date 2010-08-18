@@ -130,9 +130,9 @@ class TLSServerCertificateValidator {
 	private String getNameFromX509v3(Collection<List<?>> altNames) {
 		String commonName = "";
 
-		Iterator iterator = altNames.iterator();
+		Iterator<List<?>> iterator = altNames.iterator();
 		while (iterator.hasNext()) {
-			List indexAndNamePair = (List) iterator.next();
+			List<?> indexAndNamePair = (List<?>) iterator.next();
 			Integer index = (Integer) indexAndNamePair.get(0);
 			if (index.intValue() == 2) {
 				commonName = (String) indexAndNamePair.get(1);
@@ -150,7 +150,7 @@ class TLSServerCertificateValidator {
 	}
 
 	public void validateCommonName() throws CertificateException {
-		Collection altNames = certificate.getSubjectAlternativeNames();
+		Collection<List<?>> altNames = certificate.getSubjectAlternativeNames();
 		String commonName = "";
 
 		if (altNames == null) {

@@ -2,6 +2,7 @@ package javax.telephony;
 
 import javax.telephony.capabilities.CallCapabilities;
 
+@SuppressWarnings("deprecation")
 public abstract interface Call {
 	public static final int IDLE = 32;
 	public static final int ACTIVE = 33;

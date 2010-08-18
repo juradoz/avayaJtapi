@@ -42,6 +42,7 @@ import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiRouteMonitor;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	private static Logger log = Logger.getLogger(TsapiAddress.class);
 	TSDevice tsDevice;
@@ -88,7 +89,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getAddressMonitorThreads();
+			Vector<TsapiAddressMonitor> observers = prov.getAddressMonitorThreads();
 
 			TsapiAddressMonitor obs = null;
 
@@ -140,7 +141,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getCallMonitorThreads();
+			Vector<TsapiCallMonitor> observers = prov.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
@@ -236,7 +237,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getAddressMonitorThreads();
+			Vector<TsapiAddressMonitor> observers = prov.getAddressMonitorThreads();
 
 			TsapiAddressMonitor obs = null;
 
@@ -287,7 +288,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry(
 				"cancelRouteCallback[RouteCallback routeCallback]", this);
 		try {
-			Vector tsapiRouteObservers = tsDevice.getRouteObservers();
+			Vector<TsapiRouteMonitor> tsapiRouteObservers = tsDevice.getRouteObservers();
 
 			if ((tsapiRouteObservers == null)
 					|| (tsapiRouteObservers.size() == 0)) {
@@ -341,12 +342,9 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final RouteSession[] getActiveRouteSessions() {
 		TsapiTrace.traceEntry("getActiveRouteSessions[]", this);
 		try {
-			Vector tsSession = tsDevice.getTSRouteSessions();
-			Object localObject1;
+			Vector<TSRouteSession> tsSession = tsDevice.getTSRouteSessions();
 			if (tsSession == null) {
 				TsapiTrace.traceExit("getActiveRouteSessions[]", this);
-				localObject1 = null;
-
 				privData = null;
 			}
 			synchronized (tsSession) {
@@ -386,14 +384,14 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public AddressListener[] getAddressListeners() {
 		TsapiTrace.traceEntry("getAddressListeners[]", this);
 		try {
-			Vector tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
 				TsapiTrace.traceExit("getAddressListeners[]", this);
 				return null;
 			}
-			ArrayList listeners = new ArrayList();
+			ArrayList<AddressListener> listeners = new ArrayList<AddressListener>();
 			TsapiAddressMonitor obs;
 			for (int i = 0; i < tsapiAddressObservers.size(); ++i) {
 				obs = (TsapiAddressMonitor) tsapiAddressObservers.elementAt(i);
@@ -424,7 +422,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public CallListener[] getCallListeners() {
 		TsapiTrace.traceEntry("getCallListeners[]", this);
 		try {
-			Vector tsapiAddressCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiAddressCallObservers = tsDevice
 					.getAddressCallObservers();
 
 			if ((tsapiAddressCallObservers == null)
@@ -432,7 +430,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 				TsapiTrace.traceExit("getCallListeners[]", this);
 				return null;
 			}
-			ArrayList listenerList = new ArrayList();
+			ArrayList<CallListener> listenerList = new ArrayList<CallListener>();
 			CallListener[] listeners = null;
 
 			synchronized (tsapiAddressCallObservers) {
@@ -456,7 +454,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final CallObserver[] getCallObservers() {
 		try {
 			TsapiTrace.traceEntry("getCallObservers[]", this);
-			Vector tsapiAddressCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiAddressCallObservers = tsDevice
 					.getAddressCallObservers();
 
 			if ((tsapiAddressCallObservers == null)
@@ -464,7 +462,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 				TsapiTrace.traceExit("getCallObservers[]", this);
 				return null;
 			}
-			ArrayList observerList = new ArrayList();
+			ArrayList<CallObserver> observerList = new ArrayList<CallObserver>();
 			CallObserver[] observers = null;
 
 			for (Object obs : tsapiAddressCallObservers) {
@@ -501,12 +499,9 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry("getConnections[]", this);
 		try {
 			try {
-				Vector tsconn = tsDevice.getTSConnections();
-				Object localObject1;
+				Vector<TSConnection> tsconn = tsDevice.getTSConnections();
 				if (tsconn == null) {
 					TsapiTrace.traceExit("getConnections[]", this);
-					localObject1 = null;
-
 					privData = null;
 
 					log.info("API CALL END: Address.getConnections() for "
@@ -571,7 +566,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getForwarding[]", this);
 		try {
-			Vector fwdVector = tsDevice.getForwarding();
+			Vector<TsapiCallControlForwarding> fwdVector = tsDevice.getForwarding();
 
 			if ((fwdVector == null) || (fwdVector.size() == 0)) {
 				TsapiTrace.traceExit("getForwarding[]", this);
@@ -649,15 +644,14 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final AddressObserver[] getObservers() {
 		TsapiTrace.traceEntry("getObservers[]", this);
 		try {
-			Vector tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
 				TsapiTrace.traceExit("getObservers[]", this);
-				Object localObject1 = null;
 				return null;
 			}
-			ArrayList observers = new ArrayList();
+			ArrayList<AddressObserver> observers = new ArrayList<AddressObserver>();
 			TsapiAddressMonitor obs;
 			for (int i = 0; i < tsapiAddressObservers.size(); ++i) {
 				obs = (TsapiAddressMonitor) tsapiAddressObservers.elementAt(i);
@@ -696,14 +690,13 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry("getProvider[]", this);
 		try {
 			TSProviderImpl TSProviderImpl = tsDevice.getTSProviderImpl();
-			Provider localProvider1;
 			if (TSProviderImpl != null) {
 				Provider provider = (Provider) TsapiCreateObject
 						.getTsapiObject(TSProviderImpl, false);
 				TsapiTrace.traceExit("getProvider[]", this);
-				localProvider1 = provider;
 
 				privData = null;
+				return provider;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
 		} finally {
@@ -714,13 +707,10 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final RouteCallback[] getRouteCallback() {
 		TsapiTrace.traceEntry("getRouteCallback[]", this);
 		try {
-			Vector tsapiRouteObservers = tsDevice.getRouteObservers();
-			Object localObject1;
+			Vector<TsapiRouteMonitor> tsapiRouteObservers = tsDevice.getRouteObservers();
 			if ((tsapiRouteObservers == null)
 					|| (tsapiRouteObservers.size() == 0)) {
 				TsapiTrace.traceExit("getRouteCallback[]", this);
-				localObject1 = null;
-
 				privData = null;
 			}
 			synchronized (tsapiRouteObservers) {
@@ -746,12 +736,9 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final Terminal[] getTerminals() {
 		TsapiTrace.traceEntry("getTerminals[]", this);
 		try {
-			Vector tsTermDevices = tsDevice.getTSTerminalDevices();
-			Object localObject1;
+			Vector<TSDevice> tsTermDevices = tsDevice.getTSTerminalDevices();
 			if (tsTermDevices == null) {
 				TsapiTrace.traceExit("getTerminals[]", this);
-				localObject1 = null;
-
 				privData = null;
 			}
 			synchronized (tsTermDevices) {
@@ -801,7 +788,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getRouteMonitorThreads();
+			Vector<TsapiRouteMonitor> observers = prov.getRouteMonitorThreads();
 
 			TsapiRouteMonitor obs = null;
 
@@ -835,7 +822,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry(
 				"removeAddressListener[AddressListener listener]", this);
 		try {
-			Vector tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
@@ -870,7 +857,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace
 				.traceEntry("removeCallListener[CallListener listener]", this);
 		try {
-			Vector tsapiAddressCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiAddressCallObservers = tsDevice
 					.getAddressCallObservers();
 
 			if ((tsapiAddressCallObservers == null)
@@ -898,7 +885,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace
 				.traceEntry("removeCallObserver[CallObserver observer]", this);
 		try {
-			Vector tsapiAddressCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiAddressCallObservers = tsDevice
 					.getAddressCallObservers();
 
 			if ((tsapiAddressCallObservers == null)
@@ -928,7 +915,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 	public final void removeObserver(AddressObserver observer) {
 		TsapiTrace.traceEntry("removeObserver[AddressObserver observer]", this);
 		try {
-			Vector tsapiAddressObservers = tsDevice.getAddressObservers();
+			Vector<TsapiAddressMonitor> tsapiAddressObservers = tsDevice.getAddressObservers();
 
 			if ((tsapiAddressObservers == null)
 					|| (tsapiAddressObservers.size() == 0)) {
@@ -984,7 +971,7 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 		TsapiTrace.traceEntry(
 				"setForwarding[CallControlForwarding[] instructions]", this);
 		try {
-			Vector fwdVector = new Vector();
+			Vector<TsapiCallControlForwarding> fwdVector = new Vector<TsapiCallControlForwarding>();
 			TsapiCallControlForwarding fwd = null;
 			for (int i = 0; i < instructions.length; ++i) {
 				if (instructions[i].getFilter() == 4) {

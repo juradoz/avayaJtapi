@@ -47,13 +47,14 @@ import com.avaya.jtapi.tsapi.impl.events.terminal.TsapiTermWorkReadyEv;
 import com.avaya.jtapi.tsapi.impl.events.terminal.TsapiTerminalDNDEvent;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 public final class TsapiTerminalMonitor implements TsapiMonitor {
 	private static Logger log = Logger.getLogger(TsapiTerminalMonitor.class);
 	TSProviderImpl provider;
 	TerminalObserver observer = null;
 	TerminalListener terminalListener = null;
-	private final Vector<TermEv> eventList = new Vector();
-	private final Vector<Event> listenerEventList = new Vector();
+	private final Vector<TermEv> eventList = new Vector<TermEv>();
+	private final Vector<Event> listenerEventList = new Vector<Event>();
 
 	long reference = 0L;
 	BitSet observerType = new BitSet(8);

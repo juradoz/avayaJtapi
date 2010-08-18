@@ -11,7 +11,7 @@ class TsapiHeartbeatStatus {
 
 	TsapiHeartbeatStatus() {
 		enabled = false;
-		interval = 20;
+		interval = HEARTBEAT_INTERVAL_DEFAULT;
 		timer = new TsapiHeartbeatTimer(getTimeout());
 	}
 

@@ -3,6 +3,7 @@ package com.avaya.jtapi.tsapi.impl.events.terminal;
 import javax.telephony.Terminal;
 import javax.telephony.callcontrol.events.CallCtlTermDoNotDisturbEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiTerminalDNDEvent extends TsapiCallCtlTerminalEvent
 		implements CallCtlTermDoNotDisturbEv {
 	private boolean state = false;

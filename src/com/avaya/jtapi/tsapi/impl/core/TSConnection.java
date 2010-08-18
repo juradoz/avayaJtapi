@@ -58,7 +58,7 @@ public final class TSConnection {
 		device = _device;
 		connState = 80;
 		termConnState = 96;
-		acdConns = new Vector();
+		acdConns = new Vector<TSConnection>();
 
 		isTermConn = _wantTermConn;
 
@@ -133,9 +133,9 @@ public final class TSConnection {
 
 	void addTerminalConnection(TSConnection termConn, Vector<TSEvent> eventList) {
 		if (termConns == null) {
-			termConns = new Vector();
+			termConns = new Vector<TSConnection>();
 			termConns.addElement(termConn);
-			staleTermConns = new Vector();
+			staleTermConns = new Vector<TSConnection>();
 			if (call == null) {
 				call = termConn.call;
 				device.addConnection(this);
@@ -242,7 +242,7 @@ public final class TSConnection {
 		DisconnectedConfHandler handler = new DisconnectedConfHandler(this, 10);
 		try {
 			if ((provider.isLucent()) && (termConns != null)) {
-				Vector tcArray = new Vector(termConns);
+				Vector<TSConnection> tcArray = new Vector<TSConnection>(termConns);
 
 				handler.handleIt = false;
 				for (int i = 0; i < tcArray.size(); ++i) {
@@ -330,7 +330,7 @@ public final class TSConnection {
 		if ((isTermConn) && (provider.isLucent())
 				&& (_connectionAddress != null)) {
 			device.addConnection(this);
-			Vector connVector = new Vector(call.getConnections());
+			Vector<TSConnection> connVector = new Vector<TSConnection>(call.getConnections());
 			TSConnection addressConnection = null;
 			found = false;
 			for (int i = 0; i < connVector.size(); ++i) {
@@ -628,7 +628,7 @@ public final class TSConnection {
 			return termConns;
 		}
 
-		Vector cv = new Vector();
+		Vector<TSConnection> cv = new Vector<TSConnection>();
 
 		if (isTermConn) {
 			cv.addElement(this);
@@ -1175,7 +1175,7 @@ public final class TSConnection {
 			}
 
 			if (termConns != null) {
-				Vector conn = new Vector(termConns);
+				Vector<TSConnection> conn = new Vector<TSConnection>(termConns);
 				int i;
 				for (i = 0; i < conn.size(); ++i) {
 					((TSConnection) conn.elementAt(i)).setTermConnState(102,
@@ -1188,7 +1188,7 @@ public final class TSConnection {
 
 			if (acdManagerConn != null) {
 				TSConnection acdMgrConn = acdManagerConn;
-				Vector acdConns = acdMgrConn.getACDConns();
+				Vector<TSConnection> acdConns = acdMgrConn.getACDConns();
 				int j;
 				for (j = 0; j < acdConns.size(); ++j) {
 					((TSConnection) acdConns.elementAt(j))
@@ -1371,7 +1371,7 @@ public final class TSConnection {
 			if ((connection == null) || (connection.termConns == null)) {
 				return;
 			}
-			Vector conns = new Vector(connection.termConns);
+			Vector<TSConnection> conns = new Vector<TSConnection>(connection.termConns);
 			for (int i = 0; i < conns.size(); ++i) {
 				TSConnection conn = (TSConnection) conns.elementAt(i);
 				if (conn == this) {

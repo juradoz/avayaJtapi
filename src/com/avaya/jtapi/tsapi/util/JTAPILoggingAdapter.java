@@ -17,35 +17,35 @@ public class JTAPILoggingAdapter {
 	private static String traceLoggerLevel;
 	private static String altTraceFile;
 	private static String traceFileCount;
-	private static final String DEFAULT_TRACE_FILE_COUNT = "9";
+//	private static final String DEFAULT_TRACE_FILE_COUNT = "9";
 	private static String traceFileSize;
-	private static final String DEFAULT_TRACE_FILE_SIZE = "50MB";
+//	private static final String DEFAULT_TRACE_FILE_SIZE = "50MB";
 	private static String errorFile;
 	private static String errorFileCount;
-	private static final String DEFAULT_ERROR_FILE_COUNT = "9";
+//	private static final String DEFAULT_ERROR_FILE_COUNT = "9";
 	private static String errorFileSize;
-	private static final String DEFAULT_ERROR_FILE_SIZE = "50MB";
+//	private static final String DEFAULT_ERROR_FILE_SIZE = "50MB";
 	private static String perfFile;
 	private static String perfFileCount;
-	private static final String DEFAULT_PERFORMANCE_FILE_COUNT = "9";
+//	private static final String DEFAULT_PERFORMANCE_FILE_COUNT = "9";
 	private static String perfFileSize;
-	private static final String DEFAULT_PERFORMANCE_FILE_SIZE = "50MB";
-	private static final String JTAPI_APPENDER = "org.apache.log4j.RollingFileAppender";
-	private static final String JTAPI_DEFAULT_APPENDER = "org.apache.log4j.ConsoleAppender";
-	private static final String JTAPI_APPENDER_LAYOUT = "org.apache.log4j.PatternLayout";
-	private static final String JTAPI_APPENDER_LAYOUT_PATTERN = "%d [%t] %-5p %c{1} - %m%n";
-	private static final String PROP_ALT_TRACE_FILE = "altTraceFile";
-	private static final String PROP_TRACE_FILE_COUNT = "traceFileCount";
-	private static final String PROP_TRACE_FILE_SIZE = "traceFileSize";
-	private static final String PROP_ERROR_FILE = "errorFile";
-	private static final String PROP_ERROR_FILE_COUNT = "errorFileCount";
-	private static final String PROP_ERROR_FILE_SIZE = "errorFileSize";
-	private static final String PROP_TRACE_LEVEL = "traceLoggerLevel";
-	private static final String PROP_PERFORMANCE_FILE = "perfFile";
-	private static final String PROP_PERFORMANCE_FILE_COUNT = "perfFileCount";
-	private static final String PROP_PERFORMANCE_FILE_SIZE = "perfFileSize";
-	private static final String PERFORMANCE_LOGGER = "log4j.logger.jtapi.performanceLogger";
-	private static Hashtable<String, Boolean> propertyStatusTable = new Hashtable();
+//	private static final String DEFAULT_PERFORMANCE_FILE_SIZE = "50MB";
+//	private static final String JTAPI_APPENDER = "org.apache.log4j.RollingFileAppender";
+//	private static final String JTAPI_DEFAULT_APPENDER = "org.apache.log4j.ConsoleAppender";
+//	private static final String JTAPI_APPENDER_LAYOUT = "org.apache.log4j.PatternLayout";
+//	private static final String JTAPI_APPENDER_LAYOUT_PATTERN = "%d [%t] %-5p %c{1} - %m%n";
+//	private static final String PROP_ALT_TRACE_FILE = "altTraceFile";
+//	private static final String PROP_TRACE_FILE_COUNT = "traceFileCount";
+//	private static final String PROP_TRACE_FILE_SIZE = "traceFileSize";
+//	private static final String PROP_ERROR_FILE = "errorFile";
+//	private static final String PROP_ERROR_FILE_COUNT = "errorFileCount";
+//	private static final String PROP_ERROR_FILE_SIZE = "errorFileSize";
+//	private static final String PROP_TRACE_LEVEL = "traceLoggerLevel";
+//	private static final String PROP_PERFORMANCE_FILE = "perfFile";
+//	private static final String PROP_PERFORMANCE_FILE_COUNT = "perfFileCount";
+//	private static final String PROP_PERFORMANCE_FILE_SIZE = "perfFileSize";
+//	private static final String PERFORMANCE_LOGGER = "log4j.logger.jtapi.performanceLogger";
+	private static Hashtable<String, Boolean> propertyStatusTable = new Hashtable<String, Boolean>();
 
 	static {
 		resetPropertyStatusTable();
@@ -279,7 +279,7 @@ public class JTAPILoggingAdapter {
 
 	public static void setAltTraceFile(String altTraceFile) {
 		hasChanged(altTraceFile, altTraceFile);
-		altTraceFile = altTraceFile;
+		JTAPILoggingAdapter.altTraceFile = altTraceFile;
 		if (altTraceFile != null) {
 			propertyStatusTable.put("altTraceFile", Boolean.TRUE);
 		}
@@ -287,7 +287,7 @@ public class JTAPILoggingAdapter {
 
 	public static void setErrorFile(String errorFile) {
 		hasChanged(errorFile, errorFile);
-		errorFile = errorFile;
+		JTAPILoggingAdapter.errorFile = errorFile;
 		if (errorFile != null) {
 			setErrorLoggingEnabled(true);
 			propertyStatusTable.put("errorFile", Boolean.TRUE);
@@ -298,7 +298,7 @@ public class JTAPILoggingAdapter {
 
 	public static void setErrorFileCount(String errorFileCount) {
 		hasChanged(errorFileCount, errorFileCount);
-		errorFileCount = errorFileCount;
+		JTAPILoggingAdapter.errorFileCount = errorFileCount;
 		if (errorFileCount != null) {
 			propertyStatusTable.put("errorFileCount", Boolean.TRUE);
 		}
@@ -306,19 +306,19 @@ public class JTAPILoggingAdapter {
 
 	public static void setErrorFileSize(String errorFileSize) {
 		hasChanged(errorFileSize, errorFileSize);
-		errorFileSize = errorFileSize;
+		JTAPILoggingAdapter.errorFileSize = errorFileSize;
 		if (errorFileSize != null) {
 			propertyStatusTable.put("errorFileSize", Boolean.TRUE);
 		}
 	}
 
 	public static void setErrorLoggingEnabled(boolean errorLoggingEnabled) {
-		errorLoggingEnabled = errorLoggingEnabled;
+		JTAPILoggingAdapter.errorLoggingEnabled = errorLoggingEnabled;
 	}
 
 	public static void setPerfFile(String perfFile) {
 		hasChanged(perfFile, perfFile);
-		perfFile = perfFile;
+		JTAPILoggingAdapter.perfFile = perfFile;
 		if (perfFile != null) {
 			setPerformanceLoggingEnabled(true);
 			propertyStatusTable.put("perfFile", Boolean.TRUE);
@@ -329,7 +329,7 @@ public class JTAPILoggingAdapter {
 
 	public static void setPerfFileCount(String perfFileCount) {
 		hasChanged(perfFileCount, perfFileCount);
-		perfFileCount = perfFileCount;
+		JTAPILoggingAdapter.perfFileCount = perfFileCount;
 		if (perfFileCount != null) {
 			propertyStatusTable.put("perfFileCount", Boolean.TRUE);
 		}
@@ -337,7 +337,7 @@ public class JTAPILoggingAdapter {
 
 	public static void setPerfFileSize(String perfFileSize) {
 		hasChanged(perfFileSize, perfFileSize);
-		perfFileSize = perfFileSize;
+		JTAPILoggingAdapter.perfFileSize = perfFileSize;
 		if (perfFileSize != null) {
 			propertyStatusTable.put("perfFileSize", Boolean.TRUE);
 		}
@@ -345,12 +345,12 @@ public class JTAPILoggingAdapter {
 
 	public static void setPerformanceLoggingEnabled(
 			boolean performanceLoggingEnabled) {
-		performanceLoggingEnabled = performanceLoggingEnabled;
+		JTAPILoggingAdapter.performanceLoggingEnabled = performanceLoggingEnabled;
 	}
 
 	public static void setTraceFileCount(String traceFileCount) {
 		hasChanged(traceFileCount, traceFileCount);
-		traceFileCount = traceFileCount;
+		JTAPILoggingAdapter.traceFileCount = traceFileCount;
 		if (traceFileCount != null) {
 			propertyStatusTable.put("traceFileCount", Boolean.TRUE);
 		}
@@ -358,7 +358,7 @@ public class JTAPILoggingAdapter {
 
 	public static void setTraceFileSize(String traceFileSize) {
 		hasChanged(traceFileSize, traceFileSize);
-		traceFileSize = traceFileSize;
+		JTAPILoggingAdapter.traceFileSize = traceFileSize;
 		if (traceFileSize != null) {
 			propertyStatusTable.put("traceFileSize", Boolean.TRUE);
 		}
@@ -423,12 +423,12 @@ public class JTAPILoggingAdapter {
 	}
 
 	public static void setTraceLoggingEnabled(boolean traceLoggingEnabled) {
-		traceLoggingEnabled = traceLoggingEnabled;
+		JTAPILoggingAdapter.traceLoggingEnabled = traceLoggingEnabled;
 	}
 
 	public static void updateLoggingProperties() {
-		Set keySet = propertyStatusTable.keySet();
-		Iterator keySetIterator = keySet.iterator();
+		Set<String> keySet = propertyStatusTable.keySet();
+		Iterator<String> keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
 			Boolean value = (Boolean) propertyStatusTable.get(key);

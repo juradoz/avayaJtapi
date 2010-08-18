@@ -157,7 +157,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 	private static final int AC_BLOCK_VER = 1;
 	private static final int AC_BLOCK_SIZE = 18;
 	private static final int DEFAULT_TIMEOUT = 60000;
-	private static int timeout = 60000;
+	private static int timeout = DEFAULT_TIMEOUT;
 	private String theVendor;
 	private byte[] vendorVersion;
 	private String apiVersion;
@@ -527,7 +527,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 
 	public void handleRead(IntelByteArrayInputStream msg) {
 		try {
-			if (msg.readShort() != 1) {
+			if (msg.readShort() != AC_BLOCK_VER) {
 				throw new TsapiPlatformException(4, 0,
 						"message has wrong acBlock version");
 			}
@@ -561,7 +561,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 			}
 
 			if (log.isDebugEnabled()) {
-				Collection lines = pdu.print();
+				Collection<String> lines = pdu.print();
 				for (Object line : lines) {
 					log.debug(line);
 				}
@@ -779,14 +779,14 @@ public class TsapiSession implements TsapiChannelReadHandler {
 	private void sendMsg(TsapiRequest req, CSTAPrivate priv) throws IOException {
 		synchronized (out) {
 			IntelByteArrayOutputStream acBlock = new IntelByteArrayOutputStream(
-					18);
+					AC_BLOCK_SIZE);
 			IntelByteArrayOutputStream encodeStream = new IntelByteArrayOutputStream();
 			IntelByteArrayOutputStream privateData = new IntelByteArrayOutputStream(
 					(priv != null) ? 34 + priv.data.length : 0);
 
 			log.info("Sent InvokeID " + req.getInvokeID() + " for " + debugID);
 			if (log.isDebugEnabled()) {
-				Collection lines = req.print();
+				Collection<String> lines = req.print();
 				for (Object line : lines) {
 					log.debug(line);
 				}
@@ -896,7 +896,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 					+ "#" + "AT&T Definity G3" + "#" + version_range);
 
 			if (vendors != null) {
-				Enumeration vendEnum = vendors.elements();
+				Enumeration<TsapiVendor> vendEnum = vendors.elements();
 
 				while (vendEnum.hasMoreElements()) {
 					TsapiVendor vendor;

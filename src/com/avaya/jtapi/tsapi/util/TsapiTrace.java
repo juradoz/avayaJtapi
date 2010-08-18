@@ -14,6 +14,7 @@ public class TsapiTrace {
 		return buffer.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	private static String print(Object o) {
 		if (o != null) {
 			if (o instanceof Class) {

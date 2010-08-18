@@ -4,6 +4,7 @@ import javax.telephony.callcontrol.events.CallCtlConnOfferedEv;
 
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 
+@SuppressWarnings("deprecation")
 public class TsapiConnOfferedEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnOfferedEv, ITsapiCallInfo {
 	public TsapiConnOfferedEvent(ConnEventParams params) {

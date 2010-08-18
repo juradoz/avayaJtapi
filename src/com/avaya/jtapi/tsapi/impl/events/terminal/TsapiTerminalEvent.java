@@ -5,6 +5,7 @@ import javax.telephony.privatedata.events.PrivateTermEv;
 
 import com.avaya.jtapi.tsapi.impl.events.TsapiObserverEvent;
 
+@SuppressWarnings("deprecation")
 public abstract class TsapiTerminalEvent extends TsapiObserverEvent implements
 		PrivateTermEv {
 	private Terminal terminal = null;

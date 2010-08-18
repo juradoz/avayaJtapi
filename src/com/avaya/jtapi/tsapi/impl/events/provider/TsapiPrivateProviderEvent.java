@@ -3,6 +3,7 @@ package com.avaya.jtapi.tsapi.impl.events.provider;
 import javax.telephony.Provider;
 import javax.telephony.privatedata.events.PrivateProvEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiPrivateProviderEvent extends TsapiProvEvent implements
 		PrivateProvEv {
 	public TsapiPrivateProviderEvent(Provider _provider, int _cause,

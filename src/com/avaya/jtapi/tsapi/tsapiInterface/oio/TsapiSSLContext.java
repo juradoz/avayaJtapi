@@ -51,7 +51,8 @@ final class TsapiSSLContext {
 				log.info("Classpath search for trust store \"" + tsFileName
 						+ "\" succeeded");
 
-				label138: return tsFile.getCanonicalFile();
+				// label138:
+				return tsFile.getCanonicalFile();
 			}
 
 		} catch (Exception e) {
@@ -69,7 +70,7 @@ final class TsapiSSLContext {
 				instance = new TsapiSSLContext(trustStoreLocation,
 						trustStorePassword);
 
-				verifyServerCertificate = verifyServerCertificate;
+				TsapiSSLContext.verifyServerCertificate = verifyServerCertificate;
 			} catch (TsapiPlatformException e) {
 				throw e;
 			} catch (Exception e) {

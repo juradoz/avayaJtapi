@@ -4,6 +4,7 @@ import javax.telephony.Terminal;
 import javax.telephony.callcenter.Agent;
 import javax.telephony.callcenter.events.AgentTermNotReadyEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiTermNotReadyEv extends TsapiAgentTermEv implements
 		AgentTermNotReadyEv {
 	public TsapiTermNotReadyEv(Terminal _device, Agent _agent, int _cause,

@@ -117,7 +117,7 @@ public final class TSAgent {
 			agentID = agentKey.agentID;
 		}
 		agentDevice.addToAgentTermVector(this);
-		skillsVector = new Vector();
+		skillsVector = new Vector<TSDevice>();
 		constructed = true;
 		super.notifyAll();
 	}
@@ -276,14 +276,14 @@ public final class TSAgent {
 	}
 
 	void sendAgentSnapshot(TSDevice skillDevice) {
-		Vector localEventList = new Vector();
+		Vector<TSEvent> localEventList = new Vector<TSEvent>();
 		getEvent(state, localEventList);
 
 		for (int i = 0; i < localEventList.size(); ++i) {
 			TSEvent ev = (TSEvent) localEventList.elementAt(i);
 			ev.setSkillDevice(skillDevice);
 		}
-		Vector observers = skillDevice.getAddressObservers();
+		Vector<TsapiAddressMonitor> observers = skillDevice.getAddressObservers();
 
 		for (int j = 0; j < observers.size(); ++j) {
 			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
@@ -398,12 +398,12 @@ public final class TSAgent {
 		lucentWorkMode = _lucentworkmode;
 
 		if (stateChange) {
-			Vector localEventList = new Vector();
+			Vector<TSEvent> localEventList = new Vector<TSEvent>();
 
 			getEvent(state, localEventList);
 			if (eventList == null) {
 				if (localEventList.size() > 0) {
-					Vector observers = null;
+					Vector<TsapiAddressMonitor> observers = null;
 					if (acdDevice != null) {
 						observers = acdDevice.getAddressObservers();
 						for (int j = 0; j < observers.size(); ++j) {
@@ -434,7 +434,7 @@ public final class TSAgent {
 						}
 					}
 
-					Vector tObservers = getTerminalObservers();
+					Vector<TsapiTerminalMonitor> tObservers = getTerminalObservers();
 					for (int j = 0; j < tObservers.size(); ++j) {
 						TsapiTerminalMonitor callback = (TsapiTerminalMonitor) tObservers
 								.elementAt(j);

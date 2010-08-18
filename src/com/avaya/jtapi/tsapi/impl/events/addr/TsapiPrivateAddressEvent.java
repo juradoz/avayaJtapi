@@ -3,6 +3,7 @@ package com.avaya.jtapi.tsapi.impl.events.addr;
 import javax.telephony.Address;
 import javax.telephony.privatedata.events.PrivateAddrEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiPrivateAddressEvent extends TsapiAddressEvent implements
 		PrivateAddrEv {
 	public TsapiPrivateAddressEvent(Address _address, int _cause,

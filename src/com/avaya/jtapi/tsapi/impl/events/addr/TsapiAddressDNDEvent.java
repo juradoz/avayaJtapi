@@ -3,6 +3,7 @@ package com.avaya.jtapi.tsapi.impl.events.addr;
 import javax.telephony.Address;
 import javax.telephony.callcontrol.events.CallCtlAddrDoNotDisturbEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiAddressDNDEvent extends TsapiCallCtlAddressEvent
 		implements CallCtlAddrDoNotDisturbEv {
 	boolean state = false;

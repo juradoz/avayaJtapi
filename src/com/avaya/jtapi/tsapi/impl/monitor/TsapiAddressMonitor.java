@@ -50,6 +50,7 @@ import com.avaya.jtapi.tsapi.impl.events.addr.TsapiAddressMsgWaitingEvent;
 import com.avaya.jtapi.tsapi.impl.events.addr.TsapiPrivateAddressEvent;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 public final class TsapiAddressMonitor implements TsapiMonitor {
 	private static Logger log = Logger.getLogger(TsapiAddressMonitor.class);
 	TSProviderImpl provider;
@@ -66,7 +67,7 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 			AddressListener _addressListener) {
 		provider = _provider;
 		addressListener = _addressListener;
-		listenerEventList = new Vector();
+		listenerEventList = new Vector<Event>();
 		eventList = null;
 		provider.addAddressMonitorThread(this);
 
@@ -77,7 +78,7 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 			AddressObserver _observer) {
 		provider = _provider;
 		observer = _observer;
-		eventList = new Vector();
+		eventList = new Vector<AddrEv>();
 		listenerEventList = null;
 		provider.addAddressMonitorThread(this);
 
@@ -601,7 +602,6 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 			}
 		}
 		try {
-			int i$;
 			for (Event event : eventArray) {
 				switch (event.getID()) {
 				case 100:

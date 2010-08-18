@@ -248,15 +248,16 @@ public class PerfStatisticsCollector {
 			perfBean.computeMinMaxAverage();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void run() {
 			// PerfStatisticsCollector.access$108();
-			Vector queueLengthCloneVector;
+			Vector<Long> queueLengthCloneVector;
 			int queueLengthCloneCounter;
 			int callCountClone;
 			int eventCountClone;
 			synchronized (PerfStatisticsCollector.class) {
-				Vector unsolCloneVector = (Vector) PerfStatisticsCollector.unsolicitedHandlingTime
+				Vector<Long> unsolCloneVector = (Vector<Long>) PerfStatisticsCollector.unsolicitedHandlingTime
 						.clone();
 				int unsolCloneCounter = PerfStatisticsCollector.unsolicitedHandlingTimeCounter
 						.getAndSet(0);
@@ -264,7 +265,7 @@ public class PerfStatisticsCollector {
 				PerfStatisticsCollector.unsolHandlingTimeHistory.copyToHistory(
 						unsolCloneVector, unsolCloneCounter);
 
-				Vector serviceTurnaroundCloneVector = (Vector) PerfStatisticsCollector.serviceRequestTurnaroundTime
+				Vector<Long> serviceTurnaroundCloneVector = (Vector) PerfStatisticsCollector.serviceRequestTurnaroundTime
 						.clone();
 				int serviceTurnaroundCloneCounter = PerfStatisticsCollector.serviceRequestTurnaroundTimeCounter
 						.getAndSet(0);
@@ -279,7 +280,7 @@ public class PerfStatisticsCollector {
 				queueLengthCloneCounter = PerfStatisticsCollector.queueLengthCounter
 						.getAndSet(0);
 
-				Vector messageLatencyCloneVector = (Vector) PerfStatisticsCollector.messageLatency
+				Vector<Long> messageLatencyCloneVector = (Vector) PerfStatisticsCollector.messageLatency
 						.clone();
 				int messageLatencyCloneCounter = PerfStatisticsCollector.messageLatencyCounter
 						.getAndSet(0);
@@ -380,7 +381,8 @@ public class PerfStatisticsCollector {
 		}
 	}
 
-	private static final String PROP_PERF_LOGGER_NAME = "jtapi.performanceLogger";
+	// private static final String PROP_PERF_LOGGER_NAME =
+	// "jtapi.performanceLogger";
 
 	private static Timer perfTimer;
 
@@ -433,21 +435,21 @@ public class PerfStatisticsCollector {
 
 		unsolHandlingTimeHistory = new PerfHistoryBean(
 				"UNSOLICITED HANDLING TIME");
-		unsolicitedHandlingTime = new Vector();
+		unsolicitedHandlingTime = new Vector<Long>();
 		unsolicitedHandlingTimeCounter = new AtomicInteger();
 
 		serviceRequestTurnaroundTimeHistory = new PerfHistoryBean(
 				"SERVICE REQUEST TURNAROUND TIME");
-		serviceRequestTurnaroundTime = new Vector();
+		serviceRequestTurnaroundTime = new Vector<Long>();
 		serviceRequestTurnaroundTimeCounter = new AtomicInteger();
 
-		queueLength = new Vector();
+		queueLength = new Vector<Long>();
 		queueMaxWindowSum = 0L;
 		queueOverallMax = 0L;
 		queueLengthCounter = new AtomicInteger();
 
 		messageLatencyHistory = new PerfHistoryBean("MESSAGE LATENCY");
-		messageLatency = new Vector();
+		messageLatency = new Vector<Long>();
 		messageLatencyCounter = new AtomicInteger();
 	}
 
@@ -505,28 +507,28 @@ public class PerfStatisticsCollector {
 	}
 
 	public static void setMessageLatencyThreshold(long messageLatencyThreshold) {
-		messageLatencyThreshold = messageLatencyThreshold;
+		PerfStatisticsCollector.messageLatencyThreshold = messageLatencyThreshold;
 	}
 
 	public static void setPerformanceWindow(int performanceWindow) {
-		if (performanceWindow != performanceWindow) {
+		if (PerfStatisticsCollector.performanceWindow != performanceWindow) {
 			perfWindowChanged = true;
 		}
-		performanceWindow = performanceWindow;
+		PerfStatisticsCollector.performanceWindow = performanceWindow;
 	}
 
 	public static void setQueueLengthThreshold(long queueLengthThreshold) {
-		queueLengthThreshold = queueLengthThreshold;
+		PerfStatisticsCollector.queueLengthThreshold = queueLengthThreshold;
 	}
 
 	public static void setServiceRequestTurnaroundTimeThreshold(
 			long serviceRequestTurnaroundTimeThreshold) {
-		serviceRequestTurnaroundTimeThreshold = serviceRequestTurnaroundTimeThreshold;
+		PerfStatisticsCollector.serviceRequestTurnaroundTimeThreshold = serviceRequestTurnaroundTimeThreshold;
 	}
 
 	public static void setUnsolicitedHandlingTimeThreshold(
 			long unsolicitedHandlingTimeThreshold) {
-		unsolicitedHandlingTimeThreshold = unsolicitedHandlingTimeThreshold;
+		PerfStatisticsCollector.unsolicitedHandlingTimeThreshold = unsolicitedHandlingTimeThreshold;
 	}
 
 	public static void shutdown() {

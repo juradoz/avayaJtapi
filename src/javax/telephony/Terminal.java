@@ -2,6 +2,7 @@ package javax.telephony;
 
 import javax.telephony.capabilities.TerminalCapabilities;
 
+@SuppressWarnings("deprecation")
 public abstract interface Terminal {
 	public abstract void addCallListener(CallListener paramCallListener)
 			throws ResourceUnavailableException, MethodNotSupportedException;

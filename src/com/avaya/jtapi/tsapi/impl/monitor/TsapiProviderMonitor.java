@@ -31,13 +31,14 @@ import com.avaya.jtapi.tsapi.impl.events.provider.TsapiProviderOutOfServiceEvent
 import com.avaya.jtapi.tsapi.impl.events.provider.TsapiProviderShutdownEvent;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 public class TsapiProviderMonitor implements TsapiMonitor {
 	private static final Logger log = Logger
 			.getLogger(TsapiProviderMonitor.class);
 	protected final TSProviderImpl provider;
 	private final ProviderObserver observer;
-	protected final Vector<ProvEv> observerEventList = new Vector();
-	protected final Vector<TsapiListenerEvent> listenerEventList = new Vector();
+	protected final Vector<ProvEv> observerEventList = new Vector<ProvEv>();
+	protected final Vector<TsapiListenerEvent> listenerEventList = new Vector<TsapiListenerEvent>();
 	private long reference = 0L;
 	private final Object syncObject = new Object();
 	private final ProviderListener listener;

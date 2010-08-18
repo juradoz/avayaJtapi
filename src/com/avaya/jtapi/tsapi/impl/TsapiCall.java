@@ -63,10 +63,12 @@ import com.avaya.jtapi.tsapi.impl.core.TSCall;
 import com.avaya.jtapi.tsapi.impl.core.TSConnection;
 import com.avaya.jtapi.tsapi.impl.core.TSDevice;
 import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
+import com.avaya.jtapi.tsapi.impl.core.TSTrunk;
 import com.avaya.jtapi.tsapi.impl.core.TsapiPromoter;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		LucentV7Call {
 	private static Logger log = Logger.getLogger(TsapiCall.class);
@@ -189,7 +191,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getCallMonitorThreads();
+			Vector<TsapiCallMonitor> observers = prov.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
@@ -319,7 +321,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						"orig Address is not an instanceof ITsapiAddress");
 			}
 
-			Vector tsConn = null;
+			Vector<TSConnection> tsConn = null;
 			TSDevice tsDevice = ((TsapiAddress) origaddr).getTSDevice();
 			TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
 			if ((tsDevice != null) && (tsDevice1 != null)) {
@@ -338,6 +340,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			if (tsConn == null) {
 
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
@@ -452,7 +455,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						"originator Address is null");
 			}
 
-			Vector tsConn = null;
+			Vector<TSConnection> tsConn = null;
 			TSDevice tsDevice = ((TsapiAddress) origAddress).getTSDevice();
 			TSDevice tsDevice1 = null;
 			if (originatorTerminal != null) {
@@ -475,6 +478,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			}
 			if (tsConn == null) {
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
@@ -516,7 +520,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						"originator Address is not an instanceof ITsapiAddress");
 			}
 
-			Vector tsConn = null;
+			Vector<TSConnection> tsConn = null;
 
 			TSDevice tsDevice = ((TsapiAddress) origAddress).getTSDevice();
 			TSDevice tsDevice1 = null;
@@ -541,6 +545,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			}
 			if (tsConn == null) {
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
@@ -631,56 +636,46 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			String address) throws TsapiInvalidStateException,
 			TsapiInvalidArgumentException, TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
-		try
-		/*      */{
-			/* 873 */if (!(termconn instanceof ITsapiTerminalConnection)) {
-				/* 874 */throw new TsapiInvalidArgumentException(3, 0,
+		try {
+			if (!(termconn instanceof ITsapiTerminalConnection)) {
+				throw new TsapiInvalidArgumentException(3, 0,
 						"The given TerminalConnection is not an instanceof ITsapiTerminalConnection");
-				/*      */}
-			/*      */
-			/* 877 */Vector tsConnVector = null;
-			/* 878 */TSConnection tsConn = ((TsapiTerminalConnection) termconn)
+			}
+
+			Vector<TSConnection> tsConnVector = null;
+			TSConnection tsConn = ((TsapiTerminalConnection) termconn)
 					.getTSConnection();
-			/* 879 */if (tsConn != null)
-			/*      */{
-				/* 881 */this.tsCall = this.tsCall.getHandOff();
-				/* 882 */tsConnVector = this.tsCall.consult(tsConn, address,
+			if (tsConn != null) {
+				this.tsCall = this.tsCall.getHandOff();
+				tsConnVector = this.tsCall.consult(tsConn, address,
 						this.privData);
-				/*      */}
-			/*      */else
-			/*      */{
-				/* 886 */throw new TsapiPlatformException(4, 0,
+			} else {
+				throw new TsapiPlatformException(4, 0,
 						"could not locate terminal connection");
-				/*      */}
-			/* 889 */if (tsConnVector == null)
-			/*      */{
-				/* 911 */this.privData = null;
-				/*      */}
-			/* 894 */synchronized (tsConnVector)
-			/*      */{
-				/* 896 */if (tsConnVector.size() == 0)
-				/*      */{
-					/*      */
-					/* 911 */this.privData = null;
-					/* 912 */return null;
-					/*      */}
-				/* 901 */Connection[] tsapiConn = new Connection[tsConnVector
-						.size()];
-				/* 902 */for (int i = 0; i < tsConnVector.size(); ++i)
-				/*      */{
-					/* 904 */tsapiConn[i] = ((Connection) TsapiCreateObject
+			}
+			if (tsConnVector == null) {
+				this.privData = null;
+				return null;
+			}
+			synchronized (tsConnVector) {
+				if (tsConnVector.size() == 0) {
+
+					this.privData = null;
+					return null;
+				}
+				Connection[] tsapiConn = new Connection[tsConnVector.size()];
+				for (int i = 0; i < tsConnVector.size(); ++i) {
+					tsapiConn[i] = ((Connection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsConnVector
 									.elementAt(i), true));
-					/*      */}
-				/*      */
-				/* 911 */this.privData = null;
-				/* 912 */return tsapiConn;
-				/*      */}
-			/*      */}
-		/*      */finally
-		/*      */{
-			/* 911 */this.privData = null;
-			/*      */}
+				}
+
+				this.privData = null;
+				return tsapiConn;
+			}
+		} finally {
+			this.privData = null;
+		}
 	}
 
 	public final Connection[] consultDirectAgent(
@@ -977,7 +972,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						"orig Address is not an instanceof ITsapiAddress");
 			}
 
-			Vector tsConn = null;
+			Vector<TSConnection> tsConn = null;
 			TSDevice tsDevice = ((TsapiAddress) origaddr).getTSDevice();
 			TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
 			LucentMakeCall lmc;
@@ -1008,6 +1003,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				lmc = null;
 
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsConn) {
 				if (tsConn.size() == 0) {
@@ -1123,14 +1119,15 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getCallListeners[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector tsapiCallObservers = tsCall.getCallObservers();
+			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+					.getCallObservers();
 
 			if ((tsapiCallObservers == null)
 					|| (tsapiCallObservers.size() == 0)) {
 				TsapiTrace.traceExit("getCallListeners[]", this);
 				return null;
 			}
-			ArrayList callListeners = new ArrayList();
+			ArrayList<CallListener> callListeners = new ArrayList<CallListener>();
 
 			synchronized (tsapiCallObservers) {
 				for (Object obs : tsapiCallObservers) {
@@ -1213,11 +1210,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	// ERROR //
 	public final Connection[] getConnections() {
 		try {
-			Vector tsconn = null;
+			Vector<TSConnection> tsconn = null;
 			this.tsCall = this.tsCall.getHandOff();
 			tsconn = this.tsCall.getTSConnections();
 			if (tsconn == null) {
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsconn) {
 				if (tsconn.size() == 0) {
@@ -1341,7 +1339,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getObservers[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector tsapiCallObservers = tsCall.getCallObservers();
+			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+					.getCallObservers();
 
 			if ((tsapiCallObservers == null)
 					|| (tsapiCallObservers.size() == 0)) {
@@ -1349,16 +1348,16 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				return null;
 			}
 
-			ArrayList observers = new ArrayList();
+			ArrayList<CallObserver> observers = new ArrayList<CallObserver>();
 
-			for (Iterator i$ = tsapiCallObservers.iterator(); i$.hasNext();) {
+			for (Iterator<TsapiCallMonitor> i$ = tsapiCallObservers.iterator(); i$
+					.hasNext();) {
 				TsapiCallMonitor obs = (TsapiCallMonitor) i$.next();
 				if (obs.getObserver() != null) {
 					observers.add(obs.getObserver());
 				}
 			}
 
-			TsapiCallMonitor obs;
 			TsapiTrace.traceExit("getObservers[]", this);
 			CallObserver[] observerArray = new CallObserver[observers.size()];
 			return (CallObserver[]) observers.toArray(observerArray);
@@ -1399,6 +1398,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						tsProvider, false);
 
 				this.privData = null;
+				return localProvider;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
 		} finally {
@@ -1481,14 +1481,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	// ERROR //
 	public final CallCenterTrunk[] getTrunks() {
 		try {
-			Vector tstrunk = null;
+			Vector<TSTrunk> tstrunk = null;
 			this.tsCall = this.tsCall.getHandOff();
 			tstrunk = this.tsCall.getTSTrunks();
-			Object localObject1;
 			if (tstrunk == null) {
-				localObject1 = null;
-
 				this.privData = null;
+				return null;
 			}
 			synchronized (tstrunk) {
 				if (tstrunk.size() == 0) {
@@ -1603,7 +1601,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry("removeCallListener[CallListener listener]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector tsapiCallObservers = tsCall.getCallObservers();
+			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+					.getCallObservers();
 
 			if ((tsapiCallObservers == null)
 					|| (tsapiCallObservers.size() == 0)) {
@@ -1632,7 +1631,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("removeObserver[CallObserver observer]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector tsapiCallObservers = tsCall.getCallObservers();
+			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+					.getCallObservers();
 
 			if ((tsapiCallObservers == null)
 					|| (tsapiCallObservers.size() == 0)) {

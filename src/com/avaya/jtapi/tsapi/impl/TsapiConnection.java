@@ -130,36 +130,38 @@ class TsapiConnection implements ITsapiConnection, PrivateData,
 	// ERROR //
 	public final Address getAddress() {
 		try {
-			/* 71 */TSDevice tsDevice = this.tsConnection.getTSDevice();
+			TSDevice tsDevice = this.tsConnection.getTSDevice();
 			Address localAddress;
-			/* 72 */if (tsDevice != null) {
-				/* 74 */localAddress = (Address) TsapiCreateObject
+			if (tsDevice != null) {
+				localAddress = (Address) TsapiCreateObject
 						.getTsapiObject(tsDevice, true);
 
-				/* 83 */this.privData = null;
+				this.privData = null;
+				return localAddress;
 			}
-			/* 78 */throw new TsapiPlatformException(4, 0,
+			throw new TsapiPlatformException(4, 0,
 					"could not locate address");
 		} finally {
-			/* 83 */this.privData = null;
+			this.privData = null;
 		}
 	}
 
 	// ERROR //
 	public final javax.telephony.Call getCall() {
 		try {
-			/* 47 */TSCall tsCall = this.tsConnection.getTSCall();
+			TSCall tsCall = this.tsConnection.getTSCall();
 			Call localCall;
-			/* 48 */if (tsCall != null) {
-				/* 50 */localCall = (Call) TsapiCreateObject.getTsapiObject(
+			if (tsCall != null) {
+				localCall = (Call) TsapiCreateObject.getTsapiObject(
 						tsCall, false);
 
-				/* 59 */this.privData = null;
+				this.privData = null;
+				return localCall;
 			}
-			/* 54 */throw new TsapiPlatformException(4, 0,
+			throw new TsapiPlatformException(4, 0,
 					"could not locate call");
 		} finally {
-			/* 59 */this.privData = null;
+			this.privData = null;
 		}
 	}
 
@@ -224,10 +226,11 @@ class TsapiConnection implements ITsapiConnection, PrivateData,
 	// ERROR //
 	public final javax.telephony.TerminalConnection[] getTerminalConnections() {
 		try {
-			Vector tsTermConns = null;
+			Vector<TSConnection> tsTermConns = null;
 			tsTermConns = this.tsConnection.getTSTermConns();
 			if (tsTermConns == null) {
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsTermConns) {
 				if (tsTermConns.size() == 0) {

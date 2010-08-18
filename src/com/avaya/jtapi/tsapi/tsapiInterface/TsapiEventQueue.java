@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
-import com.avaya.jtapi.tsapi.TSProvider;
 import com.avaya.jtapi.tsapi.TsapiPlatformException;
 import com.avaya.jtapi.tsapi.csta1.CSTAEvent;
 import com.avaya.jtapi.tsapi.util.JTAPILoggingAdapter;
@@ -26,7 +25,7 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 	public TsapiEventQueue(TsapiEventHandler _realHandler, String _debugID) {
 		super("DistributeCSTAEvent");
 		debugID = _debugID;
-		fifo = new Vector();
+		fifo = new Vector<CSTAEvent>();
 		realHandler = _realHandler;
 		start();
 	}
@@ -38,8 +37,6 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 		}
 	}
 
-	private static int LONG_TIME = 180000;
-
 	// ERROR //
 	private CSTAEvent get() {
 		CSTAEvent event;
@@ -49,7 +46,7 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 			while ((this.keepRunning == true)
 					&& ((size = this.fifo.size()) == 0))
 				try {
-					super.wait(LONG_TIME);
+					super.wait(DEFAULT_TIMEOUT);
 				} catch (InterruptedException e) {
 				}
 			if (!this.keepRunning) {
@@ -60,9 +57,9 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 			this.fifo.removeElementAt(size - 1);
 		}
 
-		// if (TSProvider.debugLevelIsActive(TSProvider.DEBUGLEVEL_HANDLER))
-		// {
-		// Tsapi.log.println("Getting event " + event + " for " + this.debugID);
+		// if (TSProvider.debugLevelIsActive(TSProvider.DEBUGLEVEL_HANDLER)) {
+		// Tsapi.log
+		// .println("Getting event " + event + " for " + this.debugID);
 		// }
 
 		return event;

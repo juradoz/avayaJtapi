@@ -16,6 +16,7 @@ import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 class TsapiACDManagerAddress extends TsapiAddress implements
 		ITsapiACDManagerAddress {
 	TsapiACDManagerAddress(TSDevice _tsDevice) {
@@ -42,7 +43,7 @@ class TsapiACDManagerAddress extends TsapiAddress implements
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getCallMonitorThreads();
+			Vector<TsapiCallMonitor> observers = prov.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
@@ -112,11 +113,8 @@ class TsapiACDManagerAddress extends TsapiAddress implements
 	public final javax.telephony.callcenter.ACDAddress[] getACDAddresses()
 			throws TsapiMethodNotSupportedException {
 		try {
-			Vector tsACDDevices = this.tsDevice.getTSACDDevices();
-			Object localObject1;
+			Vector<TSDevice> tsACDDevices = this.tsDevice.getTSACDDevices();
 			if (tsACDDevices == null) {
-				localObject1 = null;
-
 				this.privData = null;
 			}
 			synchronized (tsACDDevices) {

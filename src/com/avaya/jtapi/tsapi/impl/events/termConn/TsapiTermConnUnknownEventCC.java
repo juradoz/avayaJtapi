@@ -4,6 +4,7 @@ import javax.telephony.callcontrol.events.CallCtlTermConnUnknownEv;
 
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 
+@SuppressWarnings("deprecation")
 public class TsapiTermConnUnknownEventCC extends TsapiCallCtlTermConnEvent
 		implements CallCtlTermConnUnknownEv, ITsapiCallInfo {
 	public TsapiTermConnUnknownEventCC(TermConnEventParams params) {

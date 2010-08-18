@@ -4,6 +4,7 @@ import javax.telephony.Address;
 import javax.telephony.callcenter.Agent;
 import javax.telephony.callcenter.events.ACDAddrLoggedOffEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiAddrLogOffEv extends TsapiACDAddrEv implements
 		ACDAddrLoggedOffEv {
 	public TsapiAddrLogOffEv(Address _device, Agent _agent, int _cause,

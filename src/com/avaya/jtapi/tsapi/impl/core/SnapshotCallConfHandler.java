@@ -42,7 +42,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 		}
 
 		if (extraHandlerVector == null) {
-			extraHandlerVector = new Vector();
+			extraHandlerVector = new Vector<SnapshotCallExtraConfHandler>();
 		}
 
 		extraHandlerVector.addElement(_extraHandler);
@@ -86,7 +86,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 				return;
 			}
 
-			Vector newConns = new Vector();
+			Vector<TSConnection> newConns = new Vector<TSConnection>();
 
 			CSTASnapshotCallResponseInfo[] info = ((CSTASnapshotCallConfEvent) event
 					.getEvent()).getSnapshotData();
@@ -162,7 +162,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 
 			call.replaceConnections(newConns, null);
 
-			Vector connections = call.getConnections();
+			Vector<TSConnection> connections = call.getConnections();
 
 			boolean found = false;
 			if (call.confController != null) {
@@ -170,7 +170,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 					for (int i = 0; i < connections.size(); ++i) {
 						TSConnection conn = (TSConnection) connections
 								.elementAt(i);
-						Vector termConns = conn.getTermConns();
+						Vector<TSConnection> termConns = conn.getTermConns();
 						if ((termConns == null)
 								|| (!termConns.contains(call.confController))) {
 							continue;
@@ -190,7 +190,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 					for (int i = 0; i < connections.size(); ++i) {
 						TSConnection conn = (TSConnection) connections
 								.elementAt(i);
-						Vector termConns = conn.getTermConns();
+						Vector<TSConnection> termConns = conn.getTermConns();
 						if ((termConns == null)
 								|| (!termConns.contains(call.xferController))) {
 							continue;
@@ -213,10 +213,10 @@ final class SnapshotCallConfHandler implements ConfHandler {
 				call.setDeviceHistory(luV7PrivData.getDeviceHistory());
 			}
 		} finally {
-			Vector eventList = null;
+			Vector<TSEvent> eventList = null;
 			try {
 				if (extraHandlerVector != null) {
-					eventList = new Vector();
+					eventList = new Vector<TSEvent>();
 					Object privateData = null;
 					for (int i = 0; i < extraHandlerVector.size(); ++i) {
 						try {

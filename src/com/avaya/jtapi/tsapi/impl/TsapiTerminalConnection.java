@@ -151,22 +151,22 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 
 	// ERROR //
 	public final javax.telephony.Connection getConnection() {
-		try
-		/*     */     {
-		/*  72 */       TSConnection tsConn = this.tsConnection.getTSConnection();
-		/*     */       Connection localConnection;
-		/*  73 */       if (tsConn != null)
-		/*     */       {
-		/*  75 */         localConnection = (Connection)TsapiCreateObject.getTsapiObject(tsConn, true);
-		/*     */ 
-		/*  84 */         this.privData = null;
-		/*     */       }
-		/*  79 */       throw new TsapiPlatformException(4, 0, "could not locate connection");
-		/*     */     }
-		/*     */     finally
-		/*     */     {
-		/*  84 */       this.privData = null;
-		/*     */     }
+		try {
+			TSConnection tsConn = this.tsConnection.getTSConnection();
+			Connection localConnection;
+			if (tsConn != null) {
+				localConnection = (Connection) TsapiCreateObject
+						.getTsapiObject(tsConn, true);
+
+				this.privData = null;
+
+				return localConnection;
+			}
+			throw new TsapiPlatformException(4, 0,
+					"could not locate connection");
+		} finally {
+			this.privData = null;
+		}
 	}
 
 	public final int getMediaAvailability() {
@@ -211,22 +211,20 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 
 	// ERROR //
 	public final Terminal getTerminal() {
-		try
-		/*     */     {
-		/*  49 */       TSDevice tsDevice = this.tsConnection.getTSDevice();
-		/*     */       Terminal localTerminal;
-		/*  50 */       if (tsDevice != null)
-		/*     */       {
-		/*  52 */         localTerminal = (Terminal)TsapiCreateObject.getTsapiObject(tsDevice, false);
-		/*     */ 
-		/*  61 */         this.privData = null;
-		/*     */       }
-		/*  56 */       throw new TsapiPlatformException(4, 0, "could not locate terminal");
-		/*     */     }
-		/*     */     finally
-		/*     */     {
-		/*  61 */       this.privData = null;
-		/*     */     }
+		try {
+			TSDevice tsDevice = this.tsConnection.getTSDevice();
+			Terminal localTerminal;
+			if (tsDevice != null) {
+				localTerminal = (Terminal) TsapiCreateObject.getTsapiObject(
+						tsDevice, false);
+
+				this.privData = null;
+				return localTerminal;
+			}
+			throw new TsapiPlatformException(4, 0, "could not locate terminal");
+		} finally {
+			this.privData = null;
+		}
 	}
 
 	public final TerminalConnectionCapabilities getTerminalConnectionCapabilities(

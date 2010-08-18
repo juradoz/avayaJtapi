@@ -9,7 +9,7 @@ public final class CSTATSProvider {
 
 	public static void setHandleCSTAEventTimeThreshold(
 			long handleCSTAEventTimeThreshold) {
-		handleCSTAEventTimeThreshold = handleCSTAEventTimeThreshold;
+		CSTATSProvider.handleCSTAEventTimeThreshold = handleCSTAEventTimeThreshold;
 	}
 }
 

@@ -35,13 +35,11 @@ class TsapiACDManagerConnection extends TsapiConnection implements
 	public final javax.telephony.callcenter.ACDConnection[] getACDConnections()
 			throws com.avaya.jtapi.tsapi.TsapiMethodNotSupportedException {
 		try {
-			Vector tsconn = null;
+			Vector<TSConnection> tsconn = null;
 			tsconn = this.tsConnection.getACDConns();
-			Object localObject1;
 			if (tsconn == null) {
-				localObject1 = null;
-
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsconn) {
 				if (tsconn.size() == 0) {

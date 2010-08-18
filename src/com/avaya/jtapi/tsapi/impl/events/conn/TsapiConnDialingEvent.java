@@ -4,6 +4,7 @@ import javax.telephony.callcontrol.events.CallCtlConnDialingEv;
 
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 
+@SuppressWarnings("deprecation")
 public class TsapiConnDialingEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnDialingEv, ITsapiCallInfo {
 	private String dialedDigits = null;

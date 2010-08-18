@@ -4,6 +4,7 @@ import javax.telephony.callcenter.events.CallCentConnInProgressEv;
 
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 
+@SuppressWarnings("deprecation")
 public class TsapiConnInProgressEventCC extends TsapiCallCtrConnEvent implements
 		CallCentConnInProgressEv, ITsapiCallInfo {
 	public TsapiConnInProgressEventCC(ConnEventParams params) {

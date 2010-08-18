@@ -10,7 +10,7 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 
 final class ProviderSnapshotDeviceConfHandler implements ConfHandler {
 	TSProviderImpl provider;
-	Vector<TSCall> cv = new Vector();
+	Vector<TSCall> cv = new Vector<TSCall>();
 
 	ProviderSnapshotDeviceConfHandler(TSProviderImpl _provider) {
 		provider = _provider;

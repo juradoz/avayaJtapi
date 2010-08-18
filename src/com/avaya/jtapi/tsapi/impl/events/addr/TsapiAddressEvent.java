@@ -5,6 +5,7 @@ import javax.telephony.privatedata.events.PrivateAddrEv;
 
 import com.avaya.jtapi.tsapi.impl.events.TsapiObserverEvent;
 
+@SuppressWarnings("deprecation")
 public abstract class TsapiAddressEvent extends TsapiObserverEvent implements
 		PrivateAddrEv {
 	Address address = null;

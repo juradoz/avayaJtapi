@@ -27,7 +27,7 @@ final class PickupConfHandler implements ConfHandler {
 
 		device.replyTermPriv = event.getPrivData();
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 		if (terminalAddress == pickConnection.getTSDevice()) {
 			pickConnection.setConnectionState(88, eventList);
 
@@ -35,7 +35,7 @@ final class PickupConfHandler implements ConfHandler {
 				return;
 			}
 			TSCall pickCall = pickConnection.getTSCall();
-			Vector observers = pickCall.getObservers();
+			Vector<TsapiCallMonitor> observers = pickCall.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
 				TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);
@@ -49,7 +49,7 @@ final class PickupConfHandler implements ConfHandler {
 				return;
 			}
 			TSCall pickCall = pickConnection.getTSCall();
-			Vector observers = pickCall.getObservers();
+			Vector<TsapiCallMonitor> observers = pickCall.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
 				TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);

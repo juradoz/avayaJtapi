@@ -6,7 +6,7 @@ import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
 
 final class DeviceObs {
 	TsapiCallMonitor callback;
-	Vector<DevWithType> devWithTypeVector = new Vector();
+	Vector<DevWithType> devWithTypeVector = new Vector<DevWithType>();
 
 	DeviceObs(TsapiCallMonitor _callback) {
 		callback = _callback;

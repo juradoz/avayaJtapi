@@ -4,6 +4,7 @@ import javax.telephony.Address;
 import javax.telephony.callcenter.Agent;
 import javax.telephony.callcenter.events.ACDAddrWorkReadyEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiAddrWorkReadyEv extends TsapiACDAddrEv implements
 		ACDAddrWorkReadyEv {
 	public TsapiAddrWorkReadyEv(Address _device, Agent _agent, int _cause,

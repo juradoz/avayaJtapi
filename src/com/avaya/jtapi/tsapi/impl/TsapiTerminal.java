@@ -47,6 +47,7 @@ import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiTerminalMonitor;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	Logger logger = Logger.getLogger(TsapiTerminal.class);
 	TSDevice tsDevice;
@@ -148,6 +149,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						false);
 
 				this.privData = null;
+				return localAgent;
 			}
 			throw new TsapiPlatformException(4, 0,
 					"could not locate agent to return");
@@ -219,7 +221,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getTerminalMonitorThreads();
+			Vector<TsapiTerminalMonitor> observers = prov
+					.getTerminalMonitorThreads();
 
 			TsapiTerminalMonitor obs = null;
 
@@ -268,7 +271,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getTerminalMonitorThreads();
+			Vector<TsapiTerminalMonitor> observers = prov
+					.getTerminalMonitorThreads();
 
 			TsapiTerminalMonitor obs = null;
 
@@ -315,7 +319,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate provider");
 			}
 
-			Vector observers = prov.getCallMonitorThreads();
+			Vector<TsapiCallMonitor> observers = prov.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
@@ -381,7 +385,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public final Address[] getAddresses() {
 		TsapiTrace.traceEntry("getAddresses[]", this);
 		try {
-			Vector tsAddrDevices = tsDevice.getTSAddressDevices();
+			Vector<TSDevice> tsAddrDevices = tsDevice.getTSAddressDevices();
 			if ((tsAddrDevices == null) || (tsAddrDevices.size() == 0)) {
 				TsapiTrace.traceExit("getAddresses[]", this);
 				return null;
@@ -403,9 +407,10 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	// ERROR //
 	public final Agent[] getAgents() {
 		try {
-			Vector tsAgents = this.tsDevice.getTSAgentsForAgentTerm();
+			Vector<TSAgent> tsAgents = this.tsDevice.getTSAgentsForAgentTerm();
 			if (tsAgents == null) {
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsAgents) {
 				if (tsAgents.size() == 0) {
@@ -428,7 +433,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public CallListener[] getCallListeners() {
 		TsapiTrace.traceEntry("getCallListeners[]", this);
 		try {
-			Vector tsapiTerminalCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
 			if ((tsapiTerminalCallObservers == null)
@@ -438,7 +443,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			}
 
 			CallListener[] listeners = null;
-			ArrayList callListenerList = new ArrayList();
+			ArrayList<CallListener> callListenerList = new ArrayList<CallListener>();
 
 			synchronized (tsapiTerminalCallObservers) {
 				for (Object obs : tsapiTerminalCallObservers) {
@@ -461,7 +466,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public CallObserver[] getCallObservers() {
 		TsapiTrace.traceEntry("getCallObservers[]", this);
 		try {
-			Vector tsapiTerminalCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
 			if ((tsapiTerminalCallObservers == null)
@@ -470,7 +475,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 				return null;
 			}
 
-			ArrayList callObserverList = new ArrayList();
+			ArrayList<CallObserver> callObserverList = new ArrayList<CallObserver>();
 			CallObserver[] observers = null;
 
 			for (Object obs : tsapiTerminalCallObservers) {
@@ -531,7 +536,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public TerminalObserver[] getObservers() {
 		TsapiTrace.traceEntry("getObservers[]", this);
 		try {
-			Vector tsapiTerminalObservers = tsDevice.getTerminalObservers();
+			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+					.getTerminalObservers();
 
 			if ((tsapiTerminalObservers == null)
 					|| (tsapiTerminalObservers.size() == 0)) {
@@ -539,7 +545,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 				return null;
 			}
 
-			Vector observers = new Vector();
+			Vector<TerminalObserver> observers = new Vector<TerminalObserver>();
 
 			for (int i = 0; i < tsapiTerminalObservers.size(); ++i) {
 				TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
@@ -577,6 +583,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						tsProvider, false);
 
 				this.privData = null;
+
+				return localProvider;
 			}
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
 		} finally {
@@ -598,17 +606,16 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	// ERROR //
+	@SuppressWarnings("unchecked")
 	public final TerminalConnection[] getTerminalConnections() {
 		try {
-			Vector tsconn = null;
-			Vector vec = this.tsDevice.getTSTerminalConnections();
-			Object localObject1;
+			Vector<TSConnection> tsconn = null;
+			Vector<TSConnection> vec = this.tsDevice.getTSTerminalConnections();
 			if (vec != null) {
 				tsconn = (Vector) vec.clone();
 			} else {
-				localObject1 = null;
-
 				this.privData = null;
+				return null;
 			}
 			synchronized (tsconn) {
 				if (tsconn.size() == 0) {
@@ -633,7 +640,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public TerminalListener[] getTerminalListeners() {
 		TsapiTrace.traceEntry("getTerminalListeners[]", this);
 		try {
-			Vector tsapiTerminalObservers = tsDevice.getTerminalObservers();
+			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+					.getTerminalObservers();
 
 			if ((tsapiTerminalObservers == null)
 					|| (tsapiTerminalObservers.size() == 0)) {
@@ -641,7 +649,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 				return null;
 			}
 
-			Vector listeners = new Vector();
+			Vector<TerminalListener> listeners = new Vector<TerminalListener>();
 
 			for (int i = 0; i < tsapiTerminalObservers.size(); ++i) {
 				TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
@@ -870,7 +878,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace
 				.traceEntry("removeCallListener[CallListener listener]", this);
 		try {
-			Vector tsapiTerminalCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
 			if ((tsapiTerminalCallObservers == null)
@@ -901,7 +909,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace
 				.traceEntry("removeCallObserver[CallObserver observer]", this);
 		try {
-			Vector tsapiTerminalCallObservers = tsDevice
+			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
 			if ((tsapiTerminalCallObservers == null)
@@ -933,7 +941,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace
 				.traceEntry("removeObserver[TerminalObserver observer]", this);
 		try {
-			Vector tsapiTerminalObservers = tsDevice.getTerminalObservers();
+			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+					.getTerminalObservers();
 
 			if ((tsapiTerminalObservers == null)
 					|| (tsapiTerminalObservers.size() == 0)) {
@@ -963,7 +972,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceEntry(
 				"removeTerminalListener[TerminalListener listener]", this);
 		try {
-			Vector tsapiTerminalObservers = tsDevice.getTerminalObservers();
+			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+					.getTerminalObservers();
 
 			if ((tsapiTerminalObservers == null)
 					|| (tsapiTerminalObservers.size() == 0)) {

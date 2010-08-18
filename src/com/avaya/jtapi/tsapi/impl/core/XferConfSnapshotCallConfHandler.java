@@ -46,7 +46,7 @@ final class XferConfSnapshotCallConfHandler implements
 
 		call.setNeedSnapshot(false);
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		if (rc) {
 			for (int i = 0; i < snapConnections.size(); ++i) {
@@ -62,7 +62,7 @@ final class XferConfSnapshotCallConfHandler implements
 			eventHandler.doCallMonitors(call, eventList, jtapiCause,
 					privateData);
 		} else if (eventList.size() > 0) {
-			Vector observers = call.getObservers();
+			Vector<TsapiCallMonitor> observers = call.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
 				TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);

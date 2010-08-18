@@ -4,6 +4,7 @@ import javax.telephony.Address;
 import javax.telephony.callcenter.Agent;
 import javax.telephony.callcenter.events.ACDAddrBusyEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiAddrBusyEv extends TsapiACDAddrEv implements
 		ACDAddrBusyEv {
 	public TsapiAddrBusyEv(Address _device, Agent _agent, int _cause,

@@ -3,6 +3,7 @@ package com.avaya.jtapi.tsapi.impl.events.terminal;
 import javax.telephony.Terminal;
 import javax.telephony.privatedata.events.PrivateTermEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiPrivateTerminalEvent extends TsapiTerminalEvent
 		implements PrivateTermEv {
 	public TsapiPrivateTerminalEvent(Terminal _terminal, int _cause,

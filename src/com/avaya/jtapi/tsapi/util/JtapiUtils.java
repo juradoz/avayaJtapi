@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 public class JtapiUtils {
 	private static Logger log = Logger.getLogger(JtapiUtils.class);
 
+	@SuppressWarnings("unchecked")
 	public static boolean isLog4jConfigured() {
 		Enumeration appenders = Logger.getRootLogger().getAllAppenders();
 		if (appenders.hasMoreElements()) {
@@ -29,7 +30,7 @@ public class JtapiUtils {
 
 	public static Collection<InetSocketAddress> parseTelephonyServerEntry(
 			String value, int defaultPort) {
-		Collection telephonyServers = new LinkedHashSet();
+		Collection<InetSocketAddress> telephonyServers = new LinkedHashSet<InetSocketAddress>();
 		String[] entries = value.split(",");
 		for (String entry : entries) {
 			String[] tokens = entry.split(":");

@@ -38,20 +38,20 @@ final class DNDConfHandler implements ConfHandler {
 		device.replyAddrPriv = event.getPrivData();
 		device.replyTermPriv = event.getPrivData();
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		device.updateDNDState(enable, eventList);
 
 		if (eventList.size() <= 0) {
 			return;
 		}
-		Vector observers = device.getAddressObservers();
+		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
 			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
 					.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
-		Vector terminalObservers = device.getTerminalObservers();
+		Vector<TsapiTerminalMonitor> terminalObservers = device.getTerminalObservers();
 		for (int j = 0; j < terminalObservers.size(); ++j) {
 			TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
 					.elementAt(j);

@@ -2,6 +2,7 @@ package javax.telephony;
 
 import javax.telephony.capabilities.AddressCapabilities;
 
+@SuppressWarnings("deprecation")
 public abstract interface Address {
 	public abstract void addAddressListener(AddressListener paramAddressListener)
 			throws ResourceUnavailableException, MethodNotSupportedException;

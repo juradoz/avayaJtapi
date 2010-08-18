@@ -13,7 +13,7 @@ public class TsapiInvokeIDTable {
 
 	public TsapiInvokeIDTable(String _debugID) {
 		debugID = _debugID;
-		invokeIDTbl = new Hashtable();
+		invokeIDTbl = new Hashtable<Integer, TSInvokeID>();
 	}
 
 	public TSInvokeID allocTSInvokeID(ConfHandler handler) {
@@ -48,7 +48,7 @@ public class TsapiInvokeIDTable {
 	}
 
 	public void requestTimeOut(ConfHandler handler) {
-		Iterator ids = invokeIDTbl.values().iterator();
+		Iterator<TSInvokeID> ids = invokeIDTbl.values().iterator();
 		while (ids.hasNext()) {
 			TSInvokeID id = (TSInvokeID) ids.next();
 			if (id.getConfHandler().equals(handler)) {
@@ -59,7 +59,7 @@ public class TsapiInvokeIDTable {
 	}
 
 	public void shutdown() {
-		Iterator ids = invokeIDTbl.values().iterator();
+		Iterator<TSInvokeID> ids = invokeIDTbl.values().iterator();
 		while (ids.hasNext()) {
 			TSInvokeID id = (TSInvokeID) ids.next();
 			id.setConf(null);

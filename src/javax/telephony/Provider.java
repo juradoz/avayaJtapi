@@ -7,6 +7,7 @@ import javax.telephony.capabilities.ProviderCapabilities;
 import javax.telephony.capabilities.TerminalCapabilities;
 import javax.telephony.capabilities.TerminalConnectionCapabilities;
 
+@SuppressWarnings("deprecation")
 public abstract interface Provider {
 	public static final int IN_SERVICE = 16;
 	public static final int OUT_OF_SERVICE = 17;

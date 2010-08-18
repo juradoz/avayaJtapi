@@ -22,10 +22,10 @@ final class ClearCallConfHandler implements ConfHandler {
 
 		call.replyPriv = event.getPrivData();
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 		call.setState(34, eventList);
 		if (eventList.size() > 0) {
-			Vector observers = call.getObservers();
+			Vector<TsapiCallMonitor> observers = call.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
 				TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);

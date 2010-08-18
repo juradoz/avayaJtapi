@@ -55,6 +55,7 @@ import com.avaya.jtapi.tsapi.impl.monitor.TsapiProviderMonitor;
 import com.avaya.jtapi.tsapi.tsapiInterface.TsapiVendor;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
+@SuppressWarnings("deprecation")
 class TsapiProvider implements ITsapiProviderEx, PrivateData,
 		ITsapiProviderPrivate, LucentV7Provider {
 	TSProviderImpl tsProvider;
@@ -83,7 +84,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 			throws TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("addObserver[ProviderObserver observer]", this);
 
-		Vector monitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> monitors = tsProvider.getProviderMonitorThreads();
 
 		TsapiProviderMonitor monitor = null;
 		synchronized (monitors) {
@@ -110,7 +111,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 		TsapiTrace.traceEntry("addProviderListener[ProviderListener listener]",
 				this);
 
-		Vector tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
 
 		TsapiProviderMonitor monitor = null;
 		synchronized (tsapiProviderMonitors) {
@@ -168,7 +169,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 	public final ACDAddress[] getACDAddresses()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getACDAddresses[]", this);
-		Vector tsDevice = tsProvider.getTSACDDevices();
+		Vector<TSDevice> tsDevice = tsProvider.getTSACDDevices();
 
 		if (tsDevice == null) {
 			TsapiTrace.traceExit("getACDAddresses[]", this);
@@ -194,7 +195,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 	public final ACDManagerAddress[] getACDManagerAddresses()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getACDManagerAddresses[]", this);
-		Vector tsDevice = tsProvider.getTSACDManagerDevices();
+		Vector<TSDevice> tsDevice = tsProvider.getTSACDManagerDevices();
 
 		if (tsDevice == null) {
 			TsapiTrace.traceExit("getACDManagerAddresses[]", this);
@@ -274,7 +275,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public final Address[] getAddresses() {
 		TsapiTrace.traceEntry("getAddresses[]", this);
-		Vector tsDevice = tsProvider.getTSAddressDevices();
+		Vector<TSDevice> tsDevice = tsProvider.getTSAddressDevices();
 
 		if (tsDevice == null) {
 			TsapiTrace.traceExit("getAddresses[]", this);
@@ -347,7 +348,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public final Call[] getCalls() {
 		TsapiTrace.traceEntry("getCalls[]", this);
-		Vector tsCall = tsProvider.getTSCalls();
+		Vector<TSCall> tsCall = tsProvider.getTSCalls();
 
 		if (tsCall == null) {
 			TsapiTrace.traceExit("getCalls[]", this);
@@ -462,7 +463,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public ProviderObserver[] getObservers() {
 		TsapiTrace.traceEntry("getObservers[]", this);
-		Vector monitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> monitors = tsProvider.getProviderMonitorThreads();
 
 		if ((monitors == null) || (monitors.size() == 0)) {
 			TsapiTrace.traceExit("getObservers[]", this);
@@ -470,7 +471,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 		}
 
 		synchronized (monitors) {
-			List observers = new ArrayList();
+			List<ProviderObserver> observers = new ArrayList<ProviderObserver>();
 
 			for (int i = 0; i < monitors.size(); ++i) {
 				TsapiProviderMonitor monitor = (TsapiProviderMonitor) monitors
@@ -519,7 +520,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public ProviderListener[] getProviderListeners() {
 		TsapiTrace.traceEntry("getProviderListeners[]", this);
-		Vector tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
 
 		if ((tsapiProviderMonitors == null)
 				|| (tsapiProviderMonitors.size() == 0)) {
@@ -528,7 +529,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 		}
 
 		synchronized (tsapiProviderMonitors) {
-			List listeners = new ArrayList();
+			List<ProviderListener> listeners = new ArrayList<ProviderListener>();
 
 			for (int i = 0; i < tsapiProviderMonitors.size(); ++i) {
 				TsapiProviderMonitor monitor = (TsapiProviderMonitor) tsapiProviderMonitors
@@ -545,7 +546,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public final RouteAddress[] getRouteableAddresses() {
 		TsapiTrace.traceEntry("getRouteableAddresses[]", this);
-		Vector tsDevice = tsProvider.getTSRouteDevices();
+		Vector<TSDevice> tsDevice = tsProvider.getTSRouteDevices();
 
 		if (tsDevice == null) {
 			TsapiTrace.traceExit("getRouteableAddresses[]", this);
@@ -732,7 +733,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 
 	public final Terminal[] getTerminals() {
 		TsapiTrace.traceEntry("getTerminals[]", this);
-		Vector tsDevice = tsProvider.getTSTerminalDevices();
+		Vector<TSDevice> tsDevice = tsProvider.getTSTerminalDevices();
 
 		if (tsDevice == null) {
 			TsapiTrace.traceExit("getTerminals[]", this);
@@ -801,7 +802,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 	public void removeObserver(ProviderObserver observer) {
 		TsapiTrace
 				.traceEntry("removeObserver[ProviderObserver observer]", this);
-		Vector monitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> monitors = tsProvider.getProviderMonitorThreads();
 
 		if ((monitors == null) || (monitors.size() == 0)) {
 			TsapiTrace.traceExit("removeObserver[ProviderObserver observer]",
@@ -829,7 +830,7 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 	public void removeProviderListener(ProviderListener listener) {
 		TsapiTrace.traceEntry(
 				"removeProviderListener[ProviderListener listener]", this);
-		Vector tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
+		Vector<TsapiProviderMonitor> tsapiProviderMonitors = tsProvider.getProviderMonitorThreads();
 
 		if ((tsapiProviderMonitors == null)
 				|| (tsapiProviderMonitors.size() == 0)) {

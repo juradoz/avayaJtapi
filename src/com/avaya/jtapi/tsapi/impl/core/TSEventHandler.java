@@ -257,7 +257,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			break;
 		case 106:
 			CSTASysStatEventReport sysStat = (CSTASysStatEventReport) cstaEvent;
-			Vector eventList = new Vector();
+			Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 			if ((sysStat.getState() == 6) || (sysStat.getState() == 5)
 					|| (sysStat.getState() == 4)) {
@@ -268,7 +268,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			if (eventList.size() <= 0) {
 				return;
 			}
-			Vector monitors = provider.getMonitors();
+			Vector<TsapiProviderMonitor> monitors = provider.getMonitors();
 			for (int j = 0; j < monitors.size(); ++j) {
 				TsapiProviderMonitor callback = (TsapiProviderMonitor) monitors
 						.elementAt(j);
@@ -783,7 +783,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			CSTAExtendedDeviceID subjectDeviceID, String agentID,
 			String agentGroup, String agentPassword, int agentState,
 			Object privateData) {
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		TSDevice subjectDevice = provider.createDevice(subjectDeviceID);
 
@@ -875,7 +875,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						provider));
 			}
 		}
-		Vector observers = null;
+		Vector<TsapiAddressMonitor> observers = null;
 
 		TSDevice acdDevice = agent.getTSACDDevice();
 		if (acdDevice != null) {
@@ -887,7 +887,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 
 		} else {
-			Vector skillsVector = agent.getSkillsVector();
+			Vector<TSDevice> skillsVector = agent.getSkillsVector();
 			for (int i = 0; i < skillsVector.size(); ++i) {
 				TSDevice skillDevice = (TSDevice) skillsVector.elementAt(i);
 				observers = skillDevice.getAddressObservers();
@@ -908,7 +908,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 		}
 
-		Vector terminalObservers = agent.getTerminalObservers();
+		Vector<TsapiTerminalMonitor> terminalObservers = agent
+				.getTerminalObservers();
 
 		for (int j = 0; j < terminalObservers.size(); ++j) {
 			TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
@@ -919,7 +920,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 	void doCallEvents(int eventType, Object monitored, short cause,
 			CSTAConnectionID connID, int callState, Object privateData) {
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		int jtapiCause = getJtapiCause(cause);
 		TSCall call = null;
@@ -1006,7 +1007,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 		}
 
-		Vector observers = null;
+		Vector<TsapiCallMonitor> observers = null;
 
 		if (eventList.size() > 0) {
 			observers = call.getObservers();
@@ -1028,6 +1029,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		call.staleObsCleanup(jtapiCause);
 	}
 
+	@SuppressWarnings("unchecked")
 	void doConfXfer(int jtapiCause, CSTAConnectionID primaryConnID,
 			CSTAConnectionID secondaryConnID, CSTAConnection[] connList,
 			Object privateData, short cause) {
@@ -1143,8 +1145,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 		call.setCSTACause(cause);
 
-		Vector oldConns = null;
-		Vector oldSecConns = null;
+		Vector<TSConnection> oldConns = null;
+		Vector<TSConnection> oldSecConns = null;
 
 		oldConns = call.getConnections();
 		if (connList.length > 0) {
@@ -1163,10 +1165,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		TSConnection secConn = null;
 		TSConnection tc = null;
 
-		Vector newConnections = new Vector();
+		Vector<TSConnection> newConnections = new Vector<TSConnection>();
 		TSDevice device = null;
 
-		Vector snapConnections = new Vector();
+		Vector<TSConnection> snapConnections = new Vector<TSConnection>();
 
 		for (int i = 0; i < connList.length; ++i) {
 			boolean found = false;
@@ -1177,12 +1179,14 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 
 			if (oldConns != null) {
-				Vector oldConnections = new Vector(oldConns);
+				Vector<TSConnection> oldConnections = new Vector<TSConnection>(
+						oldConns);
 				for (int j = 0; j < oldConnections.size(); ++j) {
 					conn = (TSConnection) oldConnections.elementAt(j);
-					Vector cv = conn.getTermConns();
+					Vector<TSConnection> cv = conn.getTermConns();
 					if ((cv != null) && (cv.size() > 0)) {
-						Vector termConns = new Vector(cv);
+						Vector<TSConnection> termConns = new Vector<TSConnection>(
+								cv);
 						for (int k = 0; k < termConns.size(); ++k) {
 							tc = (TSConnection) termConns.elementAt(k);
 							if (tc.getTSDevice() != device) {
@@ -1250,7 +1254,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			if (found) {
 				continue;
 			}
-			Vector tempEventList = new Vector();
+			Vector<TSEvent> tempEventList = new Vector<TSEvent>();
 
 			conn = provider.createTerminalConnection(connList[i].getParty(),
 					device, tempEventList, device);
@@ -1259,7 +1263,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			int oldTermConnState = conn.getCallControlTermConnState();
 
 			if ((oldConnState == 89) || (oldTermConnState == 102)) {
-				tempEventList = new Vector();
+				tempEventList = new Vector<TSEvent>();
 
 				conn.delete();
 				provider.dumpConn(connList[i].getParty());
@@ -1269,12 +1273,14 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 
 			if (oldSecConns != null) {
-				Vector oldSecConnections = new Vector(oldSecConns);
+				Vector<TSConnection> oldSecConnections = new Vector<TSConnection>(
+						oldSecConns);
 				for (int j = 0; j < oldSecConnections.size(); ++j) {
 					secConn = (TSConnection) oldSecConnections.elementAt(j);
-					Vector cv = secConn.getTermConns();
+					Vector<TSConnection> cv = secConn.getTermConns();
 					if ((cv != null) && (cv.size() > 0)) {
-						Vector termConns = new Vector(cv);
+						Vector<TSConnection> termConns = new Vector<TSConnection>(
+								cv);
 						for (int k = 0; k < termConns.size(); ++k) {
 							tc = (TSConnection) termConns.elementAt(k);
 							if (conn.getTSDevice() != tc.getTSDevice()) {
@@ -1455,7 +1461,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			if (secondaryConnID != null) {
 				call2 = provider.findCall(secondaryConnID.getCallID());
 			}
-			ArrayList callList = new ArrayList();
+			ArrayList<TSCall> callList = new ArrayList<TSCall>();
 			if (call1 != null) {
 				callList.add(call1);
 			}
@@ -1605,7 +1611,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			subjectDevice.setIsATerminal(true);
 		}
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		switch (eventType) {
 		case 57:
@@ -1618,7 +1624,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				if ((((oldCState == 89) || (oldTCState == 102)))
 						&& ((((!dumpingConn.isTerminalConnection()) && (connState != 89)) || ((dumpingConn
 								.isTerminalConnection() == true) && (termConnState != 102))))) {
-					eventList = new Vector();
+					eventList = new Vector<TSEvent>();
 
 					dumpingConn.delete();
 					provider.dumpConn(connID);
@@ -1655,13 +1661,13 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			switch (eventType) {
 			case 63:
 			case 66:
-				eventList = new Vector();
+				eventList = new Vector<TSEvent>();
 
 				call.setState(34, eventList);
 				doCallMonitors(call, eventList, 102, null);
 				provider.dumpCall(connID.getCallID());
 
-				eventList = new Vector();
+				eventList = new Vector<TSEvent>();
 				call = provider.createCall(connID.getCallID());
 				call.setNeedSnapshot(false);
 				connection = provider.createTerminalConnection(connID,
@@ -1673,7 +1679,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			default:
 				if (((!connection.isTerminalConnection()) && (connState != 89))
 						|| ((connection.isTerminalConnection() == true) && (termConnState != 102))) {
-					eventList = new Vector();
+					eventList = new Vector<TSEvent>();
 
 					connection.delete();
 					provider.dumpConn(connID);
@@ -1689,7 +1695,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		}
 
 		if (eventType == 56) {
-			Vector allConnections = call.getConnections();
+			Vector<TSConnection> allConnections = call.getConnections();
 			if (allConnections.size() <= 2) {
 				for (int i = 0; i < allConnections.size(); ++i) {
 					TSConnection tmpconn = (TSConnection) allConnections
@@ -1710,9 +1716,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		connection.setTermConnState(termConnState, eventList);
 
 		if (eventType == 56) {
-			Vector allConnections = call.getConnections();
+			Vector<TSConnection> allConnections = call.getConnections();
 			if (allConnections.size() >= 1) {
-				Vector listOfConnsBelongToDiffDevIDType = new Vector();
+				Vector<TSConnection> listOfConnsBelongToDiffDevIDType = new Vector<TSConnection>();
 
 				for (int i = 0; i < allConnections.size(); ++i) {
 					TSConnection tmpconn = (TSConnection) allConnections
@@ -1761,7 +1767,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 	void doDeviceEvents(int eventType, Object monitored,
 			CSTAExtendedDeviceID subjectDeviceID, boolean state,
 			CSTAForwardingInfo fwdInfo, Object privateData) {
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 		TSDevice subjectDevice = provider.createDevice(subjectDeviceID);
 
 		if (subjectDevice == null) {
@@ -1816,7 +1822,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 		}
 
-		Vector observers = device.getAddressObservers();
+		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
 
 		for (int j = 0; j < observers.size(); ++j) {
 			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
@@ -1824,7 +1830,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			callback.deliverEvents(eventList, false);
 		}
 
-		Vector terminalObservers = device.getTerminalObservers();
+		Vector<TsapiTerminalMonitor> terminalObservers = device
+				.getTerminalObservers();
 
 		for (int j = 0; j < terminalObservers.size(); ++j) {
 			TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers

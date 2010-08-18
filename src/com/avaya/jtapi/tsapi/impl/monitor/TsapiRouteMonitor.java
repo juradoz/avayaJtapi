@@ -30,7 +30,7 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 public final class TsapiRouteMonitor implements TsapiMonitor {
 	private static Logger log = Logger.getLogger(TsapiRouteMonitor.class);
 	TSProviderImpl provider;
-	private final Vector<Object> eventList = new Vector();
+	private final Vector<Object> eventList = new Vector<Object>();
 	RouteCallback observer = null;
 	long reference = 0L;
 
@@ -88,7 +88,7 @@ public final class TsapiRouteMonitor implements TsapiMonitor {
 				+ observer);
 
 		synchronized (eventList) {
-			for (Enumeration e = device.sessionHash.elements(); e
+			for (Enumeration<TSRouteSession> e = device.sessionHash.elements(); e
 					.hasMoreElements();) {
 				TSRouteSession tsRouteSession;
 				try {
@@ -169,10 +169,10 @@ public final class TsapiRouteMonitor implements TsapiMonitor {
 	public void run() {
 		TsapiTrace.traceEntry("run[]", this);
 		synchronized (syncObject) {
-			Vector sendEventList = null;
+			Vector<Object> sendEventList = null;
 			synchronized (this) {
 				synchronized (eventList) {
-					sendEventList = new Vector(eventList);
+					sendEventList = new Vector<Object>(eventList);
 					eventList.clear();
 				}
 			}

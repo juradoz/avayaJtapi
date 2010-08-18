@@ -4,6 +4,7 @@ import javax.telephony.Address;
 import javax.telephony.callcontrol.CallControlForwarding;
 import javax.telephony.callcontrol.events.CallCtlAddrForwardEv;
 
+@SuppressWarnings("deprecation")
 public final class TsapiAddressForwardEvent extends TsapiCallCtlAddressEvent
 		implements CallCtlAddrForwardEv {
 	CallControlForwarding[] forwarding = null;

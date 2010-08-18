@@ -35,7 +35,7 @@ final class ConfXferConfHandler implements ConfHandler {
 	}
 
 	private void addOldCallParams(Vector<TSEvent> evList) {
-		ArrayList oldCallList = new ArrayList();
+		ArrayList<TSCall> oldCallList = new ArrayList<TSCall>();
 		if (call != null) {
 			oldCallList.add(call);
 		}
@@ -57,7 +57,7 @@ final class ConfXferConfHandler implements ConfHandler {
 		TSDevice deviceToFind = call.getTSProviderImpl().createDevice(
 				newConnID.getDeviceID(), newConnID);
 
-		Vector tempEventList = new Vector();
+		Vector<TSEvent> tempEventList = new Vector<TSEvent>();
 
 		conn = call.getTSProviderImpl().createTerminalConnection(newConnID,
 				deviceToFind, tempEventList, deviceToFind);
@@ -156,11 +156,11 @@ final class ConfXferConfHandler implements ConfHandler {
 
 		call.replyPriv = event.getPrivData();
 
-		Vector snapConnections = new Vector();
+		Vector<TSConnection> snapConnections = new Vector<TSConnection>();
 
-		Vector priEventList = new Vector();
+		Vector<TSEvent> priEventList = new Vector<TSEvent>();
 
-		Vector eventList = new Vector();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		if (connList == null) {
 			call.setCallID(newCall.getCallID());
@@ -181,7 +181,7 @@ final class ConfXferConfHandler implements ConfHandler {
 			call = call.getHandOff();
 
 			TSDevice device = null;
-			Vector newConnections = new Vector();
+			Vector<TSConnection> newConnections = new Vector<TSConnection>();
 			TSConnection conn = null;
 
 			TSConnection foundTSConn = null;
@@ -265,7 +265,7 @@ final class ConfXferConfHandler implements ConfHandler {
 			eventList.addElement(priEventList.elementAt(m));
 		}
 
-		Vector otherEventList = new Vector();
+		Vector<TSEvent> otherEventList = new Vector<TSEvent>();
 		if (otherCall != null) {
 			otherCall.delayVDNremoveCallFromDomain = true;
 			otherCall.setState(34, otherEventList);
@@ -273,7 +273,7 @@ final class ConfXferConfHandler implements ConfHandler {
 		}
 
 		if (otherEventList.size() > 0) {
-			Vector observers = otherCall.getObservers();
+			Vector<TsapiCallMonitor> observers = otherCall.getObservers();
 			addOldCallParams(otherEventList);
 			for (int j = 0; j < observers.size(); ++j) {
 				TsapiCallMonitor callback = (TsapiCallMonitor) observers
@@ -303,7 +303,7 @@ final class ConfXferConfHandler implements ConfHandler {
 		if (eventList.size() <= 0) {
 			return;
 		}
-		Vector observers = call.getObservers();
+		Vector<TsapiCallMonitor> observers = call.getObservers();
 		addOldCallParams(eventList);
 		for (int j = 0; j < observers.size(); ++j) {
 			TsapiCallMonitor callback = (TsapiCallMonitor) observers

@@ -19,10 +19,10 @@ final class TSInitializationThread extends Thread {
 	@Override
 	public void run() {
 		try {
-			Vector eventList = new Vector();
+			Vector<TSEvent> eventList = new Vector<TSEvent>();
 			provider.setState(1, eventList);
 			if (eventList.size() > 0) {
-				Vector observers = provider.getMonitors();
+				Vector<?> observers = provider.getMonitors();
 
 				for (int j = 0; j < observers.size(); ++j) {
 					TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
@@ -32,7 +32,7 @@ final class TSInitializationThread extends Thread {
 
 			}
 
-			List monitorableDevices = provider.getMonitorableDevices();
+			List<String> monitorableDevices = provider.getMonitorableDevices();
 			if ((monitorableDevices != null)
 					&& (monitorableDevices.size() != 0)) {
 				provider.tsMonitorableDevices.addAll(monitorableDevices);
@@ -40,10 +40,10 @@ final class TSInitializationThread extends Thread {
 
 			provider.setRouteDevices();
 
-			eventList = new Vector();
+			eventList = new Vector<TSEvent>();
 			provider.setState(2, eventList);
 			if (eventList.size() > 0) {
-				Vector observers = provider.getMonitors();
+				Vector<TsapiProviderMonitor> observers = provider.getMonitors();
 
 				for (int j = 0; j < observers.size(); ++j) {
 					TsapiProviderMonitor callback = (TsapiProviderMonitor) observers

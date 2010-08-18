@@ -21,6 +21,7 @@ public abstract class TsapiSessionFactory {
 	private static Logger log = Logger.getLogger(TsapiSessionFactory.class);
 	public static final String FACTORY_KEY = "com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory.sessionFactory";
 
+	@SuppressWarnings("unchecked")
 	public static TsapiSessionFactory getTsapiSessionFactory(Properties props) {
 		String className = "com.avaya.jtapi.tsapi.tsapiInterface.oio.TsapiSessionFactoryOio";
 
@@ -56,8 +57,8 @@ public abstract class TsapiSessionFactory {
 
 	public Vector<ACSNameAddr> enumServices(Vector<InetSocketAddress> servers,
 			boolean useTLinkIP, int timeout) {
-		Enumeration eserv = servers.elements();
-		Vector services = new Vector();
+		Enumeration<InetSocketAddress> eserv = servers.elements();
+		Vector<ACSNameAddr> services = new Vector<ACSNameAddr>();
 		while (eserv.hasMoreElements()) {
 			InetSocketAddress addr;
 			try {
@@ -125,7 +126,7 @@ public abstract class TsapiSessionFactory {
 		int alternateIndex = -1;
 		ACSNameAddr alternateACSNameAddr = new ACSNameAddr();
 
-		Enumeration services = enumServices(servers, useTLinkIP).elements();
+		Enumeration<ACSNameAddr> services = enumServices(servers, useTLinkIP).elements();
 		while (services.hasMoreElements()) {
 			ACSNameAddr nameAddr;
 			try {
@@ -156,7 +157,7 @@ public abstract class TsapiSessionFactory {
 		}
 
 		throw new TsapiPlatformException(4, 0, "server "
-				+ new ArrayList(servers) + " with tlink '" + tlink
+				+ new ArrayList<InetSocketAddress>(servers) + " with tlink '" + tlink
 				+ "' not found");
 	}
 

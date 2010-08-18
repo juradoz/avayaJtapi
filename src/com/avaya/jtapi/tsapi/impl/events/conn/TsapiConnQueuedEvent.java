@@ -4,6 +4,7 @@ import javax.telephony.callcontrol.events.CallCtlConnQueuedEv;
 
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 
+@SuppressWarnings("deprecation")
 public class TsapiConnQueuedEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnQueuedEv, ITsapiCallInfo {
 	private int numberQueued = 0;

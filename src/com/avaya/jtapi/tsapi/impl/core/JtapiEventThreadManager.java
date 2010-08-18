@@ -43,7 +43,7 @@ public class JtapiEventThreadManager {
 
 	public static int getQueueSize() {
 		if (fifoBuffer == null) {
-			fifoBuffer = new LinkedBlockingQueue();
+			fifoBuffer = new LinkedBlockingQueue<Runnable>();
 		}
 		int toReturn;
 		synchronized (fifoBuffer) {
@@ -56,7 +56,7 @@ public class JtapiEventThreadManager {
 	public static synchronized void initialize() {
 		if (threadPoolExecutor == null) {
 			int defaultValue = Integer.parseInt("20");
-			fifoBuffer = new LinkedBlockingQueue();
+			fifoBuffer = new LinkedBlockingQueue<Runnable>();
 			threadPoolExecutor = new ThreadPoolExecutor(defaultValue,
 					defaultValue, 200L, TimeUnit.MILLISECONDS, fifoBuffer,
 					new JtapiEventThreadRejectionHandler());

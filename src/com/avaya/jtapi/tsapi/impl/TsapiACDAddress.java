@@ -9,6 +9,7 @@ import javax.telephony.callcenter.Agent;
 
 import com.avaya.jtapi.tsapi.TsapiInvalidArgumentException;
 import com.avaya.jtapi.tsapi.TsapiMethodNotSupportedException;
+import com.avaya.jtapi.tsapi.impl.core.TSAgent;
 import com.avaya.jtapi.tsapi.impl.core.TSCall;
 import com.avaya.jtapi.tsapi.impl.core.TSDevice;
 import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
@@ -94,12 +95,9 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 	public final Agent[] getLoggedOnAgents() {
 		TsapiTrace.traceEntry("getLoggedOnAgents[]", this);
 		try {
-			Vector tsAgents = tsDevice.getTSAgentsForACDAddr();
-			Object localObject1;
+			Vector<TSAgent> tsAgents = tsDevice.getTSAgentsForACDAddr();
 			if (tsAgents == null) {
 				TsapiTrace.traceExit("getLoggedOnAgents[]", this);
-				localObject1 = null;
-
 				privData = null;
 			}
 			synchronized (tsAgents) {

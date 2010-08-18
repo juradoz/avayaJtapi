@@ -33,7 +33,7 @@ public class PrivateDtmfEventImpl implements PrivateDtmfEvent {
 	public int hashCode() {
 		int prime = 31;
 		int result = 1;
-		result = 31 * result + dtmfDigit;
+		result = prime * result + dtmfDigit;
 		return result;
 	}
 }

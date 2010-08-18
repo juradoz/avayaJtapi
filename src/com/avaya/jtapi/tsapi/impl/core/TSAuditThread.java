@@ -26,9 +26,9 @@ final class TSAuditThread extends Thread {
 		super("AuditThread");
 		provider = _provider;
 		keepRunning = true;
-		saveConnHash = new Hashtable(20);
-		saveCallHash = new Hashtable(10);
-		saveAgentHash = new Hashtable(10);
+		saveConnHash = new Hashtable<CSTAConnectionID, SavedConn>(20);
+		saveCallHash = new Hashtable<Integer, SavedCall>(10);
+		saveAgentHash = new Hashtable<TSAgentKey, SavedAgent>(10);
 		isSleeping = false;
 	}
 
@@ -36,7 +36,7 @@ final class TSAuditThread extends Thread {
 		log.trace(indent + "***** AUDIT DUMP *****");
 		log.trace(indent + "TSAuditThread: " + this);
 		log.trace(indent + "TSAuditThread calls: ");
-		Enumeration callEnum = saveCallHash.elements();
+		Enumeration<SavedCall> callEnum = saveCallHash.elements();
 
 		while (callEnum.hasMoreElements()) {
 			SavedCall call;
@@ -50,7 +50,7 @@ final class TSAuditThread extends Thread {
 			call.call.dump(indent + " ");
 		}
 		log.trace(indent + "TSAuditThread conns: ");
-		Enumeration connEnum = saveConnHash.elements();
+		Enumeration<SavedConn> connEnum = saveConnHash.elements();
 
 		while (connEnum.hasMoreElements()) {
 			SavedConn conn;
@@ -64,7 +64,7 @@ final class TSAuditThread extends Thread {
 			conn.conn.dump(indent + " ");
 		}
 		log.trace(indent + "TSAuditThread agents: ");
-		Enumeration agentEnum = saveAgentHash.elements();
+		Enumeration<SavedAgent> agentEnum = saveAgentHash.elements();
 
 		while (agentEnum.hasMoreElements()) {
 			SavedAgent agent;
@@ -104,10 +104,10 @@ final class TSAuditThread extends Thread {
 			log.info("AUDIT (dumpCall): removing call " + sCall.call + " for "
 					+ provider);
 		}
-		Hashtable keepHash = new Hashtable(20);
+		Hashtable<CSTAConnectionID, SavedConn> keepHash = new Hashtable<CSTAConnectionID, SavedConn>(20);
 
 		synchronized (saveConnHash) {
-			Enumeration my_enum = saveConnHash.elements();
+			Enumeration<SavedConn> my_enum = saveConnHash.elements();
 
 			while (my_enum.hasMoreElements()) {
 				SavedConn sConn;
@@ -145,9 +145,7 @@ final class TSAuditThread extends Thread {
 			log.info("AUDIT (dumpConn): removing conn " + sConn.conn + " for "
 					+ provider);
 		}
-	}
-
-	TSAgent getAgent(TSAgentKey agentKey) {
+	}TSAgent getAgent(TSAgentKey agentKey) {
 		SavedAgent sAgent = saveAgentHash.get(agentKey);
 		if (sAgent != null) {
 			log.info("Found agent in audit hash: " + sAgent.agent + " for "
@@ -237,8 +235,8 @@ final class TSAuditThread extends Thread {
 				long curTime = System.currentTimeMillis();
 
 				synchronized (saveCallHash) {
-					Hashtable keepHash = new Hashtable(20);
-					Enumeration my_enum = saveCallHash.elements();
+					Hashtable<Integer, SavedCall> keepHash = new Hashtable<Integer, SavedCall>(20);
+					Enumeration<SavedCall> my_enum = saveCallHash.elements();
 					while (my_enum.hasMoreElements()) {
 						SavedCall sCall;
 						try {
@@ -271,8 +269,8 @@ final class TSAuditThread extends Thread {
 				}
 
 				synchronized (saveConnHash) {
-					Hashtable keepHash = new Hashtable(20);
-					Enumeration my_enum = saveConnHash.elements();
+					Hashtable<CSTAConnectionID, SavedConn> keepHash = new Hashtable<CSTAConnectionID, SavedConn>(20);
+					Enumeration<SavedConn> my_enum = saveConnHash.elements();
 					while (my_enum.hasMoreElements()) {
 						SavedConn sConn;
 						try {
@@ -304,8 +302,8 @@ final class TSAuditThread extends Thread {
 				}
 
 				synchronized (saveAgentHash) {
-					Hashtable keepHash = new Hashtable(20);
-					Enumeration my_enum = saveAgentHash.elements();
+					Hashtable<TSAgentKey, SavedAgent> keepHash = new Hashtable<TSAgentKey, SavedAgent>(20);
+					Enumeration<SavedAgent> my_enum = saveAgentHash.elements();
 					while (my_enum.hasMoreElements()) {
 						SavedAgent sAgent;
 						try {
