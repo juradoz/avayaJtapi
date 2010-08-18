@@ -16,9 +16,3 @@ public abstract interface ACDAddressCapabilities extends AddressCapabilities {
 	public abstract boolean canGetRelativeQueueLoad();
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * javax.telephony.callcenter.capabilities.ACDAddressCapabilities JD-Core
- * Version: 0.5.4
- */

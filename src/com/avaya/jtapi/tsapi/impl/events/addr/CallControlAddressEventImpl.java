@@ -41,10 +41,3 @@ public class CallControlAddressEventImpl extends TsapiListenerCallControlEvent
 		return mwBits != 0;
 	}
 }
-
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.impl.events.addr.CallControlAddressEventImpl JD-Core
- * Version: 0.5.4
- */

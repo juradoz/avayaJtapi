@@ -35,8 +35,3 @@ class LucentV7ProviderImpl extends LucentV5ProviderImpl implements
 	}
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.impl.LucentV7ProviderImpl JD-Core Version: 0.5.4
- */

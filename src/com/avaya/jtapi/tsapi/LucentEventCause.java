@@ -45,8 +45,3 @@ public abstract interface LucentEventCause {
 	public static final short EC_INCOMPATIBLE_BEARER_SERVICE = 87;
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.LucentEventCause JD-Core Version: 0.5.4
- */

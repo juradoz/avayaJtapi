@@ -27,8 +27,3 @@ class LucentConnectionImpl extends TsapiConnection implements LucentConnection {
 	}
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.impl.LucentConnectionImpl JD-Core Version: 0.5.4
- */

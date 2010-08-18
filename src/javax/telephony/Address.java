@@ -50,8 +50,3 @@ public abstract interface Address {
 	public abstract void removeObserver(AddressObserver paramAddressObserver);
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * javax.telephony.Address JD-Core Version: 0.5.4
- */

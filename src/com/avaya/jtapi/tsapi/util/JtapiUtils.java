@@ -54,8 +54,3 @@ public class JtapiUtils {
 	}
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.util.JtapiUtils JD-Core Version: 0.5.4
- */

@@ -56,9 +56,3 @@ public abstract class ASNSequenceOf extends ASN1 {
 	public void encodeMember(int index, OutputStream out) {
 	}
 }
-
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.asn1.ASNSequenceOf JD-Core Version: 0.5.4
- */

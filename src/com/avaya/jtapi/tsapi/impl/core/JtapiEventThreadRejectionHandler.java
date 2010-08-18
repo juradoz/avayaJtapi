@@ -20,10 +20,3 @@ public class JtapiEventThreadRejectionHandler implements
 						+ "No free threads were available to assign. Kindly consider setting the maxThreadPoolSize to a higher value");
 	}
 }
-
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.impl.core.JtapiEventThreadRejectionHandler JD-Core
- * Version: 0.5.4
- */

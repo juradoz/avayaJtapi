@@ -175,9 +175,3 @@ public abstract class TsapiSessionFactory {
 	public abstract void setDebugID(String paramString);
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory JD-Core Version:
- * 0.5.4
- */

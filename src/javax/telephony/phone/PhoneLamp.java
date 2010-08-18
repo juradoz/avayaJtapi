@@ -19,8 +19,3 @@ public abstract interface PhoneLamp extends Component {
 	public abstract void setMode(int paramInt) throws InvalidArgumentException;
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * javax.telephony.phone.PhoneLamp JD-Core Version: 0.5.4
- */

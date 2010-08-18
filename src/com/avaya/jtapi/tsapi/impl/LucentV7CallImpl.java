@@ -50,8 +50,3 @@ public final class LucentV7CallImpl extends LucentV5CallImpl implements
 	}
 }
 
-/*
- * Location: C:\Documents and Settings\Daniel Jurado\Meus documentos\My
- * Dropbox\install\Avaya\jtapi-sdk-5.2.2.483\lib\ecsjtapia.jar Qualified Name:
- * com.avaya.jtapi.tsapi.impl.LucentV7CallImpl JD-Core Version: 0.5.4
- */
