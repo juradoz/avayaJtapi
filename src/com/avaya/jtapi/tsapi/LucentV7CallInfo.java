@@ -7,4 +7,3 @@ public abstract interface LucentV7CallInfo extends LucentV5CallInfo {
 
 	public abstract CallCenterAddress getDistributingVDNAddress();
 }
-

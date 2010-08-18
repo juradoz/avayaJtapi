@@ -6,4 +6,3 @@ public abstract interface ACDConnectionCapabilities extends
 		ConnectionCapabilities {
 	public abstract boolean canGetACDManagerConnection();
 }
-

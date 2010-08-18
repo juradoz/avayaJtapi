@@ -5,4 +5,3 @@ abstract class TSDeviceState {
 
 	abstract boolean wasDeleteDone();
 }
-

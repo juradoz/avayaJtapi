@@ -7,10 +7,10 @@ import com.avaya.jtapi.tsapi.impl.events.TsapiListenerEvent;
 
 public class AddressEventImpl extends TsapiListenerEvent implements
 		AddressEvent {
-	private Address address;
+	private final Address address;
 
-	public AddressEventImpl(AddressEventParams addressEventParams,
-			Address address) {
+	public AddressEventImpl(final AddressEventParams addressEventParams,
+			final Address address) {
 		super(addressEventParams.getEventId(), addressEventParams.getCause(),
 				addressEventParams.getMetaEvent(), addressEventParams
 						.getSource(), addressEventParams.getPrivateData());

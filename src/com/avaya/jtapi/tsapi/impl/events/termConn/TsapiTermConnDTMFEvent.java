@@ -8,9 +8,10 @@ import com.avaya.jtapi.tsapi.impl.events.call.TsapiCallEvent;
 public final class TsapiTermConnDTMFEvent extends TsapiCallEvent
 
 {
-	private char character;
+	private final char character;
 
-	public TsapiTermConnDTMFEvent(CallEventParams params, char _character) {
+	public TsapiTermConnDTMFEvent(final CallEventParams params,
+			final char _character) {
 		super(params, 3);
 		character = _character;
 	}
@@ -27,4 +28,3 @@ public final class TsapiTermConnDTMFEvent extends TsapiCallEvent
 		return null;
 	}
 }
-

@@ -19,4 +19,3 @@ public abstract interface ITsapiProviderPrivate {
 	public abstract TerminalConnection getTerminalConnection(
 			ConnectionID paramConnectionID, Terminal paramTerminal);
 }
-

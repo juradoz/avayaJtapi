@@ -29,4 +29,3 @@ public abstract interface ComponentGroup {
 
 	public abstract int getType();
 }
-

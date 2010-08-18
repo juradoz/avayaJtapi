@@ -16,38 +16,30 @@ public class SystemStatusFilter extends ASNBitString {
 	public static final int SF_OVERLOAD_RELIEVED = 16777216;
 	static final int numBits = 8;
 
-	static void encode(int bits, OutputStream out) {
-		encode(bits, 8, out);
+	static void encode(final int bits, final OutputStream out) {
+		ASNBitString.encode(bits, 8, out);
 	}
 
-	public static Collection<String> print(int bits, String name, String indent) {
+	public static Collection<String> print(final int bits, final String name,
+			final String indent) {
 		String str = " ";
 
-		if ((bits & 0x80000000) != 0) {
+		if ((bits & 0x80000000) != 0)
 			str = str + "SF_INITIALIZING ";
-		}
-		if ((bits & 0x40000000) != 0) {
+		if ((bits & 0x40000000) != 0)
 			str = str + "SF_ENABLED ";
-		}
-		if ((bits & 0x20000000) != 0) {
+		if ((bits & 0x20000000) != 0)
 			str = str + "SF_NORMAL ";
-		}
-		if ((bits & 0x10000000) != 0) {
+		if ((bits & 0x10000000) != 0)
 			str = str + "SF_MESSAGES_LOST ";
-		}
-		if ((bits & 0x8000000) != 0) {
+		if ((bits & 0x8000000) != 0)
 			str = str + "SF_DISABLED ";
-		}
-		if ((bits & 0x4000000) != 0) {
+		if ((bits & 0x4000000) != 0)
 			str = str + "SF_OVERLOAD_IMMINENT ";
-		}
-		if ((bits & 0x2000000) != 0) {
+		if ((bits & 0x2000000) != 0)
 			str = str + "SF_OVERLOAD_REACHED ";
-		}
-		if ((bits & 0x1000000) != 0) {
+		if ((bits & 0x1000000) != 0)
 			str = str + "SF_OVERLOAD_RELIEVED ";
-		}
-		return print(bits, str, name, indent);
+		return ASNBitString.print(bits, str, name, indent);
 	}
 }
-

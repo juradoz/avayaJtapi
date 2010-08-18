@@ -5,8 +5,8 @@ import javax.telephony.events.ProvInServiceEv;
 
 public final class TsapiProviderInServiceEvent extends TsapiProvEvent implements
 		ProvInServiceEv {
-	public TsapiProviderInServiceEvent(Provider _provider, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiProviderInServiceEvent(final Provider _provider,
+			final int _cause, final int _metaCode, final Object _privateData) {
 		super(_provider, _cause, _metaCode, _privateData);
 	}
 
@@ -14,4 +14,3 @@ public final class TsapiProviderInServiceEvent extends TsapiProvEvent implements
 		return 111;
 	}
 }
-

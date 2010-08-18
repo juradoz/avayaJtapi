@@ -14,8 +14,8 @@ public final class ACSOpenStreamConfEvent extends ACSConfirmation {
 	String drvrVer;
 	public static final int PDU = 2;
 
-	public static ACSOpenStreamConfEvent decode(InputStream in) {
-		ACSOpenStreamConfEvent _this = new ACSOpenStreamConfEvent();
+	public static ACSOpenStreamConfEvent decode(final InputStream in) {
+		final ACSOpenStreamConfEvent _this = new ACSOpenStreamConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,8 +24,8 @@ public final class ACSOpenStreamConfEvent extends ACSConfirmation {
 	public ACSOpenStreamConfEvent() {
 	}
 
-	public ACSOpenStreamConfEvent(String _apiVer, String _libVer,
-			String _tsrvVer, String _drvrVer) {
+	public ACSOpenStreamConfEvent(final String _apiVer, final String _libVer,
+			final String _tsrvVer, final String _drvrVer) {
 		apiVer = _apiVer;
 		libVer = _libVer;
 		tsrvVer = _tsrvVer;
@@ -33,7 +33,7 @@ public final class ACSOpenStreamConfEvent extends ACSConfirmation {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		apiVer = ASNIA5String.decode(memberStream);
 		libVer = ASNIA5String.decode(memberStream);
 		tsrvVer = ASNIA5String.decode(memberStream);
@@ -41,7 +41,7 @@ public final class ACSOpenStreamConfEvent extends ACSConfirmation {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(apiVer, memberStream);
 		ASNIA5String.encode(libVer, memberStream);
 		ASNIA5String.encode(tsrvVer, memberStream);
@@ -71,11 +71,11 @@ public final class ACSOpenStreamConfEvent extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSOpenStreamConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(apiVer, "apiVer", indent));
 		lines.addAll(ASNIA5String.print(libVer, "libVer", indent));
@@ -86,4 +86,3 @@ public final class ACSOpenStreamConfEvent extends ACSConfirmation {
 		return lines;
 	}
 }
-

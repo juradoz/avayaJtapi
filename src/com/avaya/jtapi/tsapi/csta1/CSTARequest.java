@@ -8,4 +8,3 @@ public abstract class CSTARequest extends TsapiRequest {
 		return 3;
 	}
 }
-

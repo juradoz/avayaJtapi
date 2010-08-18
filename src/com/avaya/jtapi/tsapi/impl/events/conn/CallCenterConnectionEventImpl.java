@@ -9,8 +9,8 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 
 public class CallCenterConnectionEventImpl extends ConnectionEventImpl
 		implements CallCenterConnectionEvent {
-	public CallCenterConnectionEventImpl(CallEventParams params,
-			MetaEvent event, int eventId) {
+	public CallCenterConnectionEventImpl(final CallEventParams params,
+			final MetaEvent event, final int eventId) {
 		super(params, event, eventId);
 	}
 

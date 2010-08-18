@@ -8,8 +8,9 @@ public class TsapiAddressMsgWaitingEvent extends TsapiCallCtlAddressEvent
 		implements ITsapiAddressMsgWaitingEvent {
 	int mwBits = 0;
 
-	public TsapiAddressMsgWaitingEvent(Address _device, int _mwBits,
-			int _cause, int _metaCode, Object _privateData) {
+	public TsapiAddressMsgWaitingEvent(final Address _device,
+			final int _mwBits, final int _cause, final int _metaCode,
+			final Object _privateData) {
 		super(_device, _cause, _metaCode, _privateData);
 		mwBits = _mwBits;
 	}

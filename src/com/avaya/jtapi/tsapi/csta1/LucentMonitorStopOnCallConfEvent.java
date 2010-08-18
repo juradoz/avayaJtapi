@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class LucentMonitorStopOnCallConfEvent extends LucentPrivateData {
 	static final int PDU = 32;
 
-	static LucentMonitorStopOnCallConfEvent decode(InputStream in) {
-		LucentMonitorStopOnCallConfEvent _this = new LucentMonitorStopOnCallConfEvent();
+	static LucentMonitorStopOnCallConfEvent decode(final InputStream in) {
+		final LucentMonitorStopOnCallConfEvent _this = new LucentMonitorStopOnCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,12 +28,12 @@ public final class LucentMonitorStopOnCallConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorStopOnCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

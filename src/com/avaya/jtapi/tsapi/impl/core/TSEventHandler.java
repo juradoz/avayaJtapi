@@ -102,56 +102,58 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 	final short EVAL_POSSIBLE = 2;
 	final short EVAL_LIKELY = 3;
 
-	TSEventHandler(TSProviderImpl _provider) {
+	TSEventHandler(final TSProviderImpl _provider) {
 		provider = _provider;
 	}
 
-	public void acsUnsolicited(CSTAEvent event) {
-		Object privateData = event.getPrivData();
+	public void acsUnsolicited(final CSTAEvent event) {
+		final Object privateData = event.getPrivData();
 
 		switch (event.getEventHeader().getEventType()) {
 		case 7:
-			log.info("Handling ACS_UNIVERSAL_FAILURE event " + event + " for "
-					+ provider);
+			TSEventHandler.log.info("Handling ACS_UNIVERSAL_FAILURE event "
+					+ event + " for " + provider);
 
 			provider.shutdown(privateData);
 
-			log.info("DONE handling ACS_UNIVERSAL_FAILURE for " + provider);
+			TSEventHandler.log.info("DONE handling ACS_UNIVERSAL_FAILURE for "
+					+ provider);
 			break;
 		case 16:
-			log.info("Handling ACS_CLIENT_HEARTBEAT event for " + provider);
+			TSEventHandler.log.info("Handling ACS_CLIENT_HEARTBEAT event for "
+					+ provider);
 
-			if (!provider.heartbeatIsEnabled()) {
+			if (!provider.heartbeatIsEnabled())
 				provider.enableHeartbeat();
-			}
 
-			log
+			TSEventHandler.log
 					.info("DONE handling ACS_CLIENT_HEARTBEAT event for "
 							+ provider);
 			break;
 		default:
-			log.info("WARNING: event " + event.getEventHeader().getEventType()
+			TSEventHandler.log.info("WARNING: event "
+					+ event.getEventHeader().getEventType()
 					+ " not implemented");
 		}
 	}
 
-	public void cstaEventReport(CSTAEvent event) {
+	public void cstaEventReport(final CSTAEvent event) {
 		TSDevice tsDevice = null;
 		TsapiRouteMonitor tsRouteCallback = null;
 		TSRouteSession tsRouteSession = null;
-		CSTAEventReport cstaEvent = (CSTAEventReport) event.getEvent();
+		final CSTAEventReport cstaEvent = (CSTAEventReport) event.getEvent();
 		TSDevice routeUsedDevice = null;
 		TSDevice callingDevice = null;
 
 		switch (event.getEventHeader().getEventType()) {
 		case 131:
-			log.info("Handling CSTA_ROUTE_USED for " + provider);
-			CSTARouteUsedExtEventReport routeUsedEventExt = (CSTARouteUsedExtEventReport) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ROUTE_USED for " + provider);
+			final CSTARouteUsedExtEventReport routeUsedEventExt = (CSTARouteUsedExtEventReport) cstaEvent;
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					routeUsedEventExt.getRouteRegisterReqID()));
 			if (tsDevice != null) {
 				tsRouteCallback = tsDevice.getTSRouteCallback();
-				if ((tsRouteCallback != null) && (tsDevice.sessionHash != null)) {
+				if (tsRouteCallback != null && tsDevice.sessionHash != null) {
 					tsRouteSession = (TSRouteSession) tsDevice.sessionHash
 							.get(new Integer(routeUsedEventExt
 									.getRoutingCrossRefID()));
@@ -163,25 +165,26 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						tsRouteSession.setRouteUsedDevice(routeUsedDevice);
 						tsRouteSession.setCallingDevice(callingDevice);
 						tsRouteSession.setDomain(routeUsedEventExt.isDomain());
-						TSEvent tsapiEvent = tsRouteSession.setState(2);
+						final TSEvent tsapiEvent = tsRouteSession.setState(2);
 						if (tsapiEvent != null) {
-							log.info("ROUTEUSEDEVENT for " + tsDevice + " for "
-									+ provider);
+							TSEventHandler.log.info("ROUTEUSEDEVENT for "
+									+ tsDevice + " for " + provider);
 							tsRouteCallback.deliverEvent(tsapiEvent);
 						}
 					}
 				}
 			}
-			log.info("DONE handling CSTA_ROUTE_USED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ROUTE_USED for "
+					+ provider);
 			break;
 		case 86:
-			log.info("Handling CSTA_ROUTE_USED for " + provider);
-			CSTARouteUsedEventReport routeUsedEvent = (CSTARouteUsedEventReport) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ROUTE_USED for " + provider);
+			final CSTARouteUsedEventReport routeUsedEvent = (CSTARouteUsedEventReport) cstaEvent;
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					routeUsedEvent.getRouteRegisterReqID()));
 			if (tsDevice != null) {
 				tsRouteCallback = tsDevice.getTSRouteCallback();
-				if ((tsRouteCallback != null) && (tsDevice.sessionHash != null)) {
+				if (tsRouteCallback != null && tsDevice.sessionHash != null) {
 					tsRouteSession = (TSRouteSession) tsDevice.sessionHash
 							.get(new Integer(routeUsedEvent
 									.getRoutingCrossRefID()));
@@ -193,106 +196,111 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						tsRouteSession.setRouteUsedDevice(routeUsedDevice);
 						tsRouteSession.setCallingDevice(callingDevice);
 						tsRouteSession.setDomain(routeUsedEvent.isDomain());
-						TSEvent tsapiEvent = tsRouteSession.setState(2);
+						final TSEvent tsapiEvent = tsRouteSession.setState(2);
 						if (tsapiEvent != null) {
-							log.info("ROUTEUSEDEVENT for " + tsDevice + " for "
-									+ provider);
+							TSEventHandler.log.info("ROUTEUSEDEVENT for "
+									+ tsDevice + " for " + provider);
 							tsRouteCallback.deliverEvent(tsapiEvent);
 						}
 					}
 				}
 			}
-			log.info("DONE handling CSTA_ROUTE_USED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ROUTE_USED for "
+					+ provider);
 			break;
 		case 87:
-			log.info("Handling CSTA_ROUTE_END for " + provider);
-			CSTARouteEndEventReport routeEndEvent = (CSTARouteEndEventReport) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ROUTE_END for " + provider);
+			final CSTARouteEndEventReport routeEndEvent = (CSTARouteEndEventReport) cstaEvent;
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					routeEndEvent.getRouteRegisterReqID()));
 			if (tsDevice != null) {
 				tsRouteCallback = tsDevice.getTSRouteCallback();
-				if ((tsRouteCallback != null) && (tsDevice.sessionHash != null)) {
+				if (tsRouteCallback != null && tsDevice.sessionHash != null) {
 					tsRouteSession = (TSRouteSession) tsDevice.sessionHash
 							.get(new Integer(routeEndEvent
 									.getRoutingCrossRefID()));
 					if (tsRouteSession != null) {
 						tsRouteSession.setCause(routeEndEvent.getCause());
-						TSEvent tsapiEvent = tsRouteSession.setState(3);
+						final TSEvent tsapiEvent = tsRouteSession.setState(3);
 						if (tsapiEvent != null) {
-							log.info("ROUTEENDEVENT for " + tsDevice + " for "
-									+ provider);
+							TSEventHandler.log.info("ROUTEENDEVENT for "
+									+ tsDevice + " for " + provider);
 							tsRouteCallback.deliverEvent(tsapiEvent);
 						}
 					}
 				}
 			}
-			log.info("DONE handling CSTA_ROUTE_END for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ROUTE_END for "
+					+ provider);
 			break;
 		case 82:
-			log.info("Handling CSTA_ROUTE_REGISTER_ABORT for " + provider);
-			CSTARouteRegisterAbortEventReport registerAbortEvent = (CSTARouteRegisterAbortEventReport) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ROUTE_REGISTER_ABORT for "
+					+ provider);
+			final CSTARouteRegisterAbortEventReport registerAbortEvent = (CSTARouteRegisterAbortEventReport) cstaEvent;
 
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					registerAbortEvent.getRouteRegisterReqID()));
 			if (tsDevice != null) {
 				tsRouteCallback = tsDevice.getTSRouteCallback();
-				if (tsRouteCallback != null) {
+				if (tsRouteCallback != null)
 					tsRouteCallback.deleteReference(tsDevice);
-				}
 			}
-			log.info("DONE handling CSTA_ROUTE_REGISTER_ABORT for " + provider);
+			TSEventHandler.log
+					.info("DONE handling CSTA_ROUTE_REGISTER_ABORT for "
+							+ provider);
 			break;
 		case 93:
-			log.info("Handling CSTA_PRIVATE for " + provider);
-			Object replyPriv = event.getPrivData();
+			TSEventHandler.log.info("Handling CSTA_PRIVATE for " + provider);
+			final Object replyPriv = event.getPrivData();
 			if (replyPriv instanceof LucentQueryAgentLoginResp) {
-				LucentQueryAgentLoginResp respEvent = (LucentQueryAgentLoginResp) replyPriv;
+				final LucentQueryAgentLoginResp respEvent = (LucentQueryAgentLoginResp) replyPriv;
 				tsDevice = provider.findACDDevice(respEvent
 						.getPrivEventCrossRefID());
-				if (tsDevice != null) {
+				if (tsDevice != null)
 					tsDevice.handleAgentLoginResponse(respEvent);
-				}
 			}
-			log.info("DONE handling CSTA_PRIVATE for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_PRIVATE for "
+					+ provider);
 			break;
 		case 106:
-			CSTASysStatEventReport sysStat = (CSTASysStatEventReport) cstaEvent;
-			Vector<TSEvent> eventList = new Vector<TSEvent>();
+			final CSTASysStatEventReport sysStat = (CSTASysStatEventReport) cstaEvent;
+			final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
-			if ((sysStat.getState() == 6) || (sysStat.getState() == 5)
-					|| (sysStat.getState() == 4)) {
+			if (sysStat.getState() == 6 || sysStat.getState() == 5
+					|| sysStat.getState() == 4)
 				provider.setState(0, eventList);
-			} else if ((sysStat.getState() == 2) || (sysStat.getState() == 1)) {
+			else if (sysStat.getState() == 2 || sysStat.getState() == 1)
 				provider.setState(2, eventList);
-			}
-			if (eventList.size() <= 0) {
+			if (eventList.size() <= 0)
 				return;
-			}
-			Vector<TsapiProviderMonitor> monitors = provider.getMonitors();
+			final Vector<TsapiProviderMonitor> monitors = provider
+					.getMonitors();
 			for (int j = 0; j < monitors.size(); ++j) {
-				TsapiProviderMonitor callback = (TsapiProviderMonitor) monitors
+				final TsapiProviderMonitor callback = (TsapiProviderMonitor) monitors
 						.elementAt(j);
 
 				callback.deliverEvents(eventList, false);
 			}
 			break;
 		default:
-			log.info("WARNING: event " + event.getEventHeader().getEventType()
+			TSEventHandler.log.info("WARNING: event "
+					+ event.getEventHeader().getEventType()
 					+ " not implemented");
 		}
 	}
 
-	public void cstaRequest(CSTAEvent event) {
+	public void cstaRequest(final CSTAEvent event) {
 		TSDevice tsDevice = null;
 		TsapiRouteMonitor tsRouteCallback = null;
 		TSRouteSession tsRouteSession = null;
-		CSTARequest cstaEvent = (CSTARequest) event.getEvent();
-		Object privateData = event.getPrivData();
+		final CSTARequest cstaEvent = (CSTARequest) event.getEvent();
+		final Object privateData = event.getPrivData();
 
 		switch (event.getEventHeader().getEventType()) {
 		case 130:
-			log.info("Handling CSTA_ROUTE_REQUEST for " + provider);
-			CSTARouteRequestExtEv routeRequestExt = (CSTARouteRequestExtEv) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ROUTE_REQUEST for "
+					+ provider);
+			final CSTARouteRequestExtEv routeRequestExt = (CSTARouteRequestExtEv) cstaEvent;
 
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					routeRequestExt.getRouteRegisterReqID()));
@@ -315,19 +323,20 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 							routeRequestExt.getRoutedSelAlgorithm(), null);
 
 					if (privateData instanceof LucentRouteRequestEvent) {
-						LucentRouteRequestEvent luPrivData = (LucentRouteRequestEvent) privateData;
+						final LucentRouteRequestEvent luPrivData = (LucentRouteRequestEvent) privateData;
 						tsRouteSession.setUUI(luPrivData.getUserInfo());
 						tsRouteSession.setLAI(luPrivData.getLookaheadInfo());
 						tsRouteSession.setUEC(luPrivData.getUserEnteredCode());
-						TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
-								provider, luPrivData.getTrunkGroup(), null);
+						final TsapiTrunkImpl tsapiTrunk = TsapiPromoter
+								.promoteTrunk(provider, luPrivData
+										.getTrunkGroup(), null);
 
 						if (tsapiTrunk != null) {
-							TSTrunk trk = tsapiTrunk.getTSTrunk();
+							final TSTrunk trk = tsapiTrunk.getTSTrunk();
 							tsRouteSession.setTrunk(trk);
 						}
 						if (privateData instanceof LucentV5RouteRequestEvent) {
-							LucentV5RouteRequestEvent luV5PrivData = (LucentV5RouteRequestEvent) privateData;
+							final LucentV5RouteRequestEvent luV5PrivData = (LucentV5RouteRequestEvent) privateData;
 							tsRouteSession.setUCID(luV5PrivData.getUcid());
 							tsRouteSession.setCallOriginatorInfo(luV5PrivData
 									.getCallOriginatorInfo());
@@ -335,7 +344,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 									.isFlexibleBilling());
 
 							if (privateData instanceof LucentV7RouteRequestEvent) {
-								LucentV7RouteRequestEvent luV7PrivData = (LucentV7RouteRequestEvent) privateData;
+								final LucentV7RouteRequestEvent luV7PrivData = (LucentV7RouteRequestEvent) privateData;
 								tsRouteSession.setDeviceHistory(TsapiPromoter
 										.promoteDeviceHistory(luV7PrivData
 												.getDeviceHistory()));
@@ -343,19 +352,21 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						}
 					}
 
-					TSEvent tsapiEvent = tsRouteSession.setState(1);
+					final TSEvent tsapiEvent = tsRouteSession.setState(1);
 					if (tsapiEvent != null) {
-						log.info("ROUTEEVENT for " + tsDevice + " for "
-								+ provider);
+						TSEventHandler.log.info("ROUTEEVENT for " + tsDevice
+								+ " for " + provider);
 						tsRouteCallback.deliverEvent(tsapiEvent);
 					}
 				}
 			}
-			log.info("DONE handling CSTA_ROUTE_REQUEST for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ROUTE_REQUEST for "
+					+ provider);
 			break;
 		case 83:
-			log.info("Handling CSTA_ROUTE_REQUEST for " + provider);
-			CSTARouteRequestEv routeRequest = (CSTARouteRequestEv) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ROUTE_REQUEST for "
+					+ provider);
+			final CSTARouteRequestEv routeRequest = (CSTARouteRequestEv) cstaEvent;
 
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					routeRequest.getRouteRegisterReqID()));
@@ -378,124 +389,133 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 							routeRequest.getRoutedSelAlgorithm(), null);
 
 					if (privateData instanceof LucentRouteRequestEvent) {
-						LucentRouteRequestEvent luPrivData = (LucentRouteRequestEvent) privateData;
+						final LucentRouteRequestEvent luPrivData = (LucentRouteRequestEvent) privateData;
 						tsRouteSession.setUUI(luPrivData.getUserInfo());
 						tsRouteSession.setLAI(luPrivData.getLookaheadInfo());
 						tsRouteSession.setUEC(luPrivData.getUserEnteredCode());
-						TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
-								provider, luPrivData.getTrunkGroup(), null);
+						final TsapiTrunkImpl tsapiTrunk = TsapiPromoter
+								.promoteTrunk(provider, luPrivData
+										.getTrunkGroup(), null);
 
 						if (tsapiTrunk != null) {
-							TSTrunk trk = tsapiTrunk.getTSTrunk();
+							final TSTrunk trk = tsapiTrunk.getTSTrunk();
 							tsRouteSession.setTrunk(trk);
 						}
 					}
-					TSEvent tsapiEvent = tsRouteSession.setState(1);
+					final TSEvent tsapiEvent = tsRouteSession.setState(1);
 					if (tsapiEvent != null) {
-						log.info("ROUTEEVENT for " + tsDevice + " for "
-								+ provider);
+						TSEventHandler.log.info("ROUTEEVENT for " + tsDevice
+								+ " for " + provider);
 						tsRouteCallback.deliverEvent(tsapiEvent);
 					}
 				}
 			}
-			log.info("DONE handling CSTA_ROUTE_REQUEST for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ROUTE_REQUEST for "
+					+ provider);
 			break;
 		case 85:
-			log.info("Handling CSTA_RE_ROUTE_REQUEST for " + provider);
-			CSTAReRouteRequest reRouteRequest = (CSTAReRouteRequest) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_RE_ROUTE_REQUEST for "
+					+ provider);
+			final CSTAReRouteRequest reRouteRequest = (CSTAReRouteRequest) cstaEvent;
 
 			tsDevice = (TSDevice) provider.routeRegHash.get(new Integer(
 					reRouteRequest.getRouteRegisterReqID()));
 			if (tsDevice != null) {
 				tsRouteCallback = tsDevice.getTSRouteCallback();
-				if ((tsRouteCallback != null) && (tsDevice.sessionHash != null)) {
+				if (tsRouteCallback != null && tsDevice.sessionHash != null) {
 					tsRouteSession = (TSRouteSession) tsDevice.sessionHash
 							.get(new Integer(reRouteRequest
 									.getRoutingCrossRefID()));
 					if (tsRouteSession != null) {
-						TSEvent tsapiEvent = tsRouteSession.setState(4);
+						final TSEvent tsapiEvent = tsRouteSession.setState(4);
 						if (tsapiEvent != null) {
-							log.info("REROUTEEVENT for " + tsDevice + " for "
-									+ provider);
+							TSEventHandler.log.info("REROUTEEVENT for "
+									+ tsDevice + " for " + provider);
 							tsRouteCallback.deliverEvent(tsapiEvent);
 						}
 					}
 				}
 			}
-			log.info("DONE handling CSTA_RE_ROUTE_REQUEST for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_RE_ROUTE_REQUEST for "
+					+ provider);
 			break;
 		default:
-			log.info("WARNING: event " + event.getEventHeader().getEventType()
+			TSEventHandler.log.info("WARNING: event "
+					+ event.getEventHeader().getEventType()
 					+ " not implemented");
 		}
 	}
 
-	public void cstaUnsolicited(CSTAEvent event) {
-		Runtime rt = Runtime.getRuntime();
+	public void cstaUnsolicited(final CSTAEvent event) {
+		final Runtime rt = Runtime.getRuntime();
 
-		log.info("CSTA Unsolicited Event: " + event);
-		log.info("Free memory: " + rt.freeMemory());
-		log.info("Total memory: " + rt.totalMemory());
+		TSEventHandler.log.info("CSTA Unsolicited Event: " + event);
+		TSEventHandler.log.info("Free memory: " + rt.freeMemory());
+		TSEventHandler.log.info("Total memory: " + rt.totalMemory());
 
-		CSTAUnsolicited cstaEvent = (CSTAUnsolicited) event.getEvent();
+		final CSTAUnsolicited cstaEvent = (CSTAUnsolicited) event.getEvent();
 
-		Object privateData = event.getPrivData();
+		final Object privateData = event.getPrivData();
 
 		Object monitored = provider.getMonitoredObject(cstaEvent
 				.getMonitorCrossRefID());
 		if (monitored == null) {
 			if (event.getEventHeader().getEventType() != 54) {
-				log.info("CSTA event " + event + "("
+				TSEventHandler.log.info("CSTA event " + event + "("
 						+ event.getEventHeader().getEventType()
 						+ ") ignored for " + provider);
 				return;
 			}
 
-			CSTACallClearedEvent callCleared = (CSTACallClearedEvent) cstaEvent;
-			TSCall call = provider.createCall(callCleared.getClearedCall()
-					.getCallID());
-			if (call != null) {
+			final CSTACallClearedEvent callCleared = (CSTACallClearedEvent) cstaEvent;
+			final TSCall call = provider.createCall(callCleared
+					.getClearedCall().getCallID());
+			if (call != null)
 				call.getTSProviderImpl().addMonitor(
 						cstaEvent.getMonitorCrossRefID(), call);
-			}
 
 			monitored = call;
 		}
 
 		switch (event.getEventHeader().getEventType()) {
 		case 66:
-			log.info("Handling CSTA_SERVICE_INITIATED for " + provider);
-			CSTAServiceInitiatedEvent initiated = (CSTAServiceInitiatedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_SERVICE_INITIATED for "
+					+ provider);
+			final CSTAServiceInitiatedEvent initiated = (CSTAServiceInitiatedEvent) cstaEvent;
 			doConnEvents(66, monitored, initiated.getCause(), null, initiated
 					.getInitiatedConnection(), 84, 98, privateData, null, null,
 					null, true, 0);
 
-			log.info("DONE handling CSTA_SERVICE_INITIATED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_SERVICE_INITIATED for "
+					+ provider);
 			break;
 		case 63:
-			log.info("Handling CSTA_ORIGINATED for " + provider);
-			CSTAOriginatedEvent originated = (CSTAOriginatedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_ORIGINATED for " + provider);
+			final CSTAOriginatedEvent originated = (CSTAOriginatedEvent) cstaEvent;
 			doConnEvents(63, monitored, originated.getCause(), originated
 					.getCallingDevice(), originated.getOriginatedConnection(),
 					88, 98, privateData, originated.getCallingDevice(),
 					originated.getCalledDevice(), null, true, 0);
 
-			log.info("DONE handling CSTA_ORIGINATED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ORIGINATED for "
+					+ provider);
 			break;
 		case 57:
-			log.info("Handling CSTA_DELIVERED for " + provider);
-			CSTADeliveredEvent delivered = (CSTADeliveredEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_DELIVERED for " + provider);
+			final CSTADeliveredEvent delivered = (CSTADeliveredEvent) cstaEvent;
 			doConnEvents(57, monitored, delivered.getCause(), delivered
 					.getAlertingDevice(), delivered.getConnection(), 83, 97,
 					privateData, delivered.getCallingDevice(), delivered
 							.getCalledDevice(), delivered
 							.getLastRedirectionDevice(), false, 0);
 
-			log.info("DONE handling CSTA_DELIVERED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_DELIVERED for "
+					+ provider);
 			break;
 		case 59:
-			log.info("Handling CSTA_ESTABLISHED for " + provider);
-			CSTAEstablishedEvent established = (CSTAEstablishedEvent) cstaEvent;
+			TSEventHandler.log
+					.info("Handling CSTA_ESTABLISHED for " + provider);
+			final CSTAEstablishedEvent established = (CSTAEstablishedEvent) cstaEvent;
 			doConnEvents(59, monitored, established.getCause(), established
 					.getAnsweringDevice(), established
 					.getEstablishedConnection(), 88, 98, privateData,
@@ -503,64 +523,74 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 							.getCalledDevice(), established
 							.getLastRedirectionDevice(), false, 0);
 
-			log.info("DONE handling CSTA_ESTABLISHED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_ESTABLISHED for "
+					+ provider);
 			break;
 		case 62:
-			log.info("Handling CSTA_NETWORK_REACHED for " + provider);
-			CSTANetworkReachedEvent networkReached = (CSTANetworkReachedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_NETWORK_REACHED for "
+					+ provider);
+			final CSTANetworkReachedEvent networkReached = (CSTANetworkReachedEvent) cstaEvent;
 			doConnEvents(62, monitored, networkReached.getCause(),
 					networkReached.getTrunkUsed(), networkReached
 							.getConnection(), 86, 98, privateData, null,
 					networkReached.getCalledDevice(), null, false, 0);
 
-			log.info("DONE handling CSTA_NETWORK_REACHED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_NETWORK_REACHED for "
+					+ provider);
 			break;
 		case 65:
-			log.info("Handling CSTA_RETRIEVED for " + provider);
-			CSTARetrievedEvent retrieved = (CSTARetrievedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_RETRIEVED for " + provider);
+			final CSTARetrievedEvent retrieved = (CSTARetrievedEvent) cstaEvent;
 			doConnEvents(65, monitored, retrieved.getCause(), retrieved
 					.getRetrievingDevice(), retrieved.getRetrievedConnection(),
 					88, 98, privateData, null, null, null, false, 0);
 
-			log.info("DONE handling CSTA_RETRIEVED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_RETRIEVED for "
+					+ provider);
 			break;
 		case 61:
-			log.info("Handling CSTA_HELD for " + provider);
-			CSTAHeldEvent held = (CSTAHeldEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_HELD for " + provider);
+			final CSTAHeldEvent held = (CSTAHeldEvent) cstaEvent;
 			doConnEvents(61, monitored, held.getCause(), held
 					.getHoldingDevice(), held.getHeldConnection(), 88, 99,
 					privateData, null, null, null, false, 0);
 
-			log.info("DONE handling CSTA_HELD for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_HELD for " + provider);
 			break;
 		case 56:
-			log.info("Handling CSTA_CONNECTION_CLEARED for " + provider);
-			CSTAConnectionClearedEvent connCleared = (CSTAConnectionClearedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_CONNECTION_CLEARED for "
+					+ provider);
+			final CSTAConnectionClearedEvent connCleared = (CSTAConnectionClearedEvent) cstaEvent;
 			doConnEvents(56, monitored, connCleared.getCause(), connCleared
 					.getReleasingDevice(), connCleared.getDroppedConnection(),
 					89, 102, privateData, null, null, null, false, 0);
 
-			log.info("DONE handling CSTA_CONNECTION_CLEARED for " + provider);
+			TSEventHandler.log
+					.info("DONE handling CSTA_CONNECTION_CLEARED for "
+							+ provider);
 			break;
 		case 60:
-			log.info("Handling CSTA_FAILED for " + provider);
-			CSTAFailedEvent failed = (CSTAFailedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_FAILED for " + provider);
+			final CSTAFailedEvent failed = (CSTAFailedEvent) cstaEvent;
 			doConnEvents(60, monitored, failed.getCause(), failed
 					.getFailingDevice(), failed.getFailedConnection(), 90, 102,
 					privateData, null, failed.getCalledDevice(), null, false, 0);
 
-			log.info("DONE handling CSTA_FAILED for " + provider);
+			TSEventHandler.log
+					.info("DONE handling CSTA_FAILED for " + provider);
 			break;
 		case 119:
-			log.info("Handling CSTA_MONITOR_ENDED for " + provider);
-			CSTAMonitorEndedEvent monitorEnded = (CSTAMonitorEndedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_MONITOR_ENDED for "
+					+ provider);
+			final CSTAMonitorEndedEvent monitorEnded = (CSTAMonitorEndedEvent) cstaEvent;
 			doMonitorEnded(monitorEnded.getCause(), cstaEvent
 					.getMonitorCrossRefID(), monitored, privateData);
-			log.info("DONE handling CSTA_MONITOR_ENDED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_MONITOR_ENDED for "
+					+ provider);
 			break;
 		case 64:
-			log.info("Handling CSTA_QUEUED for " + provider);
-			CSTAQueuedEvent queued = (CSTAQueuedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_QUEUED for " + provider);
+			final CSTAQueuedEvent queued = (CSTAQueuedEvent) cstaEvent;
 			doConnEvents(64, monitored, queued.getCause(), queued
 					.getQueueingDevice(), queued.getQueuedConnection(), 82, -1,
 					privateData, queued.getCallingDevice(), queued
@@ -568,16 +598,17 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 							.getLastRedirectionDevice(), false, queued
 							.getNumberQueued());
 
-			log.info("DONE handling CSTA_QUEUED for " + provider);
+			TSEventHandler.log
+					.info("DONE handling CSTA_QUEUED for " + provider);
 			break;
 		case 58:
-			log.info("Handling CSTA_DIVERTED for " + provider);
-			CSTADivertedEvent diverted = (CSTADivertedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_DIVERTED for " + provider);
+			final CSTADivertedEvent diverted = (CSTADivertedEvent) cstaEvent;
 
-			if ((Tsapi.isPatch_enable_PreserveRedirectedVDNAsUNKNOWN())
-					&& (provider.getDeviceExt(diverted.getDivertingDevice()
-							.getDeviceID()) == 1)) {
-				log
+			if (Tsapi.isPatch_enable_PreserveRedirectedVDNAsUNKNOWN()
+					&& provider.getDeviceExt(diverted.getDivertingDevice()
+							.getDeviceID()) == 1) {
+				TSEventHandler.log
 						.info("Preserving redirecting VDN party of CSTA_DIVERTED for "
 								+ provider);
 
@@ -586,8 +617,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						103, privateData, null, diverted.getNewDestination(),
 						null, false, 0);
 			} else {
-				log.info("Dropping party due to handling of CSTA_DIVERTED for "
-						+ provider);
+				TSEventHandler.log
+						.info("Dropping party due to handling of CSTA_DIVERTED for "
+								+ provider);
 
 				doConnEvents(58, monitored, diverted.getCause(), diverted
 						.getDivertingDevice(), diverted.getConnection(), 89,
@@ -595,133 +627,151 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						null, false, 0);
 			}
 
-			log.info("DONE handling CSTA_DIVERTED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_DIVERTED for "
+					+ provider);
 			break;
 		case 55:
-			log.info("Handling CSTA_CONFERENCED for " + provider);
-			CSTAConferencedEvent conferenced = (CSTAConferencedEvent) cstaEvent;
+			TSEventHandler.log
+					.info("Handling CSTA_CONFERENCED for " + provider);
+			final CSTAConferencedEvent conferenced = (CSTAConferencedEvent) cstaEvent;
 			doConfXfer(207, conferenced.getPrimaryOldCall(), conferenced
 					.getSecondaryOldCall(), conferenced
 					.getConferenceConnections(), privateData, conferenced
 					.getCause());
 
-			log.info("DONE handling CSTA_CONFERENCED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_CONFERENCED for "
+					+ provider);
 			break;
 		case 67:
-			log.info("Handling CSTA_TRANSFERRED for " + provider);
-			CSTATransferredEvent transferred = (CSTATransferredEvent) cstaEvent;
+			TSEventHandler.log
+					.info("Handling CSTA_TRANSFERRED for " + provider);
+			final CSTATransferredEvent transferred = (CSTATransferredEvent) cstaEvent;
 			doConfXfer(212, transferred.getPrimaryOldCall(), transferred
 					.getSecondaryOldCall(), transferred
 					.getTransferredConnections(), privateData, transferred
 					.getCause());
 
-			log.info("DONE handling CSTA_TRANSFERRED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_TRANSFERRED for "
+					+ provider);
 			break;
 		case 54:
-			log.info("Handling CSTA_CALL_CLEARED for " + provider);
-			CSTACallClearedEvent callCleared = (CSTACallClearedEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_CALL_CLEARED for "
+					+ provider);
+			final CSTACallClearedEvent callCleared = (CSTACallClearedEvent) cstaEvent;
 			doCallEvents(54, monitored, callCleared.getCause(), callCleared
 					.getClearedCall(), 34, privateData);
 
-			log.info("DONE handling CSTA_CALL_CLEARED for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_CALL_CLEARED for "
+					+ provider);
 			break;
 		case 72:
-			log.info("Handling CSTA_LOGGED_ON for " + provider);
-			CSTALoggedOnEvent loggedOn = (CSTALoggedOnEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_LOGGED_ON for " + provider);
+			final CSTALoggedOnEvent loggedOn = (CSTALoggedOnEvent) cstaEvent;
 			doAgentEvents(72, monitored, loggedOn.getAgentDevice(), loggedOn
 					.getAgentID(), loggedOn.getAgentGroup(), loggedOn
 					.getPassword(), 1, privateData);
 
-			log.info("DONE handling CSTA_LOGGED_ON for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_LOGGED_ON for "
+					+ provider);
 			break;
 		case 73:
-			log.info("Handling CSTA_LOGGED_OFF for " + provider);
-			CSTALoggedOffEvent loggedOff = (CSTALoggedOffEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_LOGGED_OFF for " + provider);
+			final CSTALoggedOffEvent loggedOff = (CSTALoggedOffEvent) cstaEvent;
 			doAgentEvents(73, monitored, loggedOff.getAgentDevice(), loggedOff
 					.getAgentID(), loggedOff.getAgentGroup(), null, 2,
 					privateData);
 
-			log.info("DONE handling CSTA_LOGGED_OFF for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_LOGGED_OFF for "
+					+ provider);
 			break;
 		case 74:
-			log.info("Handling CSTA_NOT_READY for " + provider);
-			CSTANotReadyEvent notReady = (CSTANotReadyEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_NOT_READY for " + provider);
+			final CSTANotReadyEvent notReady = (CSTANotReadyEvent) cstaEvent;
 			doAgentEvents(74, monitored, notReady.getAgentDevice(), notReady
 					.getAgentID(), null, null, 3, privateData);
 
-			log.info("DONE handling CSTA_NOT_READY for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_NOT_READY for "
+					+ provider);
 			break;
 		case 75:
-			log.info("Handling CSTA_READY for " + provider);
-			CSTAReadyEvent ready = (CSTAReadyEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_READY for " + provider);
+			final CSTAReadyEvent ready = (CSTAReadyEvent) cstaEvent;
 			doAgentEvents(75, monitored, ready.getAgentDevice(), ready
 					.getAgentID(), null, null, 4, privateData);
 
-			log.info("DONE handling CSTA_READY for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_READY for " + provider);
 			break;
 		case 76:
-			log.info("Handling CSTA_WORK_NOT_READY for " + provider);
-			CSTAWorkNotReadyEvent workNotReady = (CSTAWorkNotReadyEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_WORK_NOT_READY for "
+					+ provider);
+			final CSTAWorkNotReadyEvent workNotReady = (CSTAWorkNotReadyEvent) cstaEvent;
 			doAgentEvents(76, monitored, workNotReady.getAgentDevice(),
 					workNotReady.getAgentID(), null, null, 5, privateData);
 
-			log.info("DONE handling CSTA_WORK_NOT_READY for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_WORK_NOT_READY for "
+					+ provider);
 			break;
 		case 77:
-			log.info("Handling CSTA_WORK_READY for " + provider);
-			CSTAWorkReadyEvent workReady = (CSTAWorkReadyEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_WORK_READY for " + provider);
+			final CSTAWorkReadyEvent workReady = (CSTAWorkReadyEvent) cstaEvent;
 			doAgentEvents(77, monitored, workReady.getAgentDevice(), workReady
 					.getAgentID(), null, null, 6, privateData);
 
-			log.info("DONE handling CSTA_WORK_READY for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_WORK_READY for "
+					+ provider);
 			break;
 		case 69:
-			log.info("Handling CSTA_DO_NOT_DISTURB for " + provider);
-			CSTADoNotDisturbEvent doNotDisturb = (CSTADoNotDisturbEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_DO_NOT_DISTURB for "
+					+ provider);
+			final CSTADoNotDisturbEvent doNotDisturb = (CSTADoNotDisturbEvent) cstaEvent;
 
 			doDeviceEvents(69, monitored, doNotDisturb.getDevice(),
 					doNotDisturb.isDoNotDisturbOn(), null, privateData);
 
-			log.info("DONE handling CSTA_DO_NOT_DISTURB for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_DO_NOT_DISTURB for "
+					+ provider);
 			break;
 		case 71:
-			log.info("Handling CSTA_MESSAGE_WAITING for " + provider);
-			CSTAMessageWaitingEvent messageWaiting = (CSTAMessageWaitingEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_MESSAGE_WAITING for "
+					+ provider);
+			final CSTAMessageWaitingEvent messageWaiting = (CSTAMessageWaitingEvent) cstaEvent;
 
 			doDeviceEvents(71, monitored, messageWaiting.getDeviceForMessage(),
 					messageWaiting.isMessageWaitingOn(), null, privateData);
 
-			log.info("DONE handling CSTA_MESSAGE_WAITING for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_MESSAGE_WAITING for "
+					+ provider);
 			break;
 		case 70:
-			log.info("Handling CSTA_FORWARDING for " + provider);
-			CSTAForwardingEvent forwarding = (CSTAForwardingEvent) cstaEvent;
+			TSEventHandler.log.info("Handling CSTA_FORWARDING for " + provider);
+			final CSTAForwardingEvent forwarding = (CSTAForwardingEvent) cstaEvent;
 
 			doDeviceEvents(70, monitored, forwarding.getDevice(), false,
 					forwarding.getForwardingInformation(), privateData);
 
-			log.info("DONE handling CSTA_FORWARDING for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_FORWARDING for "
+					+ provider);
 			break;
 		case 94:
-			log.info("Handling CSTA_PRIVATE_STATUS for " + provider);
-			if ((monitored instanceof TSCall)
-					|| (privateData instanceof LucentEnteredDigitsEvent)
-					|| (privateData instanceof LucentChargeAdvice)) {
+			TSEventHandler.log.info("Handling CSTA_PRIVATE_STATUS for "
+					+ provider);
+			if (monitored instanceof TSCall
+					|| privateData instanceof LucentEnteredDigitsEvent
+					|| privateData instanceof LucentChargeAdvice) {
 				CSTAConnectionID connID = null;
 
-				if (privateData instanceof LucentEnteredDigitsEvent) {
+				if (privateData instanceof LucentEnteredDigitsEvent)
 					connID = ((LucentEnteredDigitsEvent) privateData)
 							.getConnection_asn();
-				} else if (privateData instanceof LucentChargeAdvice) {
+				else if (privateData instanceof LucentChargeAdvice)
 					connID = ((LucentChargeAdvice) privateData)
 							.getConnection_asn();
-				}
 				doCallEvents(94, monitored, (short) 0, connID, 0, privateData);
-			} else {
+			} else
 				doDeviceEvents(94, monitored, null, false, null, privateData);
-			}
 
-			log.info("DONE handling CSTA_PRIVATE_STATUS for " + provider);
+			TSEventHandler.log.info("DONE handling CSTA_PRIVATE_STATUS for "
+					+ provider);
 			break;
 		case 68:
 		case 78:
@@ -765,54 +815,49 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 117:
 		case 118:
 		default:
-			log.info("WARNING: event " + event.getEventHeader().getEventType()
+			TSEventHandler.log.info("WARNING: event "
+					+ event.getEventHeader().getEventType()
 					+ " not implemented");
 		}
 
-		if (!JTAPILoggingAdapter.isPerformanceLoggingEnabled()) {
+		if (!JTAPILoggingAdapter.isPerformanceLoggingEnabled())
 			return;
-		}
-		log
+		TSEventHandler.log
 				.debug("updating statistics collector with unsolicited handling time for this iteration");
 		PerfStatisticsCollector.updateUnsolicitedHandlingTime(System
 				.currentTimeMillis()
 				- event.getQueuedTimeStamp());
 	}
 
-	void doAgentEvents(int eventType, Object monitored,
-			CSTAExtendedDeviceID subjectDeviceID, String agentID,
-			String agentGroup, String agentPassword, int agentState,
-			Object privateData) {
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+	void doAgentEvents(final int eventType, final Object monitored,
+			final CSTAExtendedDeviceID subjectDeviceID, String agentID,
+			final String agentGroup, final String agentPassword,
+			int agentState, final Object privateData) {
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		TSDevice subjectDevice = provider.createDevice(subjectDeviceID);
 
-		if (subjectDevice == null) {
-			if (monitored instanceof TSDevice) {
+		if (subjectDevice == null)
+			if (monitored instanceof TSDevice)
 				subjectDevice = (TSDevice) monitored;
-			} else {
+			else
 				return;
-			}
-		}
 
-		if ((agentID == null) && (agentState != 2)) {
+		if (agentID == null && agentState != 2)
 			agentID = subjectDevice.getAgentID();
-		}
-		TSAgentKey agentKey = new TSAgentKey(subjectDevice.getName(),
+		final TSAgentKey agentKey = new TSAgentKey(subjectDevice.getName(),
 				agentGroup, agentID);
-		TSAgent agent = provider.createAgent(agentKey, agentGroup,
+		final TSAgent agent = provider.createAgent(agentKey, agentGroup,
 				agentPassword, TSProviderImpl.CREATEAGENT_REFUSE_DELETED);
 
-		if (agent == null) {
+		if (agent == null)
 			return;
-		}
 
 		int workMode = 0;
-		int reasonCode = 0;
+		final int reasonCode = 0;
 
-		if (privateData instanceof LucentLoggedOnEvent) {
+		if (privateData instanceof LucentLoggedOnEvent)
 			;
-		}
 		switch (((LucentLoggedOnEvent) privateData).getWorkMode()) {
 		case 3:
 			workMode = 1;
@@ -855,118 +900,113 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		doAgentMonitors(agent, eventList, privateData);
 	}
 
-	void doAgentMonitors(TSAgent agent, Vector<TSEvent> eventList,
-			Object privateData) {
-		if ((eventList.size() == 0) && (privateData == null)) {
+	void doAgentMonitors(final TSAgent agent, final Vector<TSEvent> eventList,
+			final Object privateData) {
+		if (eventList.size() == 0 && privateData == null)
 			return;
-		}
 
 		if (privateData != null) {
 			for (int i = 0; i < eventList.size(); ++i) {
-				TSEvent ev = (TSEvent) eventList.elementAt(i);
-				if (ev.getPrivateData() != null) {
+				final TSEvent ev = (TSEvent) eventList.elementAt(i);
+				if (ev.getPrivateData() != null)
 					continue;
-				}
 				ev.setPrivateData(privateData);
 			}
 
-			if (!provider.isLucent()) {
+			if (!provider.isLucent())
 				eventList.addElement(new TSEvent(9999, agent, privateData,
 						provider));
-			}
 		}
 		Vector<TsapiAddressMonitor> observers = null;
 
-		TSDevice acdDevice = agent.getTSACDDevice();
+		final TSDevice acdDevice = agent.getTSACDDevice();
 		if (acdDevice != null) {
 			observers = acdDevice.getAddressObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+				final TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
 						.elementAt(j);
 				callback.deliverEvents(eventList, false);
 			}
 
 		} else {
-			Vector<TSDevice> skillsVector = agent.getSkillsVector();
+			final Vector<TSDevice> skillsVector = agent.getSkillsVector();
 			for (int i = 0; i < skillsVector.size(); ++i) {
-				TSDevice skillDevice = (TSDevice) skillsVector.elementAt(i);
+				final TSDevice skillDevice = (TSDevice) skillsVector
+						.elementAt(i);
 				observers = skillDevice.getAddressObservers();
 				for (int j = 0; j < eventList.size(); ++j) {
-					TSEvent ev = (TSEvent) eventList.elementAt(j);
-					Object tsTarget = ev.getEventTarget();
-					if (!(tsTarget instanceof TSAgent)) {
+					final TSEvent ev = (TSEvent) eventList.elementAt(j);
+					final Object tsTarget = ev.getEventTarget();
+					if (!(tsTarget instanceof TSAgent))
 						continue;
-					}
 					ev.setSkillDevice(skillDevice);
 				}
 
 				for (int j = 0; j < observers.size(); ++j) {
-					TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+					final TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
 							.elementAt(j);
 					callback.deliverEvents(eventList, false);
 				}
 			}
 		}
 
-		Vector<TsapiTerminalMonitor> terminalObservers = agent
+		final Vector<TsapiTerminalMonitor> terminalObservers = agent
 				.getTerminalObservers();
 
 		for (int j = 0; j < terminalObservers.size(); ++j) {
-			TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
+			final TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
 					.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}
 
-	void doCallEvents(int eventType, Object monitored, short cause,
-			CSTAConnectionID connID, int callState, Object privateData) {
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+	void doCallEvents(final int eventType, final Object monitored,
+			final short cause, final CSTAConnectionID connID,
+			final int callState, Object privateData) {
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		int jtapiCause = getJtapiCause(cause);
 		TSCall call = null;
 		if (connID == null) {
-			if (!(monitored instanceof TSCall)) {
+			if (!(monitored instanceof TSCall))
 				return;
-			}
 			call = (TSCall) monitored;
 		} else {
 			call = provider.createCall(connID.getCallID(), privateData);
 
 			call = provider.validateCall(privateData, call, connID.getCallID());
 
-			if (call.getTSState() == 34) {
+			if (call.getTSState() == 34)
 				switch (eventType) {
 				case 54:
 					break;
 				case 94:
-					if (privateData instanceof LucentChargeAdvice) {
+					if (privateData instanceof LucentChargeAdvice)
 						;
-					}
 				default:
 					provider.dumpCall(connID.getCallID());
 					call = provider.createCall(connID.getCallID());
 				}
 
-			}
-
 		}
 
 		call.setCSTACause(cause);
 		if (privateData instanceof LucentCallClearedEvent) {
-			LucentCallClearedEvent luPrivData = (LucentCallClearedEvent) privateData;
+			final LucentCallClearedEvent luPrivData = (LucentCallClearedEvent) privateData;
 			call.setReason(luPrivData.getReason());
 		}
 
-		if ((eventType == 54) && (cause == 32)) {
+		if (eventType == 54 && cause == 32) {
 			call.setReceivedCallClearedTransfer(true);
 			return;
 		}
 
 		if (eventType == 94) {
 			if (privateData instanceof LucentEnteredDigitsEvent) {
-				LucentEnteredDigitsEvent luPrivData = (LucentEnteredDigitsEvent) privateData;
-				LucentCallImpl connection = TsapiPromoter.promoteConnection(
-						provider, luPrivData.getConnection_asn());
+				final LucentEnteredDigitsEvent luPrivData = (LucentEnteredDigitsEvent) privateData;
+				final LucentCallImpl connection = TsapiPromoter
+						.promoteConnection(provider, luPrivData
+								.getConnection_asn());
 
 				call = connection.getTSCall();
 				call.setDigits(luPrivData.getDigits());
@@ -976,35 +1016,31 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				privateData = null;
 			}
 
-		} else {
+		} else
 			call.setState(callState, eventList);
-		}
 
 		doCallMonitors(call, eventList, jtapiCause, privateData);
 	}
 
-	void doCallMonitors(TSCall call, Vector<TSEvent> eventList, int jtapiCause,
-			Object privateData) {
-		if (call == null) {
+	void doCallMonitors(final TSCall call, final Vector<TSEvent> eventList,
+			final int jtapiCause, final Object privateData) {
+		if (call == null)
 			return;
-		}
 
 		if (privateData != null) {
 			for (int i = 0; i < eventList.size(); ++i) {
-				TSEvent ev = (TSEvent) eventList.elementAt(i);
-				if (ev.getPrivateData() != null) {
+				final TSEvent ev = (TSEvent) eventList.elementAt(i);
+				if (ev.getPrivateData() != null)
 					continue;
-				}
 				ev.setPrivateData(privateData);
 			}
 
-			if (!provider.isLucent()) {
+			if (!provider.isLucent())
 				eventList.addElement(new TSEvent(9999, call, privateData,
 						provider));
-			} else if (privateData instanceof LucentChargeAdvice) {
+			else if (privateData instanceof LucentChargeAdvice)
 				eventList.addElement(new TSEvent(9999, call, privateData,
 						provider));
-			}
 		}
 
 		Vector<TsapiCallMonitor> observers = null;
@@ -1013,7 +1049,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			observers = call.getObservers();
 
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = (TsapiCallMonitor) observers
+				final TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);
 				callback.deliverEvents(eventList, jtapiCause, false);
 			}
@@ -1030,24 +1066,21 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	void doConfXfer(int jtapiCause, CSTAConnectionID primaryConnID,
-			CSTAConnectionID secondaryConnID, CSTAConnection[] connList,
-			Object privateData, short cause) {
-		if ((connList == null) || (connList.length == 0)) {
+	void doConfXfer(final int jtapiCause, CSTAConnectionID primaryConnID,
+			CSTAConnectionID secondaryConnID, final CSTAConnection[] connList,
+			final Object privateData, final short cause) {
+		if (connList == null || connList.length == 0)
 			return;
-		}
 
 		TSCall call = null;
 		TSCall secCall = null;
 
-		if ((provider.isLucentV5()) && (primaryConnID != null)
-				&& (primaryConnID.getCallID() == 0)) {
+		if (provider.isLucentV5() && primaryConnID != null
+				&& primaryConnID.getCallID() == 0)
 			primaryConnID = null;
-		}
-		if ((provider.isLucentV5()) && (secondaryConnID != null)
-				&& (secondaryConnID.getCallID() == 0)) {
+		if (provider.isLucentV5() && secondaryConnID != null
+				&& secondaryConnID.getCallID() == 0)
 			secondaryConnID = null;
-		}
 
 		if (connList.length > 0) {
 			call = provider.createCall(connList[0].getParty().getCallID(),
@@ -1057,25 +1090,22 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 					.getParty().getCallID());
 
 			if (primaryConnID == null) {
-				if ((secondaryConnID != null)
-						&& (connList[0].getParty().getCallID() != secondaryConnID
-								.getCallID()) && (call.getTSState() == 33)) {
+				if (secondaryConnID != null
+						&& connList[0].getParty().getCallID() != secondaryConnID
+								.getCallID() && call.getTSState() == 33)
 					return;
-				}
 
 			} else if (secondaryConnID == null) {
-				if ((primaryConnID != null)
-						&& (connList[0].getParty().getCallID() != primaryConnID
-								.getCallID()) && (call.getTSState() == 33)) {
+				if (primaryConnID != null
+						&& connList[0].getParty().getCallID() != primaryConnID
+								.getCallID() && call.getTSState() == 33)
 					return;
-				}
 
-			} else if ((connList[0].getParty().getCallID() != primaryConnID
-					.getCallID())
-					&& (connList[0].getParty().getCallID() != secondaryConnID
-							.getCallID()) && (call.getTSState() == 33)) {
+			} else if (connList[0].getParty().getCallID() != primaryConnID
+					.getCallID()
+					&& connList[0].getParty().getCallID() != secondaryConnID
+							.getCallID() && call.getTSState() == 33)
 				return;
-			}
 
 		}
 
@@ -1094,51 +1124,42 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 					secondaryConnID.getCallID());
 		}
 
-		if (call == secCall) {
+		if (call == secCall)
 			secCall = null;
-		}
 
-		if ((call != null) && (call.getTSState() == 34) && (secCall != null)
-				&& (secCall.getTSState() == 34)) {
+		if (call != null && call.getTSState() == 34 && secCall != null
+				&& secCall.getTSState() == 34)
 			return;
-		}
 
 		boolean swapCalls = false;
-		if ((secCall != null) && (secCall.getSnapshotCallConfPending())) {
-			log.info("a snapshot call is pending for call " + secCall
-					+ " call id =" + secCall.callID);
+		if (secCall != null && secCall.getSnapshotCallConfPending()) {
+			TSEventHandler.log.info("a snapshot call is pending for call "
+					+ secCall + " call id =" + secCall.callID);
 			swapCalls = true;
-		} else if ((call != null) && (call.getCallObservers().size() == 0)
-				&& (secCall != null) && (secCall.getCallObservers().size() > 0)) {
+		} else if (call != null && call.getCallObservers().size() == 0
+				&& secCall != null && secCall.getCallObservers().size() > 0)
 			swapCalls = true;
-		} else if ((call == null) || (call.getCallObservers().size() <= 0)
-				|| (secCall == null)
-				|| (secCall.getCallObservers().size() != 0)) {
-			if ((call == null) || (secCall != null)) {
-				if ((call != null) && (call.doHeldTalkingMatch(secCall))) {
+		else if (call == null || call.getCallObservers().size() <= 0
+				|| secCall == null || secCall.getCallObservers().size() != 0)
+			if (call == null || secCall != null)
+				if (call != null && call.doHeldTalkingMatch(secCall))
 					swapCalls = true;
-				} else if ((secCall == null) || (secCall.getTSState() != 34)) {
-					if ((call != null) && (call.getTSState() == 34)) {
+				else if (secCall == null || secCall.getTSState() != 34)
+					if (call != null && call.getTSState() == 34)
 						swapCalls = true;
-					} else if ((call == null) && (secCall != null)) {
+					else if (call == null && secCall != null)
 						swapCalls = true;
-					} else {
-						if (call == null) {
+					else {
+						if (call == null)
 							return;
-						}
-						if ((secCall != null)
-								&& (secCall.getCallID() == connList[0]
-										.getParty().getCallID())) {
+						if (secCall != null
+								&& secCall.getCallID() == connList[0]
+										.getParty().getCallID())
 							swapCalls = true;
-						}
 					}
-				}
-			}
-
-		}
 
 		if (swapCalls) {
-			TSCall tempCall = call;
+			final TSCall tempCall = call;
 			call = secCall;
 			secCall = tempCall;
 		}
@@ -1154,54 +1175,49 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			call = call.getHandOff();
 		}
 		call.setNeedSnapshot(false);
-		if (secCall != null) {
+		if (secCall != null)
 			oldSecConns = secCall.getConnections();
-		}
 
-		Vector priEventList = new Vector();
-		Vector secEventList = new Vector();
+		final Vector priEventList = new Vector();
+		final Vector secEventList = new Vector();
 
 		TSConnection conn = null;
 		TSConnection secConn = null;
 		TSConnection tc = null;
 
-		Vector<TSConnection> newConnections = new Vector<TSConnection>();
+		final Vector<TSConnection> newConnections = new Vector<TSConnection>();
 		TSDevice device = null;
 
-		Vector<TSConnection> snapConnections = new Vector<TSConnection>();
+		final Vector<TSConnection> snapConnections = new Vector<TSConnection>();
 
 		for (int i = 0; i < connList.length; ++i) {
 			boolean found = false;
 			device = provider.createDevice(connList[i].getStaticDevice(),
 					connList[i].getParty());
-			if (device == null) {
+			if (device == null)
 				continue;
-			}
 
 			if (oldConns != null) {
-				Vector<TSConnection> oldConnections = new Vector<TSConnection>(
+				final Vector<TSConnection> oldConnections = new Vector<TSConnection>(
 						oldConns);
 				for (int j = 0; j < oldConnections.size(); ++j) {
 					conn = (TSConnection) oldConnections.elementAt(j);
-					Vector<TSConnection> cv = conn.getTermConns();
-					if ((cv != null) && (cv.size() > 0)) {
-						Vector<TSConnection> termConns = new Vector<TSConnection>(
+					final Vector<TSConnection> cv = conn.getTermConns();
+					if (cv != null && cv.size() > 0) {
+						final Vector<TSConnection> termConns = new Vector<TSConnection>(
 								cv);
 						for (int k = 0; k < termConns.size(); ++k) {
 							tc = (TSConnection) termConns.elementAt(k);
-							if (tc.getTSDevice() != device) {
+							if (tc.getTSDevice() != device)
 								continue;
-							}
 							tc.setConnID(connList[i].getParty());
 							newConnections.addElement(tc);
 							found = true;
-							int tcs = tc.getCallControlTermConnState();
-							if (tcs != 96) {
+							final int tcs = tc.getCallControlTermConnState();
+							if (tcs != 96)
 								break;
-							}
-							if (provider.getCapabilities().getSnapshotCallReq() != 0) {
+							if (provider.getCapabilities().getSnapshotCallReq() != 0)
 								snapConnections.addElement(tc.getTSConn());
-							}
 
 							tc.setConnectionState(91, null);
 							tc.setTermConnState(103, null);
@@ -1211,20 +1227,23 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 					} else if (conn.getTSDevice() == device) {
 						try {
 							conn.setConnID(connList[i].getParty());
-						} catch (TsapiPlatformException e) {
-							log
+						} catch (final TsapiPlatformException e) {
+							TSEventHandler.log
 									.error("TSEventHandler.doConfXfer() caught TsapiPlatformException from setConnID() while processing connList, i="
 											+ i
 											+ ", j="
 											+ j
 											+ ", party="
 											+ connList[i].getParty());
-							log.error(e.getMessage(), e);
-							log.trace("Dumping call (" + call + "):");
+							TSEventHandler.log.error(e.getMessage(), e);
+							TSEventHandler.log.trace("Dumping call (" + call
+									+ "):");
 							call.dump("   ");
-							log.trace("Dumping conn (" + conn + "):");
+							TSEventHandler.log.trace("Dumping conn (" + conn
+									+ "):");
 							conn.dump("   ");
-							log.trace("Dumping provider (" + provider + "):");
+							TSEventHandler.log.trace("Dumping provider ("
+									+ provider + "):");
 							provider.dump("   ");
 
 							throw e;
@@ -1232,37 +1251,33 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 						newConnections.addElement(conn);
 						found = true;
-						int cs = conn.getCallControlConnState();
-						if (cs != 80) {
+						final int cs = conn.getCallControlConnState();
+						if (cs != 80)
 							break;
-						}
-						if (provider.getCapabilities().getSnapshotCallReq() != 0) {
+						if (provider.getCapabilities().getSnapshotCallReq() != 0)
 							snapConnections.addElement(conn.getTSConn());
-						}
 
 						conn.setConnectionState(91, null);
 						conn.setTermConnState(103, null);
 						break;
 					}
 
-					if (found) {
+					if (found)
 						break;
-					}
 				}
 			}
 
-			if (found) {
+			if (found)
 				continue;
-			}
 			Vector<TSEvent> tempEventList = new Vector<TSEvent>();
 
 			conn = provider.createTerminalConnection(connList[i].getParty(),
 					device, tempEventList, device);
 
-			int oldConnState = conn.getCallControlConnState();
-			int oldTermConnState = conn.getCallControlTermConnState();
+			final int oldConnState = conn.getCallControlConnState();
+			final int oldTermConnState = conn.getCallControlTermConnState();
 
-			if ((oldConnState == 89) || (oldTermConnState == 102)) {
+			if (oldConnState == 89 || oldTermConnState == 102) {
 				tempEventList = new Vector<TSEvent>();
 
 				conn.delete();
@@ -1273,23 +1288,21 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 
 			if (oldSecConns != null) {
-				Vector<TSConnection> oldSecConnections = new Vector<TSConnection>(
+				final Vector<TSConnection> oldSecConnections = new Vector<TSConnection>(
 						oldSecConns);
 				for (int j = 0; j < oldSecConnections.size(); ++j) {
 					secConn = (TSConnection) oldSecConnections.elementAt(j);
-					Vector<TSConnection> cv = secConn.getTermConns();
-					if ((cv != null) && (cv.size() > 0)) {
-						Vector<TSConnection> termConns = new Vector<TSConnection>(
+					final Vector<TSConnection> cv = secConn.getTermConns();
+					if (cv != null && cv.size() > 0) {
+						final Vector<TSConnection> termConns = new Vector<TSConnection>(
 								cv);
 						for (int k = 0; k < termConns.size(); ++k) {
 							tc = (TSConnection) termConns.elementAt(k);
-							if (conn.getTSDevice() != tc.getTSDevice()) {
+							if (conn.getTSDevice() != tc.getTSDevice())
 								continue;
-							}
-							for (int m = 0; m < tempEventList.size(); ++m) {
+							for (int m = 0; m < tempEventList.size(); ++m)
 								priEventList.addElement(tempEventList
 										.elementAt(m));
-							}
 							conn.setConnectionState(tc
 									.getCallControlConnState(), priEventList);
 							conn.setTermConnState(tc
@@ -1300,9 +1313,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						}
 
 					} else if (conn.getTSDevice() == secConn.getTSDevice()) {
-						for (int m = 0; m < tempEventList.size(); ++m) {
+						for (int m = 0; m < tempEventList.size(); ++m)
 							priEventList.addElement(tempEventList.elementAt(m));
-						}
 						conn.setConnectionState(secConn
 								.getCallControlConnState(), priEventList);
 						conn.setTermConnState(secConn
@@ -1311,20 +1323,17 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						break;
 					}
 
-					if (found) {
+					if (found)
 						break;
-					}
 				}
 			}
 
 			if (!found) {
-				if (provider.getCapabilities().getSnapshotCallReq() != 0) {
+				if (provider.getCapabilities().getSnapshotCallReq() != 0)
 					snapConnections.addElement(conn.getTSConn());
-				}
 
-				for (int m = 0; m < tempEventList.size(); ++m) {
+				for (int m = 0; m < tempEventList.size(); ++m)
 					priEventList.addElement(tempEventList.elementAt(m));
-				}
 				conn.setConnectionState(91, priEventList);
 				conn.setTermConnState(103, priEventList);
 			}
@@ -1332,33 +1341,30 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			newConnections.addElement(conn);
 		}
 
-		Vector eventList = new Vector();
+		final Vector eventList = new Vector();
 
 		call.replaceConnections(newConnections, eventList);
-		for (int m = 0; m < priEventList.size(); ++m) {
+		for (int m = 0; m < priEventList.size(); ++m)
 			eventList.addElement(priEventList.elementAt(m));
-		}
 
-		if (secCall != null) {
+		if (secCall != null)
 			if (swapCalls) {
 				secCall.delayVDNremoveCallFromDomain = true;
 				secCall.setState(34, secEventList);
 				secCall.delayVDNremoveCallFromDomain = false;
 				call.copyStuff(secCall);
-			} else {
+			} else
 				secCall.setState(34, secEventList);
-			}
-
-		}
 
 		doCallMonitors(secCall, secEventList, jtapiCause, privateData);
 
 		TSDevice distributingDevice = null;
 		TSDevice distributingVDN = null;
 		if (privateData instanceof LucentConferencedEvent) {
-			LucentConferencedEvent luPrivData = (LucentConferencedEvent) privateData;
-			TsapiAddress address = TsapiPromoter.promoteDeviceIDToAddress(
-					provider, luPrivData.getDistributingDevice_asn());
+			final LucentConferencedEvent luPrivData = (LucentConferencedEvent) privateData;
+			final TsapiAddress address = TsapiPromoter
+					.promoteDeviceIDToAddress(provider, luPrivData
+							.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -1366,11 +1372,11 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 			call.setOCI(luPrivData.getOriginalCallInfo());
 			if (privateData instanceof LucentV5ConferencedEvent) {
-				LucentV5ConferencedEvent luV5PrivData = (LucentV5ConferencedEvent) privateData;
+				final LucentV5ConferencedEvent luV5PrivData = (LucentV5ConferencedEvent) privateData;
 				call.setUCID(luV5PrivData.getUcid());
 
 				if (privateData instanceof LucentV7ConferencedEvent) {
-					LucentV7ConferencedEvent luV7PrivData = (LucentV7ConferencedEvent) privateData;
+					final LucentV7ConferencedEvent luV7PrivData = (LucentV7ConferencedEvent) privateData;
 					call.setDeviceHistory(TsapiPromoter
 							.promoteDeviceHistory(luV7PrivData
 									.getDeviceHistory()));
@@ -1386,9 +1392,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 
 		} else if (privateData instanceof LucentTransferredEvent) {
-			LucentTransferredEvent luPrivData = (LucentTransferredEvent) privateData;
-			TsapiAddress address = TsapiPromoter.promoteDeviceIDToAddress(
-					provider, luPrivData.getDistributingDevice_asn());
+			final LucentTransferredEvent luPrivData = (LucentTransferredEvent) privateData;
+			final TsapiAddress address = TsapiPromoter
+					.promoteDeviceIDToAddress(provider, luPrivData
+							.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -1396,11 +1403,11 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			}
 			call.setOCI(luPrivData.getOriginalCallInfo());
 			if (privateData instanceof LucentV5TransferredEvent) {
-				LucentV5TransferredEvent luV5PrivData = (LucentV5TransferredEvent) privateData;
+				final LucentV5TransferredEvent luV5PrivData = (LucentV5TransferredEvent) privateData;
 				call.setUCID(luV5PrivData.getUcid());
 
 				if (privateData instanceof LucentV7TransferredEvent) {
-					LucentV7TransferredEvent luV7PrivData = (LucentV7TransferredEvent) privateData;
+					final LucentV7TransferredEvent luV7PrivData = (LucentV7TransferredEvent) privateData;
 					call.setDeviceHistory(TsapiPromoter
 							.promoteDeviceHistory(luV7PrivData
 									.getDeviceHistory()));
@@ -1418,113 +1425,98 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		}
 
 		if (privateData instanceof LucentTrunkConnectionMapping) {
-			CSTATrunkInfo[] trunkList = ((LucentTrunkConnectionMapping) privateData)
+			final CSTATrunkInfo[] trunkList = ((LucentTrunkConnectionMapping) privateData)
 					.getLucentTrunkInfo();
 
-			LucentTrunkInfoMapItem[] trunkMapItems = LucentTrunkInfoMapItem
+			final LucentTrunkInfoMapItem[] trunkMapItems = LucentTrunkInfoMapItem
 					.createLucentTrunkInfoMapItemArray(trunkList, provider);
 
-			if (trunkMapItems != null) {
+			if (trunkMapItems != null)
 				for (int i = 0; i < trunkMapItems.length; ++i) {
-					LucentTrunkInfoMapItem item = trunkMapItems[i];
-					if (item == null) {
+					final LucentTrunkInfoMapItem item = trunkMapItems[i];
+					if (item == null)
 						continue;
-					}
 					item.interLinkConnectionCallAndTrunk(eventList);
 				}
-
-			}
 
 		}
 
 		call.moveStuff(secCall);
 
-		if (secCall != null) {
+		if (secCall != null)
 			secCall.setStateForVDN();
-		}
 		if (snapConnections.size() > 0) {
 			call.setNeedSnapshot(true);
 
-			SnapshotCallExtraConfHandler handler = new XferConfSnapshotCallConfHandler(
+			final SnapshotCallExtraConfHandler handler = new XferConfSnapshotCallConfHandler(
 					this, call, jtapiCause, privateData, snapConnections);
 
 			call.doSnapshot(((TSConnection) snapConnections.elementAt(0))
 					.getConnID(), handler, false);
 		}
 		TransferredEventParams transferredEventParams;
-		if ((jtapiCause == 212) || (jtapiCause == 207)) {
+		if (jtapiCause == 212 || jtapiCause == 207) {
 			TSCall call1 = null;
 			TSCall call2 = null;
-			if (primaryConnID != null) {
+			if (primaryConnID != null)
 				call1 = provider.findCall(primaryConnID.getCallID());
-			}
-			if (secondaryConnID != null) {
+			if (secondaryConnID != null)
 				call2 = provider.findCall(secondaryConnID.getCallID());
-			}
-			ArrayList<TSCall> callList = new ArrayList<TSCall>();
-			if (call1 != null) {
+			final ArrayList<TSCall> callList = new ArrayList<TSCall>();
+			if (call1 != null)
 				callList.add(call1);
-			}
-			if (call2 != null) {
+			if (call2 != null)
 				callList.add(call2);
-			}
 			transferredEventParams = new TransferredEventParams(callList);
-			for (Object ev : eventList) {
+			for (final Object ev : eventList)
 				((TSEvent) ev)
 						.setTransferredEventParams(transferredEventParams);
-			}
 		}
 		doCallMonitors(call, eventList, jtapiCause, privateData);
 
-		if (call.checkForMonitors()) {
+		if (call.checkForMonitors())
 			return;
-		}
 		call.setNeedSnapshot(true);
 	}
 
-	void doConnEvents(int eventType, Object monitored, short cause,
-			CSTAExtendedDeviceID subjectDeviceID, CSTAConnectionID connID,
-			int connState, int termConnState, Object privateData,
-			CSTAExtendedDeviceID callingDeviceID,
-			CSTAExtendedDeviceID calledDeviceID,
-			CSTAExtendedDeviceID lastRedirectionDeviceID,
-			boolean dontNeedSnapshot, int numQueued) {
-		int jtapiCause = getJtapiCause(cause);
+	void doConnEvents(final int eventType, final Object monitored,
+			final short cause, final CSTAExtendedDeviceID subjectDeviceID,
+			CSTAConnectionID connID, final int connState,
+			final int termConnState, final Object privateData,
+			final CSTAExtendedDeviceID callingDeviceID,
+			final CSTAExtendedDeviceID calledDeviceID,
+			final CSTAExtendedDeviceID lastRedirectionDeviceID,
+			final boolean dontNeedSnapshot, final int numQueued) {
+		final int jtapiCause = getJtapiCause(cause);
 		TSDevice subjectDevice = provider.createDevice(subjectDeviceID, connID);
 		if (subjectDevice == null) {
-			if ((((subjectDeviceID == null) || (subjectDeviceID
-					.getDeviceIDStatus() == 2)))
-					&& (monitored instanceof TSDevice)) {
-				if (provider.isLucent()) {
+			if ((subjectDeviceID == null || subjectDeviceID.getDeviceIDStatus() == 2)
+					&& monitored instanceof TSDevice) {
+				if (provider.isLucent())
 					subjectDevice = provider.createDevice(connID.getDeviceID(),
 							connID);
-				} else {
+				else
 					subjectDevice = (TSDevice) monitored;
-				}
 			} else {
-				if (connID == null) {
+				if (connID == null)
 					return;
-				}
 
 				subjectDevice = provider.createDevice(connID.getDeviceID(),
 						connID);
 			}
-			if (subjectDevice == null) {
+			if (subjectDevice == null)
 				return;
-			}
 
 		}
 
-		if ((provider.isLucent()) && (connID.getDevIDType() == 1)) {
-			CSTAConnectionID realConnID = subjectDevice.matchConn(connID);
-			if (realConnID != null) {
+		if (provider.isLucent() && connID.getDevIDType() == 1) {
+			final CSTAConnectionID realConnID = subjectDevice.matchConn(connID);
+			if (realConnID != null)
 				connID = realConnID;
-			}
 		}
 
-		if (eventType == 64) {
+		if (eventType == 64)
 			subjectDevice.setNumberQueued(numQueued);
-		}
 
 		TSDevice connectionDevice = subjectDevice;
 		if (cause == 17) {
@@ -1536,38 +1528,34 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				break;
 			case 63:
 				if (privateData instanceof LucentOriginatedEvent) {
-					LucentOriginatedEvent luPrivData = (LucentOriginatedEvent) privateData;
+					final LucentOriginatedEvent luPrivData = (LucentOriginatedEvent) privateData;
 					LucentTerminalImpl physicalTerminal = null;
 					try {
 						physicalTerminal = TsapiPromoter.promoteTerminal(
 								provider, luPrivData.getPhysicalTerminal_asn());
-					} catch (TsapiPlatformException e) {
-						log.error(e.getMessage(), e);
+					} catch (final TsapiPlatformException e) {
+						TSEventHandler.log.error(e.getMessage(), e);
 					}
-					if (physicalTerminal != null) {
+					if (physicalTerminal != null)
 						subjectDevice = physicalTerminal.getTSDevice();
-					}
-				} else {
+				} else
 					confDevice = provider.createDevice(callingDeviceID);
-				}
 
 			}
 
-			if (confDevice != null) {
+			if (confDevice != null)
 				connectionDevice = confDevice;
-			}
 		} else if (privateData instanceof LucentOriginatedEvent) {
-			LucentOriginatedEvent luPrivData = (LucentOriginatedEvent) privateData;
+			final LucentOriginatedEvent luPrivData = (LucentOriginatedEvent) privateData;
 			LucentTerminalImpl physicalTerminal = null;
 			try {
 				physicalTerminal = TsapiPromoter.promoteTerminal(provider,
 						luPrivData.getPhysicalTerminal_asn());
-			} catch (TsapiPlatformException e) {
-				log.error(e.getMessage(), e);
+			} catch (final TsapiPlatformException e) {
+				TSEventHandler.log.error(e.getMessage(), e);
 			}
-			if (physicalTerminal != null) {
+			if (physicalTerminal != null)
 				subjectDevice = physicalTerminal.getTSDevice();
-			}
 
 		}
 
@@ -1577,20 +1565,19 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 		call.setCSTACause(cause);
 
-		if ((monitored != null) && (monitored instanceof TSDevice)
-				&& (((TSDevice) monitored).getDeviceType() == 1)) {
+		if (monitored != null && monitored instanceof TSDevice
+				&& ((TSDevice) monitored).getDeviceType() == 1)
 			provider.addCallToDomain((TSDevice) monitored, call);
-		}
 
 		call.considerAddingVDNMonitorCallObservers(monitored);
 
-		if ((((eventType == 58) || (eventType == 56)))
-				&& (call.getSnapshotCallConfPending())) {
-			log.info("set redo snapshot call to true");
+		if ((eventType == 58 || eventType == 56)
+				&& call.getSnapshotCallConfPending()) {
+			TSEventHandler.log.info("set redo snapshot call to true");
 			call.setNeedRedoSnapshotCall(true);
 		}
 
-		if (call.getTSState() == 34) {
+		if (call.getTSState() == 34)
 			switch (eventType) {
 			case 56:
 			case 58:
@@ -1603,8 +1590,6 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call = provider.createCall(connID.getCallID());
 			}
 
-		}
-
 		switch (eventType) {
 		case 61:
 		case 65:
@@ -1616,14 +1601,18 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		switch (eventType) {
 		case 57:
 			if (provider.isConnInAnyHash(connID) == true) {
-				TSConnection dumpingConn = provider.createTerminalConnection(
-						connID, subjectDevice, eventList, connectionDevice);
-				int oldCState = dumpingConn.getCallControlConnState();
-				int oldTCState = dumpingConn.getCallControlTermConnState();
+				final TSConnection dumpingConn = provider
+						.createTerminalConnection(connID, subjectDevice,
+								eventList, connectionDevice);
+				final int oldCState = dumpingConn.getCallControlConnState();
+				final int oldTCState = dumpingConn
+						.getCallControlTermConnState();
 
-				if ((((oldCState == 89) || (oldTCState == 102)))
-						&& ((((!dumpingConn.isTerminalConnection()) && (connState != 89)) || ((dumpingConn
-								.isTerminalConnection() == true) && (termConnState != 102))))) {
+				if ((oldCState == 89 || oldTCState == 102)
+						&& (!dumpingConn.isTerminalConnection()
+								&& connState != 89 || dumpingConn
+								.isTerminalConnection() == true
+								&& termConnState != 102)) {
 					eventList = new Vector<TSEvent>();
 
 					dumpingConn.delete();
@@ -1636,7 +1625,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 		if (!dontNeedSnapshot) {
 			if (call.needsSnapshot()) {
-				SnapshotCallExtraConfHandler handler = new UnsolicitedSnapshotCallConfHandler(
+				final SnapshotCallExtraConfHandler handler = new UnsolicitedSnapshotCallConfHandler(
 						this, eventType, cause, subjectDeviceID, subjectDevice,
 						connID, call, privateData, callingDeviceID,
 						calledDeviceID, lastRedirectionDeviceID, connState,
@@ -1648,16 +1637,15 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				return;
 			}
 
-		} else {
+		} else
 			call.setNeedSnapshot(false);
-		}
 
 		TSConnection connection = provider.createTerminalConnection(connID,
 				subjectDevice, eventList, connectionDevice);
 		int oldConnState = connection.getCallControlConnState();
 		int oldTermConnState = connection.getCallControlTermConnState();
 
-		if ((oldConnState == 89) || (oldTermConnState == 102)) {
+		if (oldConnState == 89 || oldTermConnState == 102)
 			switch (eventType) {
 			case 63:
 			case 66:
@@ -1677,8 +1665,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				oldTermConnState = connection.getCallControlTermConnState();
 				break;
 			default:
-				if (((!connection.isTerminalConnection()) && (connState != 89))
-						|| ((connection.isTerminalConnection() == true) && (termConnState != 102))) {
+				if (!connection.isTerminalConnection() && connState != 89
+						|| connection.isTerminalConnection() == true
+						&& termConnState != 102) {
 					eventList = new Vector<TSEvent>();
 
 					connection.delete();
@@ -1692,23 +1681,17 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				}
 			}
 
-		}
-
 		if (eventType == 56) {
-			Vector<TSConnection> allConnections = call.getConnections();
-			if (allConnections.size() <= 2) {
+			final Vector<TSConnection> allConnections = call.getConnections();
+			if (allConnections.size() <= 2)
 				for (int i = 0; i < allConnections.size(); ++i) {
-					TSConnection tmpconn = (TSConnection) allConnections
+					final TSConnection tmpconn = (TSConnection) allConnections
 							.elementAt(i);
-					if ((tmpconn == connection)
-							|| ((tmpconn.getTSConnState() != 53) && (tmpconn
-									.getTSConnState() != 52))) {
+					if (tmpconn == connection || tmpconn.getTSConnState() != 53
+							&& tmpconn.getTSConnState() != 52)
 						continue;
-					}
 					call.setState(34, eventList);
 				}
-
-			}
 
 		}
 
@@ -1716,25 +1699,24 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		connection.setTermConnState(termConnState, eventList);
 
 		if (eventType == 56) {
-			Vector<TSConnection> allConnections = call.getConnections();
+			final Vector<TSConnection> allConnections = call.getConnections();
 			if (allConnections.size() >= 1) {
 				Vector<TSConnection> listOfConnsBelongToDiffDevIDType = new Vector<TSConnection>();
 
 				for (int i = 0; i < allConnections.size(); ++i) {
 					TSConnection tmpconn = (TSConnection) allConnections
 							.elementAt(i);
-					if (tmpconn.isDoNotExpectConnectionClearedEvent()) {
+					if (tmpconn.isDoNotExpectConnectionClearedEvent())
 						listOfConnsBelongToDiffDevIDType.addElement(tmpconn);
-					}
 					tmpconn = null;
 				}
 
-				if (allConnections.equals(listOfConnsBelongToDiffDevIDType)) {
+				if (allConnections.equals(listOfConnsBelongToDiffDevIDType))
 					for (int i = 0; i < allConnections.size(); ++i) {
 						TSConnection tmpconn = (TSConnection) allConnections
 								.elementAt(i);
 						if (tmpconn.isDoNotExpectConnectionClearedEvent()) {
-							log
+							TSEventHandler.log
 									.info("Conn "
 											+ tmpconn
 											+ ", has 'connBelongToDifferentDeviceIDType' flag set. Clearing connection.");
@@ -1743,40 +1725,35 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						}
 						tmpconn = null;
 					}
-				}
 				listOfConnsBelongToDiffDevIDType = null;
 			}
 
 		}
 
-		if (dontNeedSnapshot) {
+		if (dontNeedSnapshot)
 			call.setNeedSnapshot(false);
-		}
 
 		finishConnEvents(monitored, eventType, cause, jtapiCause,
 				subjectDeviceID, subjectDevice, connection, call, privateData,
 				callingDeviceID, calledDeviceID, lastRedirectionDeviceID,
 				connState, oldConnState, oldTermConnState, eventList);
 
-		if (call.checkForMonitors()) {
+		if (call.checkForMonitors())
 			return;
-		}
 		call.setNeedSnapshot(true);
 	}
 
-	void doDeviceEvents(int eventType, Object monitored,
-			CSTAExtendedDeviceID subjectDeviceID, boolean state,
-			CSTAForwardingInfo fwdInfo, Object privateData) {
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+	void doDeviceEvents(final int eventType, final Object monitored,
+			final CSTAExtendedDeviceID subjectDeviceID, final boolean state,
+			final CSTAForwardingInfo fwdInfo, final Object privateData) {
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 		TSDevice subjectDevice = provider.createDevice(subjectDeviceID);
 
-		if (subjectDevice == null) {
-			if (monitored instanceof TSDevice) {
+		if (subjectDevice == null)
+			if (monitored instanceof TSDevice)
 				subjectDevice = (TSDevice) monitored;
-			} else {
+			else
 				return;
-			}
-		}
 
 		switch (eventType) {
 		case 69:
@@ -1785,15 +1762,14 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 71:
 			int newBits = 0;
 			if (privateData instanceof LucentQueryMwiConfEvent) {
-				LucentQueryMwiConfEvent luPrivData = (LucentQueryMwiConfEvent) privateData;
+				final LucentQueryMwiConfEvent luPrivData = (LucentQueryMwiConfEvent) privateData;
 				newBits = luPrivData.getApplicationType();
-			} else if (state) {
+			} else if (state)
 				newBits = -1;
-			}
 			subjectDevice.updateMessageWaitingBits(newBits, eventList);
 			break;
 		case 70:
-			CSTAForwardingInfo[] fwdArray = new CSTAForwardingInfo[1];
+			final CSTAForwardingInfo[] fwdArray = new CSTAForwardingInfo[1];
 			fwdArray[0] = fwdInfo;
 			subjectDevice.updateForwarding(fwdArray, eventList);
 		}
@@ -1801,64 +1777,61 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		doDeviceMonitors(subjectDevice, eventList, privateData);
 	}
 
-	void doDeviceMonitors(TSDevice device, Vector<TSEvent> eventList,
-			Object privateData) {
-		if ((eventList.size() == 0) && (privateData == null)) {
+	void doDeviceMonitors(final TSDevice device,
+			final Vector<TSEvent> eventList, final Object privateData) {
+		if (eventList.size() == 0 && privateData == null)
 			return;
-		}
 
 		if (privateData != null) {
 			for (int i = 0; i < eventList.size(); ++i) {
-				TSEvent ev = (TSEvent) eventList.elementAt(i);
-				if (ev.getPrivateData() != null) {
+				final TSEvent ev = (TSEvent) eventList.elementAt(i);
+				if (ev.getPrivateData() != null)
 					continue;
-				}
 				ev.setPrivateData(privateData);
 			}
 
-			if (!provider.isLucent()) {
+			if (!provider.isLucent())
 				eventList.addElement(new TSEvent(9999, device, privateData,
 						provider));
-			}
 		}
 
-		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
+		final Vector<TsapiAddressMonitor> observers = device
+				.getAddressObservers();
 
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+			final TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
 					.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 
-		Vector<TsapiTerminalMonitor> terminalObservers = device
+		final Vector<TsapiTerminalMonitor> terminalObservers = device
 				.getTerminalObservers();
 
 		for (int j = 0; j < terminalObservers.size(); ++j) {
-			TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
+			final TsapiTerminalMonitor callback = (TsapiTerminalMonitor) terminalObservers
 					.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}
 
-	void doMonitorEnded(int cause, int xrefID, Object monitored,
-			Object privateData) {
-		int jtapiCause = getJtapiCause(cause);
+	void doMonitorEnded(final int cause, final int xrefID,
+			final Object monitored, final Object privateData) {
+		final int jtapiCause = getJtapiCause(cause);
 
-		log.info("Monitor Ended, jtapiCause = " + jtapiCause);
+		TSEventHandler.log.info("Monitor Ended, jtapiCause = " + jtapiCause);
 
-		if (monitored instanceof TSDevice) {
+		if (monitored instanceof TSDevice)
 			((TSDevice) monitored).removeObservers(jtapiCause, privateData,
 					xrefID);
-		} else {
-			if (!(monitored instanceof TSCall)) {
+		else {
+			if (!(monitored instanceof TSCall))
 				return;
-			}
 			((TSCall) monitored).removeObservers(jtapiCause, privateData,
 					xrefID);
 		}
 	}
 
-	short endpointEvaluation(short deviceIDType) {
+	short endpointEvaluation(final short deviceIDType) {
 		switch (deviceIDType) {
 		case 0:
 			return 3;
@@ -1873,11 +1846,12 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		return 1;
 	}
 
-	public void eventDistributorException(Exception e) {
-		if (log != null) {
-			log.error("Event Distributor Exception - shutting down provider "
-					+ provider);
-			log.error(e.getMessage(), e);
+	public void eventDistributorException(final Exception e) {
+		if (TSEventHandler.log != null) {
+			TSEventHandler.log
+					.error("Event Distributor Exception - shutting down provider "
+							+ provider);
+			TSEventHandler.log.error(e.getMessage(), e);
 		} else {
 			System.out
 					.println("Event Distributor Exception - shutting down provider "
@@ -1887,31 +1861,34 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		provider.shutdown();
 	}
 
-	void finishConnEvents(Object monitored, int eventType, int cause,
-			int jtapiCause, CSTAExtendedDeviceID subjectDeviceID,
-			TSDevice subjectDevice, TSConnection connection, TSCall call,
-			Object privateData, CSTAExtendedDeviceID callingDeviceID,
-			CSTAExtendedDeviceID calledDeviceID,
-			CSTAExtendedDeviceID lastRedirectionDeviceID, int connState,
-			int oldConnState, int oldTermConnState, Vector<TSEvent> eventList) {
-		TSDevice callingDevice = provider.createDevice(callingDeviceID);
-		TSDevice calledDevice = provider.createDevice(calledDeviceID);
-		TSDevice lastRedirectionDevice = provider
+	void finishConnEvents(final Object monitored, final int eventType,
+			final int cause, final int jtapiCause,
+			final CSTAExtendedDeviceID subjectDeviceID,
+			final TSDevice subjectDevice, final TSConnection connection,
+			final TSCall call, final Object privateData,
+			final CSTAExtendedDeviceID callingDeviceID,
+			final CSTAExtendedDeviceID calledDeviceID,
+			final CSTAExtendedDeviceID lastRedirectionDeviceID,
+			final int connState, final int oldConnState,
+			final int oldTermConnState, final Vector<TSEvent> eventList) {
+		final TSDevice callingDevice = provider.createDevice(callingDeviceID);
+		final TSDevice calledDevice = provider.createDevice(calledDeviceID);
+		final TSDevice lastRedirectionDevice = provider
 				.createDevice(lastRedirectionDeviceID);
 
 		call.setCallingDevices(callingDevice);
 		call.setCalledDevice(calledDevice);
 		call.setLastRedirectionDevice(lastRedirectionDevice);
 
-		if ((eventType == 62) && (subjectDeviceID != null)) {
+		if (eventType == 62 && subjectDeviceID != null) {
 			TSTrunk trk = null;
 
 			if (privateData instanceof LucentV5NetworkProgressInfo) {
-				LucentV5NetworkProgressInfo luPrivData = (LucentV5NetworkProgressInfo) privateData;
+				final LucentV5NetworkProgressInfo luPrivData = (LucentV5NetworkProgressInfo) privateData;
 				if (luPrivData != null) {
-					TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
-							provider, luPrivData.getTrunkGroup(), luPrivData
-									.getTrunkMember());
+					final TsapiTrunkImpl tsapiTrunk = TsapiPromoter
+							.promoteTrunk(provider, luPrivData.getTrunkGroup(),
+									luPrivData.getTrunkMember());
 
 					if (tsapiTrunk != null) {
 						trk = tsapiTrunk.getTSTrunk();
@@ -1924,9 +1901,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 			} else {
 				trk = provider.createTrunk(subjectDevice.getName(), 2);
-				if ((trk != null)
-						&& (privateData instanceof LucentV5NetworkProgressInfo)) {
-					LucentV5NetworkProgressInfo luPrivData = (LucentV5NetworkProgressInfo) privateData;
+				if (trk != null
+						&& privateData instanceof LucentV5NetworkProgressInfo) {
+					final LucentV5NetworkProgressInfo luPrivData = (LucentV5NetworkProgressInfo) privateData;
 					if (luPrivData != null) {
 						trk.setGroupName(luPrivData.getTrunkGroup());
 						trk.setMemberName(luPrivData.getTrunkMember());
@@ -1935,9 +1912,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 
 			}
 
-			if (trk != null) {
+			if (trk != null)
 				call.addTrunk(trk, eventList);
-			}
 
 		}
 
@@ -1945,17 +1921,18 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		TSDevice distributingDevice = null;
 		TSDevice distributingVDN = null;
 		if (privateData instanceof LucentDeliveredEvent) {
-			LucentDeliveredEvent luPrivData = (LucentDeliveredEvent) privateData;
-			LucentACDAddressImpl acdAddr = TsapiPromoter.promoteACDAddress(
-					provider, ((LucentDeliveredEvent) privateData)
-							.getSplit_asn());
+			final LucentDeliveredEvent luPrivData = (LucentDeliveredEvent) privateData;
+			final LucentACDAddressImpl acdAddr = TsapiPromoter
+					.promoteACDAddress(provider,
+							((LucentDeliveredEvent) privateData).getSplit_asn());
 
 			if (acdAddr != null) {
 				deliveringACDDevice = acdAddr.getTSDevice();
 				call.setDeliveringACDDevice(deliveringACDDevice);
 			}
-			TsapiAddress address = TsapiPromoter.promoteDeviceIDToAddress(
-					provider, luPrivData.getDistributingDevice_asn());
+			final TsapiAddress address = TsapiPromoter
+					.promoteDeviceIDToAddress(provider, luPrivData
+							.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -1967,17 +1944,18 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			call.setUEC(luPrivData.getUserEnteredCode());
 			call.setOCI(luPrivData.getOriginalCallInfo());
 			call.setReason(luPrivData.getReason());
-			TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(provider,
-					luPrivData.getTrunkGroup(), luPrivData.getTrunkMember());
+			final TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
+					provider, luPrivData.getTrunkGroup(), luPrivData
+							.getTrunkMember());
 
 			if (tsapiTrunk != null) {
-				TSTrunk trk = tsapiTrunk.getTSTrunk();
+				final TSTrunk trk = tsapiTrunk.getTSTrunk();
 
 				if (!provider
-						.isDeviceMonitorable(subjectDeviceID.getDeviceID())) {
+						.isDeviceMonitorable(subjectDeviceID.getDeviceID()))
 					trk.setType(2);
-				}
-				TSConnection trkConn = call.findOtherConnection(connection);
+				final TSConnection trkConn = call
+						.findOtherConnection(connection);
 				if (trkConn != null) {
 					trkConn.setTrunk(trk);
 					trk.setTSConnection(trkConn);
@@ -1985,7 +1963,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call.addTrunk(trk, eventList);
 			}
 			if (privateData instanceof LucentV5DeliveredEvent) {
-				LucentV5DeliveredEvent luV5PrivData = (LucentV5DeliveredEvent) privateData;
+				final LucentV5DeliveredEvent luV5PrivData = (LucentV5DeliveredEvent) privateData;
 				call.setUCID(luV5PrivData.getUcid());
 				call
 						.setCallOriginatorInfo(luV5PrivData
@@ -1993,7 +1971,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call.setFlexibleBilling(luV5PrivData.isFlexibleBilling());
 
 				if (privateData instanceof LucentV7DeliveredEvent) {
-					LucentV7DeliveredEvent luV7PrivData = (LucentV7DeliveredEvent) privateData;
+					final LucentV7DeliveredEvent luV7PrivData = (LucentV7DeliveredEvent) privateData;
 					call.setDeviceHistory(TsapiPromoter
 							.promoteDeviceHistory(luV7PrivData
 									.getDeviceHistory()));
@@ -2008,16 +1986,17 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				}
 			}
 		} else if (privateData instanceof LucentEstablishedEvent) {
-			LucentEstablishedEvent luPrivData = (LucentEstablishedEvent) privateData;
-			LucentACDAddressImpl acdAddr = TsapiPromoter.promoteACDAddress(
-					provider, luPrivData.getSplit_asn());
+			final LucentEstablishedEvent luPrivData = (LucentEstablishedEvent) privateData;
+			final LucentACDAddressImpl acdAddr = TsapiPromoter
+					.promoteACDAddress(provider, luPrivData.getSplit_asn());
 
 			if (acdAddr != null) {
 				deliveringACDDevice = acdAddr.getTSDevice();
 				call.setDeliveringACDDevice(deliveringACDDevice);
 			}
-			TsapiAddress address = TsapiPromoter.promoteDeviceIDToAddress(
-					provider, luPrivData.getDistributingDevice_asn());
+			final TsapiAddress address = TsapiPromoter
+					.promoteDeviceIDToAddress(provider, luPrivData
+							.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -2028,20 +2007,22 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			call.setUEC(luPrivData.getUserEnteredCode());
 			call.setOCI(luPrivData.getOriginalCallInfo());
 			call.setReason(luPrivData.getReason());
-			TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(provider,
-					luPrivData.getTrunkGroup(), luPrivData.getTrunkMember());
+			final TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
+					provider, luPrivData.getTrunkGroup(), luPrivData
+							.getTrunkMember());
 
 			if (tsapiTrunk != null) {
-				TSTrunk trk = tsapiTrunk.getTSTrunk();
+				final TSTrunk trk = tsapiTrunk.getTSTrunk();
 
 				if (!provider
-						.isDeviceMonitorable(subjectDeviceID.getDeviceID())) {
+						.isDeviceMonitorable(subjectDeviceID.getDeviceID()))
 					trk.setType(2);
-				}
-				TSConnection otherConn = call.findOtherConnection(connection);
+				final TSConnection otherConn = call
+						.findOtherConnection(connection);
 
-				TSConnection trkConn = (isCalledBetterEndpoint(callingDeviceID,
-						calledDeviceID)) ? otherConn : connection;
+				final TSConnection trkConn = isCalledBetterEndpoint(
+						callingDeviceID, calledDeviceID) ? otherConn
+						: connection;
 
 				if (trkConn != null) {
 					trkConn.setTrunk(trk);
@@ -2050,7 +2031,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call.addTrunk(trk, eventList);
 			}
 			if (privateData instanceof LucentV5EstablishedEvent) {
-				LucentV5EstablishedEvent luV5PrivData = (LucentV5EstablishedEvent) privateData;
+				final LucentV5EstablishedEvent luV5PrivData = (LucentV5EstablishedEvent) privateData;
 				call.setUCID(luV5PrivData.getUcid());
 				call
 						.setCallOriginatorInfo(luV5PrivData
@@ -2058,7 +2039,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call.setFlexibleBilling(luV5PrivData.isFlexibleBilling());
 
 				if (privateData instanceof LucentV7EstablishedEvent) {
-					LucentV7EstablishedEvent luV7PrivData = (LucentV7EstablishedEvent) privateData;
+					final LucentV7EstablishedEvent luV7PrivData = (LucentV7EstablishedEvent) privateData;
 					call.setDeviceHistory(TsapiPromoter
 							.promoteDeviceHistory(luV7PrivData
 									.getDeviceHistory()));
@@ -2073,87 +2054,84 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				}
 			}
 		} else if (privateData instanceof LucentConnectionClearedEvent) {
-			LucentConnectionClearedEvent luPrivData = (LucentConnectionClearedEvent) privateData;
+			final LucentConnectionClearedEvent luPrivData = (LucentConnectionClearedEvent) privateData;
 			call.setUUI(luPrivData.getUserInfo());
 
 			if (privateData instanceof LucentV7ConnectionClearedEvent) {
-				LucentV7ConnectionClearedEvent luV7PrivData = (LucentV7ConnectionClearedEvent) privateData;
+				final LucentV7ConnectionClearedEvent luV7PrivData = (LucentV7ConnectionClearedEvent) privateData;
 				call.setDeviceHistory(TsapiPromoter
 						.promoteDeviceHistory(luV7PrivData.getDeviceHistory()));
 			}
 
 		} else if (privateData instanceof LucentOriginatedEvent) {
-			LucentOriginatedEvent luPrivData = (LucentOriginatedEvent) privateData;
+			final LucentOriginatedEvent luPrivData = (LucentOriginatedEvent) privateData;
 			call.setUUI(luPrivData.getUserInfo());
 		} else if (privateData instanceof LucentServiceInitiatedEvent) {
-			LucentServiceInitiatedEvent luPrivData = (LucentServiceInitiatedEvent) privateData;
+			final LucentServiceInitiatedEvent luPrivData = (LucentServiceInitiatedEvent) privateData;
 			call.setUCID(luPrivData.getUcid());
 		} else if (privateData instanceof LucentQueuedEvent) {
-			LucentQueuedEvent luV7PrivData = (LucentQueuedEvent) privateData;
+			final LucentQueuedEvent luV7PrivData = (LucentQueuedEvent) privateData;
 			call.setDeviceHistory(TsapiPromoter
 					.promoteDeviceHistory(luV7PrivData.getDeviceHistory()));
 		} else if (privateData instanceof LucentV7NetworkProgressInfo) {
-			LucentV7NetworkProgressInfo luV7PrivData = (LucentV7NetworkProgressInfo) privateData;
+			final LucentV7NetworkProgressInfo luV7PrivData = (LucentV7NetworkProgressInfo) privateData;
 			call.setDeviceHistory(TsapiPromoter
 					.promoteDeviceHistory(luV7PrivData.getDeviceHistory()));
 		} else if (privateData instanceof LucentDivertedEvent) {
-			LucentDivertedEvent luV7PrivData = (LucentDivertedEvent) privateData;
+			final LucentDivertedEvent luV7PrivData = (LucentDivertedEvent) privateData;
 			call.setDeviceHistory(TsapiPromoter
 					.promoteDeviceHistory(luV7PrivData.getDeviceHistory()));
 		} else if (privateData instanceof LucentFailedEvent) {
-			LucentFailedEvent luV7PrivData = (LucentFailedEvent) privateData;
+			final LucentFailedEvent luV7PrivData = (LucentFailedEvent) privateData;
 			call.setDeviceHistory(TsapiPromoter
 					.promoteDeviceHistory(luV7PrivData.getDeviceHistory()));
 
 			if (privateData instanceof LucentV8FailedEvent) {
-				LucentV8FailedEvent luV8PrivData = (LucentV8FailedEvent) privateData;
+				final LucentV8FailedEvent luV8PrivData = (LucentV8FailedEvent) privateData;
 
-				if (luV8PrivData.getCallingDevice() != null) {
+				if (luV8PrivData.getCallingDevice() != null)
 					call.setCallingDevices(TsapiPromoter
 							.promoteExtendedDeviceIDToTSDevice(provider,
 									luV8PrivData.getCallingDevice()));
-				}
 
 			}
 
 		}
 
-		if ((eventType == 57) && (getJtapiCause(cause) == 210)) {
-			TSDevice[] dropDevices = new TSDevice[3];
+		if (eventType == 57 && getJtapiCause(cause) == 210) {
+			final TSDevice[] dropDevices = new TSDevice[3];
 			dropDevices[0] = lastRedirectionDevice;
 			dropDevices[1] = deliveringACDDevice;
 
-			dropDevices[2] = ((distributingVDN == null) ? distributingDevice
-					: distributingVDN);
+			dropDevices[2] = distributingVDN == null ? distributingDevice
+					: distributingVDN;
 			for (int j = 0; j < 3; ++j) {
-				if ((dropDevices[j] == null)
-						|| ((dropDevices[j].getDeviceType() != 2) && (dropDevices[j]
-								.getDeviceType() != 1))) {
+				if (dropDevices[j] == null
+						|| dropDevices[j].getDeviceType() != 2
+						&& dropDevices[j].getDeviceType() != 1)
 					continue;
-				}
-				TSConnection dropConn = call.getConnAtDevice(dropDevices[j]);
-				if (dropConn == null) {
+				final TSConnection dropConn = call
+						.getConnAtDevice(dropDevices[j]);
+				if (dropConn == null)
 					continue;
-				}
 				dropConn.setConnectionState(89, eventList);
 			}
 
 		}
 
-		if ((eventType == 64) && (cause == 28)
-				&& (lastRedirectionDevice != null)) {
+		if (eventType == 64 && cause == 28 && lastRedirectionDevice != null) {
 			call.setDeliveringACDDevice(subjectDevice);
 
 			if (oldConnState != 83) {
-				TSConnection lastRedirConn = call
+				final TSConnection lastRedirConn = call
 						.getConnAtDevice(lastRedirectionDevice);
-				if (lastRedirConn != null) {
+				if (lastRedirConn != null)
 					if (lastRedirectionDevice.getDeviceType() == 1) {
 						lastRedirConn.addACDConns(connection);
 
 						connection.setACDManagerConn(lastRedirConn);
 					} else {
-						TSConnection acdManagerConn = lastRedirConn
+						final TSConnection acdManagerConn = lastRedirConn
 								.getACDManagerConn();
 						if (acdManagerConn != null) {
 							acdManagerConn.addACDConns(connection);
@@ -2161,21 +2139,19 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 							connection.setACDManagerConn(acdManagerConn);
 						}
 					}
-				}
 			}
 
 		}
 
-		if ((monitored != null) && (eventType == 58)
-				&& (monitored instanceof TSDevice)
-				&& (((TSDevice) monitored).getDeviceType() == 1)) {
+		if (monitored != null && eventType == 58
+				&& monitored instanceof TSDevice
+				&& ((TSDevice) monitored).getDeviceType() == 1)
 			provider.removeCallFromDomain(call);
-		}
 
 		doCallMonitors(call, eventList, jtapiCause, privateData);
 	}
 
-	int getJtapiCause(int cstaCause) {
+	int getJtapiCause(final int cstaCause) {
 		switch (cstaCause) {
 		case -1:
 		case 12:
@@ -2291,13 +2267,15 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		return 101;
 	}
 
-	boolean isCalledBetterEndpoint(CSTAExtendedDeviceID calling,
-			CSTAExtendedDeviceID called) {
-		if ((calling != null) && (called != null)
-				&& (calling.getDeviceIDStatus() == 0)
-				&& (called.getDeviceIDStatus() == 0)) {
-			short callingEval = endpointEvaluation(calling.getDeviceIDType());
-			short calledEval = endpointEvaluation(called.getDeviceIDType());
+	boolean isCalledBetterEndpoint(final CSTAExtendedDeviceID calling,
+			final CSTAExtendedDeviceID called) {
+		if (calling != null && called != null
+				&& calling.getDeviceIDStatus() == 0
+				&& called.getDeviceIDStatus() == 0) {
+			final short callingEval = endpointEvaluation(calling
+					.getDeviceIDType());
+			final short calledEval = endpointEvaluation(called
+					.getDeviceIDType());
 
 			return calledEval >= callingEval;
 		}
@@ -2309,4 +2287,3 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		return provider.toString();
 	}
 }
-

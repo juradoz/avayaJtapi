@@ -31,4 +31,3 @@ public abstract interface Connection {
 
 	public abstract TerminalConnection[] getTerminalConnections();
 }
-

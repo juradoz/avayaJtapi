@@ -14,8 +14,8 @@ public class SystemStatus extends ASNEnumerated {
 	public static final short SS_OVERLOAD_REACHED = 6;
 	public static final short SS_OVERLOAD_RELIEVED = 7;
 
-	public static Collection<String> print(short value, String name,
-			String indent) {
+	public static Collection<String> print(final short value,
+			final String name, final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -46,7 +46,6 @@ public class SystemStatus extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

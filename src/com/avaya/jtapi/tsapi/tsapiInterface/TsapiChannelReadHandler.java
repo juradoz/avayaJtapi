@@ -8,4 +8,3 @@ public abstract interface TsapiChannelReadHandler {
 	public abstract void handleRead(
 			IntelByteArrayInputStream paramIntelByteArrayInputStream);
 }
-

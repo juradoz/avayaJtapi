@@ -36,33 +36,31 @@ public final class CSTAExtendedDeviceID extends ASNSequence {
 	public static final short ID_NOT_KNOWN = 1;
 	public static final short ID_NOT_REQUIRED = 2;
 
-	public static CSTAExtendedDeviceID decode(InputStream in) {
-		CSTAExtendedDeviceID _this = new CSTAExtendedDeviceID();
+	public static CSTAExtendedDeviceID decode(final InputStream in) {
+		final CSTAExtendedDeviceID _this = new CSTAExtendedDeviceID();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static void encode(CSTAConnectionID _this, OutputStream out) {
-		if (_this == null) {
+	public static void encode(CSTAConnectionID _this, final OutputStream out) {
+		if (_this == null)
 			_this = new CSTAConnectionID();
-		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(CSTAExtendedDeviceID _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final CSTAExtendedDeviceID _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ASNIA5String.print(_this.deviceID, "deviceID", indent));
 		lines.addAll(DeviceIDType.print(_this.deviceIDType, "deviceIDType",
@@ -77,22 +75,22 @@ public final class CSTAExtendedDeviceID extends ASNSequence {
 	public CSTAExtendedDeviceID() {
 	}
 
-	public CSTAExtendedDeviceID(String _deviceID, short _deviceIDType,
-			short _deviceIDStatus) {
+	public CSTAExtendedDeviceID(final String _deviceID,
+			final short _deviceIDType, final short _deviceIDStatus) {
 		deviceID = _deviceID;
 		deviceIDType = _deviceIDType;
 		deviceIDStatus = _deviceIDStatus;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceID = ASNIA5String.decode(memberStream);
 		deviceIDType = ASNEnumerated.decode(memberStream);
 		deviceIDStatus = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(deviceID, memberStream);
 		ASNEnumerated.encode(deviceIDType, memberStream);
 		ASNEnumerated.encode(deviceIDStatus, memberStream);
@@ -150,4 +148,3 @@ public final class CSTAExtendedDeviceID extends ASNSequence {
 				+ deviceIDStatus + ")";
 	}
 }
-

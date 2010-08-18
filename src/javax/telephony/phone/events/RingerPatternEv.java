@@ -7,4 +7,3 @@ public abstract interface RingerPatternEv extends PhoneTermEv {
 
 	public abstract int getRingerPattern();
 }
-

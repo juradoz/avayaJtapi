@@ -11,8 +11,9 @@ public final class Level extends ASNEnumerated {
 	public static final short ACS_LEVEL3 = 3;
 	public static final short ACS_LEVEL4 = 4;
 
-	static Collection<String> print(short value, String name, String indent) {
-		Collection<String> lines = new ArrayList<String>();
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 1:
@@ -31,8 +32,7 @@ public final class Level extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		lines.addAll(print(value, str, name, indent));
+		lines.addAll(ASNEnumerated.print(value, str, name, indent));
 		return lines;
 	}
 }
-

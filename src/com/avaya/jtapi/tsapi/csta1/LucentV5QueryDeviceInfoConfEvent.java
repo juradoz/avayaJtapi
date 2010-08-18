@@ -14,22 +14,22 @@ public final class LucentV5QueryDeviceInfoConfEvent extends
 	String associatedDevice;
 	static final int PDU = 98;
 
-	public static LucentQueryDeviceInfoConfEvent decode(InputStream in) {
-		LucentV5QueryDeviceInfoConfEvent _this = new LucentV5QueryDeviceInfoConfEvent();
+	public static LucentQueryDeviceInfoConfEvent decode(final InputStream in) {
+		final LucentV5QueryDeviceInfoConfEvent _this = new LucentV5QueryDeviceInfoConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		associatedClass = ASNEnumerated.decode(memberStream);
 		associatedDevice = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNEnumerated.encode(associatedClass, memberStream);
 		ASNIA5String.encode(associatedDevice, memberStream);
@@ -50,12 +50,12 @@ public final class LucentV5QueryDeviceInfoConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5QueryDeviceInfoConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentExtensionClass.print(extensionClass,
 				"extensionClass", indent));
@@ -68,11 +68,11 @@ public final class LucentV5QueryDeviceInfoConfEvent extends
 		return lines;
 	}
 
-	public void setAssociatedClass(short associatedClass) {
+	public void setAssociatedClass(final short associatedClass) {
 		this.associatedClass = associatedClass;
 	}
 
-	public void setAssociatedDevice(String associatedDevice) {
+	public void setAssociatedDevice(final String associatedDevice) {
 		this.associatedDevice = associatedDevice;
 	}
 }

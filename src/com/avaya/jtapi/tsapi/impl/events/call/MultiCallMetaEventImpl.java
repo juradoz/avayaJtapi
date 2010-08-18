@@ -5,10 +5,10 @@ import javax.telephony.MetaEvent;
 import javax.telephony.MultiCallMetaEvent;
 
 public class MultiCallMetaEventImpl implements MultiCallMetaEvent {
-	private CallEventParams callEventParams;
-	private int id;
+	private final CallEventParams callEventParams;
+	private final int id;
 
-	public MultiCallMetaEventImpl(CallEventParams params, int id) {
+	public MultiCallMetaEventImpl(final CallEventParams params, final int id) {
 		callEventParams = params;
 		this.id = id;
 	}
@@ -30,10 +30,10 @@ public class MultiCallMetaEventImpl implements MultiCallMetaEvent {
 	}
 
 	public Call[] getOldCalls() {
-		if (callEventParams.getOldCalls() == null) {
+		if (callEventParams.getOldCalls() == null)
 			return null;
-		}
-		Call[] oldCallArray = new Call[callEventParams.getOldCalls().size()];
+		final Call[] oldCallArray = new Call[callEventParams.getOldCalls()
+				.size()];
 		return callEventParams.getOldCalls().toArray(oldCallArray);
 	}
 

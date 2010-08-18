@@ -10,15 +10,15 @@ public final class CSTAQueryLastNumberConfEvent extends CSTAConfirmation {
 	String lastNumber;
 	static final int PDU = 36;
 
-	public static CSTAQueryLastNumberConfEvent decode(InputStream in) {
-		CSTAQueryLastNumberConfEvent _this = new CSTAQueryLastNumberConfEvent();
+	public static CSTAQueryLastNumberConfEvent decode(final InputStream in) {
+		final CSTAQueryLastNumberConfEvent _this = new CSTAQueryLastNumberConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		lastNumber = ASNIA5String.decode(memberStream);
 	}
 
@@ -33,12 +33,12 @@ public final class CSTAQueryLastNumberConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryLastNumberConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(lastNumber, "lastNumber", indent));
 

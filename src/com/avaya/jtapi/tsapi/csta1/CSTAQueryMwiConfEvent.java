@@ -10,15 +10,15 @@ public final class CSTAQueryMwiConfEvent extends CSTAConfirmation {
 	boolean messages;
 	public static final int PDU = 28;
 
-	public static CSTAQueryMwiConfEvent decode(InputStream in) {
-		CSTAQueryMwiConfEvent _this = new CSTAQueryMwiConfEvent();
+	public static CSTAQueryMwiConfEvent decode(final InputStream in) {
+		final CSTAQueryMwiConfEvent _this = new CSTAQueryMwiConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		messages = ASNBoolean.decode(memberStream);
 	}
 
@@ -33,12 +33,12 @@ public final class CSTAQueryMwiConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryMwiConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(messages, "messages", indent));
 
@@ -46,4 +46,3 @@ public final class CSTAQueryMwiConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 }
-

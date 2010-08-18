@@ -12,13 +12,13 @@ public class CSTAGetDeviceList extends CSTARequest {
 	short level;
 	static final int PDU = 126;
 
-	public CSTAGetDeviceList(int _index, short _level) {
+	public CSTAGetDeviceList(final int _index, final short _level) {
 		index = _index;
 		level = _level;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(index, memberStream);
 		ASNEnumerated.encode(level, memberStream);
 	}
@@ -38,11 +38,11 @@ public class CSTAGetDeviceList extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGetDeviceList ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(index, "index", indent));
 		lines.addAll(CSTALevel.print(level, "level", indent));
@@ -51,4 +51,3 @@ public class CSTAGetDeviceList extends CSTARequest {
 		return lines;
 	}
 }
-

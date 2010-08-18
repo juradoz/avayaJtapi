@@ -25,7 +25,8 @@ public final class DeviceIDType extends ASNEnumerated {
 	public static final short TRUNK_IDENTIFIER = 70;
 	public static final short TRUNK_GROUP_IDENTIFIER = 71;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -142,7 +143,6 @@ public final class DeviceIDType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

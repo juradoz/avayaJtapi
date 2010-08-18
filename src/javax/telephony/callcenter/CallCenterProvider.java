@@ -13,4 +13,3 @@ public abstract interface CallCenterProvider extends Provider {
 	public abstract RouteAddress[] getRouteableAddresses()
 			throws MethodNotSupportedException;
 }
-

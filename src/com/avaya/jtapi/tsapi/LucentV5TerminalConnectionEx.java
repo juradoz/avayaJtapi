@@ -6,4 +6,3 @@ public abstract interface LucentV5TerminalConnectionEx extends
 			int paramInt2) throws TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiInvalidStateException;
 }
-

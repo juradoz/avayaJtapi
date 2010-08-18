@@ -10,15 +10,15 @@ class LucentPChallenge extends LucentPrivateData {
 	byte[] value;
 	static final int PDU = 121;
 
-	static LucentPChallenge decode(InputStream in) {
-		LucentPChallenge _this = new LucentPChallenge();
+	static LucentPChallenge decode(final InputStream in) {
+		final LucentPChallenge _this = new LucentPChallenge();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		value = ASNOctetString.decode(memberStream);
 	}
 
@@ -33,4 +33,3 @@ class LucentPChallenge extends LucentPrivateData {
 	}
 
 }
-

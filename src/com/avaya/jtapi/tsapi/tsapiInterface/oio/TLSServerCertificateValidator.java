@@ -21,75 +21,68 @@ import org.apache.log4j.Logger;
 class TLSServerCertificateValidator {
 	private static Logger log = Logger
 			.getLogger(TLSServerCertificateValidator.class);
-	private SSLSocket socket;
+	private final SSLSocket socket;
 	private X509Certificate[] certificates = null;
-	private X509Certificate certificate;
+	private final X509Certificate certificate;
 	private X509TrustManager trustManager = null;
 
-	TLSServerCertificateValidator(SSLSocket socket, SSLSession session,
-			TrustManager[] trustManagers) throws CertificateException {
+	TLSServerCertificateValidator(final SSLSocket socket,
+			final SSLSession session, final TrustManager[] trustManagers)
+			throws CertificateException {
 		Certificate[] peerCertificates = null;
 
-		if (socket == null) {
+		if (socket == null)
 			throw new NullPointerException("Socket is null");
-		}
 
 		this.socket = socket;
 		try {
 			peerCertificates = session.getPeerCertificates();
-		} catch (SSLPeerUnverifiedException e) {
+		} catch (final SSLPeerUnverifiedException e) {
 			throw new CertificateException(e);
 		}
 
-		if (peerCertificates.length == 0) {
+		if (peerCertificates.length == 0)
 			throw new CertificateException(
 					"Cannot authenticate server; the server's certificate chain is empty.");
-		}
 
-		if (!(peerCertificates[0] instanceof X509Certificate)) {
+		if (!(peerCertificates[0] instanceof X509Certificate))
 			throw new CertificateException(
 					"Cannot authenticate server; the server certificate is not an X509 certificate.");
-		}
 
-		certificates = ((X509Certificate[]) peerCertificates);
+		certificates = (X509Certificate[]) peerCertificates;
 		certificate = certificates[0];
 
-		if (trustManagers != null) {
+		if (trustManagers != null)
 			for (int i = 0; i < trustManagers.length; ++i) {
-				TrustManager tm = trustManagers[i];
-				if (!(tm instanceof X509TrustManager)) {
+				final TrustManager tm = trustManagers[i];
+				if (!(tm instanceof X509TrustManager))
 					continue;
-				}
-				trustManager = ((X509TrustManager) tm);
+				trustManager = (X509TrustManager) tm;
 				break;
 			}
 
-		}
-
-		if (trustManager != null) {
+		if (trustManager != null)
 			return;
-		}
 		throw new CertificateException(
 				"Cannot authenticate server; no X509 trust managers found.");
 	}
 
-	private void compareToResolvedName(String commonName)
+	private void compareToResolvedName(final String commonName)
 			throws CertificateException {
-		InetSocketAddress address = (InetSocketAddress) socket
+		final InetSocketAddress address = (InetSocketAddress) socket
 				.getRemoteSocketAddress();
 
-		log.info("Verifying that the certificate's common name \"" + commonName
-				+ " matches the peer's hostname.");
+		TLSServerCertificateValidator.log
+				.info("Verifying that the certificate's common name \""
+						+ commonName + " matches the peer's hostname.");
 
-		if (address.isUnresolved()) {
+		if (address.isUnresolved())
 			throw new CertificateException(
 					"Unable to validate peer certificate: " + address
 							+ " could not be resolved to a host name.");
-		}
 
-		if (address.getHostName().equalsIgnoreCase(commonName)) {
+		if (address.getHostName().equalsIgnoreCase(commonName))
 			return;
-		}
 		throw new CertificateException(
 				"The Common Name (CN) in the server's certificate ("
 						+ commonName
@@ -97,20 +90,21 @@ class TLSServerCertificateValidator {
 						+ address.getHostName() + ").");
 	}
 
-	private String getNameFromX509(X509Certificate certificate) {
+	private String getNameFromX509(final X509Certificate certificate) {
 		String commonName = "";
 
-		X500Principal principal = certificate.getSubjectX500Principal();
-		String name = principal.getName("RFC1779");
+		final X500Principal principal = certificate.getSubjectX500Principal();
+		final String name = principal.getName("RFC1779");
 
-		log.info("X500Principal name = \"" + name + "\"");
+		TLSServerCertificateValidator.log.info("X500Principal name = \"" + name
+				+ "\"");
 
-		StringTokenizer tokenizer = new StringTokenizer(name);
+		final StringTokenizer tokenizer = new StringTokenizer(name);
 
 		while (tokenizer.hasMoreTokens()) {
-			String token = tokenizer.nextToken();
+			final String token = tokenizer.nextToken();
 
-			log.info("token = \"" + token + "\"");
+			TLSServerCertificateValidator.log.info("token = \"" + token + "\"");
 
 			if (token.startsWith("CN=")) {
 				if (token.endsWith(",")) {
@@ -127,13 +121,13 @@ class TLSServerCertificateValidator {
 		return commonName;
 	}
 
-	private String getNameFromX509v3(Collection<List<?>> altNames) {
+	private String getNameFromX509v3(final Collection<List<?>> altNames) {
 		String commonName = "";
 
-		Iterator<List<?>> iterator = altNames.iterator();
+		final Iterator<List<?>> iterator = altNames.iterator();
 		while (iterator.hasNext()) {
-			List<?> indexAndNamePair = iterator.next();
-			Integer index = (Integer) indexAndNamePair.get(0);
+			final List<?> indexAndNamePair = iterator.next();
+			final Integer index = (Integer) indexAndNamePair.get(0);
 			if (index.intValue() == 2) {
 				commonName = (String) indexAndNamePair.get(1);
 				break;
@@ -150,22 +144,23 @@ class TLSServerCertificateValidator {
 	}
 
 	public void validateCommonName() throws CertificateException {
-		Collection<List<?>> altNames = certificate.getSubjectAlternativeNames();
+		final Collection<List<?>> altNames = certificate
+				.getSubjectAlternativeNames();
 		String commonName = "";
 
 		if (altNames == null) {
-			log
+			TLSServerCertificateValidator.log
 					.info("The peer's certificate is not X509v3.  Parsing the CN out of the certificate.");
 
 			commonName = getNameFromX509(certificate);
 		} else {
-			log
+			TLSServerCertificateValidator.log
 					.info("The peer's certificate is X509v3.  Examining subjectAltNames for dNSName.");
 
 			commonName = getNameFromX509v3(altNames);
 
 			if (commonName.equals("")) {
-				log
+				TLSServerCertificateValidator.log
 						.info("Didn't find dNSName in subjectAltNames.  Falling back to parsing the CN out of the certificate.");
 
 				commonName = getNameFromX509(certificate);
@@ -183,4 +178,3 @@ class TLSServerCertificateValidator {
 		trustManager.checkServerTrusted(certificates, "RSA");
 	}
 }
-

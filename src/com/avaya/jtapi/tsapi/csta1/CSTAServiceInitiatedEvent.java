@@ -13,22 +13,22 @@ public final class CSTAServiceInitiatedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 66;
 
-	public static CSTAServiceInitiatedEvent decode(InputStream in) {
-		CSTAServiceInitiatedEvent _this = new CSTAServiceInitiatedEvent();
+	public static CSTAServiceInitiatedEvent decode(final InputStream in) {
+		final CSTAServiceInitiatedEvent _this = new CSTAServiceInitiatedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		initiatedConnection = CSTAConnectionID.decode(memberStream);
 		localConnectionInfo = ASNEnumerated.decode(memberStream);
 		cause = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(initiatedConnection, memberStream);
 		ASNEnumerated.encode(localConnectionInfo, memberStream);
 		ASNEnumerated.encode(cause, memberStream);
@@ -53,12 +53,12 @@ public final class CSTAServiceInitiatedEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAServiceInitiatedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(initiatedConnection,
 				"initiatedConnection", indent));
@@ -70,16 +70,16 @@ public final class CSTAServiceInitiatedEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setInitiatedConnection(CSTAConnectionID initiatedConnection) {
+	public void setInitiatedConnection(
+			final CSTAConnectionID initiatedConnection) {
 		this.initiatedConnection = initiatedConnection;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }
-

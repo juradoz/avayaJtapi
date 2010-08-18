@@ -8,7 +8,7 @@ public class TransferredEventParams {
 	public TransferredEventParams() {
 	}
 
-	public TransferredEventParams(ArrayList<TSCall> oldCalls) {
+	public TransferredEventParams(final ArrayList<TSCall> oldCalls) {
 		this.oldCalls = oldCalls;
 	}
 
@@ -16,8 +16,7 @@ public class TransferredEventParams {
 		return oldCalls;
 	}
 
-	public void setOldCalls(ArrayList<TSCall> oldCalls) {
+	public void setOldCalls(final ArrayList<TSCall> oldCalls) {
 		this.oldCalls = oldCalls;
 	}
 }
-

@@ -18,4 +18,3 @@ public abstract interface PhoneLamp extends Component {
 
 	public abstract void setMode(int paramInt) throws InvalidArgumentException;
 }
-

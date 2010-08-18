@@ -13,4 +13,3 @@ public abstract interface TsapiUnsolicitedHandler {
 
 	public abstract void eventDistributorException(Exception paramException);
 }
-

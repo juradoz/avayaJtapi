@@ -4,4 +4,3 @@ import javax.telephony.callcenter.events.RouteUsedEvent;
 
 public abstract interface ITsapiRouteUsedEvent extends RouteUsedEvent {
 }
-

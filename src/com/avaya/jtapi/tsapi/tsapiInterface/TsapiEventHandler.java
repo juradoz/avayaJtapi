@@ -10,4 +10,3 @@ public abstract interface TsapiEventHandler {
 	public abstract void setUnsolicitedHandler(
 			TsapiUnsolicitedHandler paramTsapiUnsolicitedHandler);
 }
-

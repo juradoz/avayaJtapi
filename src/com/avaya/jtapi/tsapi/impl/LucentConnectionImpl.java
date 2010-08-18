@@ -5,17 +5,16 @@ import com.avaya.jtapi.tsapi.impl.core.TSConnection;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class LucentConnectionImpl extends TsapiConnection implements LucentConnection {
-	LucentConnectionImpl(TSConnection _tsConnection) {
+	LucentConnectionImpl(final TSConnection _tsConnection) {
 		super(_tsConnection);
 		TsapiTrace.traceConstruction(this, LucentConnectionImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentConnectionImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentConnectionImpl)
 			return tsConnection
 					.equals(((LucentConnectionImpl) obj).tsConnection);
-		}
 
 		return false;
 	}
@@ -26,4 +25,3 @@ class LucentConnectionImpl extends TsapiConnection implements LucentConnection {
 		TsapiTrace.traceDestruction(this, LucentConnectionImpl.class);
 	}
 }
-

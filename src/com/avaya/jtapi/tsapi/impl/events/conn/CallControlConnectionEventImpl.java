@@ -9,11 +9,12 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 
 public class CallControlConnectionEventImpl extends ConnectionEventImpl
 		implements CallControlConnectionEvent {
-	private String digits;
-	private int numInQueue;
+	private final String digits;
+	private final int numInQueue;
 
-	public CallControlConnectionEventImpl(CallEventParams params,
-			MetaEvent event, int eventId, int numInQueue, String digits) {
+	public CallControlConnectionEventImpl(final CallEventParams params,
+			final MetaEvent event, final int eventId, final int numInQueue,
+			final String digits) {
 		super(params, event, eventId);
 		this.numInQueue = numInQueue;
 		this.digits = digits;

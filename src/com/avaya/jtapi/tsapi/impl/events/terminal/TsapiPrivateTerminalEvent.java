@@ -6,8 +6,8 @@ import javax.telephony.privatedata.events.PrivateTermEv;
 @SuppressWarnings("deprecation")
 public final class TsapiPrivateTerminalEvent extends TsapiTerminalEvent
 		implements PrivateTermEv {
-	public TsapiPrivateTerminalEvent(Terminal _terminal, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiPrivateTerminalEvent(final Terminal _terminal,
+			final int _cause, final int _metaCode, final Object _privateData) {
 		super(_terminal, _cause, _metaCode, _privateData, 5);
 	}
 
@@ -15,4 +15,3 @@ public final class TsapiPrivateTerminalEvent extends TsapiTerminalEvent
 		return 603;
 	}
 }
-

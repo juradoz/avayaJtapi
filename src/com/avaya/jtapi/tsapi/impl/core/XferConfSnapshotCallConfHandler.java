@@ -16,14 +16,16 @@ final class XferConfSnapshotCallConfHandler implements
 	Object privateData;
 	Vector<TSConnection> snapConnections;
 
-	XferConfSnapshotCallConfHandler(TSCall _call, int _jtapiCause,
-			Object _privateData, Vector<TSConnection> _snapConnections) {
+	XferConfSnapshotCallConfHandler(final TSCall _call, final int _jtapiCause,
+			final Object _privateData,
+			final Vector<TSConnection> _snapConnections) {
 		this(null, _call, _jtapiCause, _privateData, _snapConnections);
 	}
 
-	XferConfSnapshotCallConfHandler(TSEventHandler _eventHandler, TSCall _call,
-			int _jtapiCause, Object _privateData,
-			Vector<TSConnection> _snapConnections) {
+	XferConfSnapshotCallConfHandler(final TSEventHandler _eventHandler,
+			final TSCall _call, final int _jtapiCause,
+			final Object _privateData,
+			final Vector<TSConnection> _snapConnections) {
 		eventHandler = _eventHandler;
 		call = _call;
 		jtapiCause = _jtapiCause;
@@ -32,12 +34,12 @@ final class XferConfSnapshotCallConfHandler implements
 		snapConnections = _snapConnections;
 	}
 
-	public Object handleConf(boolean rc, Vector<TSEvent> _eventList,
-			Object _privateData) {
+	public Object handleConf(final boolean rc,
+			final Vector<TSEvent> _eventList, final Object _privateData) {
 		if (call.getNeedRedoSnapshotCall()) {
 			call.setNeedRedoSnapshotCall(false);
-			log.info("redo snapshot call");
-			call.doSnapshot((snapConnections.elementAt(0)).getConnID(), this,
+			XferConfSnapshotCallConfHandler.log.info("redo snapshot call");
+			call.doSnapshot(snapConnections.elementAt(0).getConnID(), this,
 					false);
 			return null;
 		}
@@ -46,25 +48,23 @@ final class XferConfSnapshotCallConfHandler implements
 
 		call.setNeedSnapshot(false);
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
-		if (rc) {
+		if (rc)
 			for (int i = 0; i < snapConnections.size(); ++i) {
-				TSConnection conn = snapConnections.elementAt(i);
+				final TSConnection conn = snapConnections.elementAt(i);
 				conn.getSnapshot(eventList, false);
 			}
-
-		} else {
+		else
 			return privateData;
-		}
 
-		if (eventHandler != null) {
+		if (eventHandler != null)
 			eventHandler.doCallMonitors(call, eventList, jtapiCause,
 					privateData);
-		} else if (eventList.size() > 0) {
-			Vector<TsapiCallMonitor> observers = call.getObservers();
+		else if (eventList.size() > 0) {
+			final Vector<TsapiCallMonitor> observers = call.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = observers.elementAt(j);
+				final TsapiCallMonitor callback = observers.elementAt(j);
 
 				callback.deliverEvents(eventList, jtapiCause, true);
 			}

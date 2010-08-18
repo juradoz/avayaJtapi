@@ -49,4 +49,3 @@ public abstract interface CallControlConnection extends Connection {
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 }
-

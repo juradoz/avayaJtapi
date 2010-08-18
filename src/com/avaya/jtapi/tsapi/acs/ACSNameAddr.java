@@ -11,26 +11,25 @@ import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class ACSNameAddr extends ASNSequence {
-	public static ACSNameAddr decode(InputStream in) {
-		ACSNameAddr _this = new ACSNameAddr();
+	public static ACSNameAddr decode(final InputStream in) {
+		final ACSNameAddr _this = new ACSNameAddr();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static Collection<String> print(ACSNameAddr _this, String name,
-			String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final ACSNameAddr _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines
 				.addAll(ASNIA5String.print(_this.serverName, "serverName",
@@ -49,28 +48,29 @@ public final class ACSNameAddr extends ASNSequence {
 	public ACSNameAddr() {
 	}
 
-	public ACSNameAddr(String _serverName, byte[] _serverAddr) {
+	public ACSNameAddr(final String _serverName, final byte[] _serverAddr) {
 		serverName = _serverName;
 		serverAddr = _serverAddr;
 	}
 
 	public InetSocketAddress createInetSocketAddress() {
-		String hostname = (serverAddr[4] & 0xFF) + "." + (serverAddr[5] & 0xFF)
-				+ "." + (serverAddr[6] & 0xFF) + "." + (serverAddr[7] & 0xFF);
+		final String hostname = (serverAddr[4] & 0xFF) + "."
+				+ (serverAddr[5] & 0xFF) + "." + (serverAddr[6] & 0xFF) + "."
+				+ (serverAddr[7] & 0xFF);
 
-		int port = ((serverAddr[2] & 0xFF) << 8) + (serverAddr[3] & 0xFF);
+		final int port = ((serverAddr[2] & 0xFF) << 8) + (serverAddr[3] & 0xFF);
 
 		return new InetSocketAddress(hostname, port);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		serverName = ASNIA5String.decode(memberStream);
 		serverAddr = ASNOctetString.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(serverName, memberStream);
 		ASNOctetString.encode(serverAddr, memberStream);
 	}
@@ -83,4 +83,3 @@ public final class ACSNameAddr extends ASNSequence {
 		return serverName;
 	}
 }
-

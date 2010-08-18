@@ -10,4 +10,3 @@ public abstract interface LucentAgent extends ITsapiAgent {
 	public abstract void setState(int paramInt1, int paramInt2)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException;
 }
-

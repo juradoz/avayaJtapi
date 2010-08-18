@@ -8,27 +8,26 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentUserProvidedCode extends LucentPrivateData {
-	public static void encode(LucentUserProvidedCode _this, OutputStream out) {
-		if (_this == null) {
+	public static void encode(LucentUserProvidedCode _this,
+			final OutputStream out) {
+		if (_this == null)
 			_this = new LucentUserProvidedCode();
-		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(LucentUserProvidedCode _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final LucentUserProvidedCode _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ProvidedCodeType.print(_this.type, "type", indent));
 		lines.addAll(ASNIA5String.print(_this.data, "data", indent));
@@ -45,15 +44,14 @@ public final class LucentUserProvidedCode extends LucentPrivateData {
 		type = 0;
 	}
 
-	public LucentUserProvidedCode(short _type, String _data) {
+	public LucentUserProvidedCode(final short _type, final String _data) {
 		type = _type;
 		data = _data;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(type, memberStream);
 		ASNIA5String.encode(data, memberStream);
 	}
 }
-

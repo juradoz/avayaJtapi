@@ -7,4 +7,3 @@ import javax.telephony.callcontrol.CallControlCall;
 public abstract interface ITsapiCall extends ITsapiCallInfo, Call,
 		CallControlCall, CallCenterCall {
 }
-

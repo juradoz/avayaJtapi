@@ -39,4 +39,3 @@ public abstract interface MobileProvider extends Provider {
 			throws MethodNotSupportedException, InvalidStateException,
 			ResourceUnavailableException;
 }
-

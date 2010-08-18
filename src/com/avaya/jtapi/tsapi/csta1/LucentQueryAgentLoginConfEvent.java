@@ -11,20 +11,20 @@ public final class LucentQueryAgentLoginConfEvent extends LucentPrivateData {
 	int privEventCrossRefID;
 	public static final int PDU = 14;
 
-	public static LucentQueryAgentLoginConfEvent decode(InputStream in) {
-		LucentQueryAgentLoginConfEvent _this = new LucentQueryAgentLoginConfEvent();
+	public static LucentQueryAgentLoginConfEvent decode(final InputStream in) {
+		final LucentQueryAgentLoginConfEvent _this = new LucentQueryAgentLoginConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		privEventCrossRefID = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(privEventCrossRefID, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class LucentQueryAgentLoginConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAgentLoginConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(privEventCrossRefID,
 				"privEventCrossRefID", indent));
@@ -53,7 +53,7 @@ public final class LucentQueryAgentLoginConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setPrivEventCrossRefID(int privEventCrossRefID) {
+	public void setPrivEventCrossRefID(final int privEventCrossRefID) {
 		this.privEventCrossRefID = privEventCrossRefID;
 	}
 }

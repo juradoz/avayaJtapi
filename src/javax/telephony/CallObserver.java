@@ -7,4 +7,3 @@ import javax.telephony.events.CallEv;
 public abstract interface CallObserver {
 	public abstract void callChangedEvent(CallEv[] paramArrayOfCallEv);
 }
-

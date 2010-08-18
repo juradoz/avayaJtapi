@@ -14,8 +14,9 @@ public final class LucentSingleStepConferenceCallConfEvent extends
 	String ucid;
 	static final int PDU = 66;
 
-	public static LucentSingleStepConferenceCallConfEvent decode(InputStream in) {
-		LucentSingleStepConferenceCallConfEvent _this = new LucentSingleStepConferenceCallConfEvent();
+	public static LucentSingleStepConferenceCallConfEvent decode(
+			final InputStream in) {
+		final LucentSingleStepConferenceCallConfEvent _this = new LucentSingleStepConferenceCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,22 +25,23 @@ public final class LucentSingleStepConferenceCallConfEvent extends
 	public LucentSingleStepConferenceCallConfEvent() {
 	}
 
-	public LucentSingleStepConferenceCallConfEvent(CSTAConnectionID _newCall,
-			CSTAConnection[] _connList, String _ucid) {
+	public LucentSingleStepConferenceCallConfEvent(
+			final CSTAConnectionID _newCall, final CSTAConnection[] _connList,
+			final String _ucid) {
 		newCall = _newCall;
 		connList = _connList;
 		ucid = _ucid;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		newCall = CSTAConnectionID.decode(memberStream);
 		connList = ConnectionList.decode(memberStream);
 		ucid = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(newCall, memberStream);
 		ConnectionList.encode(connList, memberStream);
 		ASNIA5String.encode(ucid, memberStream);
@@ -64,12 +66,12 @@ public final class LucentSingleStepConferenceCallConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSingleStepConferenceCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
 		lines.addAll(ConnectionList.print(connList, "connList", indent));

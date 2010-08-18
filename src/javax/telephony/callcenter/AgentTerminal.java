@@ -23,4 +23,3 @@ public abstract interface AgentTerminal extends Terminal {
 	public abstract void setAgents(Agent[] paramArrayOfAgent)
 			throws MethodNotSupportedException;
 }
-

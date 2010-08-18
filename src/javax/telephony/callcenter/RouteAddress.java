@@ -19,4 +19,3 @@ public abstract interface RouteAddress extends Address {
 	public abstract void registerRouteCallback(RouteCallback paramRouteCallback)
 			throws ResourceUnavailableException, MethodNotSupportedException;
 }
-

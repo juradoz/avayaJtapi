@@ -11,8 +11,9 @@ public class ProviderEventParams {
 	private final Object source;
 	private final Object privateData;
 
-	public ProviderEventParams(Provider provider, int id, int cause,
-			MetaEvent metaEvent, Object source, Object privateData) {
+	public ProviderEventParams(final Provider provider, final int id,
+			final int cause, final MetaEvent metaEvent, final Object source,
+			final Object privateData) {
 		this.provider = provider;
 		this.id = id;
 		this.cause = cause;
@@ -45,4 +46,3 @@ public class ProviderEventParams {
 		return source;
 	}
 }
-

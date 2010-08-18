@@ -7,4 +7,3 @@ import javax.telephony.callcenter.CallCenterTrunk;
 public abstract interface CallCentTrunkEv extends CallCentCallEv {
 	public abstract CallCenterTrunk getTrunk();
 }
-

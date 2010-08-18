@@ -11,15 +11,15 @@ public final class LucentCallClassifierInfo extends LucentPrivateData {
 	public int numInUsePorts;
 	static final int PDU = 19;
 
-	static LucentCallClassifierInfo decode(InputStream in) {
-		LucentCallClassifierInfo _this = new LucentCallClassifierInfo();
+	static LucentCallClassifierInfo decode(final InputStream in) {
+		final LucentCallClassifierInfo _this = new LucentCallClassifierInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		numAvailPorts = ASNInteger.decode(memberStream);
 		numInUsePorts = ASNInteger.decode(memberStream);
 	}
@@ -31,11 +31,11 @@ public final class LucentCallClassifierInfo extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CallClassifierInfo ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(numAvailPorts, "numAvailPorts", indent));
 		lines.addAll(ASNInteger.print(numInUsePorts, "numInUsePorts", indent));
@@ -44,4 +44,3 @@ public final class LucentCallClassifierInfo extends LucentPrivateData {
 		return lines;
 	}
 }
-

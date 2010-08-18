@@ -18,4 +18,3 @@ public abstract interface ConnectionListener extends CallListener {
 
 	public abstract void connectionUnknown(ConnectionEvent paramConnectionEvent);
 }
-

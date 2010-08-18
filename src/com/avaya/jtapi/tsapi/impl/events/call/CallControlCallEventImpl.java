@@ -7,8 +7,8 @@ import javax.telephony.callcontrol.CallControlCallEvent;
 
 public class CallControlCallEventImpl extends CallEventImpl implements
 		CallControlCallEvent {
-	public CallControlCallEventImpl(CallEventParams params, MetaEvent event,
-			int eventId) {
+	public CallControlCallEventImpl(final CallEventParams params,
+			final MetaEvent event, final int eventId) {
 		super(params, event, eventId);
 	}
 

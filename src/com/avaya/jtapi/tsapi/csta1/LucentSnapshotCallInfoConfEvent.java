@@ -8,15 +8,15 @@ public class LucentSnapshotCallInfoConfEvent extends LucentPrivateData {
 	LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 138;
 
-	static LucentSnapshotCallInfoConfEvent decode(InputStream in) {
-		LucentSnapshotCallInfoConfEvent _this = new LucentSnapshotCallInfoConfEvent();
+	static LucentSnapshotCallInfoConfEvent decode(final InputStream in) {
+		final LucentSnapshotCallInfoConfEvent _this = new LucentSnapshotCallInfoConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
@@ -31,12 +31,12 @@ public class LucentSnapshotCallInfoConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSnapshotCallInfoConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
 				"deviceHistory", indent));

@@ -12,8 +12,8 @@ public final class CSTAPickupCall extends CSTARequest {
 	String calledDevice;
 	public static final int PDU = 17;
 
-	public static CSTAPickupCall decode(InputStream in) {
-		CSTAPickupCall _this = new CSTAPickupCall();
+	public static CSTAPickupCall decode(final InputStream in) {
+		final CSTAPickupCall _this = new CSTAPickupCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,19 +22,20 @@ public final class CSTAPickupCall extends CSTARequest {
 	public CSTAPickupCall() {
 	}
 
-	public CSTAPickupCall(CSTAConnectionID _deflectCall, String _calledDevice) {
+	public CSTAPickupCall(final CSTAConnectionID _deflectCall,
+			final String _calledDevice) {
 		deflectCall = _deflectCall;
 		calledDevice = _calledDevice;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deflectCall = CSTAConnectionID.decode(memberStream);
 		calledDevice = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(deflectCall, memberStream);
 		ASNIA5String.encode(calledDevice, memberStream);
 	}
@@ -54,12 +55,12 @@ public final class CSTAPickupCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAPickupCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(CSTAConnectionID.print(deflectCall, "deflectCall",
@@ -70,4 +71,3 @@ public final class CSTAPickupCall extends CSTARequest {
 		return lines;
 	}
 }
-

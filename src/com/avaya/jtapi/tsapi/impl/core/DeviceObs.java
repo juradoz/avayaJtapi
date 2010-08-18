@@ -8,8 +8,7 @@ final class DeviceObs {
 	TsapiCallMonitor callback;
 	Vector<DevWithType> devWithTypeVector = new Vector<DevWithType>();
 
-	DeviceObs(TsapiCallMonitor _callback) {
+	DeviceObs(final TsapiCallMonitor _callback) {
 		callback = _callback;
 	}
 }
-

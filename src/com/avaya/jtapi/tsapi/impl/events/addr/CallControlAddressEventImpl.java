@@ -13,8 +13,8 @@ public class CallControlAddressEventImpl extends TsapiListenerCallControlEvent
 	int mwBits = 0;
 	Address address;
 
-	public CallControlAddressEventImpl(AddressEventParams addressEventParams,
-			Address address) {
+	public CallControlAddressEventImpl(
+			final AddressEventParams addressEventParams, final Address address) {
 		super(addressEventParams.getEventId(), addressEventParams.getCause(),
 				addressEventParams.getMetaEvent(), addressEventParams
 						.getSource(), addressEventParams.getPrivateData());

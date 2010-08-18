@@ -16,20 +16,20 @@ public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 	boolean flexibleBilling;
 	static final int PDU = 81;
 
-	public static LucentEstablishedEvent decode(InputStream in) {
-		LucentV5EstablishedEvent _this = new LucentV5EstablishedEvent();
+	public static LucentEstablishedEvent decode(final InputStream in) {
+		final LucentV5EstablishedEvent _this = new LucentV5EstablishedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
+	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
 		return LucentV5LookaheadInfo.decode(memberStream);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		ucid = ASNIA5String.decode(memberStream);
 		callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
@@ -37,18 +37,18 @@ public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 	}
 
 	@Override
-	public LucentOriginalCallInfo decodeOCI(InputStream memberStream) {
+	public LucentOriginalCallInfo decodeOCI(final InputStream memberStream) {
 		return LucentV5OriginalCallInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeLookahead(LucentLookaheadInfo lookaheadInfo,
-			OutputStream memberStream) {
+	public void encodeLookahead(final LucentLookaheadInfo lookaheadInfo,
+			final OutputStream memberStream) {
 		ASNSequence.encode(lookaheadInfo, memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(ucid, memberStream);
 		ASNSequence.encode(callOriginatorInfo, memberStream);
@@ -74,12 +74,12 @@ public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5EstablishedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(ASNIA5String.print(trunkMember, "trunkMember", indent));
@@ -105,16 +105,16 @@ public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 		return lines;
 	}
 
-	public void setCallOriginatorInfo(CSTACallOriginatorInfo callOriginatorInfo) {
+	public void setCallOriginatorInfo(
+			final CSTACallOriginatorInfo callOriginatorInfo) {
 		this.callOriginatorInfo = callOriginatorInfo;
 	}
 
-	public void setFlexibleBilling(boolean flexibleBilling) {
+	public void setFlexibleBilling(final boolean flexibleBilling) {
 		this.flexibleBilling = flexibleBilling;
 	}
 
-	public void setUcid(String ucid) {
+	public void setUcid(final String ucid) {
 		this.ucid = ucid;
 	}
 }
-

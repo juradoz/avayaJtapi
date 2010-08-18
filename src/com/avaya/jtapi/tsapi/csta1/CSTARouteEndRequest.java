@@ -14,8 +14,8 @@ public final class CSTARouteEndRequest extends CSTARequest {
 	short errorValue;
 	public static final int PDU = 88;
 
-	public static CSTARouteEndRequest decode(InputStream in) {
-		CSTARouteEndRequest _this = new CSTARouteEndRequest();
+	public static CSTARouteEndRequest decode(final InputStream in) {
+		final CSTARouteEndRequest _this = new CSTARouteEndRequest();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,22 +24,22 @@ public final class CSTARouteEndRequest extends CSTARequest {
 	public CSTARouteEndRequest() {
 	}
 
-	public CSTARouteEndRequest(int _routeRegisterReqID, int _routingCrossRefID,
-			short _errorValue) {
+	public CSTARouteEndRequest(final int _routeRegisterReqID,
+			final int _routingCrossRefID, final short _errorValue) {
 		routeRegisterReqID = _routeRegisterReqID;
 		routingCrossRefID = _routingCrossRefID;
 		errorValue = _errorValue;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		errorValue = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 		ASNInteger.encode(routingCrossRefID, memberStream);
 		ASNEnumerated.encode(errorValue, memberStream);
@@ -64,11 +64,11 @@ public final class CSTARouteEndRequest extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTARouteEndRequest ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -81,4 +81,3 @@ public final class CSTARouteEndRequest extends CSTARequest {
 		return lines;
 	}
 }
-

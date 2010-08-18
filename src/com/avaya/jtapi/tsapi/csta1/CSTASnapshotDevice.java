@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class CSTASnapshotDevice extends CSTARequest {
-	public static CSTASnapshotDevice decode(InputStream in) {
-		CSTASnapshotDevice _this = new CSTASnapshotDevice();
+	public static CSTASnapshotDevice decode(final InputStream in) {
+		final CSTASnapshotDevice _this = new CSTASnapshotDevice();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class CSTASnapshotDevice extends CSTARequest {
 	public CSTASnapshotDevice() {
 	}
 
-	public CSTASnapshotDevice(String _snapshotObject) {
+	public CSTASnapshotDevice(final String _snapshotObject) {
 		snapshotObject = _snapshotObject;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		snapshotObject = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(snapshotObject, memberStream);
 	}
 
@@ -47,12 +47,12 @@ public final class CSTASnapshotDevice extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASnapshotDevice ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(snapshotObject, "snapshotObject",
 				indent));
@@ -61,4 +61,3 @@ public final class CSTASnapshotDevice extends CSTARequest {
 		return lines;
 	}
 }
-

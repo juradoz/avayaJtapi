@@ -4,4 +4,3 @@ import javax.telephony.callcenter.Agent;
 
 public abstract interface ITsapiAgent extends Agent {
 }
-

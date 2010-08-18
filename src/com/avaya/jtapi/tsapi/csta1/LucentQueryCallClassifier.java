@@ -10,7 +10,7 @@ public final class LucentQueryCallClassifier extends LucentPrivateData {
 	static final int PDU = 18;
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -21,12 +21,12 @@ public final class LucentQueryCallClassifier extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryCallClassifier ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -34,4 +34,3 @@ public final class LucentQueryCallClassifier extends LucentPrivateData {
 		return lines;
 	}
 }
-

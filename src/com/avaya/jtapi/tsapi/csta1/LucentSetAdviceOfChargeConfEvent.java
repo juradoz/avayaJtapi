@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class LucentSetAdviceOfChargeConfEvent extends LucentPrivateData {
 	static final int PDU = 100;
 
-	static LucentSetAdviceOfChargeConfEvent decode(InputStream in) {
-		LucentSetAdviceOfChargeConfEvent _this = new LucentSetAdviceOfChargeConfEvent();
+	static LucentSetAdviceOfChargeConfEvent decode(final InputStream in) {
+		final LucentSetAdviceOfChargeConfEvent _this = new LucentSetAdviceOfChargeConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,12 +28,12 @@ public final class LucentSetAdviceOfChargeConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetAdviceOfChargeConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

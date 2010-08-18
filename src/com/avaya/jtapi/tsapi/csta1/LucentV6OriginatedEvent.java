@@ -9,8 +9,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 public final class LucentV6OriginatedEvent extends LucentOriginatedEvent {
 	static final int PDU = 119;
 
-	public static LucentOriginatedEvent decode(InputStream in) {
-		LucentV6OriginatedEvent _this = new LucentV6OriginatedEvent();
+	public static LucentOriginatedEvent decode(final InputStream in) {
+		final LucentV6OriginatedEvent _this = new LucentV6OriginatedEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,12 +23,12 @@ public final class LucentV6OriginatedEvent extends LucentOriginatedEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6OriginatedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(physicalTerminal_asn,
 				"physicalTerminal", indent));
@@ -38,4 +38,3 @@ public final class LucentV6OriginatedEvent extends LucentOriginatedEvent {
 		return lines;
 	}
 }
-

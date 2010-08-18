@@ -12,21 +12,21 @@ public class LucentConferencedEvent extends LucentPrivateData {
 	CSTAExtendedDeviceID distributingDevice_asn;
 	static final int PDU = 59;
 
-	static LucentConferencedEvent decode(InputStream in) {
-		LucentConferencedEvent _this = new LucentConferencedEvent();
+	static LucentConferencedEvent decode(final InputStream in) {
+		final LucentConferencedEvent _this = new LucentConferencedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		originalCallInfo = decodeOCI(memberStream);
 		distributingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		encodeOCI(originalCallInfo, memberStream);
 		ASNSequence.encode(distributingDevice_asn, memberStream);
 	}
@@ -46,12 +46,12 @@ public class LucentConferencedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentConferencedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentOriginalCallInfo.print(originalCallInfo,
 				"originalCallInfo", indent));
@@ -63,12 +63,11 @@ public class LucentConferencedEvent extends LucentPrivateData {
 	}
 
 	public void setDistributingDevice_asn(
-			CSTAExtendedDeviceID _distributingDevice_asn) {
+			final CSTAExtendedDeviceID _distributingDevice_asn) {
 		distributingDevice_asn = _distributingDevice_asn;
 	}
 
-	public void setOriginalCallInfo(LucentOriginalCallInfo _info) {
+	public void setOriginalCallInfo(final LucentOriginalCallInfo _info) {
 		originalCallInfo = _info;
 	}
 }
-

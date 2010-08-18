@@ -11,20 +11,20 @@ public final class LucentCallClearedEvent extends LucentPrivateData {
 	short reason;
 	static final int PDU = 34;
 
-	public static LucentCallClearedEvent decode(InputStream in) {
-		LucentCallClearedEvent _this = new LucentCallClearedEvent();
+	public static LucentCallClearedEvent decode(final InputStream in) {
+		final LucentCallClearedEvent _this = new LucentCallClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		reason = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(reason, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class LucentCallClearedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentCallClearedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentReasonCode.print(reason, "reason", indent));
 
@@ -52,8 +52,7 @@ public final class LucentCallClearedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setReason(short reason) {
+	public void setReason(final short reason) {
 		this.reason = reason;
 	}
 }
-

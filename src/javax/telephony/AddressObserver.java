@@ -7,4 +7,3 @@ import javax.telephony.events.AddrEv;
 public abstract interface AddressObserver {
 	public abstract void addressChangedEvent(AddrEv[] paramArrayOfAddrEv);
 }
-

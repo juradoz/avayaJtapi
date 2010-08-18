@@ -15,49 +15,45 @@ public abstract class ASN1 {
 	static final int SEQUENCE_TAG = 48;
 	static final int IA5String_TAG = 22;
 
-	static final int decodeInt(InputStream stream) throws IOException {
-		int length = decodeLength(stream);
-		if (length > 4) {
+	static final int decodeInt(final InputStream stream) throws IOException {
+		int length = ASN1.decodeLength(stream);
+		if (length > 4)
 			throw new ASN1Exception(
 					"Decoder: INTEGER/ENUMERATED value is too long");
-		}
 		int value = stream.read();
 
-		if ((value & 0x80) != 0) {
+		if ((value & 0x80) != 0)
 			value |= -256;
-		}
-		for (--length; length > 0; --length) {
+		for (--length; length > 0; --length)
 			value = (value << 8) + stream.read();
-		}
 		return value;
 	}
 
-	static final int decodeLength(InputStream stream) throws IOException {
+	static final int decodeLength(final InputStream stream) throws IOException {
 		int length = stream.read();
 
 		if ((length & 0x80) != 0) {
 			int numOctets = length & 0xFFFFFF7F;
 			length = 0;
-			for (; numOctets > 0; --numOctets) {
+			for (; numOctets > 0; --numOctets)
 				length = (length << 8) + stream.read();
-			}
 		}
 		return length;
 	}
 
-	static final void encodeInt(int value, OutputStream stream)
+	static final void encodeInt(final int value, final OutputStream stream)
 			throws IOException {
-		if ((value >= -128) && (value < 128)) {
-			encodeLength(stream, 1);
-		} else if ((value >= -32768) && (value < 32768)) {
-			encodeLength(stream, 2);
+		if (value >= -128 && value < 128)
+			ASN1.encodeLength(stream, 1);
+		else if (value >= -32768 && value < 32768) {
+			ASN1.encodeLength(stream, 2);
 			stream.write(value >>> 8 & 0xFF);
-		} else if ((value >= -8388608) && (value < 8388608)) {
-			encodeLength(stream, 3);
+		} else if (value >= -8388608 && value < 8388608) {
+			ASN1.encodeLength(stream, 3);
 			stream.write(value >>> 16 & 0xFF);
 			stream.write(value >>> 8 & 0xFF);
 		} else {
-			encodeLength(stream, 4);
+			ASN1.encodeLength(stream, 4);
 			stream.write(value >>> 24 & 0xFF);
 			stream.write(value >>> 16 & 0xFF);
 			stream.write(value >>> 8 & 0xFF);
@@ -65,11 +61,11 @@ public abstract class ASN1 {
 		stream.write(value >>> 0 & 0xFF);
 	}
 
-	static final void encodeLength(OutputStream stream, int length)
+	static final void encodeLength(final OutputStream stream, final int length)
 			throws IOException {
-		if (length < 128) {
+		if (length < 128)
 			stream.write(length);
-		} else if (length < 256) {
+		else if (length < 256) {
 			stream.write(129);
 			stream.write(length);
 		} else {

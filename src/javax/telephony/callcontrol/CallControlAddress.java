@@ -29,4 +29,3 @@ public abstract interface CallControlAddress extends Address {
 	public abstract void setMessageWaiting(boolean paramBoolean)
 			throws MethodNotSupportedException, InvalidStateException;
 }
-

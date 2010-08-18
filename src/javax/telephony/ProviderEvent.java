@@ -8,4 +8,3 @@ public abstract interface ProviderEvent extends Event {
 
 	public abstract Provider getProvider();
 }
-

@@ -8,16 +8,16 @@ import javax.telephony.callcenter.events.RouteEvent;
 
 public final class TsapiRouteEvent extends TsapiRouteSessionEvent implements
 		RouteEvent {
-	private RouteAddress currentRouteAddress;
-	private Address callingAddress;
-	private Terminal callingTerminal;
-	private int routeSelectAlgorithm;
-	private String isdnSetupMessage;
+	private final RouteAddress currentRouteAddress;
+	private final Address callingAddress;
+	private final Terminal callingTerminal;
+	private final int routeSelectAlgorithm;
+	private final String isdnSetupMessage;
 
-	public TsapiRouteEvent(RouteSession routeSession,
-			RouteAddress currentRouteAddress, Address callingAddress,
-			Terminal callingTerminal, int routeSelectAlgorithm,
-			String isdnSetupMessage) {
+	public TsapiRouteEvent(final RouteSession routeSession,
+			final RouteAddress currentRouteAddress,
+			final Address callingAddress, final Terminal callingTerminal,
+			final int routeSelectAlgorithm, final String isdnSetupMessage) {
 		super(routeSession);
 		this.currentRouteAddress = currentRouteAddress;
 		this.callingAddress = callingAddress;
@@ -46,4 +46,3 @@ public final class TsapiRouteEvent extends TsapiRouteSessionEvent implements
 		return isdnSetupMessage;
 	}
 }
-

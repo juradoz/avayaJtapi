@@ -11,8 +11,8 @@ public final class CSTARouteRegisterReq extends CSTARequest {
 	String routingDevice;
 	public static final int PDU = 78;
 
-	public static CSTARouteRegisterReq decode(InputStream in) {
-		CSTARouteRegisterReq _this = new CSTARouteRegisterReq();
+	public static CSTARouteRegisterReq decode(final InputStream in) {
+		final CSTARouteRegisterReq _this = new CSTARouteRegisterReq();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,17 +21,17 @@ public final class CSTARouteRegisterReq extends CSTARequest {
 	public CSTARouteRegisterReq() {
 	}
 
-	public CSTARouteRegisterReq(String _routingDevice) {
+	public CSTARouteRegisterReq(final String _routingDevice) {
 		routingDevice = _routingDevice;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routingDevice = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(routingDevice, memberStream);
 	}
 
@@ -46,12 +46,12 @@ public final class CSTARouteRegisterReq extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRegisterReq ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(routingDevice, "routingDevice",
@@ -61,4 +61,3 @@ public final class CSTARouteRegisterReq extends CSTARequest {
 		return lines;
 	}
 }
-

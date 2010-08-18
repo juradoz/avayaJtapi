@@ -11,14 +11,14 @@ public class CSTAGroupPickupCall extends CSTARequest {
 	String pickupDevice;
 	static final int PDU = 19;
 
-	public CSTAGroupPickupCall(CSTAConnectionID _deflectCall,
-			String _pickupDevice) {
+	public CSTAGroupPickupCall(final CSTAConnectionID _deflectCall,
+			final String _pickupDevice) {
 		deflectCall = _deflectCall;
 		pickupDevice = _pickupDevice;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(deflectCall, memberStream);
 		ASNIA5String.encode(pickupDevice, memberStream);
 	}
@@ -38,11 +38,11 @@ public class CSTAGroupPickupCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGroupPickupCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(CSTAConnectionID.print(deflectCall, "deflectCall",
@@ -53,4 +53,3 @@ public class CSTAGroupPickupCall extends CSTARequest {
 		return lines;
 	}
 }
-

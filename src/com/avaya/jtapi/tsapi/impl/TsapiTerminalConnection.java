@@ -39,7 +39,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	TSConnection tsConnection;
 	CSTAPrivate privData = null;
 
-	TsapiTerminalConnection(TSConnection _tsConnection) {
+	TsapiTerminalConnection(final TSConnection _tsConnection) {
 		tsConnection = _tsConnection;
 		TsapiTrace.traceConstruction(this, TsapiTerminalConnection.class);
 	}
@@ -56,23 +56,22 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceExit("answer[]", this);
 	}
 
-	private LucentClearConnection createLucentClearConnection(short dropRes,
-			UserToUserInfo uui) {
+	private LucentClearConnection createLucentClearConnection(
+			final short dropRes, final UserToUserInfo uui) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentClearConnection[short dropRes, UserToUserInfo uui]",
 						this);
-		TSProviderImpl provider = tsConnection.getTSProviderImpl();
-		LucentUserToUserInfo asn_uui = TsapiPromoter.demoteUserToUserInfo(uui);
+		final TSProviderImpl provider = tsConnection.getTSProviderImpl();
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
+				.demoteUserToUserInfo(uui);
 
 		LucentClearConnection conn = null;
-		if (provider != null) {
-			if (provider.isLucentV6()) {
+		if (provider != null)
+			if (provider.isLucentV6())
 				conn = new LucentV6ClearConnection(dropRes, asn_uui);
-			} else {
+			else
 				conn = new LucentClearConnection(dropRes, asn_uui);
-			}
-		}
 		TsapiTrace
 				.traceExit(
 						"createLucentClearConnection[short dropRes, UserToUserInfo uui]",
@@ -81,11 +80,10 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TsapiTerminalConnection) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof TsapiTerminalConnection)
 			return tsConnection
 					.equals(((TsapiTerminalConnection) obj).tsConnection);
-		}
 
 		return false;
 	}
@@ -96,7 +94,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceDestruction(this, TsapiTerminalConnection.class);
 	}
 
-	public final void generateDtmf(String digits)
+	public final void generateDtmf(final String digits)
 			throws TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiInvalidStateException {
 		TsapiTrace.traceEntry("generateDtmf[String digits]", this);
@@ -108,8 +106,8 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceExit("generateDtmf[String digits]", this);
 	}
 
-	public final void generateDtmf(String digits, int toneDuration,
-			int pauseDuration) throws TsapiMethodNotSupportedException,
+	public final void generateDtmf(final String digits, final int toneDuration,
+			final int pauseDuration) throws TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiInvalidStateException {
 		TsapiTrace
 				.traceEntry(
@@ -129,7 +127,8 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	public final int getCallControlState() {
 		TsapiTrace.traceEntry("getCallControlState[]", this);
 		try {
-			int state = tsConnection.getCallControlTerminalConnectionState();
+			final int state = tsConnection
+					.getCallControlTerminalConnectionState();
 			TsapiTrace.traceExit("getCallControlState[]", this);
 			return state;
 		} finally {
@@ -140,7 +139,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	public final TerminalConnectionCapabilities getCapabilities() {
 		TsapiTrace.traceEntry("getCapabilities[]", this);
 		try {
-			TerminalConnectionCapabilities caps = tsConnection
+			final TerminalConnectionCapabilities caps = tsConnection
 					.getTsapiTermConnCapabilities();
 			TsapiTrace.traceExit("getCapabilities[]", this);
 			return caps;
@@ -152,7 +151,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	// ERROR //
 	public final javax.telephony.Connection getConnection() {
 		try {
-			TSConnection tsConn = tsConnection.getTSConnection();
+			final TSConnection tsConn = tsConnection.getTSConnection();
 			Connection localConnection;
 			if (tsConn != null) {
 				localConnection = (Connection) TsapiCreateObject
@@ -191,7 +190,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 
 	public final Object getPrivateData() {
 		TsapiTrace.traceEntry("getPrivateData[]", this);
-		Object obj = TsapiPromoter
+		final Object obj = TsapiPromoter
 				.promoteTsapiPrivate((CSTAPrivate) tsConnection
 						.getTermConnPrivateData());
 		TsapiTrace.traceExit("getPrivateData[]", this);
@@ -201,7 +200,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	public final int getState() {
 		TsapiTrace.traceEntry("getState[]", this);
 		try {
-			int state = tsConnection.getTerminalConnectionState();
+			final int state = tsConnection.getTerminalConnectionState();
 			TsapiTrace.traceExit("getState[]", this);
 			return state;
 		} finally {
@@ -212,7 +211,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	// ERROR //
 	public final Terminal getTerminal() {
 		try {
-			TSDevice tsDevice = tsConnection.getTSDevice();
+			final TSDevice tsDevice = tsConnection.getTSDevice();
 			Terminal localTerminal;
 			if (tsDevice != null) {
 				localTerminal = (Terminal) TsapiCreateObject.getTsapiObject(
@@ -228,13 +227,13 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	}
 
 	public final TerminalConnectionCapabilities getTerminalConnectionCapabilities(
-			Terminal terminal, Address address)
+			final Terminal terminal, final Address address)
 			throws InvalidArgumentException, PlatformException {
 		TsapiTrace
 				.traceEntry(
 						"getTerminalConnectionCapabilities[Terminal terminal, Address address]",
 						this);
-		TerminalConnectionCapabilities caps = getCapabilities();
+		final TerminalConnectionCapabilities caps = getCapabilities();
 		TsapiTrace
 				.traceExit(
 						"getTerminalConnectionCapabilities[Terminal terminal, Address address]",
@@ -245,10 +244,10 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	public final ConnectionID getTsapiConnectionID() {
 		TsapiTrace.traceEntry("getTsapiConnectionID[]", this);
 		try {
-			CSTAConnectionID cstaConnectionID = tsConnection.getConnID();
-			ConnectionID id = new ConnectionID(cstaConnectionID.getCallID(),
-					cstaConnectionID.getDeviceID(), (short) cstaConnectionID
-							.getDevIDType());
+			final CSTAConnectionID cstaConnectionID = tsConnection.getConnID();
+			final ConnectionID id = new ConnectionID(cstaConnectionID
+					.getCallID(), cstaConnectionID.getDeviceID(),
+					(short) cstaConnectionID.getDevIDType());
 
 			TsapiTrace.traceExit("getTsapiConnectionID[]", this);
 			return id;
@@ -304,28 +303,28 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceExit("leave[]", this);
 	}
 
-	public final void leave(short dropResource, UserToUserInfo userInfo)
-			throws TsapiInvalidStateException,
+	public final void leave(final short dropResource,
+			final UserToUserInfo userInfo) throws TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"leave[short dropResource, UserToUserInfo userInfo]", this);
-		LucentClearConnection lcc = createLucentClearConnection(dropResource,
-				userInfo);
+		final LucentClearConnection lcc = createLucentClearConnection(
+				dropResource, userInfo);
 		privData = lcc.makeTsapiPrivate();
 		leave();
 		TsapiTrace.traceExit(
 				"leave[short dropResource, UserToUserInfo userInfo]", this);
 	}
 
-	public final void listenHold(LucentConnection partyToHold)
+	public final void listenHold(final LucentConnection partyToHold)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"listenHold[LucentTerminalConnection partyToHold]", this);
 		try {
-			TSConnection party = (partyToHold == null) ? null
+			final TSConnection party = partyToHold == null ? null
 					: ((TsapiConnection) partyToHold).tsConnection;
 
 			tsConnection.listenHold(party);
@@ -336,14 +335,14 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 				"listenHold[LucentTerminalConnection partyToHold]", this);
 	}
 
-	public final void listenHold(LucentTerminalConnection partyToHold)
+	public final void listenHold(final LucentTerminalConnection partyToHold)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"listenHold[LucentTerminalConnection partyToHold]", this);
 		try {
-			TSConnection party = (partyToHold == null) ? null
+			final TSConnection party = partyToHold == null ? null
 					: ((TsapiTerminalConnection) partyToHold).tsConnection;
 
 			tsConnection.listenHold(party);
@@ -354,14 +353,14 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 				"listenHold[LucentTerminalConnection partyToHold]", this);
 	}
 
-	public final void listenUnhold(LucentConnection partyToUnhold)
+	public final void listenUnhold(final LucentConnection partyToUnhold)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"listenUnhold[LucentTerminalConnection partyToUnhold]", this);
 		try {
-			TSConnection party = (partyToUnhold == null) ? null
+			final TSConnection party = partyToUnhold == null ? null
 					: ((TsapiConnection) partyToUnhold).tsConnection;
 
 			tsConnection.listenUnhold(party);
@@ -372,14 +371,14 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 				"listenUnhold[LucentTerminalConnection partyToUnhold]", this);
 	}
 
-	public final void listenUnhold(LucentTerminalConnection partyToUnhold)
+	public final void listenUnhold(final LucentTerminalConnection partyToUnhold)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"listenUnhold[LucentTerminalConnection partyToUnhold]", this);
 		try {
-			TSConnection party = (partyToUnhold == null) ? null
+			final TSConnection party = partyToUnhold == null ? null
 					: ((TsapiTerminalConnection) partyToUnhold).tsConnection;
 
 			tsConnection.listenUnhold(party);
@@ -390,20 +389,20 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 				"listenUnhold[LucentTerminalConnection partyToUnhold]", this);
 	}
 
-	public final Object sendPrivateData(Object data) {
+	public final Object sendPrivateData(final Object data) {
 		TsapiTrace.traceEntry("sendPrivateData[Object data]", this);
 		try {
-			Object obj = tsConnection.sendPrivateData(TsapiPromoter
+			final Object obj = tsConnection.sendPrivateData(TsapiPromoter
 					.demoteTsapiPrivate((TsapiPrivate) data));
 			TsapiTrace.traceExit("sendPrivateData[Object data]", this);
 			return obj;
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
 	}
 
-	public final void setDtmfDetection(boolean enable)
+	public final void setDtmfDetection(final boolean enable)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("setDtmfDetection[boolean enable]", this);
 		try {
@@ -414,11 +413,11 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
-	public final void setPrivateData(Object data) {
+	public final void setPrivateData(final Object data) {
 		TsapiTrace.traceEntry("setPrivateData[Object data]", this);
 		try {
 			privData = TsapiPromoter.demoteTsapiPrivate((TsapiPrivate) data);
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
@@ -488,7 +487,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
-	public final void usePlayURL(URL url)
+	public final void usePlayURL(final URL url)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("usePlayURL[URL url]", this);
 		try {
@@ -499,7 +498,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
-	public final void useRecordURL(URL url)
+	public final void useRecordURL(final URL url)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("useRecordURL[URL url]", this);
 		try {
@@ -510,4 +509,3 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 }
-

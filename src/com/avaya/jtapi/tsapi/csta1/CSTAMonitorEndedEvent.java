@@ -11,20 +11,20 @@ public final class CSTAMonitorEndedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 119;
 
-	public static CSTAMonitorEndedEvent decode(InputStream in) {
-		CSTAMonitorEndedEvent _this = new CSTAMonitorEndedEvent();
+	public static CSTAMonitorEndedEvent decode(final InputStream in) {
+		final CSTAMonitorEndedEvent _this = new CSTAMonitorEndedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		cause = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(cause, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class CSTAMonitorEndedEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAMonitorEndedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
 
@@ -52,4 +52,3 @@ public final class CSTAMonitorEndedEvent extends CSTAUnsolicited {
 		return lines;
 	}
 }
-

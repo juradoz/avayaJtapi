@@ -7,7 +7,7 @@ import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 @SuppressWarnings("deprecation")
 public class TsapiConnEstablishedEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnEstablishedEv, ITsapiCallInfo {
-	public TsapiConnEstablishedEvent(ConnEventParams params) {
+	public TsapiConnEstablishedEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -15,4 +15,3 @@ public class TsapiConnEstablishedEvent extends TsapiCallCtlConnEvent implements
 		return 206;
 	}
 }
-

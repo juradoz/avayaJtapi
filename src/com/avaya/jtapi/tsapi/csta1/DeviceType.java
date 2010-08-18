@@ -19,7 +19,8 @@ public final class DeviceType extends ASNEnumerated {
 	public static final short DT_OPERATOR_GROUP = 21;
 	public static final short DT_OTHER = 255;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -65,7 +66,6 @@ public final class DeviceType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

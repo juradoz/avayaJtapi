@@ -7,58 +7,54 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class ASNIA5String extends ASN1 {
-	public static final String decode(InputStream in) {
+	public static final String decode(final InputStream in) {
 		byte[] buf;
 		try {
-			if (in.read() != 22) {
+			if (in.read() != 22)
 				throw new ASN1Exception("Decoder: expected IA5String tag");
-			}
-			int length = decodeLength(in);
+			final int length = ASN1.decodeLength(in);
 
-			if (length == 0) {
+			if (length == 0)
 				return null;
-			}
 
 			buf = new byte[length];
 			in.read(buf, 0, length);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new ASN1Exception("Decoder: IA5String got unexpected EOF");
 		}
 		return new String(buf);
 	}
 
-	public static final void encode(String str, OutputStream out) {
+	public static final void encode(final String str, final OutputStream out) {
 		try {
 			out.write(22);
-			if (str == null) {
-				encodeLength(out, 0);
-			} else {
-				int length = str.length();
+			if (str == null)
+				ASN1.encodeLength(out, 0);
+			else {
+				final int length = str.length();
 
-				encodeLength(out, length);
+				ASN1.encodeLength(out, length);
 				byte[] buf = new byte[length];
 				buf = str.getBytes();
 				out.write(buf);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new ASN1Exception(
 					"Encoder: IA5String got unexpected IO error");
 		}
 	}
 
-	public static final Collection<String> print(String str, String name,
-			String indent) {
-		Collection<String> lines = new ArrayList<String>();
-		StringBuffer buffer = new StringBuffer();
+	public static final Collection<String> print(final String str,
+			final String name, final String indent) {
+		final Collection<String> lines = new ArrayList<String>();
+		final StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
-		if (name != null) {
+		if (name != null)
 			buffer.append(name + " ");
-		}
-		if (str == null) {
+		if (str == null)
 			lines.add(buffer.toString() + "<null>");
-		} else {
+		else
 			lines.add(buffer.toString() + "\"" + str + "\"");
-		}
 		return lines;
 	}
 }

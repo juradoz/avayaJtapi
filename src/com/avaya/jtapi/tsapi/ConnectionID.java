@@ -10,25 +10,25 @@ public final class ConnectionID {
 	ConnectionID() {
 	}
 
-	public ConnectionID(int _callID, String _deviceID, short _devIDType) {
+	public ConnectionID(final int _callID, final String _deviceID,
+			final short _devIDType) {
 		callID = _callID;
 		deviceID = _deviceID;
 		devIDType = _devIDType;
 	}
 
 	@Override
-	public boolean equals(Object anObject) {
+	public boolean equals(final Object anObject) {
 		if (anObject instanceof ConnectionID) {
-			ConnectionID anotherConnID = (ConnectionID) anObject;
-			if (deviceID == null) {
-				return (callID == anotherConnID.callID)
-						&& (devIDType == anotherConnID.devIDType)
-						&& (anotherConnID.deviceID == null);
-			}
+			final ConnectionID anotherConnID = (ConnectionID) anObject;
+			if (deviceID == null)
+				return callID == anotherConnID.callID
+						&& devIDType == anotherConnID.devIDType
+						&& anotherConnID.deviceID == null;
 
-			return (callID == anotherConnID.callID)
-					&& (devIDType == anotherConnID.devIDType)
-					&& (deviceID.equals(anotherConnID.deviceID));
+			return callID == anotherConnID.callID
+					&& devIDType == anotherConnID.devIDType
+					&& deviceID.equals(anotherConnID.deviceID);
 		}
 
 		return false;
@@ -48,9 +48,8 @@ public final class ConnectionID {
 
 	@Override
 	public int hashCode() {
-		if (deviceID == null) {
+		if (deviceID == null)
 			return callID + (devIDType << 31);
-		}
 
 		return callID + deviceID.hashCode() + (devIDType << 31);
 	}
@@ -61,4 +60,3 @@ public final class ConnectionID {
 				+ ")";
 	}
 }
-

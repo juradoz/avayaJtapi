@@ -10,20 +10,20 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class ACSCloseStream extends ACSRequest {
 	public static final int PDU = 3;
 
-	public static ACSCloseStream decode(InputStream in) {
-		ACSCloseStream _this = new ACSCloseStream();
+	public static ACSCloseStream decode(final InputStream in) {
+		final ACSCloseStream _this = new ACSCloseStream();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -34,11 +34,11 @@ public final class ACSCloseStream extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSCloseStream ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -46,4 +46,3 @@ public final class ACSCloseStream extends ACSRequest {
 		return lines;
 	}
 }
-

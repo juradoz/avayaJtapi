@@ -11,15 +11,15 @@ public final class LucentQueryTgConfEvent extends LucentPrivateData {
 	int usedTrunks;
 	static final int PDU = 27;
 
-	static LucentQueryTgConfEvent decode(InputStream in) {
-		LucentQueryTgConfEvent _this = new LucentQueryTgConfEvent();
+	static LucentQueryTgConfEvent decode(final InputStream in) {
+		final LucentQueryTgConfEvent _this = new LucentQueryTgConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		idleTrunks = ASNInteger.decode(memberStream);
 		usedTrunks = ASNInteger.decode(memberStream);
 	}
@@ -31,12 +31,12 @@ public final class LucentQueryTgConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryTgConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(idleTrunks, "idleTrunks", indent));
 		lines.addAll(ASNInteger.print(usedTrunks, "usedTrunks", indent));
@@ -45,12 +45,11 @@ public final class LucentQueryTgConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setIdleTrunks(int idleTrunks) {
+	public void setIdleTrunks(final int idleTrunks) {
 		this.idleTrunks = idleTrunks;
 	}
 
-	public void setUsedTrunks(int usedTrunks) {
+	public void setUsedTrunks(final int usedTrunks) {
 		this.usedTrunks = usedTrunks;
 	}
 }
-

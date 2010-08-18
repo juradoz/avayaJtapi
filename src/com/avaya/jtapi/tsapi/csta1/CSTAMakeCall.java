@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class CSTAMakeCall extends CSTARequest {
-	public static CSTAMakeCall decode(InputStream in) {
-		CSTAMakeCall _this = new CSTAMakeCall();
+	public static CSTAMakeCall decode(final InputStream in) {
+		final CSTAMakeCall _this = new CSTAMakeCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,19 +23,19 @@ public final class CSTAMakeCall extends CSTARequest {
 	public CSTAMakeCall() {
 	}
 
-	public CSTAMakeCall(String _callingDevice, String _calledDevice) {
+	public CSTAMakeCall(final String _callingDevice, final String _calledDevice) {
 		callingDevice = _callingDevice;
 		calledDevice = _calledDevice;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		callingDevice = ASNIA5String.decode(memberStream);
 		calledDevice = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(callingDevice, memberStream);
 		ASNIA5String.encode(calledDevice, memberStream);
 	}
@@ -55,11 +55,11 @@ public final class CSTAMakeCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAMakeCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
@@ -70,4 +70,3 @@ public final class CSTAMakeCall extends CSTARequest {
 		return lines;
 	}
 }
-

@@ -26,4 +26,3 @@ public abstract interface AgentTermEv extends CallCentEv, TermEv {
 	@Deprecated
 	public abstract int getState();
 }
-

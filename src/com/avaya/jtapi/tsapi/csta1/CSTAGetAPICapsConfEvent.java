@@ -88,15 +88,15 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 	int sysStatEvent;
 	public static final int PDU = 125;
 
-	public static CSTAGetAPICapsConfEvent decode(InputStream in) {
-		CSTAGetAPICapsConfEvent _this = new CSTAGetAPICapsConfEvent();
+	public static CSTAGetAPICapsConfEvent decode(final InputStream in) {
+		final CSTAGetAPICapsConfEvent _this = new CSTAGetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		alternateCall = ASNInteger.decode(memberStream);
 		answerCall = ASNInteger.decode(memberStream);
 		callCompletion = ASNInteger.decode(memberStream);
@@ -501,11 +501,11 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(alternateCall, "alternateCall", indent));
 		lines.addAll(ASNInteger.print(answerCall, "answerCall", indent));
@@ -640,320 +640,319 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setAlternateCall(int alternateCall) {
+	public void setAlternateCall(final int alternateCall) {
 		this.alternateCall = alternateCall;
 	}
 
-	public void setAnswerCall(int answerCall) {
+	public void setAnswerCall(final int answerCall) {
 		this.answerCall = answerCall;
 	}
 
-	public void setBackInServiceEvent(int backInServiceEvent) {
+	public void setBackInServiceEvent(final int backInServiceEvent) {
 		this.backInServiceEvent = backInServiceEvent;
 	}
 
-	public void setCallClearedEvent(int callClearedEvent) {
+	public void setCallClearedEvent(final int callClearedEvent) {
 		this.callClearedEvent = callClearedEvent;
 	}
 
-	public void setCallCompletion(int callCompletion) {
+	public void setCallCompletion(final int callCompletion) {
 		this.callCompletion = callCompletion;
 	}
 
-	public void setCallInformationEvent(int callInformationEvent) {
+	public void setCallInformationEvent(final int callInformationEvent) {
 		this.callInformationEvent = callInformationEvent;
 	}
 
-	public void setChangeMonitorFilter(int changeMonitorFilter) {
+	public void setChangeMonitorFilter(final int changeMonitorFilter) {
 		this.changeMonitorFilter = changeMonitorFilter;
 	}
 
-	public void setChangeSysStatFilter(int changeSysStatFilter) {
+	public void setChangeSysStatFilter(final int changeSysStatFilter) {
 		this.changeSysStatFilter = changeSysStatFilter;
 	}
 
-	public void setClearCall(int clearCall) {
+	public void setClearCall(final int clearCall) {
 		this.clearCall = clearCall;
 	}
 
-	public void setClearConnection(int clearConnection) {
+	public void setClearConnection(final int clearConnection) {
 		this.clearConnection = clearConnection;
 	}
 
-	public void setConferenceCall(int conferenceCall) {
+	public void setConferenceCall(final int conferenceCall) {
 		this.conferenceCall = conferenceCall;
 	}
 
-	public void setConferencedEvent(int conferencedEvent) {
+	public void setConferencedEvent(final int conferencedEvent) {
 		this.conferencedEvent = conferencedEvent;
 	}
 
-	public void setConnectionClearedEvent(int connectionClearedEvent) {
+	public void setConnectionClearedEvent(final int connectionClearedEvent) {
 		this.connectionClearedEvent = connectionClearedEvent;
 	}
 
-	public void setConsultationCall(int consultationCall) {
+	public void setConsultationCall(final int consultationCall) {
 		this.consultationCall = consultationCall;
 	}
 
-	public void setDeflectCall(int deflectCall) {
+	public void setDeflectCall(final int deflectCall) {
 		this.deflectCall = deflectCall;
 	}
 
-	public void setDeliveredEvent(int deliveredEvent) {
+	public void setDeliveredEvent(final int deliveredEvent) {
 		this.deliveredEvent = deliveredEvent;
 	}
 
-	public void setDivertedEvent(int divertedEvent) {
+	public void setDivertedEvent(final int divertedEvent) {
 		this.divertedEvent = divertedEvent;
 	}
 
-	public void setDoNotDisturbEvent(int doNotDisturbEvent) {
+	public void setDoNotDisturbEvent(final int doNotDisturbEvent) {
 		this.doNotDisturbEvent = doNotDisturbEvent;
 	}
 
-	public void setEscapeService(int escapeService) {
+	public void setEscapeService(final int escapeService) {
 		this.escapeService = escapeService;
 	}
 
-	public void setEscapeServiceConf(int escapeServiceConf) {
+	public void setEscapeServiceConf(final int escapeServiceConf) {
 		this.escapeServiceConf = escapeServiceConf;
 	}
 
-	public void setEscapeServiceEvent(int escapeServiceEvent) {
+	public void setEscapeServiceEvent(final int escapeServiceEvent) {
 		this.escapeServiceEvent = escapeServiceEvent;
 	}
 
-	public void setEstablishedEvent(int establishedEvent) {
+	public void setEstablishedEvent(final int establishedEvent) {
 		this.establishedEvent = establishedEvent;
 	}
 
-	public void setEventReport(int eventReport) {
+	public void setEventReport(final int eventReport) {
 		this.eventReport = eventReport;
 	}
 
-	public void setFailedEvent(int failedEvent) {
+	public void setFailedEvent(final int failedEvent) {
 		this.failedEvent = failedEvent;
 	}
 
-	public void setForwardingEvent(int forwardingEvent) {
+	public void setForwardingEvent(final int forwardingEvent) {
 		this.forwardingEvent = forwardingEvent;
 	}
 
-	public void setGroupPickupCall(int groupPickupCall) {
+	public void setGroupPickupCall(final int groupPickupCall) {
 		this.groupPickupCall = groupPickupCall;
 	}
 
-	public void setHeldEvent(int heldEvent) {
+	public void setHeldEvent(final int heldEvent) {
 		this.heldEvent = heldEvent;
 	}
 
-	public void setHoldCall(int holdCall) {
+	public void setHoldCall(final int holdCall) {
 		this.holdCall = holdCall;
 	}
 
-	public void setLoggedOffEvent(int loggedOffEvent) {
+	public void setLoggedOffEvent(final int loggedOffEvent) {
 		this.loggedOffEvent = loggedOffEvent;
 	}
 
-	public void setLoggedOnEvent(int loggedOnEvent) {
+	public void setLoggedOnEvent(final int loggedOnEvent) {
 		this.loggedOnEvent = loggedOnEvent;
 	}
 
-	public void setMakeCall(int makeCall) {
+	public void setMakeCall(final int makeCall) {
 		this.makeCall = makeCall;
 	}
 
-	public void setMakePredictiveCall(int makePredictiveCall) {
+	public void setMakePredictiveCall(final int makePredictiveCall) {
 		this.makePredictiveCall = makePredictiveCall;
 	}
 
-	public void setMessageWaitingEvent(int messageWaitingEvent) {
+	public void setMessageWaitingEvent(final int messageWaitingEvent) {
 		this.messageWaitingEvent = messageWaitingEvent;
 	}
 
-	public void setMonitorCall(int monitorCall) {
+	public void setMonitorCall(final int monitorCall) {
 		this.monitorCall = monitorCall;
 	}
 
-	public void setMonitorCallsViaDevice(int monitorCallsViaDevice) {
+	public void setMonitorCallsViaDevice(final int monitorCallsViaDevice) {
 		this.monitorCallsViaDevice = monitorCallsViaDevice;
 	}
 
-	public void setMonitorDevice(int monitorDevice) {
+	public void setMonitorDevice(final int monitorDevice) {
 		this.monitorDevice = monitorDevice;
 	}
 
-	public void setMonitorEnded(int monitorEnded) {
+	public void setMonitorEnded(final int monitorEnded) {
 		this.monitorEnded = monitorEnded;
 	}
 
-	public void setMonitorStop(int monitorStop) {
+	public void setMonitorStop(final int monitorStop) {
 		this.monitorStop = monitorStop;
 	}
 
-	public void setNetworkReachedEvent(int networkReachedEvent) {
+	public void setNetworkReachedEvent(final int networkReachedEvent) {
 		this.networkReachedEvent = networkReachedEvent;
 	}
 
-	public void setNotReadyEvent(int notReadyEvent) {
+	public void setNotReadyEvent(final int notReadyEvent) {
 		this.notReadyEvent = notReadyEvent;
 	}
 
-	public void setOriginatedEvent(int originatedEvent) {
+	public void setOriginatedEvent(final int originatedEvent) {
 		this.originatedEvent = originatedEvent;
 	}
 
-	public void setOutOfServiceEvent(int outOfServiceEvent) {
+	public void setOutOfServiceEvent(final int outOfServiceEvent) {
 		this.outOfServiceEvent = outOfServiceEvent;
 	}
 
-	public void setPickupCall(int pickupCall) {
+	public void setPickupCall(final int pickupCall) {
 		this.pickupCall = pickupCall;
 	}
 
-	public void setPrivateEvent(int privateEvent) {
+	public void setPrivateEvent(final int privateEvent) {
 		this.privateEvent = privateEvent;
 	}
 
-	public void setPrivateStatusEvent(int privateStatusEvent) {
+	public void setPrivateStatusEvent(final int privateStatusEvent) {
 		this.privateStatusEvent = privateStatusEvent;
 	}
 
-	public void setQueryAgentState(int queryAgentState) {
+	public void setQueryAgentState(final int queryAgentState) {
 		this.queryAgentState = queryAgentState;
 	}
 
-	public void setQueryDeviceInfo(int queryDeviceInfo) {
+	public void setQueryDeviceInfo(final int queryDeviceInfo) {
 		this.queryDeviceInfo = queryDeviceInfo;
 	}
 
-	public void setQueryDnd(int queryDnd) {
+	public void setQueryDnd(final int queryDnd) {
 		this.queryDnd = queryDnd;
 	}
 
-	public void setQueryFwd(int queryFwd) {
+	public void setQueryFwd(final int queryFwd) {
 		this.queryFwd = queryFwd;
 	}
 
-	public void setQueryLastNumber(int queryLastNumber) {
+	public void setQueryLastNumber(final int queryLastNumber) {
 		this.queryLastNumber = queryLastNumber;
 	}
 
-	public void setQueryMwi(int queryMwi) {
+	public void setQueryMwi(final int queryMwi) {
 		this.queryMwi = queryMwi;
 	}
 
-	public void setQueuedEvent(int queuedEvent) {
+	public void setQueuedEvent(final int queuedEvent) {
 		this.queuedEvent = queuedEvent;
 	}
 
-	public void setReadyEvent(int readyEvent) {
+	public void setReadyEvent(final int readyEvent) {
 		this.readyEvent = readyEvent;
 	}
 
-	public void setReconnectCall(int reconnectCall) {
+	public void setReconnectCall(final int reconnectCall) {
 		this.reconnectCall = reconnectCall;
 	}
 
-	public void setReRoute(int reRoute) {
+	public void setReRoute(final int reRoute) {
 		this.reRoute = reRoute;
 	}
 
-	public void setRetrieveCall(int retrieveCall) {
+	public void setRetrieveCall(final int retrieveCall) {
 		this.retrieveCall = retrieveCall;
 	}
 
-	public void setRetrievedEvent(int retrievedEvent) {
+	public void setRetrievedEvent(final int retrievedEvent) {
 		this.retrievedEvent = retrievedEvent;
 	}
 
-	public void setRouteEndEvent(int routeEndEvent) {
+	public void setRouteEndEvent(final int routeEndEvent) {
 		this.routeEndEvent = routeEndEvent;
 	}
 
-	public void setRouteRequestEvent(int routeRequestEvent) {
+	public void setRouteRequestEvent(final int routeRequestEvent) {
 		this.routeRequestEvent = routeRequestEvent;
 	}
 
-	public void setRouteSelect(int routeSelect) {
+	public void setRouteSelect(final int routeSelect) {
 		this.routeSelect = routeSelect;
 	}
 
-	public void setRouteUsedEvent(int routeUsedEvent) {
+	public void setRouteUsedEvent(final int routeUsedEvent) {
 		this.routeUsedEvent = routeUsedEvent;
 	}
 
-	public void setSendPrivateEvent(int sendPrivateEvent) {
+	public void setSendPrivateEvent(final int sendPrivateEvent) {
 		this.sendPrivateEvent = sendPrivateEvent;
 	}
 
-	public void setServiceInitiatedEvent(int serviceInitiatedEvent) {
+	public void setServiceInitiatedEvent(final int serviceInitiatedEvent) {
 		this.serviceInitiatedEvent = serviceInitiatedEvent;
 	}
 
-	public void setSetAgentState(int setAgentState) {
+	public void setSetAgentState(final int setAgentState) {
 		this.setAgentState = setAgentState;
 	}
 
-	public void setSetDnd(int setDnd) {
+	public void setSetDnd(final int setDnd) {
 		this.setDnd = setDnd;
 	}
 
-	public void setSetFwd(int setFwd) {
+	public void setSetFwd(final int setFwd) {
 		this.setFwd = setFwd;
 	}
 
-	public void setSetMwi(int setMwi) {
+	public void setSetMwi(final int setMwi) {
 		this.setMwi = setMwi;
 	}
 
-	public void setSnapshotCallReq(int snapshotCallReq) {
+	public void setSnapshotCallReq(final int snapshotCallReq) {
 		this.snapshotCallReq = snapshotCallReq;
 	}
 
-	public void setSnapshotDeviceReq(int snapshotDeviceReq) {
+	public void setSnapshotDeviceReq(final int snapshotDeviceReq) {
 		this.snapshotDeviceReq = snapshotDeviceReq;
 	}
 
-	public void setSysStatEvent(int sysStatEvent) {
+	public void setSysStatEvent(final int sysStatEvent) {
 		this.sysStatEvent = sysStatEvent;
 	}
 
-	public void setSysStatReq(int sysStatReq) {
+	public void setSysStatReq(final int sysStatReq) {
 		this.sysStatReq = sysStatReq;
 	}
 
-	public void setSysStatReqConf(int sysStatReqConf) {
+	public void setSysStatReqConf(final int sysStatReqConf) {
 		this.sysStatReqConf = sysStatReqConf;
 	}
 
-	public void setSysStatReqEvent(int sysStatReqEvent) {
+	public void setSysStatReqEvent(final int sysStatReqEvent) {
 		this.sysStatReqEvent = sysStatReqEvent;
 	}
 
-	public void setSysStatStart(int sysStatStart) {
+	public void setSysStatStart(final int sysStatStart) {
 		this.sysStatStart = sysStatStart;
 	}
 
-	public void setSysStatStop(int sysStatStop) {
+	public void setSysStatStop(final int sysStatStop) {
 		this.sysStatStop = sysStatStop;
 	}
 
-	public void setTransferCall(int transferCall) {
+	public void setTransferCall(final int transferCall) {
 		this.transferCall = transferCall;
 	}
 
-	public void setTransferredEvent(int transferredEvent) {
+	public void setTransferredEvent(final int transferredEvent) {
 		this.transferredEvent = transferredEvent;
 	}
 
-	public void setWorkNotReadyEvent(int workNotReadyEvent) {
+	public void setWorkNotReadyEvent(final int workNotReadyEvent) {
 		this.workNotReadyEvent = workNotReadyEvent;
 	}
 
-	public void setWorkReadyEvent(int workReadyEvent) {
+	public void setWorkReadyEvent(final int workReadyEvent) {
 		this.workReadyEvent = workReadyEvent;
 	}
 }
-

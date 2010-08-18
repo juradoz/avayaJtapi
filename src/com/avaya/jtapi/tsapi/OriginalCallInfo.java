@@ -21,4 +21,3 @@ public abstract interface OriginalCallInfo {
 
 	public abstract UserToUserInfo getUserToUserInfo();
 }
-

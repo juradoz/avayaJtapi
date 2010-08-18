@@ -7,4 +7,3 @@ public abstract interface CallCtlConnDialingEv extends CallCtlConnEv {
 
 	public abstract String getDigits();
 }
-

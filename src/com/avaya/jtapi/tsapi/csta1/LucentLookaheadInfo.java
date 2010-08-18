@@ -19,29 +19,27 @@ public class LucentLookaheadInfo extends LucentPrivateData {
 	public static final short LAI_HIGH = 3;
 	public static final short LAI_TOP = 4;
 
-	public static LucentLookaheadInfo decode(InputStream in) {
-		LucentLookaheadInfo _this = new LucentLookaheadInfo();
+	public static LucentLookaheadInfo decode(final InputStream in) {
+		final LucentLookaheadInfo _this = new LucentLookaheadInfo();
 		_this.doDecode(in);
-		if (_this.type == -1) {
+		if (_this.type == -1)
 			return null;
-		}
 		return _this;
 	}
 
-	public static Collection<String> print(LucentLookaheadInfo _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final LucentLookaheadInfo _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(Interflow.print(_this.type, "type", indent));
 		lines.addAll(Priority.print(_this.priority, "priority", indent));
@@ -64,7 +62,7 @@ public class LucentLookaheadInfo extends LucentPrivateData {
 	protected String sourceVDN;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		type = ASNEnumerated.decode(memberStream);
 		priority = ASNEnumerated.decode(memberStream);
 		hours = ASNInteger.decode(memberStream);
@@ -74,7 +72,7 @@ public class LucentLookaheadInfo extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(type, memberStream);
 		ASNEnumerated.encode(priority, memberStream);
 		ASNInteger.encode(hours, memberStream);
@@ -107,28 +105,27 @@ public class LucentLookaheadInfo extends LucentPrivateData {
 		return type;
 	}
 
-	public void setHours(int hours) {
+	public void setHours(final int hours) {
 		this.hours = hours;
 	}
 
-	public void setMinutes(int minutes) {
+	public void setMinutes(final int minutes) {
 		this.minutes = minutes;
 	}
 
-	public void setPriority(short priority) {
+	public void setPriority(final short priority) {
 		this.priority = priority;
 	}
 
-	public void setSeconds(int seconds) {
+	public void setSeconds(final int seconds) {
 		this.seconds = seconds;
 	}
 
-	public void setSourceVDN(String _sourceVDN) {
+	public void setSourceVDN(final String _sourceVDN) {
 		sourceVDN = _sourceVDN;
 	}
 
-	public void setType(short type) {
+	public void setType(final short type) {
 		this.type = type;
 	}
 }
-

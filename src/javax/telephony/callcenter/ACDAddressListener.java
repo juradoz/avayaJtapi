@@ -22,4 +22,3 @@ public abstract interface ACDAddressListener extends AddressListener {
 	public abstract void acdAddressWorkReady(
 			ACDAddressEvent paramACDAddressEvent);
 }
-

@@ -12,4 +12,3 @@ public abstract interface ProviderListener extends EventListener {
 
 	public abstract void providerShutdown(ProviderEvent paramProviderEvent);
 }
-

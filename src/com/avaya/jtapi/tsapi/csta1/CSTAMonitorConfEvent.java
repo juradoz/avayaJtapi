@@ -13,21 +13,21 @@ public final class CSTAMonitorConfEvent extends CSTAConfirmation {
 	CSTAMonitorFilter monitorFilter;
 	public static final int PDU = 114;
 
-	public static CSTAMonitorConfEvent decode(InputStream in) {
-		CSTAMonitorConfEvent _this = new CSTAMonitorConfEvent();
+	public static CSTAMonitorConfEvent decode(final InputStream in) {
+		final CSTAMonitorConfEvent _this = new CSTAMonitorConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		monitorCrossRefID = ASNInteger.decode(memberStream);
 		monitorFilter = CSTAMonitorFilter.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(monitorCrossRefID, memberStream);
 		ASNSequence.encode(monitorFilter, memberStream);
 	}
@@ -47,12 +47,12 @@ public final class CSTAMonitorConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAMonitorConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(monitorCrossRefID, "monitorCrossRefID",
 				indent));
@@ -63,12 +63,11 @@ public final class CSTAMonitorConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setMonitorCrossRefID(int crossRef) {
+	public void setMonitorCrossRefID(final int crossRef) {
 		monitorCrossRefID = crossRef;
 	}
 
-	public void setMonitorFilter(CSTAMonitorFilter filter) {
+	public void setMonitorFilter(final CSTAMonitorFilter filter) {
 		monitorFilter = filter;
 	}
 }
-

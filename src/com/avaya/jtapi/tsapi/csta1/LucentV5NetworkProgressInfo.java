@@ -12,22 +12,22 @@ public class LucentV5NetworkProgressInfo extends LucentNetworkProgressInfo {
 	String trunkMember;
 	public static final int PDU = 101;
 
-	public static LucentNetworkProgressInfo decode(InputStream in) {
-		LucentV5NetworkProgressInfo _this = new LucentV5NetworkProgressInfo();
+	public static LucentNetworkProgressInfo decode(final InputStream in) {
+		final LucentV5NetworkProgressInfo _this = new LucentV5NetworkProgressInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		trunkGroup = ASNIA5String.decode(memberStream);
 		trunkMember = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(trunkGroup, memberStream);
 		ASNIA5String.encode(trunkMember, memberStream);
@@ -48,11 +48,11 @@ public class LucentV5NetworkProgressInfo extends LucentNetworkProgressInfo {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("V5NetworkProgressInfo ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ProgressLocation.print(progressLocation,
 				"progressLocation", indent));
@@ -67,11 +67,11 @@ public class LucentV5NetworkProgressInfo extends LucentNetworkProgressInfo {
 		return lines;
 	}
 
-	public void setTrunkGroup(String trunkGroup) {
+	public void setTrunkGroup(final String trunkGroup) {
 		this.trunkGroup = trunkGroup;
 	}
 
-	public void setTrunkMember(String trunkMember) {
+	public void setTrunkMember(final String trunkMember) {
 		this.trunkMember = trunkMember;
 	}
 }

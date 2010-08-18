@@ -14,22 +14,22 @@ public final class CSTARouteEndEventReport extends CSTAEventReport {
 	short cause;
 	public static final int PDU = 87;
 
-	public static CSTARouteEndEventReport decode(InputStream in) {
-		CSTARouteEndEventReport _this = new CSTARouteEndEventReport();
+	public static CSTARouteEndEventReport decode(final InputStream in) {
+		final CSTARouteEndEventReport _this = new CSTARouteEndEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		cause = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 		ASNInteger.encode(routingCrossRefID, memberStream);
 		ASNEnumerated.encode(cause, memberStream);
@@ -54,12 +54,12 @@ public final class CSTARouteEndEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteEndEventReport ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -71,16 +71,15 @@ public final class CSTARouteEndEventReport extends CSTAEventReport {
 		return lines;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(int routingCrossRefID) {
+	public void setRoutingCrossRefID(final int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }
-

@@ -10,12 +10,12 @@ public class LucentQueryStationStatus extends LucentPrivateData {
 	String device;
 	static final int PDU = 22;
 
-	LucentQueryStationStatus(String _device) {
+	LucentQueryStationStatus(final String _device) {
 		device = _device;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 	}
 
@@ -26,12 +26,12 @@ public class LucentQueryStationStatus extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryStationStatus ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 
@@ -39,4 +39,3 @@ public class LucentQueryStationStatus extends LucentPrivateData {
 		return lines;
 	}
 }
-

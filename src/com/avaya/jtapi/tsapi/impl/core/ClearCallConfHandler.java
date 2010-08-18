@@ -10,28 +10,26 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class ClearCallConfHandler implements ConfHandler {
 	TSCall call;
 
-	ClearCallConfHandler(TSCall _call) {
+	ClearCallConfHandler(final TSCall _call) {
 		call = _call;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTAClearCallConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTAClearCallConfEvent))
 			return;
-		}
 
 		call.replyPriv = event.getPrivData();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 		call.setState(34, eventList);
 		if (eventList.size() > 0) {
-			Vector<TsapiCallMonitor> observers = call.getObservers();
+			final Vector<TsapiCallMonitor> observers = call.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = observers.elementAt(j);
+				final TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 		}
 		call.endCVDObservers(100, null);
 	}
 }
-

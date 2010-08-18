@@ -9,8 +9,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public class LucentMakeCall extends LucentPrivateData {
-	public static LucentMakeCall decode(InputStream in) {
-		LucentMakeCall _this = new LucentMakeCall();
+	public static LucentMakeCall decode(final InputStream in) {
+		final LucentMakeCall _this = new LucentMakeCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -25,22 +25,22 @@ public class LucentMakeCall extends LucentPrivateData {
 	public LucentMakeCall() {
 	}
 
-	public LucentMakeCall(String _destRoute, boolean _priorityCalling,
-			LucentUserToUserInfo _userInfo) {
+	public LucentMakeCall(final String _destRoute,
+			final boolean _priorityCalling, final LucentUserToUserInfo _userInfo) {
 		destRoute = _destRoute;
 		priorityCalling = _priorityCalling;
 		userInfo = _userInfo;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		destRoute = ASNIA5String.decode(memberStream);
 		priorityCalling = ASNBoolean.decode(memberStream);
 		userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(destRoute, memberStream);
 		ASNBoolean.encode(priorityCalling, memberStream);
 		LucentUserToUserInfo.encode(userInfo, memberStream);
@@ -53,12 +53,12 @@ public class LucentMakeCall extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMakeCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(destRoute, "destRoute", indent));
 		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",
@@ -69,4 +69,3 @@ public class LucentMakeCall extends LucentPrivateData {
 		return lines;
 	}
 }
-

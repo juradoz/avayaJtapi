@@ -9,36 +9,34 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentDeviceHistoryEntry extends LucentPrivateData {
-	public static LucentDeviceHistoryEntry decode(InputStream in) {
-		LucentDeviceHistoryEntry _this = new LucentDeviceHistoryEntry();
+	public static LucentDeviceHistoryEntry decode(final InputStream in) {
+		final LucentDeviceHistoryEntry _this = new LucentDeviceHistoryEntry();
 		_this.doDecode(in);
-		if ((_this.oldDeviceID == null) && (_this.oldConnectionID == null)) {
+		if (_this.oldDeviceID == null && _this.oldConnectionID == null)
 			return null;
-		}
 
 		return _this;
 	}
 
-	static void encode(LucentDeviceHistoryEntry _this, OutputStream out) {
-		if (_this == null) {
+	static void encode(LucentDeviceHistoryEntry _this, final OutputStream out) {
+		if (_this == null)
 			_this = new LucentDeviceHistoryEntry();
-		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(LucentDeviceHistoryEntry _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(
+			final LucentDeviceHistoryEntry _this, final String name,
+			final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ASNIA5String.print(_this.oldDeviceID, "oldDeviceID",
 				indent));
@@ -59,22 +57,22 @@ public final class LucentDeviceHistoryEntry extends LucentPrivateData {
 	LucentDeviceHistoryEntry() {
 	}
 
-	public LucentDeviceHistoryEntry(String _oldDeviceID, short _eventCause,
-			CSTAConnectionID _oldConnectionID) {
+	public LucentDeviceHistoryEntry(final String _oldDeviceID,
+			final short _eventCause, final CSTAConnectionID _oldConnectionID) {
 		oldDeviceID = _oldDeviceID;
 		eventCause = _eventCause;
 		oldConnectionID = _oldConnectionID;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		oldDeviceID = ASNIA5String.decode(memberStream);
 		eventCause = ASNEnumerated.decode(memberStream);
 		oldConnectionID = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(oldDeviceID, memberStream);
 		ASNEnumerated.encode(eventCause, memberStream);
 		CSTAConnectionID.encode(oldConnectionID, memberStream);
@@ -92,4 +90,3 @@ public final class LucentDeviceHistoryEntry extends LucentPrivateData {
 		return oldDeviceID;
 	}
 }
-

@@ -9,4 +9,3 @@ public abstract interface LucentTrunk extends ITsapiTrunk {
 
 	public abstract String getMemberName();
 }
-

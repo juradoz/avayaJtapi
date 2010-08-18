@@ -8,33 +8,35 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public final class LucentV7CallImpl extends LucentV5CallImpl implements
 		LucentV7Call {
-	LucentV7CallImpl(LucentV7ProviderImpl _provider) {
+	LucentV7CallImpl(final LucentV7ProviderImpl _provider) {
 		super(_provider, 0);
 		TsapiTrace.traceConstruction(this, LucentV7CallImpl.class);
 	}
 
-	LucentV7CallImpl(LucentV7ProviderImpl _provider, CSTAConnectionID connID) {
+	LucentV7CallImpl(final LucentV7ProviderImpl _provider,
+			final CSTAConnectionID connID) {
 		super(_provider, connID);
 		TsapiTrace.traceConstruction(this, LucentV7CallImpl.class);
 	}
 
-	LucentV7CallImpl(LucentV7ProviderImpl _provider, int callID) {
+	LucentV7CallImpl(final LucentV7ProviderImpl _provider, final int callID) {
 		super(_provider, callID);
 		TsapiTrace.traceConstruction(this, LucentV7CallImpl.class);
 	}
 
-	LucentV7CallImpl(TSCall _tscall) {
+	LucentV7CallImpl(final TSCall _tscall) {
 		super(_tscall);
 		TsapiTrace.traceConstruction(this, LucentV7CallImpl.class);
 	}
 
-	public LucentV7CallImpl(TSProviderImpl _provider, CSTAConnectionID connID) {
+	public LucentV7CallImpl(final TSProviderImpl _provider,
+			final CSTAConnectionID connID) {
 		super(_provider, connID);
 		TsapiTrace.traceConstruction(this, LucentV7CallImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof LucentV7CallImpl) {
 			tsCall = tsCall.getHandOff();
 			return tsCall.equals(((LucentV7CallImpl) obj).tsCall);
@@ -49,4 +51,3 @@ public final class LucentV7CallImpl extends LucentV5CallImpl implements
 		TsapiTrace.traceDestruction(this, LucentV7CallImpl.class);
 	}
 }
-

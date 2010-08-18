@@ -6,7 +6,7 @@ import com.avaya.jtapi.tsapi.tsapiInterface.Tsapi;
 
 class TSCallObjectAge {
 	static final String OLD_AGE_DUMP_ANNOTATION = "{AgeThresholdExceeded}";
-	private long _gettime_stamp_milliseconds;
+	private final long _gettime_stamp_milliseconds;
 
 	TSCallObjectAge() {
 		_gettime_stamp_milliseconds = new Date().getTime();
@@ -23,7 +23,6 @@ class TSCallObjectAge {
 	@Override
 	public String toString() {
 		return getAgeMinutes()
-				+ ((isOld()) ? " minutes {AgeThresholdExceeded}" : " minutes");
+				+ (isOld() ? " minutes {AgeThresholdExceeded}" : " minutes");
 	}
 }
-

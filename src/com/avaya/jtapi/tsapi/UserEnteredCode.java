@@ -32,24 +32,23 @@ public final class UserEnteredCode {
 		return type;
 	}
 
-	public void setCollectVDN(ACDManagerAddress _collectVDN) {
+	public void setCollectVDN(final ACDManagerAddress _collectVDN) {
 		collectVDN = _collectVDN;
 	}
 
-	public void setCollectVDN_asn(String _collectVDN_asn) {
+	public void setCollectVDN_asn(final String _collectVDN_asn) {
 		collectVDN_asn = _collectVDN_asn;
 	}
 
-	public void setData(String _data) {
+	public void setData(final String _data) {
 		data = _data;
 	}
 
-	public void setIndicator(short _indicator) {
+	public void setIndicator(final short _indicator) {
 		indicator = _indicator;
 	}
 
-	public void setType(short _type) {
+	public void setType(final short _type) {
 		type = _type;
 	}
 }
-

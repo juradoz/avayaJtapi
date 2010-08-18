@@ -8,15 +8,16 @@ public final class LucentUseUnifiedDesktopLicenseConfEvent extends
 		LucentPrivateData {
 	static final int PDU = 140;
 
-	public static LucentUseUnifiedDesktopLicenseConfEvent decode(InputStream in) {
-		LucentUseUnifiedDesktopLicenseConfEvent _this = new LucentUseUnifiedDesktopLicenseConfEvent();
+	public static LucentUseUnifiedDesktopLicenseConfEvent decode(
+			final InputStream in) {
+		final LucentUseUnifiedDesktopLicenseConfEvent _this = new LucentUseUnifiedDesktopLicenseConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public final class LucentUseUnifiedDesktopLicenseConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentUseUnifiedDesktopLicenseConfEvent ::=");
 		lines.add("{");
 		lines.add("}");

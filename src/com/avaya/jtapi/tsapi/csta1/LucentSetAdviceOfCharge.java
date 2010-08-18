@@ -10,12 +10,12 @@ public class LucentSetAdviceOfCharge extends LucentPrivateData {
 	boolean featureFlag;
 	static final int PDU = 99;
 
-	public LucentSetAdviceOfCharge(boolean _featureFlag) {
+	public LucentSetAdviceOfCharge(final boolean _featureFlag) {
 		featureFlag = _featureFlag;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNBoolean.encode(featureFlag, memberStream);
 	}
 
@@ -26,12 +26,12 @@ public class LucentSetAdviceOfCharge extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetAdviceOfCharge ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(featureFlag, "featureFlag", indent));
 
@@ -39,4 +39,3 @@ public class LucentSetAdviceOfCharge extends LucentPrivateData {
 		return lines;
 	}
 }
-

@@ -10,4 +10,3 @@ public abstract interface MultiCallMetaEvent extends MetaEvent {
 
 	public abstract Call[] getOldCalls();
 }
-

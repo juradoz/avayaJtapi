@@ -12,21 +12,21 @@ public class LucentQueryAgentStateConfEvent extends LucentPrivateData {
 	short talkState;
 	static final int PDU = 17;
 
-	static LucentQueryAgentStateConfEvent decode(InputStream in) {
-		LucentQueryAgentStateConfEvent _this = new LucentQueryAgentStateConfEvent();
+	static LucentQueryAgentStateConfEvent decode(final InputStream in) {
+		final LucentQueryAgentStateConfEvent _this = new LucentQueryAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		workMode = ASNEnumerated.decode(memberStream);
 		talkState = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(workMode, memberStream);
 		ASNEnumerated.encode(talkState, memberStream);
 	}
@@ -46,12 +46,12 @@ public class LucentQueryAgentStateConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAgentStateConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 		lines.addAll(LucentTalkState.print(talkState, "talkState", indent));
@@ -60,11 +60,11 @@ public class LucentQueryAgentStateConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setTalkState(short talkState) {
+	public void setTalkState(final short talkState) {
 		this.talkState = talkState;
 	}
 
-	public void setWorkMode(short workMode) {
+	public void setWorkMode(final short workMode) {
 		this.workMode = workMode;
 	}
 }

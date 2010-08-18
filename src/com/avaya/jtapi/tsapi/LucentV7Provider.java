@@ -9,4 +9,3 @@ public abstract interface LucentV7Provider extends LucentV5Provider {
 
 	public abstract String getSwitchSoftwareVersion();
 }
-

@@ -15,22 +15,22 @@ public final class CSTAQueryDeviceInfoConfEvent extends CSTAConfirmation {
 	int deviceClass;
 	public static final int PDU = 38;
 
-	public static CSTAQueryDeviceInfoConfEvent decode(InputStream in) {
-		CSTAQueryDeviceInfoConfEvent _this = new CSTAQueryDeviceInfoConfEvent();
+	public static CSTAQueryDeviceInfoConfEvent decode(final InputStream in) {
+		final CSTAQueryDeviceInfoConfEvent _this = new CSTAQueryDeviceInfoConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 		deviceType = ASNEnumerated.decode(memberStream);
 		deviceClass = ASNBitString.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 		ASNEnumerated.encode(deviceType, memberStream);
 		DeviceClass.encode(deviceClass, memberStream);
@@ -55,11 +55,11 @@ public final class CSTAQueryDeviceInfoConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAQueryDeviceInfoConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 		lines.addAll(DeviceType.print(deviceType, "deviceType", indent));
@@ -69,15 +69,15 @@ public final class CSTAQueryDeviceInfoConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setDevice(String device) {
+	public void setDevice(final String device) {
 		this.device = device;
 	}
 
-	public void setDeviceClass(int deviceClass) {
+	public void setDeviceClass(final int deviceClass) {
 		this.deviceClass = deviceClass;
 	}
 
-	public void setDeviceType(short deviceType) {
+	public void setDeviceType(final short deviceType) {
 		this.deviceType = deviceType;
 	}
 }

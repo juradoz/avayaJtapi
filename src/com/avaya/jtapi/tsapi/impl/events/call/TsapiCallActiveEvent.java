@@ -4,7 +4,7 @@ import javax.telephony.events.CallActiveEv;
 
 public final class TsapiCallActiveEvent extends TsapiCallEvent implements
 		CallActiveEv {
-	public TsapiCallActiveEvent(CallEventParams params) {
+	public TsapiCallActiveEvent(final CallEventParams params) {
 		super(params);
 	}
 

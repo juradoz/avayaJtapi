@@ -6,18 +6,17 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public final class LucentV5TerminalConnectionExImpl extends
 		LucentV5TerminalConnectionImpl implements LucentV5TerminalConnectionEx {
-	LucentV5TerminalConnectionExImpl(TSConnection _tsConnection) {
+	LucentV5TerminalConnectionExImpl(final TSConnection _tsConnection) {
 		super(_tsConnection);
 		TsapiTrace.traceConstruction(this,
 				LucentV5TerminalConnectionExImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentV5TerminalConnectionExImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentV5TerminalConnectionExImpl)
 			return tsConnection
 					.equals(((LucentV5TerminalConnectionExImpl) obj).tsConnection);
-		}
 
 		return false;
 	}
@@ -29,4 +28,3 @@ public final class LucentV5TerminalConnectionExImpl extends
 				LucentV5TerminalConnectionExImpl.class);
 	}
 }
-

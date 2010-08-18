@@ -20,4 +20,3 @@ public abstract interface CallCentCallEv extends CallCentEv, CallEv {
 	@Deprecated
 	public abstract CallCenterTrunk[] getTrunks();
 }
-

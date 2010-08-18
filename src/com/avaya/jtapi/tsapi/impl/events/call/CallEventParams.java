@@ -67,11 +67,10 @@ public class CallEventParams {
 
 	public int getCallOriginatorType() {
 		int cot = 0;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			cot = privDataParams.getCallOriginatorType();
-		} else if (call instanceof LucentV5CallInfo) {
+		else if (call instanceof LucentV5CallInfo)
 			cot = ((LucentV5CallInfo) call).getCallOriginatorType();
-		}
 		return cot;
 	}
 
@@ -85,12 +84,11 @@ public class CallEventParams {
 
 	public ITsapiAddress getDistributingDevice() {
 		ITsapiAddress address = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			address = privDataParams.getDistributingDevice();
-		} else {
+		else
 			address = (ITsapiAddress) ((LucentCall) call)
 					.getDistributingAddress();
-		}
 		return address;
 	}
 
@@ -100,11 +98,10 @@ public class CallEventParams {
 
 	public LookaheadInfo getLookaheadInfo() {
 		LookaheadInfo lai = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			lai = privDataParams.getLookaheadInfo();
-		} else {
+		else
 			lai = ((LucentCall) call).getLookaheadInfo();
-		}
 		return lai;
 	}
 
@@ -118,11 +115,10 @@ public class CallEventParams {
 
 	public OriginalCallInfo getOriginalCallInfo() {
 		OriginalCallInfo originalCallInfo = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			originalCallInfo = privDataParams.getOriginalCallInfo();
-		} else {
+		else
 			originalCallInfo = ((LucentCall) call).getOriginalCallInfo();
-		}
 		return originalCallInfo;
 	}
 
@@ -132,21 +128,19 @@ public class CallEventParams {
 
 	public short getReason() {
 		short reason = 0;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			reason = privDataParams.getReason();
-		} else {
+		else
 			reason = ((LucentCall) call).getReason();
-		}
 		return reason;
 	}
 
 	public ACDAddress getSplit() {
 		ACDAddress address = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			address = privDataParams.getSplit();
-		} else {
+		else
 			address = ((LucentCall) call).getDeliveringACDAddress();
-		}
 		return address;
 	}
 
@@ -160,104 +154,97 @@ public class CallEventParams {
 
 	public String getUcid() {
 		String ucid = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			ucid = privDataParams.getUcid();
-		} else if (call instanceof LucentV5Call) {
+		else if (call instanceof LucentV5Call)
 			ucid = ((LucentV5Call) call).getUCID();
-		}
 		return ucid;
 	}
 
 	public UserEnteredCode getUserEnteredCode() {
 		UserEnteredCode uec = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			uec = privDataParams.getUserEnteredCode();
-		} else {
+		else
 			uec = ((LucentCall) call).getUserEnteredCode();
-		}
 		return uec;
 	}
 
 	public UserToUserInfo getUserToUserInfo() {
 		UserToUserInfo uui = null;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			uui = privDataParams.getUserToUserInfo();
-		} else {
+		else
 			uui = ((LucentCall) call).getUserToUserInfo();
-		}
 		return uui;
 	}
 
 	public boolean hasCallOriginatorType() {
 		boolean has = false;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			has = privDataParams.hasCallOriginatorType();
-		} else if (call instanceof LucentV5CallInfo) {
+		else if (call instanceof LucentV5CallInfo)
 			has = ((LucentV5CallInfo) call).hasCallOriginatorType();
-		}
 		return has;
 	}
 
 	public boolean isFlexibleBilling() {
 		boolean flexible = false;
-		if (privDataParams != null) {
+		if (privDataParams != null)
 			flexible = privDataParams.isFlexibleBilling();
-		}
 		return flexible;
 	}
 
-	public void setCall(Call call) {
+	public void setCall(final Call call) {
 		this.call = call;
 	}
 
-	public void setCalledAddress(Address calledAddress) {
+	public void setCalledAddress(final Address calledAddress) {
 		this.calledAddress = calledAddress;
 	}
 
-	public void setCallingAddress(Address callingAddress) {
+	public void setCallingAddress(final Address callingAddress) {
 		this.callingAddress = callingAddress;
 	}
 
-	public void setCallingTerminal(Terminal callingTerminal) {
+	public void setCallingTerminal(final Terminal callingTerminal) {
 		this.callingTerminal = callingTerminal;
 	}
 
-	public void setCause(int cause) {
+	public void setCause(final int cause) {
 		this.cause = cause;
 	}
 
-	public void setCstaCause(short cstaCause) {
+	public void setCstaCause(final short cstaCause) {
 		this.cstaCause = cstaCause;
 	}
 
-	public void setLastRedirectionAddress(Address lastRedirectionAddress) {
+	public void setLastRedirectionAddress(final Address lastRedirectionAddress) {
 		this.lastRedirectionAddress = lastRedirectionAddress;
 	}
 
-	public void setMetaCode(int metaCode) {
+	public void setMetaCode(final int metaCode) {
 		this.metaCode = metaCode;
 	}
 
-	public void setOldCalls(ArrayList<Call> oldCalls) {
+	public void setOldCalls(final ArrayList<Call> oldCalls) {
 		this.oldCalls = oldCalls;
 	}
 
-	public void setPrivateData(Object privateData) {
+	public void setPrivateData(final Object privateData) {
 		this.privateData = privateData;
 		if (privateData instanceof PrivateDataParams) {
-			privDataParams = ((PrivateDataParams) privateData);
-			if (privDataParams.getTrunk() != null) {
+			privDataParams = (PrivateDataParams) privateData;
+			if (privDataParams.getTrunk() != null)
 				trunk = privDataParams.getTrunk();
-			}
 		}
 	}
 
-	public void setTrunk(CallCenterTrunk trunk) {
+	public void setTrunk(final CallCenterTrunk trunk) {
 		this.trunk = trunk;
 	}
 
-	public void setTrunks(CallCenterTrunk[] _trunks) {
+	public void setTrunks(final CallCenterTrunk[] _trunks) {
 		trunks = _trunks;
 	}
 }
-

@@ -9,35 +9,34 @@ import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
 
 public final class ListForwardParameters extends ASNSequenceOf {
-	public static CSTAForwardingInfo[] decode(InputStream in) {
-		ListForwardParameters _this = new ListForwardParameters();
+	public static CSTAForwardingInfo[] decode(final InputStream in) {
+		final ListForwardParameters _this = new ListForwardParameters();
 		_this.doDecode(in);
 		return _this.array;
 	}
 
-	public static void encode(CSTAForwardingInfo[] array, OutputStream out) {
-		ListForwardParameters _this = new ListForwardParameters(array);
+	public static void encode(final CSTAForwardingInfo[] array,
+			final OutputStream out) {
+		final ListForwardParameters _this = new ListForwardParameters(array);
 		_this.doEncode(array.length, out);
 	}
 
-	public static Collection<String> print(CSTAForwardingInfo[] array,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final CSTAForwardingInfo[] array,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (array == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
-		for (int i = 0; i < array.length; ++i) {
+		for (int i = 0; i < array.length; ++i)
 			lines.addAll(CSTAForwardingInfo.print(array[i], null, indent));
-		}
 		lines.add(_indent + "}");
 		return lines;
 	}
@@ -47,29 +46,27 @@ public final class ListForwardParameters extends ASNSequenceOf {
 	public ListForwardParameters() {
 	}
 
-	public ListForwardParameters(CSTAForwardingInfo[] _array) {
+	public ListForwardParameters(final CSTAForwardingInfo[] _array) {
 		array = _array;
 	}
 
 	@Override
-	public Object decodeMember(InputStream memberStream) {
+	public Object decodeMember(final InputStream memberStream) {
 		return CSTAForwardingInfo.decode(memberStream);
 	}
 
 	@Override
-	public void doDecode(InputStream in) {
+	public void doDecode(final InputStream in) {
 		super.doDecode(in);
 
 		array = new CSTAForwardingInfo[vec.size()];
 
-		for (int i = 0; i < array.length; ++i) {
-			array[i] = ((CSTAForwardingInfo) vec.elementAt(i));
-		}
+		for (int i = 0; i < array.length; ++i)
+			array[i] = (CSTAForwardingInfo) vec.elementAt(i);
 	}
 
 	@Override
-	public void encodeMember(int index, OutputStream memberStream) {
+	public void encodeMember(final int index, final OutputStream memberStream) {
 		ASNSequence.encode(array[index], memberStream);
 	}
 }
-

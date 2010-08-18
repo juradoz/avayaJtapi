@@ -11,20 +11,20 @@ public class CSTASysStatStartConfEvent extends CSTAConfirmation {
 	private int filter;
 	public static final int PDU = 101;
 
-	public static CSTASysStatStartConfEvent decode(InputStream in) {
-		CSTASysStatStartConfEvent _this = new CSTASysStatStartConfEvent();
+	public static CSTASysStatStartConfEvent decode(final InputStream in) {
+		final CSTASysStatStartConfEvent _this = new CSTASysStatStartConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		filter = ASNBitString.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		SystemStatusFilter.encode(filter, memberStream);
 	}
 
@@ -39,17 +39,16 @@ public class CSTASysStatStartConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatStartConfEvent ::=");
 		lines.add("{");
-		String indent = "  ";
+		final String indent = "  ";
 		lines.addAll(SystemStatusFilter.print(filter, "filter", indent));
 		lines.add("}");
 		return lines;
 	}
 
-	public void setFilter(int filter) {
+	public void setFilter(final int filter) {
 		this.filter = filter;
 	}
 }
-

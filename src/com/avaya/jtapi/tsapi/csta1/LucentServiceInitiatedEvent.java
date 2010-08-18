@@ -12,20 +12,20 @@ public final class LucentServiceInitiatedEvent extends LucentPrivateData
 	String ucid;
 	static final int PDU = 95;
 
-	public static LucentServiceInitiatedEvent decode(InputStream in) {
-		LucentServiceInitiatedEvent _this = new LucentServiceInitiatedEvent();
+	public static LucentServiceInitiatedEvent decode(final InputStream in) {
+		final LucentServiceInitiatedEvent _this = new LucentServiceInitiatedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ucid = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(ucid, memberStream);
 	}
 
@@ -40,12 +40,12 @@ public final class LucentServiceInitiatedEvent extends LucentPrivateData
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentServiceInitiatedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(ucid, "ucid", indent));
 
@@ -53,7 +53,7 @@ public final class LucentServiceInitiatedEvent extends LucentPrivateData
 		return lines;
 	}
 
-	public void setUcid(String ucid) {
+	public void setUcid(final String ucid) {
 		this.ucid = ucid;
 	}
 }

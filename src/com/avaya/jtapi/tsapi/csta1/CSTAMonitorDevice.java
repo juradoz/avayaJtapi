@@ -9,8 +9,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class CSTAMonitorDevice extends CSTARequest {
-	public static CSTAMonitorDevice decode(InputStream in) {
-		CSTAMonitorDevice _this = new CSTAMonitorDevice();
+	public static CSTAMonitorDevice decode(final InputStream in) {
+		final CSTAMonitorDevice _this = new CSTAMonitorDevice();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,19 +24,20 @@ public final class CSTAMonitorDevice extends CSTARequest {
 	public CSTAMonitorDevice() {
 	}
 
-	public CSTAMonitorDevice(String _deviceID, CSTAMonitorFilter _monitorFilter) {
+	public CSTAMonitorDevice(final String _deviceID,
+			final CSTAMonitorFilter _monitorFilter) {
 		deviceID = _deviceID;
 		monitorFilter = _monitorFilter;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceID = ASNIA5String.decode(memberStream);
 		monitorFilter = CSTAMonitorFilter.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(deviceID, memberStream);
 		ASNSequence.encode(monitorFilter, memberStream);
 	}
@@ -56,12 +57,12 @@ public final class CSTAMonitorDevice extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAMonitorDevice ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(deviceID, "deviceID", indent));
 		lines.addAll(CSTAMonitorFilter.print(monitorFilter, "monitorFilter",
@@ -71,4 +72,3 @@ public final class CSTAMonitorDevice extends CSTARequest {
 		return lines;
 	}
 }
-

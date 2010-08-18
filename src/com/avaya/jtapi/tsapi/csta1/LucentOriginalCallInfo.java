@@ -16,33 +16,30 @@ public class LucentOriginalCallInfo extends LucentPrivateData {
 	public static final short OR_TRANSFERRED = 3;
 	public static final short OR_NEW_CALL = 4;
 
-	public static LucentOriginalCallInfo decode(InputStream in) {
-		LucentOriginalCallInfo _this = new LucentOriginalCallInfo();
+	public static LucentOriginalCallInfo decode(final InputStream in) {
+		final LucentOriginalCallInfo _this = new LucentOriginalCallInfo();
 		_this.doDecode(in);
-		if ((_this.callingDevice_asn == null)
-				&& (_this.calledDevice_asn == null)
-				&& (_this.trunkGroup == null) && (_this.trunkMember == null)
-				&& (_this.lookaheadInfo == null)
-				&& (_this.userEnteredCode == null) && (_this.userInfo == null)) {
+		if (_this.callingDevice_asn == null && _this.calledDevice_asn == null
+				&& _this.trunkGroup == null && _this.trunkMember == null
+				&& _this.lookaheadInfo == null && _this.userEnteredCode == null
+				&& _this.userInfo == null)
 			return null;
-		}
 		return _this;
 	}
 
-	public static Collection<String> print(LucentOriginalCallInfo _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final LucentOriginalCallInfo _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ReasonForCallInfo.print(_this.reason, "reason", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.callingDevice_asn,
@@ -77,7 +74,7 @@ public class LucentOriginalCallInfo extends LucentPrivateData {
 	LucentUserToUserInfo userInfo;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		reason = ASNEnumerated.decode(memberStream);
 		callingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
 		calledDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
@@ -89,7 +86,7 @@ public class LucentOriginalCallInfo extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(reason, memberStream);
 		ASNSequence.encode(callingDevice_asn, memberStream);
 		ASNSequence.encode(calledDevice_asn, memberStream);
@@ -132,36 +129,36 @@ public class LucentOriginalCallInfo extends LucentPrivateData {
 		return userInfo;
 	}
 
-	public void setCalledDevice_asn(CSTAExtendedDeviceID _calledDevice_asn) {
+	public void setCalledDevice_asn(final CSTAExtendedDeviceID _calledDevice_asn) {
 		calledDevice_asn = _calledDevice_asn;
 	}
 
-	public void setCallingDevice_asn(CSTAExtendedDeviceID _callingDevice_asn) {
+	public void setCallingDevice_asn(
+			final CSTAExtendedDeviceID _callingDevice_asn) {
 		callingDevice_asn = _callingDevice_asn;
 	}
 
-	public void setLookaheadInfo(LucentLookaheadInfo _lookaheadInfo) {
+	public void setLookaheadInfo(final LucentLookaheadInfo _lookaheadInfo) {
 		lookaheadInfo = _lookaheadInfo;
 	}
 
-	public void setReason(short _reason) {
+	public void setReason(final short _reason) {
 		reason = _reason;
 	}
 
-	public void setTrunkGroup(String _trunkGroup) {
+	public void setTrunkGroup(final String _trunkGroup) {
 		trunkGroup = _trunkGroup;
 	}
 
-	public void setTrunkMember(String _trunkMember) {
+	public void setTrunkMember(final String _trunkMember) {
 		trunkMember = _trunkMember;
 	}
 
-	public void setUserEnteredCode(LucentUserEnteredCode _userEnteredCode) {
+	public void setUserEnteredCode(final LucentUserEnteredCode _userEnteredCode) {
 		userEnteredCode = _userEnteredCode;
 	}
 
-	public void setUserInfo(LucentUserToUserInfo _userInfo) {
+	public void setUserInfo(final LucentUserToUserInfo _userInfo) {
 		userInfo = _userInfo;
 	}
 }
-

@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentV7RouteSelect extends LucentRouteSelect {
-	public static LucentV7RouteSelect decode(InputStream in) {
-		LucentV7RouteSelect _this = new LucentV7RouteSelect();
+	public static LucentV7RouteSelect decode(final InputStream in) {
+		final LucentV7RouteSelect _this = new LucentV7RouteSelect();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,24 +24,24 @@ public final class LucentV7RouteSelect extends LucentRouteSelect {
 	public LucentV7RouteSelect() {
 	}
 
-	public LucentV7RouteSelect(String _callingDevice,
-			String _directAgentCallSplit, boolean _priorityCalling,
-			String _destRoute, LucentUserCollectCode _collectCode,
-			LucentUserProvidedCode _userProvidedCode,
-			LucentUserToUserInfo _userInfo, short _useNCR) {
+	public LucentV7RouteSelect(final String _callingDevice,
+			final String _directAgentCallSplit, final boolean _priorityCalling,
+			final String _destRoute, final LucentUserCollectCode _collectCode,
+			final LucentUserProvidedCode _userProvidedCode,
+			final LucentUserToUserInfo _userInfo, final short _useNCR) {
 		super(_callingDevice, _directAgentCallSplit, _priorityCalling,
 				_destRoute, _collectCode, _userProvidedCode, _userInfo);
 		useNCR = _useNCR;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		useNCR = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNEnumerated.encode(useNCR, memberStream);
 	}
@@ -53,12 +53,12 @@ public final class LucentV7RouteSelect extends LucentRouteSelect {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7RouteSelect ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
@@ -78,4 +78,3 @@ public final class LucentV7RouteSelect extends LucentRouteSelect {
 		return lines;
 	}
 }
-

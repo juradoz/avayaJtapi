@@ -11,7 +11,7 @@ final class TSInitializationThread extends Thread {
 	private static Logger log = Logger.getLogger(TSInitializationThread.class);
 	TSProviderImpl provider;
 
-	TSInitializationThread(TSProviderImpl _provider) {
+	TSInitializationThread(final TSProviderImpl _provider) {
 		super("ProviderInitialization");
 		provider = _provider;
 	}
@@ -22,31 +22,32 @@ final class TSInitializationThread extends Thread {
 			Vector<TSEvent> eventList = new Vector<TSEvent>();
 			provider.setState(1, eventList);
 			if (eventList.size() > 0) {
-				Vector<?> observers = provider.getMonitors();
+				final Vector<?> observers = provider.getMonitors();
 
 				for (int j = 0; j < observers.size(); ++j) {
-					TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
+					final TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 							.elementAt(j);
 					callback.deliverEvents(eventList, false);
 				}
 
 			}
 
-			List<String> monitorableDevices = provider.getMonitorableDevices();
-			if ((monitorableDevices != null)
-					&& (monitorableDevices.size() != 0)) {
+			final List<String> monitorableDevices = provider
+					.getMonitorableDevices();
+			if (monitorableDevices != null && monitorableDevices.size() != 0)
 				provider.tsMonitorableDevices.addAll(monitorableDevices);
-			}
 
 			provider.setRouteDevices();
 
 			eventList = new Vector<TSEvent>();
 			provider.setState(2, eventList);
 			if (eventList.size() > 0) {
-				Vector<TsapiProviderMonitor> observers = provider.getMonitors();
+				final Vector<TsapiProviderMonitor> observers = provider
+						.getMonitors();
 
 				for (int j = 0; j < observers.size(); ++j) {
-					TsapiProviderMonitor callback = observers.elementAt(j);
+					final TsapiProviderMonitor callback = observers
+							.elementAt(j);
 					callback.deliverEvents(eventList, false);
 				}
 			}
@@ -54,19 +55,19 @@ final class TSInitializationThread extends Thread {
 			synchronized (this) {
 				super.notify();
 			}
-		} catch (Exception e) {
-			log.error("INIT Thread Exception - shutting down provider "
-					+ provider);
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			TSInitializationThread.log
+					.error("INIT Thread Exception - shutting down provider "
+							+ provider);
+			TSInitializationThread.log.error(e.getMessage(), e);
 			try {
 				provider.shutdown();
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 				try {
 					provider.tsapi.shutdown();
-				} catch (Exception e2) {
+				} catch (final Exception e2) {
 				}
 			}
 		}
 	}
 }
-

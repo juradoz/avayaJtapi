@@ -9,20 +9,20 @@ public class LucentDivertedEvent extends LucentPrivateData {
 	private LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 135;
 
-	static LucentDivertedEvent decode(InputStream in) {
-		LucentDivertedEvent _this = new LucentDivertedEvent();
+	static LucentDivertedEvent decode(final InputStream in) {
+		final LucentDivertedEvent _this = new LucentDivertedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
 	}
 
@@ -37,12 +37,12 @@ public class LucentDivertedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentDivertedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
 				"deviceHistory", indent));
@@ -51,8 +51,7 @@ public class LucentDivertedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
+	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }
-

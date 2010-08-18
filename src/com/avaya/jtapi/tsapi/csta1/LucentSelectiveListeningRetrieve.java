@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 
 public final class LucentSelectiveListeningRetrieve extends LucentPrivateData {
-	public static LucentSelectiveListeningRetrieve decode(InputStream in) {
-		LucentSelectiveListeningRetrieve _this = new LucentSelectiveListeningRetrieve();
+	public static LucentSelectiveListeningRetrieve decode(final InputStream in) {
+		final LucentSelectiveListeningRetrieve _this = new LucentSelectiveListeningRetrieve();
 		_this.doDecode(in);
 
 		return _this;
@@ -25,22 +25,22 @@ public final class LucentSelectiveListeningRetrieve extends LucentPrivateData {
 	}
 
 	public LucentSelectiveListeningRetrieve(
-			CSTAConnectionID _subjectConnection, boolean _allParties,
-			CSTAConnectionID _selectedParty) {
+			final CSTAConnectionID _subjectConnection,
+			final boolean _allParties, final CSTAConnectionID _selectedParty) {
 		subjectConnection = _subjectConnection;
 		allParties = _allParties;
 		selectedParty = _selectedParty;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		subjectConnection = CSTAConnectionID.decode(memberStream);
 		allParties = ASNBoolean.decode(memberStream);
 		selectedParty = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(subjectConnection, memberStream);
 		ASNBoolean.encode(allParties, memberStream);
 		CSTAConnectionID.encode(selectedParty, memberStream);
@@ -53,12 +53,12 @@ public final class LucentSelectiveListeningRetrieve extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSelectiveListeningRetrieve ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(subjectConnection,
 				"subjectConnection", indent));

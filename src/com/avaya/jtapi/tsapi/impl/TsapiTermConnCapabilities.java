@@ -11,14 +11,14 @@ public final class TsapiTermConnCapabilities implements
 		CallControlTerminalConnectionCapabilities {
 	private TSCapabilities tsCaps = null;
 
-	public TsapiTermConnCapabilities(TSCapabilities _tsCaps) {
+	public TsapiTermConnCapabilities(final TSCapabilities _tsCaps) {
 		tsCaps = _tsCaps;
 		TsapiTrace.traceConstruction(this, TsapiTermConnCapabilities.class);
 	}
 
 	public boolean canAnswer() {
 		TsapiTrace.traceEntry("canAnswer[]", this);
-		boolean can = tsCaps.getAnswerCall() == 1;
+		final boolean can = tsCaps.getAnswerCall() == 1;
 		TsapiTrace.traceExit("canAnswer[]", this);
 		return can;
 	}
@@ -31,28 +31,28 @@ public final class TsapiTermConnCapabilities implements
 
 	public boolean canGenerateDtmf() {
 		TsapiTrace.traceEntry("canGenerateDtmf[]", this);
-		boolean can = tsCaps.isLucent();
+		final boolean can = tsCaps.isLucent();
 		TsapiTrace.traceExit("canGenerateDtmf[]", this);
 		return can;
 	}
 
 	public boolean canHold() {
 		TsapiTrace.traceEntry("canHold[]", this);
-		boolean can = tsCaps.getHoldCall() == 1;
+		final boolean can = tsCaps.getHoldCall() == 1;
 		TsapiTrace.traceExit("canHold[]", this);
 		return can;
 	}
 
 	public boolean canJoin() {
 		TsapiTrace.traceEntry("canJoin[]", this);
-		boolean can = tsCaps.isLucent();
+		final boolean can = tsCaps.isLucent();
 		TsapiTrace.traceExit("canJoin[]", this);
 		return can;
 	}
 
 	public boolean canLeave() {
 		TsapiTrace.traceEntry("canLeave[]", this);
-		boolean can = tsCaps.isLucent();
+		final boolean can = tsCaps.isLucent();
 		TsapiTrace.traceExit("canLeave[]", this);
 		return can;
 	}
@@ -83,7 +83,7 @@ public final class TsapiTermConnCapabilities implements
 
 	public boolean canUnhold() {
 		TsapiTrace.traceEntry("canUnhold[]", this);
-		boolean can = tsCaps.getRetrieveCall() == 1;
+		final boolean can = tsCaps.getRetrieveCall() == 1;
 		TsapiTrace.traceExit("canUnhold[]", this);
 		return can;
 	}
@@ -118,4 +118,3 @@ public final class TsapiTermConnCapabilities implements
 		TsapiTrace.traceDestruction(this, TsapiTermConnCapabilities.class);
 	}
 }
-

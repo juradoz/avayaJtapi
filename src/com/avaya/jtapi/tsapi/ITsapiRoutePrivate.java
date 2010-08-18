@@ -5,4 +5,3 @@ public abstract interface ITsapiRoutePrivate {
 
 	public abstract int getRouteRegisterID();
 }
-

@@ -10,13 +10,14 @@ public abstract class TsapiAddressEvent extends TsapiObserverEvent implements
 		PrivateAddrEv {
 	Address address = null;
 
-	public TsapiAddressEvent(Address _address, int _cause, int _metaCode,
-			Object _privateData) {
+	public TsapiAddressEvent(final Address _address, final int _cause,
+			final int _metaCode, final Object _privateData) {
 		this(_address, _cause, _metaCode, _privateData, 0);
 	}
 
-	TsapiAddressEvent(Address _address, int _cause, int _metaCode,
-			Object _privateData, int _eventPackage) {
+	TsapiAddressEvent(final Address _address, final int _cause,
+			final int _metaCode, final Object _privateData,
+			final int _eventPackage) {
 		super(_cause, _metaCode, _privateData, _eventPackage);
 		address = _address;
 	}

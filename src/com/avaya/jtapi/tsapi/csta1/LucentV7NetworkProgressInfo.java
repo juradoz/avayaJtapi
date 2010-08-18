@@ -12,21 +12,21 @@ public final class LucentV7NetworkProgressInfo extends
 	LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 136;
 
-	public static LucentNetworkProgressInfo decode(InputStream in) {
-		LucentV7NetworkProgressInfo _this = new LucentV7NetworkProgressInfo();
+	public static LucentNetworkProgressInfo decode(final InputStream in) {
+		final LucentV7NetworkProgressInfo _this = new LucentV7NetworkProgressInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
 	}
@@ -42,11 +42,11 @@ public final class LucentV7NetworkProgressInfo extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("V7NetworkProgressInfo ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ProgressLocation.print(progressLocation,
 				"progressLocation", indent));
@@ -63,7 +63,7 @@ public final class LucentV7NetworkProgressInfo extends
 		return lines;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
+	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }

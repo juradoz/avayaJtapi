@@ -13,8 +13,8 @@ final class QueryAgentStateConfHandler2 implements ConfHandler {
 	int workMode = 0;
 	int state = 0;
 
-	QueryAgentStateConfHandler2(TSDevice _device, String _acdName,
-			String _agentID) {
+	QueryAgentStateConfHandler2(final TSDevice _device, final String _acdName,
+			final String _agentID) {
 		device = _device;
 		acdName = _acdName;
 		agentID = _agentID;
@@ -32,30 +32,26 @@ final class QueryAgentStateConfHandler2 implements ConfHandler {
 		return workMode;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))
 			return;
-		}
 
-		CSTAQueryAgentStateConfEvent agentStateConf = (CSTAQueryAgentStateConfEvent) event
+		final CSTAQueryAgentStateConfEvent agentStateConf = (CSTAQueryAgentStateConfEvent) event
 				.getEvent();
 		agentState = agentStateConf.getAgentState();
-		if ((agentState == 1)
-				|| (!(event.getPrivData() instanceof LucentQueryAgentStateConfEvent))) {
+		if (agentState == 1
+				|| !(event.getPrivData() instanceof LucentQueryAgentStateConfEvent))
 			return;
-		}
-		short tsapiWorkMode = ((LucentQueryAgentStateConfEvent) event
+		final short tsapiWorkMode = ((LucentQueryAgentStateConfEvent) event
 				.getPrivData()).getWorkMode();
-		if (tsapiWorkMode == 3) {
+		if (tsapiWorkMode == 3)
 			workMode = 1;
-		} else if (tsapiWorkMode == 4) {
+		else if (tsapiWorkMode == 4)
 			workMode = 2;
-		}
-		short talkState = ((LucentQueryAgentStateConfEvent) event.getPrivData())
-				.getTalkState();
-		if (talkState == 0) {
+		final short talkState = ((LucentQueryAgentStateConfEvent) event
+				.getPrivData()).getTalkState();
+		if (talkState == 0)
 			state = 7;
-		}
 	}
 }

@@ -20,11 +20,11 @@ public class LucentRouteSelect extends LucentPrivateData {
 	public LucentRouteSelect() {
 	}
 
-	public LucentRouteSelect(String _callingDevice,
-			String _directAgentCallSplit, boolean _priorityCalling,
-			String _destRoute, LucentUserCollectCode _collectCode,
-			LucentUserProvidedCode _userProvidedCode,
-			LucentUserToUserInfo _userInfo) {
+	public LucentRouteSelect(final String _callingDevice,
+			final String _directAgentCallSplit, final boolean _priorityCalling,
+			final String _destRoute, final LucentUserCollectCode _collectCode,
+			final LucentUserProvidedCode _userProvidedCode,
+			final LucentUserToUserInfo _userInfo) {
 		callingDevice = _callingDevice;
 		directAgentCallSplit = _directAgentCallSplit;
 		priorityCalling = _priorityCalling;
@@ -35,7 +35,7 @@ public class LucentRouteSelect extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(callingDevice, memberStream);
 		ASNIA5String.encode(directAgentCallSplit, memberStream);
 		ASNBoolean.encode(priorityCalling, memberStream);
@@ -52,12 +52,12 @@ public class LucentRouteSelect extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentRouteSelect ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
@@ -77,4 +77,3 @@ public class LucentRouteSelect extends LucentPrivateData {
 		return lines;
 	}
 }
-

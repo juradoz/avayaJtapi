@@ -16,22 +16,21 @@ import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class TsapiACDAddress extends TsapiAddress implements ACDAddress {
-	TsapiACDAddress(TSDevice _tsDevice) {
+	TsapiACDAddress(final TSDevice _tsDevice) {
 		super(_tsDevice);
 		TsapiTrace.traceConstruction(this, TsapiACDAddress.class);
 	}
 
-	TsapiACDAddress(TSProviderImpl tsProvider, String number)
+	TsapiACDAddress(final TSProviderImpl tsProvider, final String number)
 			throws TsapiInvalidArgumentException {
 		super(tsProvider, number);
 		TsapiTrace.traceConstruction(this, TsapiACDAddress.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TsapiACDAddress) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof TsapiACDAddress)
 			return tsDevice.equals(((TsapiACDAddress) obj).tsDevice);
-		}
 
 		return false;
 	}
@@ -46,17 +45,17 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getACDManagerAddress[]", this);
 		try {
-			TSDevice[] acdManagerDevices = tsDevice.getTSACDManagerDevice();
+			final TSDevice[] acdManagerDevices = tsDevice
+					.getTSACDManagerDevice();
 			if (acdManagerDevices != null) {
-				int number = acdManagerDevices.length;
-				ACDManagerAddress[] acdManagerAddresses = new ACDManagerAddress[number];
-				for (int i = 0; i < number; ++i) {
+				final int number = acdManagerDevices.length;
+				final ACDManagerAddress[] acdManagerAddresses = new ACDManagerAddress[number];
+				for (int i = 0; i < number; ++i)
 					acdManagerAddresses[i] = new TsapiACDManagerAddress(
 							acdManagerDevices[i]);
-				}
-				ACDManagerAddress mgr = acdManagerAddresses[0];
+				final ACDManagerAddress mgr = acdManagerAddresses[0];
 				TsapiTrace.traceExit("getACDManagerAddress[]", this);
-				ACDManagerAddress localACDManagerAddress1 = mgr;
+				final ACDManagerAddress localACDManagerAddress1 = mgr;
 				return localACDManagerAddress1;
 			}
 			TsapiTrace.traceExit("getACDManagerAddress[]", this);
@@ -72,7 +71,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getAgentsAvailable[]", this);
 		try {
-			int agentsAvailable = tsDevice.getTSAgentsAvailable();
+			final int agentsAvailable = tsDevice.getTSAgentsAvailable();
 			TsapiTrace.traceExit("getAgentsAvailable[]", this);
 			return agentsAvailable;
 		} finally {
@@ -84,7 +83,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getAgentsLoggedIn[]", this);
 		try {
-			int agentsLoggedIn = tsDevice.getTSAgentsLoggedIn();
+			final int agentsLoggedIn = tsDevice.getTSAgentsLoggedIn();
 			TsapiTrace.traceExit("getAgentsLoggedIn[]", this);
 			return agentsLoggedIn;
 		} finally {
@@ -95,7 +94,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 	public final Agent[] getLoggedOnAgents() {
 		TsapiTrace.traceEntry("getLoggedOnAgents[]", this);
 		try {
-			Vector<TSAgent> tsAgents = tsDevice.getTSAgentsForACDAddr();
+			final Vector<TSAgent> tsAgents = tsDevice.getTSAgentsForACDAddr();
 			if (tsAgents == null) {
 				TsapiTrace.traceExit("getLoggedOnAgents[]", this);
 				privData = null;
@@ -107,11 +106,10 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 					privData = null;
 					return null;
 				}
-				Agent[] tsapiAgent = new Agent[tsAgents.size()];
-				for (int i = 0; i < tsAgents.size(); ++i) {
-					tsapiAgent[i] = ((Agent) TsapiCreateObject.getTsapiObject(
-							tsAgents.elementAt(i), false));
-				}
+				final Agent[] tsapiAgent = new Agent[tsAgents.size()];
+				for (int i = 0; i < tsAgents.size(); ++i)
+					tsapiAgent[i] = (Agent) TsapiCreateObject.getTsapiObject(
+							tsAgents.elementAt(i), false);
 				TsapiTrace.traceExit("getLoggedOnAgents[]", this);
 
 				privData = null;
@@ -126,7 +124,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 	public final int getNumberQueued() throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getNumberQueued[]", this);
 		try {
-			int numberQueued = tsDevice.getTSNumberQueued();
+			final int numberQueued = tsDevice.getTSNumberQueued();
 			TsapiTrace.traceExit("getNumberQueued[]", this);
 			return numberQueued;
 		} finally {
@@ -139,13 +137,13 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getOldestCallQueued[]", this);
 		try {
-			TSCall tsCall = tsDevice.getTSOldestCallQueued();
+			final TSCall tsCall = tsDevice.getTSOldestCallQueued();
 			if (tsCall != null) {
 				TsapiTrace.traceExit("getOldestCallQueued[]", this);
 				return (Call) TsapiCreateObject.getTsapiObject(tsCall, false);
 			}
 			TsapiTrace.traceExit("getOldestCallQueued[]", this);
-			Call localCall = null;
+			final Call localCall = null;
 
 			return localCall;
 		} finally {
@@ -157,9 +155,9 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 	public final int getQueueWaitTime() throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getQueueWaitTime[]", this);
 		try {
-			int queueWaitTime = tsDevice.getTSQueueWaitTime();
+			final int queueWaitTime = tsDevice.getTSQueueWaitTime();
 			TsapiTrace.traceExit("getQueueWaitTime[]", this);
-			int i = queueWaitTime;
+			final int i = queueWaitTime;
 
 			return i;
 		} finally {
@@ -172,9 +170,9 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 			throws TsapiMethodNotSupportedException {
 		try {
 			TsapiTrace.traceEntry("getRelativeQueueLoad[]", this);
-			int relativeQueuedLoad = tsDevice.getTSRelativeQueueLoad();
+			final int relativeQueuedLoad = tsDevice.getTSRelativeQueueLoad();
 			TsapiTrace.traceExit("getRelativeQueueLoad[]", this);
-			int i = relativeQueuedLoad;
+			final int i = relativeQueuedLoad;
 
 			return i;
 		} finally {
@@ -183,4 +181,3 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 
 	}
 }
-

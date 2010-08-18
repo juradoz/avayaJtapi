@@ -12,4 +12,3 @@ public abstract interface CallControlTerminalConnectionCapabilities extends
 
 	public abstract boolean canUnhold();
 }
-

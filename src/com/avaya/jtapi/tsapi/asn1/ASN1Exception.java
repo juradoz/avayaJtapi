@@ -6,15 +6,15 @@ public class ASN1Exception extends RuntimeException {
 	public ASN1Exception() {
 	}
 
-	public ASN1Exception(String message) {
+	public ASN1Exception(final String message) {
 		super(message);
 	}
 
-	public ASN1Exception(String message, Throwable cause) {
+	public ASN1Exception(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public ASN1Exception(Throwable cause) {
+	public ASN1Exception(final Throwable cause) {
 		super(cause);
 	}
 }

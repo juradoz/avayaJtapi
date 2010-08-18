@@ -15,7 +15,7 @@ public final class V7OriginalCallInfoImpl extends V5OriginalCallInfoImpl
 		return deviceHistory != null;
 	}
 
-	public void setDeviceHistory(V7DeviceHistoryEntry[] _deviceHistory) {
+	public void setDeviceHistory(final V7DeviceHistoryEntry[] _deviceHistory) {
 		deviceHistory = _deviceHistory;
 	}
 }

@@ -7,4 +7,3 @@ public abstract interface LucentV7RouteSession extends LucentRouteSession {
 			UserToUserInfo paramUserToUserInfo)
 			throws TsapiMethodNotSupportedException;
 }
-

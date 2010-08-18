@@ -9,16 +9,16 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 public class CallControlConnectionNetworkReachedEventImpl extends
 		CallControlConnectionEventImpl implements
 		ITsapiConnNetworkReachedListenerEvent {
-	public CallControlConnectionNetworkReachedEventImpl(CallEventParams params,
-			MetaEvent event, int eventId, int numInQueue, String digits) {
+	public CallControlConnectionNetworkReachedEventImpl(
+			final CallEventParams params, final MetaEvent event,
+			final int eventId, final int numInQueue, final String digits) {
 		super(params, event, eventId, numInQueue, digits);
 	}
 
 	public NetworkProgressInfo getNetworkProgressInfo() {
-		Object privateData = callEventParams.getPrivateData();
-		if (privateData instanceof NetworkProgressInfo) {
+		final Object privateData = callEventParams.getPrivateData();
+		if (privateData instanceof NetworkProgressInfo)
 			return (NetworkProgressInfo) privateData;
-		}
 		return null;
 	}
 }

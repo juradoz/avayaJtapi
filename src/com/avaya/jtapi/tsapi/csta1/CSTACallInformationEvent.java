@@ -13,15 +13,15 @@ public final class CSTACallInformationEvent extends CSTAUnsolicited {
 	String authorisationCode;
 	static final int PDU = 68;
 
-	public static CSTACallInformationEvent decode(InputStream in) {
-		CSTACallInformationEvent _this = new CSTACallInformationEvent();
+	public static CSTACallInformationEvent decode(final InputStream in) {
+		final CSTACallInformationEvent _this = new CSTACallInformationEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		connection = CSTAConnectionID.decode(memberStream);
 		device = CSTAExtendedDeviceID.decode(memberStream);
 		accountInfo = ASNIA5String.decode(memberStream);
@@ -51,11 +51,11 @@ public final class CSTACallInformationEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTACallInformationEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(connection, "connection", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(device, "device", indent));
@@ -67,4 +67,3 @@ public final class CSTACallInformationEvent extends CSTAUnsolicited {
 		return lines;
 	}
 }
-

@@ -19,8 +19,8 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 	boolean routeUsedReq;
 	public static final int PDU = 84;
 
-	public static CSTARouteSelectRequest decode(InputStream in) {
-		CSTARouteSelectRequest _this = new CSTARouteSelectRequest();
+	public static CSTARouteSelectRequest decode(final InputStream in) {
+		final CSTARouteSelectRequest _this = new CSTARouteSelectRequest();
 		_this.doDecode(in);
 
 		return _this;
@@ -29,9 +29,10 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 	public CSTARouteSelectRequest() {
 	}
 
-	public CSTARouteSelectRequest(int _routeRegisterReqID,
-			int _routingCrossRefID, String _routeSelected, int _remainRetry,
-			byte[] _setupInformation, boolean _routeUsedReq) {
+	public CSTARouteSelectRequest(final int _routeRegisterReqID,
+			final int _routingCrossRefID, final String _routeSelected,
+			final int _remainRetry, final byte[] _setupInformation,
+			final boolean _routeUsedReq) {
 		routeRegisterReqID = _routeRegisterReqID;
 		routingCrossRefID = _routingCrossRefID;
 		routeSelected = _routeSelected;
@@ -41,7 +42,7 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		routeSelected = ASNIA5String.decode(memberStream);
@@ -51,7 +52,7 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 		ASNInteger.encode(routingCrossRefID, memberStream);
 		ASNIA5String.encode(routeSelected, memberStream);
@@ -91,12 +92,12 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteSelectRequest ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -114,4 +115,3 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 		return lines;
 	}
 }
-

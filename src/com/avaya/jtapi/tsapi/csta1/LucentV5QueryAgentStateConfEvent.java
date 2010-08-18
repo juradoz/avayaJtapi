@@ -12,22 +12,22 @@ public class LucentV5QueryAgentStateConfEvent extends
 	int reasonCode;
 	static final int PDU = 88;
 
-	public static LucentQueryAgentStateConfEvent decode(InputStream in,
-			CSTATSProvider prov) {
-		LucentV5QueryAgentStateConfEvent _this = new LucentV5QueryAgentStateConfEvent();
+	public static LucentQueryAgentStateConfEvent decode(final InputStream in,
+			final CSTATSProvider prov) {
+		final LucentV5QueryAgentStateConfEvent _this = new LucentV5QueryAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		reasonCode = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNInteger.encode(reasonCode, memberStream);
 	}
@@ -43,12 +43,12 @@ public class LucentV5QueryAgentStateConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5QueryAgentStateConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 		lines.addAll(LucentTalkState.print(talkState, "talkState", indent));
@@ -58,7 +58,7 @@ public class LucentV5QueryAgentStateConfEvent extends
 		return lines;
 	}
 
-	public void setReasonCode(int reasonCode) {
+	public void setReasonCode(final int reasonCode) {
 		this.reasonCode = reasonCode;
 	}
 }

@@ -50,4 +50,3 @@ public abstract interface Terminal {
 	public abstract void removeTerminalListener(
 			TerminalListener paramTerminalListener);
 }
-

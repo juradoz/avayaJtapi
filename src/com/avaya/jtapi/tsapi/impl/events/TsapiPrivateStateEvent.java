@@ -3,7 +3,7 @@ package com.avaya.jtapi.tsapi.impl.events;
 public abstract class TsapiPrivateStateEvent {
 	int tsapiState;
 
-	protected TsapiPrivateStateEvent(int _tsapiState) {
+	protected TsapiPrivateStateEvent(final int _tsapiState) {
 		tsapiState = _tsapiState;
 	}
 
@@ -11,4 +11,3 @@ public abstract class TsapiPrivateStateEvent {
 		return tsapiState;
 	}
 }
-

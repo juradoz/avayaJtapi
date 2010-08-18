@@ -12,8 +12,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class ACSAuthReplyTwo extends ACSConfirmation {
-	public static ACSAuthReplyTwo decode(InputStream in) {
-		ACSAuthReplyTwo _this = new ACSAuthReplyTwo();
+	public static ACSAuthReplyTwo decode(final InputStream in) {
+		final ACSAuthReplyTwo _this = new ACSAuthReplyTwo();
 		_this.doDecode(in);
 
 		return _this;
@@ -30,8 +30,9 @@ public final class ACSAuthReplyTwo extends ACSConfirmation {
 	public ACSAuthReplyTwo() {
 	}
 
-	public ACSAuthReplyTwo(int _objectID, byte[] _key, ACSAuthInfo _authInfo,
-			short _encodeType, String _pipe) {
+	public ACSAuthReplyTwo(final int _objectID, final byte[] _key,
+			final ACSAuthInfo _authInfo, final short _encodeType,
+			final String _pipe) {
 		objectID = _objectID;
 		key = _key;
 		authInfo = _authInfo;
@@ -40,7 +41,7 @@ public final class ACSAuthReplyTwo extends ACSConfirmation {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		objectID = ASNInteger.decode(memberStream);
 		key = ASNOctetString.decode(memberStream);
 		authInfo = ACSAuthInfo.decode(memberStream);
@@ -49,7 +50,7 @@ public final class ACSAuthReplyTwo extends ACSConfirmation {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(objectID, memberStream);
 		ASNOctetString.encode(key, memberStream);
 		ASNSequence.encode(authInfo, memberStream);
@@ -84,11 +85,11 @@ public final class ACSAuthReplyTwo extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSAuthReplyTwo ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(objectID, "objectID", indent));
 		lines.addAll(ASNOctetString.print(key, "key", indent));
@@ -100,4 +101,3 @@ public final class ACSAuthReplyTwo extends ACSConfirmation {
 		return lines;
 	}
 }
-

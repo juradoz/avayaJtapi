@@ -24,4 +24,3 @@ public abstract interface ACDAddress extends CallCenterAddress {
 	public abstract int getRelativeQueueLoad()
 			throws MethodNotSupportedException;
 }
-

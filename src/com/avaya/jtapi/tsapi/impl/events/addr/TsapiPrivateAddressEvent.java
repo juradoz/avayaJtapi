@@ -6,8 +6,8 @@ import javax.telephony.privatedata.events.PrivateAddrEv;
 @SuppressWarnings("deprecation")
 public final class TsapiPrivateAddressEvent extends TsapiAddressEvent implements
 		PrivateAddrEv {
-	public TsapiPrivateAddressEvent(Address _address, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiPrivateAddressEvent(final Address _address, final int _cause,
+			final int _metaCode, final Object _privateData) {
 		super(_address, _cause, _metaCode, _privateData, 5);
 	}
 

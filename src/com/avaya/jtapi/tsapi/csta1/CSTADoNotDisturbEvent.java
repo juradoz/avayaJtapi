@@ -13,21 +13,21 @@ public final class CSTADoNotDisturbEvent extends CSTAUnsolicited {
 	boolean doNotDisturbOn;
 	public static final int PDU = 69;
 
-	public static CSTADoNotDisturbEvent decode(InputStream in) {
-		CSTADoNotDisturbEvent _this = new CSTADoNotDisturbEvent();
+	public static CSTADoNotDisturbEvent decode(final InputStream in) {
+		final CSTADoNotDisturbEvent _this = new CSTADoNotDisturbEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = CSTAExtendedDeviceID.decode(memberStream);
 		doNotDisturbOn = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(device, memberStream);
 		ASNBoolean.encode(doNotDisturbOn, memberStream);
 	}
@@ -47,11 +47,11 @@ public final class CSTADoNotDisturbEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTADoNotDisturbEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(device, "device", indent));
 		lines
@@ -62,12 +62,11 @@ public final class CSTADoNotDisturbEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setDevice(CSTAExtendedDeviceID device) {
+	public void setDevice(final CSTAExtendedDeviceID device) {
 		this.device = device;
 	}
 
-	public void setDoNotDisturbOn(boolean doNotDisturb) {
+	public void setDoNotDisturbOn(final boolean doNotDisturb) {
 		doNotDisturbOn = doNotDisturb;
 	}
 }
-

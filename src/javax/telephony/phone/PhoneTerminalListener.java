@@ -33,4 +33,3 @@ public abstract interface PhoneTerminalListener extends TerminalListener {
 	public abstract void terminalSpeakerVolumeChanged(
 			PhoneTerminalEvent paramPhoneTerminalEvent);
 }
-

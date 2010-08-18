@@ -12,4 +12,3 @@ public abstract interface LucentAddress extends ITsapiAddress {
 	public abstract int getMessageWaitingBits()
 			throws TsapiMethodNotSupportedException;
 }
-

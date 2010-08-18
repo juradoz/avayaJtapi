@@ -10,19 +10,18 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class QueryAgentStateConfHandler implements ConfHandler {
 	TSAgent agent;
 
-	QueryAgentStateConfHandler(TSAgent _agent) {
+	QueryAgentStateConfHandler(final TSAgent _agent) {
 		agent = _agent;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))
 			return;
-		}
 
-		CSTAQueryAgentStateConfEvent agentStateConf = (CSTAQueryAgentStateConfEvent) event
+		final CSTAQueryAgentStateConfEvent agentStateConf = (CSTAQueryAgentStateConfEvent) event
 				.getEvent();
-		int agentState = agentStateConf.getAgentState();
+		final int agentState = agentStateConf.getAgentState();
 		int _workMode = 0;
 		int _lucentworkmode = -1;
 		int _reasonCode = 0;
@@ -30,41 +29,38 @@ final class QueryAgentStateConfHandler implements ConfHandler {
 		int _pendingReasonCode = 0;
 		boolean agentIsBusy = false;
 		if (event.getPrivData() instanceof LucentQueryAgentStateConfEvent) {
-			short tsapiWorkMode = ((LucentQueryAgentStateConfEvent) event
+			final short tsapiWorkMode = ((LucentQueryAgentStateConfEvent) event
 					.getPrivData()).getWorkMode();
 
 			_lucentworkmode = tsapiWorkMode;
 
-			if (tsapiWorkMode == 3) {
+			if (tsapiWorkMode == 3)
 				_workMode = 1;
-			} else if (tsapiWorkMode == 4) {
+			else if (tsapiWorkMode == 4)
 				_workMode = 2;
-			}
-			short talkState = ((LucentQueryAgentStateConfEvent) event
+			final short talkState = ((LucentQueryAgentStateConfEvent) event
 					.getPrivData()).getTalkState();
-			if (talkState == 0) {
+			if (talkState == 0)
 				agentIsBusy = true;
-			}
 			if (event.getPrivData() instanceof LucentV5QueryAgentStateConfEvent) {
 				_reasonCode = ((LucentV5QueryAgentStateConfEvent) event
 						.getPrivData()).getReasonCode();
 				if (event.getPrivData() instanceof LucentV6QueryAgentStateConfEvent) {
-					int pendingWorkMode = ((LucentV6QueryAgentStateConfEvent) event
+					final int pendingWorkMode = ((LucentV6QueryAgentStateConfEvent) event
 							.getPrivData()).getPendingWorkMode();
-					if (pendingWorkMode == 1) {
+					if (pendingWorkMode == 1)
 						_pendingState = 3;
-					} else if (pendingWorkMode == 2) {
+					else if (pendingWorkMode == 2)
 						_pendingState = 5;
-					}
 					_pendingReasonCode = ((LucentV6QueryAgentStateConfEvent) event
 							.getPrivData()).getPendingReasonCode();
 				}
 			}
 		}
-		if (agentIsBusy) {
+		if (agentIsBusy)
 			agent.updateState(7, _workMode, _reasonCode, _pendingState,
 					_pendingReasonCode, _lucentworkmode, null);
-		} else {
+		else
 			switch (agentState) {
 			case 0:
 				agent.updateState(3, _workMode, _reasonCode, _pendingState,
@@ -90,6 +86,5 @@ final class QueryAgentStateConfHandler implements ConfHandler {
 				agent.updateState(0, _workMode, _reasonCode, _pendingState,
 						_pendingReasonCode, _lucentworkmode, null);
 			}
-		}
 	}
 }

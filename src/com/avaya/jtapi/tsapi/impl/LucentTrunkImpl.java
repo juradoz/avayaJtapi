@@ -5,16 +5,15 @@ import com.avaya.jtapi.tsapi.impl.core.TSTrunk;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 final class LucentTrunkImpl extends TsapiTrunkImpl implements LucentTrunk {
-	LucentTrunkImpl(TSTrunk _tsTrunk) {
+	LucentTrunkImpl(final TSTrunk _tsTrunk) {
 		super(_tsTrunk);
 		TsapiTrace.traceConstruction(this, LucentTrunkImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentTrunkImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentTrunkImpl)
 			return tsTrunk.equals(((LucentTrunkImpl) obj).tsTrunk);
-		}
 
 		return false;
 	}
@@ -25,4 +24,3 @@ final class LucentTrunkImpl extends TsapiTrunkImpl implements LucentTrunk {
 		TsapiTrace.traceDestruction(this, LucentTrunkImpl.class);
 	}
 }
-

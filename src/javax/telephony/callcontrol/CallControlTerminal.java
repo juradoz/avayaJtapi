@@ -43,4 +43,3 @@ public abstract interface CallControlTerminal extends Terminal {
 	public abstract void setDoNotDisturb(boolean paramBoolean)
 			throws MethodNotSupportedException, InvalidStateException;
 }
-

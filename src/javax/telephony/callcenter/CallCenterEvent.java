@@ -7,4 +7,3 @@ public abstract interface CallCenterEvent extends Event {
 
 	public abstract int getCallCenterCause();
 }
-

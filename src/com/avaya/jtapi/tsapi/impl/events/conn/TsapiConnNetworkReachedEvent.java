@@ -6,7 +6,7 @@ import com.avaya.jtapi.tsapi.NetworkProgressInfo;
 
 public class TsapiConnNetworkReachedEvent extends TsapiCallCtlConnEvent
 		implements ITsapiConnNetworkReachedEvent, ITsapiCallInfo {
-	public TsapiConnNetworkReachedEvent(ConnEventParams params) {
+	public TsapiConnNetworkReachedEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -15,10 +15,8 @@ public class TsapiConnNetworkReachedEvent extends TsapiCallCtlConnEvent
 	}
 
 	public final NetworkProgressInfo getNetworkProgressInfo() {
-		if (privateData instanceof NetworkProgressInfo) {
+		if (privateData instanceof NetworkProgressInfo)
 			return (NetworkProgressInfo) privateData;
-		}
 		return null;
 	}
 }
-

@@ -9,8 +9,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public class LucentSendDTMFTone extends LucentPrivateData {
-	public static LucentSendDTMFTone decode(InputStream in) {
-		LucentSendDTMFTone _this = new LucentSendDTMFTone();
+	public static LucentSendDTMFTone decode(final InputStream in) {
+		final LucentSendDTMFTone _this = new LucentSendDTMFTone();
 		_this.doDecode(in);
 
 		return _this;
@@ -27,9 +27,9 @@ public class LucentSendDTMFTone extends LucentPrivateData {
 	public LucentSendDTMFTone() {
 	}
 
-	public LucentSendDTMFTone(CSTAConnectionID _sender,
-			CSTAConnectionID[] _receivers, String _tones, int _toneDuration,
-			int _pauseDuration) {
+	public LucentSendDTMFTone(final CSTAConnectionID _sender,
+			final CSTAConnectionID[] _receivers, final String _tones,
+			final int _toneDuration, final int _pauseDuration) {
 		sender = _sender;
 		receivers = _receivers;
 		tones = _tones;
@@ -38,7 +38,7 @@ public class LucentSendDTMFTone extends LucentPrivateData {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		sender = CSTAConnectionID.decode(memberStream);
 		receivers = LucentConnIDList.decode(memberStream);
 		tones = ASNIA5String.decode(memberStream);
@@ -47,7 +47,7 @@ public class LucentSendDTMFTone extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(sender, memberStream);
 		LucentConnIDList.encode(receivers, memberStream);
 		ASNIA5String.encode(tones, memberStream);
@@ -82,12 +82,12 @@ public class LucentSendDTMFTone extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSendDTMFTone ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(sender, "sender", indent));
 		lines.addAll(LucentConnIDList.print(receivers, "receivers", indent));
@@ -99,4 +99,3 @@ public class LucentSendDTMFTone extends LucentPrivateData {
 		return lines;
 	}
 }
-

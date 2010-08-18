@@ -10,4 +10,3 @@ public abstract interface CallCenterProviderCapabilities extends
 
 	public abstract boolean canGetRouteableAddresses();
 }
-

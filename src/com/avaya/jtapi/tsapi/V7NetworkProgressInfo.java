@@ -6,9 +6,10 @@ public final class V7NetworkProgressInfo extends V5NetworkProgressInfo {
 	public V7NetworkProgressInfo() {
 	}
 
-	V7NetworkProgressInfo(V7DeviceHistoryEntry[] _deviceHistory,
-			String _trunkGroup, String _trunkMember, TsapiTrunk _trunk,
-			short progressLocation, short progressDescription) {
+	V7NetworkProgressInfo(final V7DeviceHistoryEntry[] _deviceHistory,
+			final String _trunkGroup, final String _trunkMember,
+			final TsapiTrunk _trunk, final short progressLocation,
+			final short progressDescription) {
 		super(_trunkGroup, _trunkMember, _trunk, progressLocation,
 				progressDescription);
 		deviceHistory = _deviceHistory;
@@ -18,8 +19,7 @@ public final class V7NetworkProgressInfo extends V5NetworkProgressInfo {
 		return deviceHistory;
 	}
 
-	public void setDeviceHistory(V7DeviceHistoryEntry[] deviceHistory) {
+	public void setDeviceHistory(final V7DeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }
-

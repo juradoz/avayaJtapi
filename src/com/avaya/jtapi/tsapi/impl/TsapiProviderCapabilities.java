@@ -10,21 +10,21 @@ public final class TsapiProviderCapabilities implements ProviderCapabilities,
 		CallCenterProviderCapabilities {
 	private TSCapabilities tsCaps = null;
 
-	public TsapiProviderCapabilities(TSCapabilities _tsCaps) {
+	public TsapiProviderCapabilities(final TSCapabilities _tsCaps) {
 		tsCaps = _tsCaps;
 		TsapiTrace.traceConstruction(this, TsapiProviderCapabilities.class);
 	}
 
 	public boolean canGetACDAddresses() {
 		TsapiTrace.traceEntry("canGetACDAddresses[]", this);
-		boolean can = tsCaps.isLucent();
+		final boolean can = tsCaps.isLucent();
 		TsapiTrace.traceExit("canGetACDAddresses[]", this);
 		return can;
 	}
 
 	public boolean canGetACDManagerAddresses() {
 		TsapiTrace.traceEntry("canGetACDManagerAddresses[]", this);
-		boolean can = tsCaps.isLucent();
+		final boolean can = tsCaps.isLucent();
 		TsapiTrace.traceExit("canGetACDManagerAddresses[]", this);
 		return can;
 	}
@@ -47,4 +47,3 @@ public final class TsapiProviderCapabilities implements ProviderCapabilities,
 		return true;
 	}
 }
-

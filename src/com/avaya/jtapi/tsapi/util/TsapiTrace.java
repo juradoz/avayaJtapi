@@ -7,22 +7,20 @@ public class TsapiTrace {
 	protected static int callDepth = 0;
 
 	private static String getIndent() {
-		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < callDepth; ++i) {
+		final StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < TsapiTrace.callDepth; ++i)
 			buffer.append("  ");
-		}
 		return buffer.toString();
 	}
 
 	@SuppressWarnings("unchecked")
-	private static String print(Object o) {
+	private static String print(final Object o) {
 		if (o != null) {
-			if (o instanceof Class) {
+			if (o instanceof Class)
 				return ((Class) o).getName();
-			}
 			try {
 				return o.toString();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				return o.getClass().getName();
 			}
 		}
@@ -30,53 +28,50 @@ public class TsapiTrace {
 		return "";
 	}
 
-	private static void printEntering(String str, Object o) {
+	private static void printEntering(final String str, final Object o) {
 		if (o != null) {
-			Logger log = Logger.getLogger(o.getClass());
-			log.trace(getIndent() + "--> " + str + print(o));
+			final Logger log = Logger.getLogger(o.getClass());
+			log.trace(TsapiTrace.getIndent() + "--> " + str
+					+ TsapiTrace.print(o));
 		}
 	}
 
-	private static void printExiting(String str, Object o) {
+	private static void printExiting(final String str, final Object o) {
 		if (o != null) {
-			Logger log = Logger.getLogger(o.getClass());
-			log.trace(getIndent() + "<-- " + str + print(o));
+			final Logger log = Logger.getLogger(o.getClass());
+			log.trace(TsapiTrace.getIndent() + "<-- " + str
+					+ TsapiTrace.print(o));
 		}
 	}
 
-	public static void traceConstruction(Object obj, Class<?> clazz) {
+	public static void traceConstruction(final Object obj, final Class<?> clazz) {
 		if (obj.getClass().equals(clazz)) {
-			Logger log = Logger.getLogger(obj.getClass());
-			log.trace(getIndent() + obj + " constructed.");
+			final Logger log = Logger.getLogger(obj.getClass());
+			log.trace(TsapiTrace.getIndent() + obj + " constructed.");
 		}
 	}
 
-	public static void traceDestruction(Object obj, Class<?> clazz) {
+	public static void traceDestruction(final Object obj, final Class<?> clazz) {
 		if (obj.getClass().equals(clazz)) {
-			Logger log = Logger.getLogger(obj.getClass());
-			log.trace(getIndent() + obj + " destroyed.");
+			final Logger log = Logger.getLogger(obj.getClass());
+			log.trace(TsapiTrace.getIndent() + obj + " destroyed.");
 		}
 	}
 
-	public static void traceEntry(String str, Object o) {
-		if (TRACELEVEL == 0) {
+	public static void traceEntry(final String str, final Object o) {
+		if (TsapiTrace.TRACELEVEL == 0)
 			return;
-		}
-		if (TRACELEVEL == 2) {
-			callDepth += 1;
-		}
-		printEntering(str + ": ", o);
+		if (TsapiTrace.TRACELEVEL == 2)
+			TsapiTrace.callDepth += 1;
+		TsapiTrace.printEntering(str + ": ", o);
 	}
 
-	public static void traceExit(String str, Object o) {
-		if (TRACELEVEL == 0) {
+	public static void traceExit(final String str, final Object o) {
+		if (TsapiTrace.TRACELEVEL == 0)
 			return;
-		}
-		printExiting(str + ": ", o);
-		if (TRACELEVEL != 2) {
+		TsapiTrace.printExiting(str + ": ", o);
+		if (TsapiTrace.TRACELEVEL != 2)
 			return;
-		}
-		callDepth -= 1;
+		TsapiTrace.callDepth -= 1;
 	}
 }
-

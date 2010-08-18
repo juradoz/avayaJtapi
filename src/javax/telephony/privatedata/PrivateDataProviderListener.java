@@ -6,4 +6,3 @@ public abstract interface PrivateDataProviderListener extends ProviderListener {
 	public abstract void providerPrivateData(
 			PrivateDataEvent paramPrivateDataEvent);
 }
-

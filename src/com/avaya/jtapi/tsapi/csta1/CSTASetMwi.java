@@ -12,13 +12,13 @@ public class CSTASetMwi extends CSTARequest {
 	boolean messages;
 	static final int PDU = 43;
 
-	public CSTASetMwi(String _device, boolean _messages) {
+	public CSTASetMwi(final String _device, final boolean _messages) {
 		device = _device;
 		messages = _messages;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 		ASNBoolean.encode(messages, memberStream);
 	}
@@ -38,12 +38,12 @@ public class CSTASetMwi extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetMwi ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 		lines.addAll(ASNBoolean.print(messages, "messages", indent));
@@ -52,4 +52,3 @@ public class CSTASetMwi extends CSTARequest {
 		return lines;
 	}
 }
-

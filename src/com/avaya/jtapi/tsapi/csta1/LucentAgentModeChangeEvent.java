@@ -11,20 +11,20 @@ public class LucentAgentModeChangeEvent extends LucentPrivateData {
 	int reasonCode;
 	static final int PDU = 124;
 
-	static LucentAgentModeChangeEvent decode(InputStream in) {
-		LucentAgentModeChangeEvent _this = new LucentAgentModeChangeEvent();
+	static LucentAgentModeChangeEvent decode(final InputStream in) {
+		final LucentAgentModeChangeEvent _this = new LucentAgentModeChangeEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		reasonCode = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(reasonCode, memberStream);
 	}
 
@@ -39,20 +39,19 @@ public class LucentAgentModeChangeEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentAgentModeChangeEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(reasonCode, "reasonCode", indent));
 		lines.add("}");
 		return lines;
 	}
 
-	public void setReasonCode(int reasonCode) {
+	public void setReasonCode(final int reasonCode) {
 		this.reasonCode = reasonCode;
 	}
 }
-

@@ -12,21 +12,21 @@ public class LucentMonitorCallConfEvent extends LucentPrivateData {
 	CSTASnapshotCallResponseInfo[] snapshotCall;
 	public static final int PDU = 33;
 
-	static LucentMonitorCallConfEvent decode(InputStream in) {
-		LucentMonitorCallConfEvent _this = new LucentMonitorCallConfEvent();
+	static LucentMonitorCallConfEvent decode(final InputStream in) {
+		final LucentMonitorCallConfEvent _this = new LucentMonitorCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		usedFilter = ASNBitString.decode(memberStream);
 		snapshotCall = LucentSnapshotCall.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		LucentPrivateFilter.encode(usedFilter, memberStream);
 		LucentSnapshotCall.encode(snapshotCall, memberStream);
 	}
@@ -46,12 +46,12 @@ public class LucentMonitorCallConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentPrivateFilter
 				.print(usedFilter, "usedFilter", indent));
@@ -62,12 +62,12 @@ public class LucentMonitorCallConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setSnapshotCall(CSTASnapshotCallResponseInfo[] snapshotCall) {
+	public void setSnapshotCall(
+			final CSTASnapshotCallResponseInfo[] snapshotCall) {
 		this.snapshotCall = snapshotCall;
 	}
 
-	public void setUsedFilter(int usedFilter) {
+	public void setUsedFilter(final int usedFilter) {
 		this.usedFilter = usedFilter;
 	}
 }
-

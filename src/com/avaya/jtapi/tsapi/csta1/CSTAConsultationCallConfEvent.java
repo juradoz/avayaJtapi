@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTAConsultationCallConfEvent extends CSTAConfirmation {
-	public static CSTAConsultationCallConfEvent decode(InputStream in) {
-		CSTAConsultationCallConfEvent _this = new CSTAConsultationCallConfEvent();
+	public static CSTAConsultationCallConfEvent decode(final InputStream in) {
+		final CSTAConsultationCallConfEvent _this = new CSTAConsultationCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,17 +20,17 @@ public final class CSTAConsultationCallConfEvent extends CSTAConfirmation {
 	public CSTAConsultationCallConfEvent() {
 	}
 
-	public CSTAConsultationCallConfEvent(CSTAConnectionID _newCall) {
+	public CSTAConsultationCallConfEvent(final CSTAConnectionID _newCall) {
 		newCall = _newCall;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		newCall = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(newCall, memberStream);
 	}
 
@@ -45,11 +45,11 @@ public final class CSTAConsultationCallConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAConsultationCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
 
@@ -57,7 +57,7 @@ public final class CSTAConsultationCallConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setNewCall(CSTAConnectionID newCall) {
+	public void setNewCall(final CSTAConnectionID newCall) {
 		this.newCall = newCall;
 	}
 }

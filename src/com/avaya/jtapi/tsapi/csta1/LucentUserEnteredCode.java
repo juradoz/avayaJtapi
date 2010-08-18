@@ -17,36 +17,34 @@ public final class LucentUserEnteredCode extends LucentPrivateData {
 	public static final short UE_COLLECT = 0;
 	public static final short UE_ENTERED = 1;
 
-	public static LucentUserEnteredCode decode(InputStream in) {
-		LucentUserEnteredCode _this = new LucentUserEnteredCode();
+	public static LucentUserEnteredCode decode(final InputStream in) {
+		final LucentUserEnteredCode _this = new LucentUserEnteredCode();
 		_this.doDecode(in);
-		if (_this.type == -1) {
+		if (_this.type == -1)
 			return null;
-		}
 		return _this;
 	}
 
-	public static void encode(LucentUserEnteredCode _this, OutputStream out) {
-		if (_this == null) {
+	public static void encode(LucentUserEnteredCode _this,
+			final OutputStream out) {
+		if (_this == null)
 			_this = new LucentUserEnteredCode();
-		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(LucentUserEnteredCode _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final LucentUserEnteredCode _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(UserEnteredCodeType.print(_this.type, "type", indent));
 		lines.addAll(UserEnteredCodeIndicator.print(_this.indicator,
@@ -68,7 +66,7 @@ public final class LucentUserEnteredCode extends LucentPrivateData {
 	String collectVDN_asn;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		type = ASNEnumerated.decode(memberStream);
 		indicator = ASNEnumerated.decode(memberStream);
 		data = ASNIA5String.decode(memberStream);
@@ -76,7 +74,7 @@ public final class LucentUserEnteredCode extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(type, memberStream);
 		ASNEnumerated.encode(indicator, memberStream);
 		ASNIA5String.encode(data, memberStream);
@@ -99,20 +97,19 @@ public final class LucentUserEnteredCode extends LucentPrivateData {
 		return type;
 	}
 
-	public void setCollectVDN_asn(String _collectVDN_asn) {
+	public void setCollectVDN_asn(final String _collectVDN_asn) {
 		collectVDN_asn = _collectVDN_asn;
 	}
 
-	public void setData(String _data) {
+	public void setData(final String _data) {
 		data = _data;
 	}
 
-	public void setIndicator(short _indicator) {
+	public void setIndicator(final short _indicator) {
 		indicator = _indicator;
 	}
 
-	public void setType(short _type) {
+	public void setType(final short _type) {
 		type = _type;
 	}
 }
-

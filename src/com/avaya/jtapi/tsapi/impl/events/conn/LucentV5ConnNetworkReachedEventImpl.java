@@ -4,7 +4,7 @@ import com.avaya.jtapi.tsapi.LucentV5CallInfo;
 
 public final class LucentV5ConnNetworkReachedEventImpl extends
 		LucentConnNetworkReachedEventImpl implements LucentV5CallInfo {
-	public LucentV5ConnNetworkReachedEventImpl(ConnEventParams params) {
+	public LucentV5ConnNetworkReachedEventImpl(final ConnEventParams params) {
 		super(params);
 	}
 }

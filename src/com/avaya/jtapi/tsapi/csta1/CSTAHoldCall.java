@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 
 public final class CSTAHoldCall extends CSTARequest {
-	public static CSTAHoldCall decode(InputStream in) {
-		CSTAHoldCall _this = new CSTAHoldCall();
+	public static CSTAHoldCall decode(final InputStream in) {
+		final CSTAHoldCall _this = new CSTAHoldCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,19 +23,20 @@ public final class CSTAHoldCall extends CSTARequest {
 	public CSTAHoldCall() {
 	}
 
-	public CSTAHoldCall(CSTAConnectionID _activeCall, boolean _reservation) {
+	public CSTAHoldCall(final CSTAConnectionID _activeCall,
+			final boolean _reservation) {
 		activeCall = _activeCall;
 		reservation = _reservation;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		activeCall = CSTAConnectionID.decode(memberStream);
 		reservation = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(activeCall, memberStream);
 		ASNBoolean.encode(reservation, memberStream);
 	}
@@ -55,11 +56,11 @@ public final class CSTAHoldCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAHoldCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
 		lines.addAll(ASNBoolean.print(reservation, "reservation", indent));
@@ -68,4 +69,3 @@ public final class CSTAHoldCall extends CSTARequest {
 		return lines;
 	}
 }
-

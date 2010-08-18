@@ -5,8 +5,7 @@ public final class Q931UserToUserInfo extends UserToUserInfo {
 		super(null, (short) 8);
 	}
 
-	public Q931UserToUserInfo(byte[] _data) {
+	public Q931UserToUserInfo(final byte[] _data) {
 		super(_data, (short) 8);
 	}
 }
-

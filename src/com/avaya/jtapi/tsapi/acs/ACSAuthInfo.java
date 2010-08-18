@@ -10,26 +10,25 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class ACSAuthInfo extends ASNSequence {
-	static ACSAuthInfo decode(InputStream in) {
-		ACSAuthInfo _this = new ACSAuthInfo();
+	static ACSAuthInfo decode(final InputStream in) {
+		final ACSAuthInfo _this = new ACSAuthInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	static Collection<String> print(ACSAuthInfo _this, String name,
-			String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	static Collection<String> print(final ACSAuthInfo _this, final String name,
+			final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ACSAuthType.print(_this.authType, "authType", indent));
 		lines.addAll(ASNIA5String.print(_this.authLoginID, "authLoginID",
@@ -46,21 +45,20 @@ public final class ACSAuthInfo extends ASNSequence {
 	ACSAuthInfo() {
 	}
 
-	public ACSAuthInfo(short _authType, String _authLoginID) {
+	public ACSAuthInfo(final short _authType, final String _authLoginID) {
 		authType = _authType;
 		authLoginID = _authLoginID;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		authType = ASNEnumerated.decode(memberStream);
 		authLoginID = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(authType, memberStream);
 		ASNIA5String.encode(authLoginID, memberStream);
 	}
 }
-

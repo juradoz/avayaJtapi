@@ -6,4 +6,3 @@ public abstract interface PrivateDataTerminalListener extends TerminalListener {
 	public abstract void terminalPrivateData(
 			PrivateDataEvent paramPrivateDataEvent);
 }
-

@@ -11,26 +11,27 @@ import com.avaya.jtapi.tsapi.csta1.CSTATSProvider;
 public class TsapiEventDistributor implements TsapiEventHandler {
 	private static Logger log = Logger.getLogger(TsapiEventDistributor.class);
 	private TsapiUnsolicitedHandler handler;
-	private TsapiInvokeIDTable invokeTable;
+	private final TsapiInvokeIDTable invokeTable;
 	private String debugID;
 
-	public TsapiEventDistributor(TsapiInvokeIDTable _invokeTable,
-			String _debugID) {
+	public TsapiEventDistributor(final TsapiInvokeIDTable _invokeTable,
+			final String _debugID) {
 		invokeTable = _invokeTable;
 	}
 
 	public void close() {
 	}
 
-	public void handleEvent(CSTAEvent event) {
+	public void handleEvent(final CSTAEvent event) {
 		try {
-			long begin = System.currentTimeMillis();
+			final long begin = System.currentTimeMillis();
 
 			CSTAPrivate.translatePrivateData(event, debugID);
 
 			switch (event.getEventHeader().getEventClass()) {
 			case 2:
-				ACSConfirmation acsConf = (ACSConfirmation) event.getEvent();
+				final ACSConfirmation acsConf = (ACSConfirmation) event
+						.getEvent();
 				TSInvokeID invokeID = invokeTable.getTSInvokeID(acsConf
 						.getInvokeID());
 				if (invokeID != null) {
@@ -39,7 +40,8 @@ public class TsapiEventDistributor implements TsapiEventHandler {
 				}
 				break;
 			case 5:
-				CSTAConfirmation cstaConf = (CSTAConfirmation) event.getEvent();
+				final CSTAConfirmation cstaConf = (CSTAConfirmation) event
+						.getEvent();
 				invokeID = invokeTable.getTSInvokeID(cstaConf.getInvokeID());
 				if (invokeID != null) {
 					invokeTable.deallocTSInvokeID(invokeID);
@@ -59,30 +61,31 @@ public class TsapiEventDistributor implements TsapiEventHandler {
 				handler.cstaEventReport(event);
 				break;
 			default:
-				log
+				TsapiEventDistributor.log
 						.info("DISTRIBUTE thread: WARNING: bad event in TSDistributeCstaEventThread");
 			}
 
-			long end = System.currentTimeMillis();
-			long delay = end - begin;
+			final long end = System.currentTimeMillis();
+			final long delay = end - begin;
 
-			long threshold = CSTATSProvider.getHandleCSTAEventTimeThreshold();
-			if ((threshold > 0L) && (delay > threshold)) {
-				log
+			final long threshold = CSTATSProvider
+					.getHandleCSTAEventTimeThreshold();
+			if (threshold > 0L && delay > threshold)
+				TsapiEventDistributor.log
 						.info("TsapiEventDistributor.handleEvent(): exceeded threshold ("
 								+ threshold
 								+ ") for event "
 								+ event
 								+ ": "
 								+ delay);
-			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			if (handler == null) {
-				log.error("TsapiSession: no handler when Exception received."
-						+ e);
+				TsapiEventDistributor.log
+						.error("TsapiSession: no handler when Exception received."
+								+ e);
 
-				log.error(e.getMessage(), e);
+				TsapiEventDistributor.log.error(e.getMessage(), e);
 				return;
 			}
 			handler.eventDistributorException(e);
@@ -90,8 +93,7 @@ public class TsapiEventDistributor implements TsapiEventHandler {
 	}
 
 	public synchronized void setUnsolicitedHandler(
-			TsapiUnsolicitedHandler handler) {
+			final TsapiUnsolicitedHandler handler) {
 		this.handler = handler;
 	}
 }
-

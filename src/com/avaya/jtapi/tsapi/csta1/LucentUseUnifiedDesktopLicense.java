@@ -7,8 +7,8 @@ import java.util.Collection;
 public final class LucentUseUnifiedDesktopLicense extends LucentPrivateData {
 	public static final int PDU = 139;
 
-	public static LucentUseUnifiedDesktopLicense decode(InputStream in) {
-		LucentUseUnifiedDesktopLicense _this = new LucentUseUnifiedDesktopLicense();
+	public static LucentUseUnifiedDesktopLicense decode(final InputStream in) {
+		final LucentUseUnifiedDesktopLicense _this = new LucentUseUnifiedDesktopLicense();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,7 +21,7 @@ public final class LucentUseUnifiedDesktopLicense extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentUseUnifiedDesktopLicense ::=");
 		lines.add("{");
 		lines.add("}");

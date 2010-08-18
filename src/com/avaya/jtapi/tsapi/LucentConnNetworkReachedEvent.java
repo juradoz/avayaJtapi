@@ -4,4 +4,3 @@ public abstract interface LucentConnNetworkReachedEvent extends
 		ITsapiConnNetworkReachedEvent {
 	public abstract NetworkProgressInfo getNetworkProgressInfo();
 }
-

@@ -15,17 +15,16 @@ public final class CSTAConnectionID extends ASNSequence implements
 	public static final short STATIC_ID = 0;
 	public static final short DYNAMIC_ID = 1;
 
-	public static CSTAConnectionID decode(InputStream in) {
-		CSTAConnectionID _this = new CSTAConnectionID();
+	public static CSTAConnectionID decode(final InputStream in) {
+		final CSTAConnectionID _this = new CSTAConnectionID();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static void encode(CSTAConnectionID _this, OutputStream out) {
-		if (_this == null) {
+	public static void encode(CSTAConnectionID _this, final OutputStream out) {
+		if (_this == null)
 			_this = new CSTAConnectionID();
-		}
 		_this.encode(out);
 	}
 
@@ -37,19 +36,18 @@ public final class CSTAConnectionID extends ASNSequence implements
 		return 0;
 	}
 
-	public static Collection<String> print(CSTAConnectionID _this, String name,
-			String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final CSTAConnectionID _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ASNInteger.print(_this.callID, "callID", indent));
 		lines.addAll(ASNIA5String.print(_this.deviceID, "deviceID", indent));
@@ -69,39 +67,39 @@ public final class CSTAConnectionID extends ASNSequence implements
 	public CSTAConnectionID() {
 	}
 
-	public CSTAConnectionID(int _callID, String _deviceID, short _devIDType) {
+	public CSTAConnectionID(final int _callID, final String _deviceID,
+			final short _devIDType) {
 		callID = _callID;
 		deviceID = _deviceID;
 		devIDType = _devIDType;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		callID = ASNInteger.decode(memberStream);
 		deviceID = ASNIA5String.decode(memberStream);
 		devIDType = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(callID, memberStream);
 		ASNIA5String.encode(deviceID, memberStream);
 		ASNEnumerated.encode(devIDType, memberStream);
 	}
 
 	@Override
-	public boolean equals(Object anObject) {
+	public boolean equals(final Object anObject) {
 		if (anObject instanceof CSTAConnectionID) {
-			CSTAConnectionID anotherConnID = (CSTAConnectionID) anObject;
-			if (deviceID == null) {
-				return (callID == anotherConnID.callID)
-						&& (devIDType == anotherConnID.devIDType)
-						&& (anotherConnID.deviceID == null);
-			}
+			final CSTAConnectionID anotherConnID = (CSTAConnectionID) anObject;
+			if (deviceID == null)
+				return callID == anotherConnID.callID
+						&& devIDType == anotherConnID.devIDType
+						&& anotherConnID.deviceID == null;
 
-			return (callID == anotherConnID.callID)
-					&& (devIDType == anotherConnID.devIDType)
-					&& (deviceID.equals(anotherConnID.deviceID));
+			return callID == anotherConnID.callID
+					&& devIDType == anotherConnID.devIDType
+					&& deviceID.equals(anotherConnID.deviceID);
 		}
 
 		return false;
@@ -121,22 +119,21 @@ public final class CSTAConnectionID extends ASNSequence implements
 
 	@Override
 	public int hashCode() {
-		if (deviceID == null) {
+		if (deviceID == null)
 			return callID + (devIDType << 31);
-		}
 
 		return callID + deviceID.hashCode() + (devIDType << 31);
 	}
 
-	public void setCallID(int callID) {
+	public void setCallID(final int callID) {
 		this.callID = callID;
 	}
 
-	public void setDeviceID(String deviceID) {
+	public void setDeviceID(final String deviceID) {
 		this.deviceID = deviceID;
 	}
 
-	public void setdevIDType(short devIDType) {
+	public void setdevIDType(final short devIDType) {
 		this.devIDType = devIDType;
 	}
 
@@ -146,4 +143,3 @@ public final class CSTAConnectionID extends ASNSequence implements
 				+ ")";
 	}
 }
-

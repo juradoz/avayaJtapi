@@ -9,4 +9,3 @@ public abstract interface PrivateProvEv extends ProvEv {
 
 	public abstract Object getPrivateData();
 }
-

@@ -6,4 +6,3 @@ import javax.telephony.TerminalObserver;
 @Deprecated
 public abstract interface PhoneTerminalObserver extends TerminalObserver {
 }
-

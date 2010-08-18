@@ -26,7 +26,8 @@ final class ConfXferConfHandler implements ConfHandler {
 	TSConnection newConn;
 	CSTAConnectionID newCall;
 
-	ConfXferConfHandler(TSCall _call, TSCall _otherCall, int _pdu) {
+	ConfXferConfHandler(final TSCall _call, final TSCall _otherCall,
+			final int _pdu) {
 		call = _call;
 		otherCall = _otherCall;
 		pdu = _pdu;
@@ -34,62 +35,58 @@ final class ConfXferConfHandler implements ConfHandler {
 		newCall = null;
 	}
 
-	private void addOldCallParams(Vector<TSEvent> evList) {
-		ArrayList<TSCall> oldCallList = new ArrayList<TSCall>();
-		if (call != null) {
+	private void addOldCallParams(final Vector<TSEvent> evList) {
+		final ArrayList<TSCall> oldCallList = new ArrayList<TSCall>();
+		if (call != null)
 			oldCallList.add(call);
-		}
-		if (otherCall != null) {
+		if (otherCall != null)
 			oldCallList.add(otherCall);
-		}
-		for (TSEvent ev : evList) {
+		for (final TSEvent ev : evList)
 			ev
 					.setTransferredEventParams(new TransferredEventParams(
 							oldCallList));
-		}
 	}
 
-	TSConnection createNewCallConnectionTryToGetStateFromOtherCall(TSCall call,
-			TSCall otherCall, CSTAConnectionID newConnID,
-			Vector<TSEvent> priEventList, Vector<TSConnection> snapConnections) {
+	TSConnection createNewCallConnectionTryToGetStateFromOtherCall(
+			final TSCall call, final TSCall otherCall,
+			final CSTAConnectionID newConnID,
+			final Vector<TSEvent> priEventList,
+			final Vector<TSConnection> snapConnections) {
 		TSConnection conn = null;
 
-		TSDevice deviceToFind = call.getTSProviderImpl().createDevice(
+		final TSDevice deviceToFind = call.getTSProviderImpl().createDevice(
 				newConnID.getDeviceID(), newConnID);
 
-		Vector<TSEvent> tempEventList = new Vector<TSEvent>();
+		final Vector<TSEvent> tempEventList = new Vector<TSEvent>();
 
 		conn = call.getTSProviderImpl().createTerminalConnection(newConnID,
 				deviceToFind, tempEventList, deviceToFind);
 
-		int oldConnState = conn.getCallControlConnState();
-		int oldTermConnState = conn.getCallControlTermConnState();
+		final int oldConnState = conn.getCallControlConnState();
+		final int oldTermConnState = conn.getCallControlTermConnState();
 
-		if ((oldConnState == 89) || (oldTermConnState == 102)) {
+		if (oldConnState == 89 || oldTermConnState == 102) {
 			call.getTSProviderImpl().deleteConnectionFromHash(newConnID);
 			conn = call.getTSProviderImpl().createTerminalConnection(newConnID,
 					deviceToFind, tempEventList, deviceToFind);
 		}
 
-		TSConnection foundTSConn = (otherCall == null) ? null : otherCall
+		final TSConnection foundTSConn = otherCall == null ? null : otherCall
 				.findTSConnectionForDevice(deviceToFind);
 
 		if (foundTSConn != null) {
-			for (int m = 0; m < tempEventList.size(); ++m) {
+			for (int m = 0; m < tempEventList.size(); ++m)
 				priEventList.addElement(tempEventList.elementAt(m));
-			}
 			conn.setConnectionState(foundTSConn.getCallControlConnState(),
 					priEventList);
 			conn.setTermConnState(foundTSConn.getCallControlTermConnState(),
 					priEventList);
 		} else {
-			if (call.getTSProviderImpl().getCapabilities().getSnapshotCallReq() != 0) {
+			if (call.getTSProviderImpl().getCapabilities().getSnapshotCallReq() != 0)
 				snapConnections.addElement(conn.getTSConn());
-			}
 
-			for (int m = 0; m < tempEventList.size(); ++m) {
+			for (int m = 0; m < tempEventList.size(); ++m)
 				priEventList.addElement(tempEventList.elementAt(m));
-			}
 			conn.setConnectionState(91, priEventList);
 			conn.setTermConnState(103, priEventList);
 		}
@@ -97,15 +94,13 @@ final class ConfXferConfHandler implements ConfHandler {
 		return conn;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null) || (event.getEventHeader().getEventClass() != 5)
-				|| (event.getEventHeader().getEventType() != pdu)) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null || event.getEventHeader().getEventClass() != 5
+				|| event.getEventHeader().getEventType() != pdu)
 			return;
-		}
 
-		if (call.getTSState() == 34) {
+		if (call.getTSState() == 34)
 			return;
-		}
 
 		CSTAConnection[] connList = null;
 		int cause = 0;
@@ -117,10 +112,9 @@ final class ConfXferConfHandler implements ConfHandler {
 			connList = ((CSTAConferenceCallConfEvent) event.getEvent())
 					.getConnList();
 			cause = 207;
-			if (event.getPrivData() instanceof LucentConferenceCallConfEvent) {
+			if (event.getPrivData() instanceof LucentConferenceCallConfEvent)
 				call.setUCID(((LucentConferenceCallConfEvent) event
 						.getPrivData()).getUcid());
-			}
 			break;
 		case 52:
 			newCall = ((CSTATransferCallConfEvent) event.getEvent())
@@ -128,11 +122,10 @@ final class ConfXferConfHandler implements ConfHandler {
 			connList = ((CSTATransferCallConfEvent) event.getEvent())
 					.getConnList();
 			cause = 212;
-			if (event.getPrivData() instanceof LucentTransferCallConfEvent) {
+			if (event.getPrivData() instanceof LucentTransferCallConfEvent)
 				call
 						.setUCID(((LucentTransferCallConfEvent) event
 								.getPrivData()).getUcid());
-			}
 			break;
 		case 90:
 			if (event.getPrivData() instanceof LucentSingleStepConferenceCallConfEvent) {
@@ -148,19 +141,18 @@ final class ConfXferConfHandler implements ConfHandler {
 						.getPrivData()).getTransferredCall();
 				connList = null;
 				cause = 212;
-			} else {
+			} else
 				return;
-			}
 
 		}
 
 		call.replyPriv = event.getPrivData();
 
-		Vector<TSConnection> snapConnections = new Vector<TSConnection>();
+		final Vector<TSConnection> snapConnections = new Vector<TSConnection>();
 
-		Vector<TSEvent> priEventList = new Vector<TSEvent>();
+		final Vector<TSEvent> priEventList = new Vector<TSEvent>();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		if (connList == null) {
 			call.setCallID(newCall.getCallID());
@@ -169,19 +161,18 @@ final class ConfXferConfHandler implements ConfHandler {
 			call.updateConnectionCallIDs(newCall.getCallID());
 
 			if (call.getTSProviderImpl().getConnection(newCall) == null) {
-				TSConnection sstDestConnection = createNewCallConnectionTryToGetStateFromOtherCall(
+				final TSConnection sstDestConnection = createNewCallConnectionTryToGetStateFromOtherCall(
 						call, otherCall, newCall, priEventList, snapConnections);
 
-				if (!sstDestConnection.isTerminalConnection()) {
+				if (!sstDestConnection.isTerminalConnection())
 					call.addConnection(sstDestConnection, eventList);
-				}
 			}
-		} else if ((connList != null) && (connList.length > 0)) {
+		} else if (connList != null && connList.length > 0) {
 			call.setCallID(newCall.getCallID());
 			call = call.getHandOff();
 
 			TSDevice device = null;
-			Vector<TSConnection> newConnections = new Vector<TSConnection>();
+			final Vector<TSConnection> newConnections = new Vector<TSConnection>();
 			TSConnection conn = null;
 
 			TSConnection foundTSConn = null;
@@ -189,25 +180,26 @@ final class ConfXferConfHandler implements ConfHandler {
 			for (int i = 0; i < connList.length; ++i) {
 				device = call.getTSProviderImpl().createDevice(
 						connList[i].getStaticDevice(), connList[i].getParty());
-				if (device == null) {
+				if (device == null)
 					continue;
-				}
 				foundTSConn = call.findTSConnectionForDevice(device);
 				if (foundTSConn != null) {
 					try {
 						foundTSConn.setConnID(connList[i].getParty());
-					} catch (TsapiPlatformException e) {
-						log
+					} catch (final TsapiPlatformException e) {
+						ConfXferConfHandler.log
 								.error("TSCall.handleConf() caught TsapiPlatformException from setConnID() while processing connList, i="
 										+ i
 										+ ", party="
 										+ connList[i].getParty());
-						log.error(e.getMessage(), e);
-						log.trace("Dumping call (" + call + "):");
+						ConfXferConfHandler.log.error(e.getMessage(), e);
+						ConfXferConfHandler.log.trace("Dumping call (" + call
+								+ "):");
 						call.dump("   ");
-						log.trace("Dumping foundTSConn (" + foundTSConn + "):");
+						ConfXferConfHandler.log.trace("Dumping foundTSConn ("
+								+ foundTSConn + "):");
 						foundTSConn.dump("   ");
-						log.trace("Dumping call provider ("
+						ConfXferConfHandler.log.trace("Dumping call provider ("
 								+ call.getTSProviderImpl() + "):");
 						call.getTSProviderImpl().dump("   ");
 
@@ -217,26 +209,25 @@ final class ConfXferConfHandler implements ConfHandler {
 					newConnections.addElement(foundTSConn);
 
 					if (foundTSConn.isTerminalConnection()) {
-						int tcs = foundTSConn.getCallControlTermConnState();
+						final int tcs = foundTSConn
+								.getCallControlTermConnState();
 						if (tcs == 96) {
 							if (call.getTSProviderImpl().getCapabilities()
-									.getSnapshotCallReq() != 0) {
+									.getSnapshotCallReq() != 0)
 								snapConnections.addElement(foundTSConn
 										.getTSConn());
-							}
 
 							foundTSConn.setConnectionState(91, null);
 							foundTSConn.setTermConnState(103, null);
 						}
 
 					} else {
-						int cs = foundTSConn.getCallControlConnState();
+						final int cs = foundTSConn.getCallControlConnState();
 						if (cs == 80) {
 							if (call.getTSProviderImpl().getCapabilities()
-									.getSnapshotCallReq() != 0) {
+									.getSnapshotCallReq() != 0)
 								snapConnections.addElement(foundTSConn
 										.getTSConn());
-							}
 
 							foundTSConn.setConnectionState(91, null);
 							foundTSConn.setTermConnState(103, null);
@@ -252,20 +243,18 @@ final class ConfXferConfHandler implements ConfHandler {
 					newConnections.addElement(conn);
 				}
 
-				if (!connList[i].getParty().equals(newCall)) {
+				if (!connList[i].getParty().equals(newCall))
 					continue;
-				}
 				newConn = conn;
 			}
 
 			call.replaceConnections(newConnections, eventList);
 		}
 
-		for (int m = 0; m < priEventList.size(); ++m) {
+		for (int m = 0; m < priEventList.size(); ++m)
 			eventList.addElement(priEventList.elementAt(m));
-		}
 
-		Vector<TSEvent> otherEventList = new Vector<TSEvent>();
+		final Vector<TSEvent> otherEventList = new Vector<TSEvent>();
 		if (otherCall != null) {
 			otherCall.delayVDNremoveCallFromDomain = true;
 			otherCall.setState(34, otherEventList);
@@ -273,10 +262,10 @@ final class ConfXferConfHandler implements ConfHandler {
 		}
 
 		if (otherEventList.size() > 0) {
-			Vector<TsapiCallMonitor> observers = otherCall.getObservers();
+			final Vector<TsapiCallMonitor> observers = otherCall.getObservers();
 			addOldCallParams(otherEventList);
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = observers.elementAt(j);
+				final TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(otherEventList, cause, false);
 			}
 		}
@@ -292,22 +281,20 @@ final class ConfXferConfHandler implements ConfHandler {
 		if (snapConnections.size() > 0) {
 			call.setNeedSnapshot(true);
 
-			SnapshotCallExtraConfHandler handler = new XferConfSnapshotCallConfHandler(
+			final SnapshotCallExtraConfHandler handler = new XferConfSnapshotCallConfHandler(
 					call, cause, null, snapConnections);
 
-			call.doSnapshot((snapConnections.elementAt(0)).getConnID(),
-					handler, false);
+			call.doSnapshot(snapConnections.elementAt(0).getConnID(), handler,
+					false);
 		}
 
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
-		Vector<TsapiCallMonitor> observers = call.getObservers();
+		final Vector<TsapiCallMonitor> observers = call.getObservers();
 		addOldCallParams(eventList);
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiCallMonitor callback = observers.elementAt(j);
+			final TsapiCallMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, cause, false);
 		}
 	}
 }
-

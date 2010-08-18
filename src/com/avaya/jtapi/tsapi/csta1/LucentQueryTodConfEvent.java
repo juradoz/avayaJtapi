@@ -15,15 +15,15 @@ public final class LucentQueryTodConfEvent extends LucentPrivateData {
 	int second;
 	static final int PDU = 25;
 
-	public static LucentQueryTodConfEvent decode(InputStream in) {
-		LucentQueryTodConfEvent _this = new LucentQueryTodConfEvent();
+	public static LucentQueryTodConfEvent decode(final InputStream in) {
+		final LucentQueryTodConfEvent _this = new LucentQueryTodConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		year = ASNInteger.decode(memberStream);
 		month = ASNInteger.decode(memberStream);
 		day = ASNInteger.decode(memberStream);
@@ -63,12 +63,12 @@ public final class LucentQueryTodConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryTodConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(year, "year", indent));
 		lines.addAll(ASNInteger.print(month, "month", indent));
@@ -81,28 +81,27 @@ public final class LucentQueryTodConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDay(int day) {
+	public void setDay(final int day) {
 		this.day = day;
 	}
 
-	public void setHour(int hour) {
+	public void setHour(final int hour) {
 		this.hour = hour;
 	}
 
-	public void setMinute(int minute) {
+	public void setMinute(final int minute) {
 		this.minute = minute;
 	}
 
-	public void setMonth(int month) {
+	public void setMonth(final int month) {
 		this.month = month;
 	}
 
-	public void setSecond(int second) {
+	public void setSecond(final int second) {
 		this.second = second;
 	}
 
-	public void setYear(int year) {
+	public void setYear(final int year) {
 		this.year = year;
 	}
 }
-

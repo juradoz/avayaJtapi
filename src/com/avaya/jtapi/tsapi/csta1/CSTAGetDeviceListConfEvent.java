@@ -17,15 +17,15 @@ public final class CSTAGetDeviceListConfEvent extends CSTAConfirmation {
 	public static final int NO_SDB_CHECKING = -1;
 	public static final int ACS_ONLY = 1;
 
-	public static CSTAGetDeviceListConfEvent decode(InputStream in) {
-		CSTAGetDeviceListConfEvent _this = new CSTAGetDeviceListConfEvent();
+	public static CSTAGetDeviceListConfEvent decode(final InputStream in) {
+		final CSTAGetDeviceListConfEvent _this = new CSTAGetDeviceListConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		driverSdbLevel = ASNEnumerated.decode(memberStream);
 		level = ASNEnumerated.decode(memberStream);
 		index = ASNInteger.decode(memberStream);
@@ -33,7 +33,7 @@ public final class CSTAGetDeviceListConfEvent extends CSTAConfirmation {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(driverSdbLevel, memberStream);
 		ASNEnumerated.encode(level, memberStream);
 		ASNInteger.encode(index, memberStream);
@@ -63,11 +63,11 @@ public final class CSTAGetDeviceListConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGetDeviceListConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(SDBLevel.print(driverSdbLevel, "driverSdbLevel", indent));
 		lines.addAll(CSTALevel.print(level, "level", indent));
@@ -78,20 +78,19 @@ public final class CSTAGetDeviceListConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setDevList(String[] devList) {
+	public void setDevList(final String[] devList) {
 		this.devList = devList;
 	}
 
-	public void setDriverSdbLevel(short driverSdbLevel) {
+	public void setDriverSdbLevel(final short driverSdbLevel) {
 		this.driverSdbLevel = driverSdbLevel;
 	}
 
-	public void setIndex(int index) {
+	public void setIndex(final int index) {
 		this.index = index;
 	}
 
-	public void setLevel(short level) {
+	public void setLevel(final short level) {
 		this.level = level;
 	}
 }
-

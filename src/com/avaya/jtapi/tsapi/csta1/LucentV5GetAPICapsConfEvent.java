@@ -17,15 +17,15 @@ public class LucentV5GetAPICapsConfEvent extends LucentGetAPICapsConfEvent {
 	boolean chargeAdviceEvent;
 	static final int PDU = 97;
 
-	static LucentGetAPICapsConfEvent decode(InputStream in) {
-		LucentV5GetAPICapsConfEvent _this = new LucentV5GetAPICapsConfEvent();
+	static LucentGetAPICapsConfEvent decode(final InputStream in) {
+		final LucentV5GetAPICapsConfEvent _this = new LucentV5GetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		switchVersion = ASNIA5String.decode(memberStream);
 		sendDTMFTone = ASNBoolean.decode(memberStream);
 		enteredDigitsEvent = ASNBoolean.decode(memberStream);
@@ -45,7 +45,7 @@ public class LucentV5GetAPICapsConfEvent extends LucentGetAPICapsConfEvent {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(switchVersion, memberStream);
 		ASNBoolean.encode(sendDTMFTone, memberStream);
 		ASNBoolean.encode(enteredDigitsEvent, memberStream);
@@ -71,12 +71,12 @@ public class LucentV5GetAPICapsConfEvent extends LucentGetAPICapsConfEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5GetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(switchVersion, "switchVersion",

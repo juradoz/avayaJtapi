@@ -4,8 +4,7 @@ import com.avaya.jtapi.tsapi.LucentCallInfo;
 
 public class LucentTermConnInUseEventImpl extends TsapiTermConnInUseEvent
 		implements LucentCallInfo {
-	public LucentTermConnInUseEventImpl(TermConnEventParams params) {
+	public LucentTermConnInUseEventImpl(final TermConnEventParams params) {
 		super(params);
 	}
 }
-

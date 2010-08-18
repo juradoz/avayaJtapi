@@ -11,13 +11,13 @@ public class CSTACallCompletion extends CSTARequest {
 	CSTAConnectionID call;
 	static final int PDU = 5;
 
-	public CSTACallCompletion(short _feature, CSTAConnectionID _call) {
+	public CSTACallCompletion(final short _feature, final CSTAConnectionID _call) {
 		feature = _feature;
 		call = _call;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(feature, memberStream);
 		CSTAConnectionID.encode(call, memberStream);
 	}
@@ -37,11 +37,11 @@ public class CSTACallCompletion extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTACallCompletion ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(Feature.print(feature, "feature", indent));
 		lines.addAll(CSTAConnectionID.print(call, "call", indent));
@@ -50,4 +50,3 @@ public class CSTACallCompletion extends CSTARequest {
 		return lines;
 	}
 }
-

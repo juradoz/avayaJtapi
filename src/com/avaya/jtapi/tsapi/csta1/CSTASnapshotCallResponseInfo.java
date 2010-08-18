@@ -9,27 +9,27 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class CSTASnapshotCallResponseInfo extends ASNSequence {
-	public static CSTASnapshotCallResponseInfo decode(InputStream in) {
-		CSTASnapshotCallResponseInfo _this = new CSTASnapshotCallResponseInfo();
+	public static CSTASnapshotCallResponseInfo decode(final InputStream in) {
+		final CSTASnapshotCallResponseInfo _this = new CSTASnapshotCallResponseInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static Collection<String> print(CSTASnapshotCallResponseInfo _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(
+			final CSTASnapshotCallResponseInfo _this, final String name,
+			final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(CSTAExtendedDeviceID.print(_this.deviceOnCall,
 				"deviceOnCall", indent));
@@ -52,22 +52,24 @@ public final class CSTASnapshotCallResponseInfo extends ASNSequence {
 	public CSTASnapshotCallResponseInfo() {
 	}
 
-	public CSTASnapshotCallResponseInfo(CSTAExtendedDeviceID _deviceOnCall,
-			CSTAConnectionID _callIdentifier, short _localConnectionState) {
+	public CSTASnapshotCallResponseInfo(
+			final CSTAExtendedDeviceID _deviceOnCall,
+			final CSTAConnectionID _callIdentifier,
+			final short _localConnectionState) {
 		deviceOnCall = _deviceOnCall;
 		callIdentifier = _callIdentifier;
 		localConnectionState = _localConnectionState;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceOnCall = CSTAExtendedDeviceID.decode(memberStream);
 		callIdentifier = CSTAConnectionID.decode(memberStream);
 		localConnectionState = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(deviceOnCall, memberStream);
 		CSTAConnectionID.encode(callIdentifier, memberStream);
 		ASNEnumerated.encode(localConnectionState, memberStream);

@@ -8,8 +8,8 @@ public final class ConnectionIDDevice extends ASNEnumerated {
 	public static final short STATIC_ID = 0;
 	public static final short DYNAMIC_ID = 1;
 
-	public static Collection<String> print(short value, String name,
-			String indent) {
+	public static Collection<String> print(final short value,
+			final String name, final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -22,6 +22,6 @@ public final class ConnectionIDDevice extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }

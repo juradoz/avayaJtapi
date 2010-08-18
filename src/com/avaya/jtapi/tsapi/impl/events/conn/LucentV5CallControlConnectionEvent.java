@@ -7,8 +7,9 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 
 public class LucentV5CallControlConnectionEvent extends
 		LucentCallControlConnectionEvent implements LucentV5CallInfo {
-	public LucentV5CallControlConnectionEvent(CallEventParams params,
-			MetaEvent event, int eventId, int numInQueue, String digits) {
+	public LucentV5CallControlConnectionEvent(final CallEventParams params,
+			final MetaEvent event, final int eventId, final int numInQueue,
+			final String digits) {
 		super(params, event, eventId, numInQueue, digits);
 	}
 

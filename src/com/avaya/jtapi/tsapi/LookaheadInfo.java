@@ -40,28 +40,27 @@ public class LookaheadInfo {
 		return type;
 	}
 
-	public void setHours(int hours) {
+	public void setHours(final int hours) {
 		this.hours = hours;
 	}
 
-	public void setMinutes(int minutes) {
+	public void setMinutes(final int minutes) {
 		this.minutes = minutes;
 	}
 
-	public void setPriority(short priority) {
+	public void setPriority(final short priority) {
 		this.priority = priority;
 	}
 
-	public void setSeconds(int seconds) {
+	public void setSeconds(final int seconds) {
 		this.seconds = seconds;
 	}
 
-	public void setSourceVDN(String sourceVDN) {
+	public void setSourceVDN(final String sourceVDN) {
 		this.sourceVDN = sourceVDN;
 	}
 
-	public void setType(short type) {
+	public void setType(final short type) {
 		this.type = type;
 	}
 }
-

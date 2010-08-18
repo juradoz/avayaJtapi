@@ -7,9 +7,9 @@ import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 @SuppressWarnings("deprecation")
 public class TsapiConnDialingEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnDialingEv, ITsapiCallInfo {
-	private String dialedDigits = null;
+	private final String dialedDigits = null;
 
-	public TsapiConnDialingEvent(ConnEventParams params) {
+	public TsapiConnDialingEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -21,4 +21,3 @@ public class TsapiConnDialingEvent extends TsapiCallCtlConnEvent implements
 		return 204;
 	}
 }
-

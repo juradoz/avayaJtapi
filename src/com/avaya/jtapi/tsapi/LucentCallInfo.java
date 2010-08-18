@@ -34,4 +34,3 @@ public abstract interface LucentCallInfo extends ITsapiCallInfo {
 
 	public abstract UserToUserInfo getUserToUserInfo();
 }
-

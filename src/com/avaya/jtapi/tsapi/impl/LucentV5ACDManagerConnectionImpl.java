@@ -6,18 +6,17 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 final class LucentV5ACDManagerConnectionImpl extends
 		LucentACDManagerConnectionImpl implements LucentV5Connection {
-	LucentV5ACDManagerConnectionImpl(TSConnection _tsConnection) {
+	LucentV5ACDManagerConnectionImpl(final TSConnection _tsConnection) {
 		super(_tsConnection);
 		TsapiTrace.traceConstruction(this,
 				LucentV5ACDManagerConnectionImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentV5ACDManagerConnectionImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentV5ACDManagerConnectionImpl)
 			return tsConnection
 					.equals(((LucentV5ACDManagerConnectionImpl) obj).tsConnection);
-		}
 
 		return false;
 	}
@@ -29,4 +28,3 @@ final class LucentV5ACDManagerConnectionImpl extends
 				LucentV5ACDManagerConnectionImpl.class);
 	}
 }
-

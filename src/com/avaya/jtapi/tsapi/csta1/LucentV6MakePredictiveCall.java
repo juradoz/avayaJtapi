@@ -11,8 +11,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 public final class LucentV6MakePredictiveCall extends LucentMakePredictiveCall {
 	public static final int PDU = 112;
 
-	public static LucentMakePredictiveCall decode(InputStream in) {
-		LucentV6MakePredictiveCall _this = new LucentV6MakePredictiveCall();
+	public static LucentMakePredictiveCall decode(final InputStream in) {
+		final LucentV6MakePredictiveCall _this = new LucentV6MakePredictiveCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,9 +21,9 @@ public final class LucentV6MakePredictiveCall extends LucentMakePredictiveCall {
 	public LucentV6MakePredictiveCall() {
 	}
 
-	public LucentV6MakePredictiveCall(boolean _priorityCalling, int _maxRings,
-			short _answerTreat, String _destRoute,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6MakePredictiveCall(final boolean _priorityCalling,
+			final int _maxRings, final short _answerTreat,
+			final String _destRoute, final LucentUserToUserInfo _userInfo) {
 		super(_priorityCalling, _maxRings, _answerTreat, _destRoute, _userInfo);
 	}
 
@@ -34,12 +34,12 @@ public final class LucentV6MakePredictiveCall extends LucentMakePredictiveCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6MakePredictiveCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",
 				indent));
@@ -53,4 +53,3 @@ public final class LucentV6MakePredictiveCall extends LucentMakePredictiveCall {
 		return lines;
 	}
 }
-

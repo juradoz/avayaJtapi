@@ -5,8 +5,8 @@ import javax.telephony.events.TermObservationEndedEv;
 
 public final class TsapiTermObservationEndedEvent extends TsapiTerminalEvent
 		implements TermObservationEndedEv {
-	public TsapiTermObservationEndedEvent(Terminal _terminal, int _cause,
-			Object _privateData) {
+	public TsapiTermObservationEndedEvent(final Terminal _terminal,
+			final int _cause, final Object _privateData) {
 		super(_terminal, _cause, 136, _privateData);
 	}
 
@@ -14,4 +14,3 @@ public final class TsapiTermObservationEndedEvent extends TsapiTerminalEvent
 		return 121;
 	}
 }
-

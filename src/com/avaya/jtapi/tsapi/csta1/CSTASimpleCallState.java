@@ -20,7 +20,8 @@ public final class CSTASimpleCallState extends ASNEnumerated {
 	static final short CALL_FAILED = 99;
 	static final short CALL_FAILED_HELD = 100;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -69,7 +70,6 @@ public final class CSTASimpleCallState extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

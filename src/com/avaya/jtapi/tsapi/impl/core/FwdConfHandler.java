@@ -13,40 +13,37 @@ final class FwdConfHandler implements ConfHandler {
 	int pdu;
 	CSTAForwardingInfo[] fwdInfo;
 
-	FwdConfHandler(TSDevice _device) {
+	FwdConfHandler(final TSDevice _device) {
 		device = _device;
 		pdu = 32;
 	}
 
-	FwdConfHandler(TSDevice _device, CSTAForwardingInfo[] _fwdInfo) {
+	FwdConfHandler(final TSDevice _device, final CSTAForwardingInfo[] _fwdInfo) {
 		device = _device;
 		pdu = 48;
 		fwdInfo = _fwdInfo;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null) || (event.getEventHeader().getEventClass() != 5)
-				|| (event.getEventHeader().getEventType() != pdu)) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null || event.getEventHeader().getEventClass() != 5
+				|| event.getEventHeader().getEventType() != pdu)
 			return;
-		}
 
-		if (pdu == 32) {
+		if (pdu == 32)
 			fwdInfo = ((CSTAQueryFwdConfEvent) event.getEvent()).getForward();
-		}
 
 		device.replyAddrPriv = event.getPrivData();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 		device.updateForwarding(fwdInfo, eventList);
 
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
-		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
+		final Vector<TsapiAddressMonitor> observers = device
+				.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = observers.elementAt(j);
+			final TsapiAddressMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}
 }
-

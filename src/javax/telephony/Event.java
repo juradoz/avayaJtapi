@@ -21,4 +21,3 @@ public abstract interface Event {
 
 	public abstract Object getSource();
 }
-

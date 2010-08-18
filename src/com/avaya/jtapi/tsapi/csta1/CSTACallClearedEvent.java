@@ -13,22 +13,22 @@ public final class CSTACallClearedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 54;
 
-	public static CSTACallClearedEvent decode(InputStream in) {
-		CSTACallClearedEvent _this = new CSTACallClearedEvent();
+	public static CSTACallClearedEvent decode(final InputStream in) {
+		final CSTACallClearedEvent _this = new CSTACallClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		clearedCall = CSTAConnectionID.decode(memberStream);
 		localConnectionInfo = ASNEnumerated.decode(memberStream);
 		cause = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(clearedCall, memberStream);
 		ASNEnumerated.encode(localConnectionInfo, memberStream);
 		ASNEnumerated.encode(cause, memberStream);
@@ -53,11 +53,11 @@ public final class CSTACallClearedEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTACallClearedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines
 				.addAll(CSTAConnectionID.print(clearedCall, "clearedCall",
@@ -70,16 +70,15 @@ public final class CSTACallClearedEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setClearedCall(CSTAConnectionID clearedCall) {
+	public void setClearedCall(final CSTAConnectionID clearedCall) {
 		this.clearedCall = clearedCall;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }
-

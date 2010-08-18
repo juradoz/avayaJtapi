@@ -13,22 +13,22 @@ public final class LucentQueryAcdSplitConfEvent extends LucentPrivateData {
 	int agentsLoggedIn;
 	public static final int PDU = 12;
 
-	public static LucentQueryAcdSplitConfEvent decode(InputStream in) {
-		LucentQueryAcdSplitConfEvent _this = new LucentQueryAcdSplitConfEvent();
+	public static LucentQueryAcdSplitConfEvent decode(final InputStream in) {
+		final LucentQueryAcdSplitConfEvent _this = new LucentQueryAcdSplitConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		availableAgents = ASNInteger.decode(memberStream);
 		callsInQueue = ASNInteger.decode(memberStream);
 		agentsLoggedIn = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(availableAgents, memberStream);
 		ASNInteger.encode(callsInQueue, memberStream);
 		ASNInteger.encode(agentsLoggedIn, memberStream);
@@ -53,12 +53,12 @@ public final class LucentQueryAcdSplitConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAcdSplitConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(availableAgents, "availableAgents",
 				indent));
@@ -71,15 +71,15 @@ public final class LucentQueryAcdSplitConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setAgentsLoggedIn(int agentsLoggedIn) {
+	public void setAgentsLoggedIn(final int agentsLoggedIn) {
 		this.agentsLoggedIn = agentsLoggedIn;
 	}
 
-	public void setAvailableAgents(int availableAgents) {
+	public void setAvailableAgents(final int availableAgents) {
 		this.availableAgents = availableAgents;
 	}
 
-	public void setCallsInQueue(int callsInQueue) {
+	public void setCallsInQueue(final int callsInQueue) {
 		this.callsInQueue = callsInQueue;
 	}
 }

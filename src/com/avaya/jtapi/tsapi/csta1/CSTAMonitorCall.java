@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class CSTAMonitorCall extends CSTARequest {
-	public static CSTAMonitorCall decode(InputStream in) {
-		CSTAMonitorCall _this = new CSTAMonitorCall();
+	public static CSTAMonitorCall decode(final InputStream in) {
+		final CSTAMonitorCall _this = new CSTAMonitorCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,20 +23,20 @@ public final class CSTAMonitorCall extends CSTARequest {
 	public CSTAMonitorCall() {
 	}
 
-	public CSTAMonitorCall(CSTAConnectionID _call,
-			CSTAMonitorFilter _monitorFilter) {
+	public CSTAMonitorCall(final CSTAConnectionID _call,
+			final CSTAMonitorFilter _monitorFilter) {
 		call = _call;
 		monitorFilter = _monitorFilter;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		call = CSTAConnectionID.decode(memberStream);
 		monitorFilter = CSTAMonitorFilter.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(call, memberStream);
 		ASNSequence.encode(monitorFilter, memberStream);
 	}
@@ -56,11 +56,11 @@ public final class CSTAMonitorCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAMonitorCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(call, "call", indent));
 		lines.addAll(CSTAMonitorFilter.print(monitorFilter, "monitorFilter",
@@ -70,4 +70,3 @@ public final class CSTAMonitorCall extends CSTARequest {
 		return lines;
 	}
 }
-

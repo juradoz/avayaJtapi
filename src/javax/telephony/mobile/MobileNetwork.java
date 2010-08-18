@@ -11,4 +11,3 @@ public abstract interface MobileNetwork {
 
 	public abstract boolean isRestricted();
 }
-

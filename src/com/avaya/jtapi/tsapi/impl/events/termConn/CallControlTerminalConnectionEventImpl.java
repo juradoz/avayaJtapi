@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 public class CallControlTerminalConnectionEventImpl extends
 		TerminalConnectionEventImpl implements
 		CallControlTerminalConnectionEvent {
-	public CallControlTerminalConnectionEventImpl(CallEventParams params,
-			MetaEvent event, int eventId) {
+	public CallControlTerminalConnectionEventImpl(final CallEventParams params,
+			final MetaEvent event, final int eventId) {
 		super(params, event, eventId);
 	}
 
@@ -35,4 +35,3 @@ public class CallControlTerminalConnectionEventImpl extends
 		return callEventParams.getLastRedirectionAddress();
 	}
 }
-

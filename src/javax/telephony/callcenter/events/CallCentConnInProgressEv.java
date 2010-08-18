@@ -5,4 +5,3 @@ package javax.telephony.callcenter.events;
 public abstract interface CallCentConnInProgressEv extends CallCentConnEv {
 	public static final int ID = 319;
 }
-

@@ -5,4 +5,3 @@ import javax.telephony.callcenter.RouteSession;
 public abstract interface RouteSessionEvent {
 	public abstract RouteSession getRouteSession();
 }
-

@@ -10,8 +10,9 @@ public abstract class TsapiListenerEvent implements PrivateDataEvent {
 	private final MetaEvent metaEvent;
 	private final Object privateData;
 
-	public TsapiListenerEvent(int eventId, int _cause, MetaEvent metaEvent,
-			Object source, Object privateData) {
+	public TsapiListenerEvent(final int eventId, final int _cause,
+			final MetaEvent metaEvent, final Object source,
+			final Object privateData) {
 		cause = _cause;
 		this.metaEvent = metaEvent;
 		this.eventId = eventId;
@@ -20,12 +21,10 @@ public abstract class TsapiListenerEvent implements PrivateDataEvent {
 	}
 
 	public final int getCause() {
-		if ((cause == 101) || (cause == 102) || (cause == 103)
-				|| (cause == 104) || (cause == 105) || (cause == 106)
-				|| (cause == 107) || (cause == 108) || (cause == 109)
-				|| (cause == 110)) {
+		if (cause == 101 || cause == 102 || cause == 103 || cause == 104
+				|| cause == 105 || cause == 106 || cause == 107 || cause == 108
+				|| cause == 109 || cause == 110)
 			return cause;
-		}
 		return 100;
 	}
 
@@ -51,4 +50,3 @@ public abstract class TsapiListenerEvent implements PrivateDataEvent {
 				+ ";metaEvent=" + metaEvent;
 	}
 }
-

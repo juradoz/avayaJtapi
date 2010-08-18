@@ -6,4 +6,3 @@ import javax.telephony.events.AddrEv;
 @Deprecated
 public abstract interface CallCtlAddrEv extends CallCtlEv, AddrEv {
 }
-

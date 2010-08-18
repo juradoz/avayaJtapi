@@ -8,8 +8,8 @@ import javax.telephony.callcenter.CallCenterTrunkEvent;
 
 public class CallCenterTrunkEventImpl extends CallEventImpl implements
 		CallCenterTrunkEvent {
-	public CallCenterTrunkEventImpl(CallEventParams params, MetaEvent event,
-			int eventId) {
+	public CallCenterTrunkEventImpl(final CallEventParams params,
+			final MetaEvent event, final int eventId) {
 		super(params, event, eventId);
 	}
 

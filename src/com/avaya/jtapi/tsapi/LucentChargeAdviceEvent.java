@@ -15,4 +15,3 @@ public abstract interface LucentChargeAdviceEvent {
 
 	public abstract TsapiTrunk getTrunk();
 }
-

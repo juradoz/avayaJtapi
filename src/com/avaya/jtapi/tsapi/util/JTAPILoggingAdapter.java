@@ -54,110 +54,106 @@ public class JTAPILoggingAdapter {
 	private static Hashtable<String, Boolean> propertyStatusTable = new Hashtable<String, Boolean>();
 
 	static {
-		resetPropertyStatusTable();
+		JTAPILoggingAdapter.resetPropertyStatusTable();
 	}
 
 	public static String getAltTraceFile() {
-		return altTraceFile;
+		return JTAPILoggingAdapter.altTraceFile;
 	}
 
 	public static String getErrorFile() {
-		return errorFile;
+		return JTAPILoggingAdapter.errorFile;
 	}
 
 	public static String getErrorFileCount() {
-		return errorFileCount;
+		return JTAPILoggingAdapter.errorFileCount;
 	}
 
 	public static String getErrorFileSize() {
-		return errorFileSize;
+		return JTAPILoggingAdapter.errorFileSize;
 	}
 
 	public static String getPerfFile() {
-		return perfFile;
+		return JTAPILoggingAdapter.perfFile;
 	}
 
 	public static String getPerfFileCount() {
-		return perfFileCount;
+		return JTAPILoggingAdapter.perfFileCount;
 	}
 
 	public static String getPerfFileSize() {
-		return perfFileSize;
+		return JTAPILoggingAdapter.perfFileSize;
 	}
 
 	public static String getTraceFileCount() {
-		return traceFileCount;
+		return JTAPILoggingAdapter.traceFileCount;
 	}
 
 	public static String getTraceFileSize() {
-		return traceFileSize;
+		return JTAPILoggingAdapter.traceFileSize;
 	}
 
 	public static String getTraceLoggerLevel() {
-		return traceLoggerLevel;
+		return JTAPILoggingAdapter.traceLoggerLevel;
 	}
 
-	private static void hasChanged(String oldValue, String newValue) {
-		if ((oldValue == null) && (newValue == null)) {
+	private static void hasChanged(final String oldValue, final String newValue) {
+		if (oldValue == null && newValue == null)
 			return;
-		}
-		if ((oldValue != null) && (newValue == null)) {
-			somethingChanged = true;
-		} else if ((oldValue == null) && (newValue != null)) {
-			somethingChanged = true;
-		} else if (!oldValue.equalsIgnoreCase(newValue)) {
-			somethingChanged = true;
-		}
+		if (oldValue != null && newValue == null)
+			JTAPILoggingAdapter.somethingChanged = true;
+		else if (oldValue == null && newValue != null)
+			JTAPILoggingAdapter.somethingChanged = true;
+		else if (!oldValue.equalsIgnoreCase(newValue))
+			JTAPILoggingAdapter.somethingChanged = true;
 	}
 
 	public static void initializeLogging() {
-		if (somethingChanged) {
-			somethingChanged = false;
-			Properties loggingProperties = new Properties();
+		if (JTAPILoggingAdapter.somethingChanged) {
+			JTAPILoggingAdapter.somethingChanged = false;
+			final Properties loggingProperties = new Properties();
 
-			if ((isTraceLoggingEnabled()) || (isErrorLoggingEnabled())) {
-				if (!isErrorLoggingEnabled()) {
+			if (JTAPILoggingAdapter.isTraceLoggingEnabled()
+					|| JTAPILoggingAdapter.isErrorLoggingEnabled())
+				if (!JTAPILoggingAdapter.isErrorLoggingEnabled())
 					loggingProperties.put("log4j.logger.com.avaya.jtapi.tsapi",
-							traceLoggerLevel + ",defaultAppender");
-				} else if (!isTraceLoggingEnabled()) {
+							JTAPILoggingAdapter.traceLoggerLevel
+									+ ",defaultAppender");
+				else if (!JTAPILoggingAdapter.isTraceLoggingEnabled())
 					loggingProperties.put("log4j.logger.com.avaya.jtapi.tsapi",
 							"ERROR,errorAppender");
-				} else {
-					loggingProperties
-							.put("log4j.logger.com.avaya.jtapi.tsapi",
-									traceLoggerLevel
-											+ ",defaultAppender,errorAppender");
-				}
-			}
-			if (isTraceLoggingEnabled()) {
-				if (altTraceFile != null) {
+				else
+					loggingProperties.put("log4j.logger.com.avaya.jtapi.tsapi",
+							JTAPILoggingAdapter.traceLoggerLevel
+									+ ",defaultAppender,errorAppender");
+			if (JTAPILoggingAdapter.isTraceLoggingEnabled()) {
+				if (JTAPILoggingAdapter.altTraceFile != null) {
 					loggingProperties.put("log4j.appender.defaultAppender",
 							"org.apache.log4j.RollingFileAppender");
-					loggingProperties
-							.put("log4j.appender.defaultAppender.File",
-									altTraceFile);
+					loggingProperties.put(
+							"log4j.appender.defaultAppender.File",
+							JTAPILoggingAdapter.altTraceFile);
 
-					if (traceFileCount != null) {
+					if (JTAPILoggingAdapter.traceFileCount != null)
 						loggingProperties
 								.put(
 										"log4j.appender.defaultAppender.MaxBackupIndex",
-										Integer.valueOf(Integer
-												.parseInt(traceFileCount) - 1));
-					} else {
+										Integer
+												.valueOf(Integer
+														.parseInt(JTAPILoggingAdapter.traceFileCount) - 1));
+					else
 						loggingProperties
 								.put(
 										"log4j.appender.defaultAppender.MaxBackupIndex",
 										"9");
-					}
-					if (traceFileSize != null) {
+					if (JTAPILoggingAdapter.traceFileSize != null)
 						loggingProperties.put(
 								"log4j.appender.defaultAppender.MaxFileSize",
-								traceFileSize);
-					} else {
+								JTAPILoggingAdapter.traceFileSize);
+					else
 						loggingProperties.put(
 								"log4j.appender.defaultAppender.MaxFileSize",
 								"50MB");
-					}
 				} else {
 					loggingProperties.put("log4j.appender.defaultAppender",
 							"org.apache.log4j.ConsoleAppender");
@@ -174,31 +170,31 @@ public class JTAPILoggingAdapter {
 								"%d [%t] %-5p %c{1} - %m%n");
 			}
 
-			if (isErrorLoggingEnabled()) {
+			if (JTAPILoggingAdapter.isErrorLoggingEnabled()) {
 				loggingProperties.put("log4j.appender.errorAppender",
 						"org.apache.log4j.RollingFileAppender");
 				loggingProperties.put("log4j.appender.errorAppender.File",
-						errorFile);
+						JTAPILoggingAdapter.errorFile);
 				loggingProperties.put("log4j.appender.errorAppender.threshold",
 						"ERROR");
 
-				if (errorFileCount != null) {
+				if (JTAPILoggingAdapter.errorFileCount != null)
 					loggingProperties
-							.put("log4j.appender.errorAppender.MaxBackupIndex",
-									Integer.valueOf(Integer
-											.parseInt(errorFileCount) - 1));
-				} else {
+							.put(
+									"log4j.appender.errorAppender.MaxBackupIndex",
+									Integer
+											.valueOf(Integer
+													.parseInt(JTAPILoggingAdapter.errorFileCount) - 1));
+				else
 					loggingProperties.put(
 							"log4j.appender.errorAppender.MaxBackupIndex", "9");
-				}
-				if (errorFileSize != null) {
+				if (JTAPILoggingAdapter.errorFileSize != null)
 					loggingProperties.put(
 							"log4j.appender.errorAppender.MaxFileSize",
-							errorFileSize);
-				} else {
+							JTAPILoggingAdapter.errorFileSize);
+				else
 					loggingProperties.put(
 							"log4j.appender.errorAppender.MaxFileSize", "50MB");
-				}
 				loggingProperties.put("log4j.appender.errorAppender.layout",
 						"org.apache.log4j.PatternLayout");
 				loggingProperties
@@ -206,35 +202,35 @@ public class JTAPILoggingAdapter {
 								"log4j.appender.errorAppender.layout.ConversionPattern",
 								"%d [%t] %-5p %c{1} - %m%n");
 			}
-			if (isPerformanceLoggingEnabled()) {
+			if (JTAPILoggingAdapter.isPerformanceLoggingEnabled()) {
 				loggingProperties.put("log4j.logger.jtapi.performanceLogger",
 						Level.TRACE + ",performanceAppender");
 				loggingProperties.put("log4j.appender.performanceAppender",
 						"org.apache.log4j.RollingFileAppender");
 				loggingProperties.put(
-						"log4j.appender.performanceAppender.File", perfFile);
+						"log4j.appender.performanceAppender.File",
+						JTAPILoggingAdapter.perfFile);
 
-				if (perfFileCount != null) {
+				if (JTAPILoggingAdapter.perfFileCount != null)
 					loggingProperties
 							.put(
 									"log4j.appender.performanceAppender.MaxBackupIndex",
-									Integer.valueOf(Integer
-											.parseInt(perfFileCount) - 1));
-				} else {
+									Integer
+											.valueOf(Integer
+													.parseInt(JTAPILoggingAdapter.perfFileCount) - 1));
+				else
 					loggingProperties
 							.put(
 									"log4j.appender.performanceAppender.MaxBackupIndex",
 									"9");
-				}
-				if (perfFileSize != null) {
+				if (JTAPILoggingAdapter.perfFileSize != null)
 					loggingProperties.put(
 							"log4j.appender.performanceAppender.MaxFileSize",
-							perfFileSize);
-				} else {
+							JTAPILoggingAdapter.perfFileSize);
+				else
 					loggingProperties.put(
 							"log4j.appender.performanceAppender.MaxFileSize",
 							"50MB");
-				}
 				loggingProperties.put(
 						"log4j.appender.performanceAppender.layout",
 						"org.apache.log4j.PatternLayout");
@@ -243,158 +239,167 @@ public class JTAPILoggingAdapter {
 								"log4j.appender.performanceAppender.layout.ConversionPattern",
 								"%d [%t] %-5p %c{1} - %m%n");
 			}
-			if ((isTraceLoggingEnabled()) || (isErrorLoggingEnabled())
-					|| (isPerformanceLoggingEnabled())) {
+			if (JTAPILoggingAdapter.isTraceLoggingEnabled()
+					|| JTAPILoggingAdapter.isErrorLoggingEnabled()
+					|| JTAPILoggingAdapter.isPerformanceLoggingEnabled()) {
 				PropertyConfigurator.configure(loggingProperties);
-				Logger theLogger = Logger.getLogger(JTAPILoggingAdapter.class);
+				final Logger theLogger = Logger
+						.getLogger(JTAPILoggingAdapter.class);
 				theLogger.info("Logging initialized correctly");
 				theLogger.info("Logging properties = "
 						+ loggingProperties.toString());
-				if (performanceLoggingEnabled) {
+				if (JTAPILoggingAdapter.performanceLoggingEnabled)
 					PerfStatisticsCollector.initPerfStatisticsCollector();
-				}
 			}
 		}
-		resetPropertyStatusTable();
+		JTAPILoggingAdapter.resetPropertyStatusTable();
 	}
 
 	public static boolean isErrorLoggingEnabled() {
-		return errorLoggingEnabled;
+		return JTAPILoggingAdapter.errorLoggingEnabled;
 	}
 
 	public static boolean isPerformanceLoggingEnabled() {
-		return performanceLoggingEnabled;
+		return JTAPILoggingAdapter.performanceLoggingEnabled;
 	}
 
 	public static boolean isTraceLoggingEnabled() {
-		return traceLoggingEnabled;
+		return JTAPILoggingAdapter.traceLoggingEnabled;
 	}
 
 	private static void resetPropertyStatusTable() {
-		propertyStatusTable.put("altTraceFile", Boolean.FALSE);
-		propertyStatusTable.put("traceFileCount", Boolean.FALSE);
-		propertyStatusTable.put("traceFileSize", Boolean.FALSE);
-		propertyStatusTable.put("errorFile", Boolean.FALSE);
-		propertyStatusTable.put("errorFileCount", Boolean.FALSE);
-		propertyStatusTable.put("errorFileSize", Boolean.FALSE);
-		propertyStatusTable.put("traceLoggerLevel", Boolean.FALSE);
-		propertyStatusTable.put("perfFile", Boolean.FALSE);
-		propertyStatusTable.put("perfFileCount", Boolean.FALSE);
-		propertyStatusTable.put("perfFileSize", Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("altTraceFile",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("traceFileCount",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("traceFileSize",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("errorFile", Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("errorFileCount",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("errorFileSize",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("traceLoggerLevel",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("perfFile", Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("perfFileCount",
+				Boolean.FALSE);
+		JTAPILoggingAdapter.propertyStatusTable.put("perfFileSize",
+				Boolean.FALSE);
 	}
 
-	public static void setAltTraceFile(String altTraceFile) {
-		hasChanged(altTraceFile, altTraceFile);
+	public static void setAltTraceFile(final String altTraceFile) {
+		JTAPILoggingAdapter.hasChanged(altTraceFile, altTraceFile);
 		JTAPILoggingAdapter.altTraceFile = altTraceFile;
-		if (altTraceFile != null) {
-			propertyStatusTable.put("altTraceFile", Boolean.TRUE);
-		}
+		if (altTraceFile != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("altTraceFile",
+					Boolean.TRUE);
 	}
 
-	public static void setErrorFile(String errorFile) {
-		hasChanged(errorFile, errorFile);
+	public static void setErrorFile(final String errorFile) {
+		JTAPILoggingAdapter.hasChanged(errorFile, errorFile);
 		JTAPILoggingAdapter.errorFile = errorFile;
 		if (errorFile != null) {
-			setErrorLoggingEnabled(true);
-			propertyStatusTable.put("errorFile", Boolean.TRUE);
-		} else {
-			setErrorLoggingEnabled(false);
-		}
+			JTAPILoggingAdapter.setErrorLoggingEnabled(true);
+			JTAPILoggingAdapter.propertyStatusTable.put("errorFile",
+					Boolean.TRUE);
+		} else
+			JTAPILoggingAdapter.setErrorLoggingEnabled(false);
 	}
 
-	public static void setErrorFileCount(String errorFileCount) {
-		hasChanged(errorFileCount, errorFileCount);
+	public static void setErrorFileCount(final String errorFileCount) {
+		JTAPILoggingAdapter.hasChanged(errorFileCount, errorFileCount);
 		JTAPILoggingAdapter.errorFileCount = errorFileCount;
-		if (errorFileCount != null) {
-			propertyStatusTable.put("errorFileCount", Boolean.TRUE);
-		}
+		if (errorFileCount != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("errorFileCount",
+					Boolean.TRUE);
 	}
 
-	public static void setErrorFileSize(String errorFileSize) {
-		hasChanged(errorFileSize, errorFileSize);
+	public static void setErrorFileSize(final String errorFileSize) {
+		JTAPILoggingAdapter.hasChanged(errorFileSize, errorFileSize);
 		JTAPILoggingAdapter.errorFileSize = errorFileSize;
-		if (errorFileSize != null) {
-			propertyStatusTable.put("errorFileSize", Boolean.TRUE);
-		}
+		if (errorFileSize != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("errorFileSize",
+					Boolean.TRUE);
 	}
 
-	public static void setErrorLoggingEnabled(boolean errorLoggingEnabled) {
+	public static void setErrorLoggingEnabled(final boolean errorLoggingEnabled) {
 		JTAPILoggingAdapter.errorLoggingEnabled = errorLoggingEnabled;
 	}
 
-	public static void setPerfFile(String perfFile) {
-		hasChanged(perfFile, perfFile);
+	public static void setPerfFile(final String perfFile) {
+		JTAPILoggingAdapter.hasChanged(perfFile, perfFile);
 		JTAPILoggingAdapter.perfFile = perfFile;
 		if (perfFile != null) {
-			setPerformanceLoggingEnabled(true);
-			propertyStatusTable.put("perfFile", Boolean.TRUE);
-		} else {
-			setPerformanceLoggingEnabled(false);
-		}
+			JTAPILoggingAdapter.setPerformanceLoggingEnabled(true);
+			JTAPILoggingAdapter.propertyStatusTable.put("perfFile",
+					Boolean.TRUE);
+		} else
+			JTAPILoggingAdapter.setPerformanceLoggingEnabled(false);
 	}
 
-	public static void setPerfFileCount(String perfFileCount) {
-		hasChanged(perfFileCount, perfFileCount);
+	public static void setPerfFileCount(final String perfFileCount) {
+		JTAPILoggingAdapter.hasChanged(perfFileCount, perfFileCount);
 		JTAPILoggingAdapter.perfFileCount = perfFileCount;
-		if (perfFileCount != null) {
-			propertyStatusTable.put("perfFileCount", Boolean.TRUE);
-		}
+		if (perfFileCount != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("perfFileCount",
+					Boolean.TRUE);
 	}
 
-	public static void setPerfFileSize(String perfFileSize) {
-		hasChanged(perfFileSize, perfFileSize);
+	public static void setPerfFileSize(final String perfFileSize) {
+		JTAPILoggingAdapter.hasChanged(perfFileSize, perfFileSize);
 		JTAPILoggingAdapter.perfFileSize = perfFileSize;
-		if (perfFileSize != null) {
-			propertyStatusTable.put("perfFileSize", Boolean.TRUE);
-		}
+		if (perfFileSize != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("perfFileSize",
+					Boolean.TRUE);
 	}
 
 	public static void setPerformanceLoggingEnabled(
-			boolean performanceLoggingEnabled) {
+			final boolean performanceLoggingEnabled) {
 		JTAPILoggingAdapter.performanceLoggingEnabled = performanceLoggingEnabled;
 	}
 
-	public static void setTraceFileCount(String traceFileCount) {
-		hasChanged(traceFileCount, traceFileCount);
+	public static void setTraceFileCount(final String traceFileCount) {
+		JTAPILoggingAdapter.hasChanged(traceFileCount, traceFileCount);
 		JTAPILoggingAdapter.traceFileCount = traceFileCount;
-		if (traceFileCount != null) {
-			propertyStatusTable.put("traceFileCount", Boolean.TRUE);
-		}
+		if (traceFileCount != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("traceFileCount",
+					Boolean.TRUE);
 	}
 
-	public static void setTraceFileSize(String traceFileSize) {
-		hasChanged(traceFileSize, traceFileSize);
+	public static void setTraceFileSize(final String traceFileSize) {
+		JTAPILoggingAdapter.hasChanged(traceFileSize, traceFileSize);
 		JTAPILoggingAdapter.traceFileSize = traceFileSize;
-		if (traceFileSize != null) {
-			propertyStatusTable.put("traceFileSize", Boolean.TRUE);
-		}
+		if (traceFileSize != null)
+			JTAPILoggingAdapter.propertyStatusTable.put("traceFileSize",
+					Boolean.TRUE);
 	}
 
 	public static void setTraceLoggerLevel(String traceLoggerLevel) {
 		String log4jLevel = null;
 
 		if (traceLoggerLevel == null) {
-			setTraceLoggingEnabled(false);
+			JTAPILoggingAdapter.setTraceLoggingEnabled(false);
 			return;
 		}
 		try {
-			int debugLevel = Integer.parseInt(traceLoggerLevel);
-			if ((debugLevel >= 0) && (debugLevel <= 7)) {
-				setTraceLoggingEnabled(true);
+			final int debugLevel = Integer.parseInt(traceLoggerLevel);
+			if (debugLevel >= 0 && debugLevel <= 7) {
+				JTAPILoggingAdapter.setTraceLoggingEnabled(true);
 				if (debugLevel == 0) {
 					log4jLevel = Level.OFF.toString();
-					setTraceLoggingEnabled(false);
-				} else if ((debugLevel > 0) && (debugLevel < 6)) {
+					JTAPILoggingAdapter.setTraceLoggingEnabled(false);
+				} else if (debugLevel > 0 && debugLevel < 6)
 					log4jLevel = Level.INFO.toString();
-				} else if (debugLevel == 6) {
+				else if (debugLevel == 6)
 					log4jLevel = Level.DEBUG.toString();
-				} else if (debugLevel == 7) {
+				else if (debugLevel == 7)
 					log4jLevel = Level.TRACE.toString();
-				}
-				hasChanged(traceLoggerLevel, log4jLevel);
+				JTAPILoggingAdapter.hasChanged(traceLoggerLevel, log4jLevel);
 				traceLoggerLevel = log4jLevel;
 			} else if (JtapiUtils.isLog4jConfigured()) {
-				Logger theLogger = Logger.getLogger(JTAPILoggingAdapter.class);
+				final Logger theLogger = Logger
+						.getLogger(JTAPILoggingAdapter.class);
 				theLogger
 						.error("JTAPILoggingAdapter - Invalid value for debugLevel. Enter a value between 1 and 7");
 				theLogger
@@ -407,9 +412,10 @@ public class JTAPILoggingAdapter {
 						.println("Error occured while reading logger level property. You entered : "
 								+ traceLoggerLevel);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			if (JtapiUtils.isLog4jConfigured()) {
-				Logger theLogger = Logger.getLogger(JTAPILoggingAdapter.class);
+				final Logger theLogger = Logger
+						.getLogger(JTAPILoggingAdapter.class);
 				theLogger
 						.error("JTAPILoggingAdapter - Invalid value for debugLevel. Enter a value between 1 and 7");
 				theLogger.error(
@@ -425,48 +431,47 @@ public class JTAPILoggingAdapter {
 			}
 			return;
 		}
-		propertyStatusTable.put("traceLoggerLevel", Boolean.TRUE);
+		JTAPILoggingAdapter.propertyStatusTable.put("traceLoggerLevel",
+				Boolean.TRUE);
 	}
 
-	public static void setTraceLoggingEnabled(boolean traceLoggingEnabled) {
+	public static void setTraceLoggingEnabled(final boolean traceLoggingEnabled) {
 		JTAPILoggingAdapter.traceLoggingEnabled = traceLoggingEnabled;
 	}
 
 	public static void updateLoggingProperties() {
-		Set<String> keySet = propertyStatusTable.keySet();
-		Iterator<String> keySetIterator = keySet.iterator();
+		final Set<String> keySet = JTAPILoggingAdapter.propertyStatusTable
+				.keySet();
+		final Iterator<String> keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
-			String key = keySetIterator.next();
-			Boolean value = propertyStatusTable.get(key);
-			if (!value.booleanValue()) {
-				if (key.equals("altTraceFile")) {
-					setAltTraceFile(null);
-				} else if (key.equals("errorFile")) {
-					setErrorFile(null);
-				} else if (key.equals("errorFileCount")) {
-					setErrorFileCount(null);
-				} else if (key.equals("errorFileSize")) {
-					setErrorFileSize(null);
-				} else if (key.equals("traceFileCount")) {
-					setTraceFileCount(null);
-				} else if (key.equals("traceFileSize")) {
-					setTraceFileSize(null);
-				} else if (key.equals("traceLoggerLevel")) {
-					setTraceLoggerLevel(null);
-				} else if (key.equals("perfFile")) {
-					setPerfFile(null);
+			final String key = keySetIterator.next();
+			final Boolean value = JTAPILoggingAdapter.propertyStatusTable
+					.get(key);
+			if (!value.booleanValue())
+				if (key.equals("altTraceFile"))
+					JTAPILoggingAdapter.setAltTraceFile(null);
+				else if (key.equals("errorFile"))
+					JTAPILoggingAdapter.setErrorFile(null);
+				else if (key.equals("errorFileCount"))
+					JTAPILoggingAdapter.setErrorFileCount(null);
+				else if (key.equals("errorFileSize"))
+					JTAPILoggingAdapter.setErrorFileSize(null);
+				else if (key.equals("traceFileCount"))
+					JTAPILoggingAdapter.setTraceFileCount(null);
+				else if (key.equals("traceFileSize"))
+					JTAPILoggingAdapter.setTraceFileSize(null);
+				else if (key.equals("traceLoggerLevel"))
+					JTAPILoggingAdapter.setTraceLoggerLevel(null);
+				else if (key.equals("perfFile")) {
+					JTAPILoggingAdapter.setPerfFile(null);
 					PerfStatisticsCollector.shutdown();
-				} else if (key.equals("perfFileCount")) {
-					setPerfFileCount(null);
-				} else if (key.equals("perfFileSize")) {
-					setPerfFileSize(null);
-				}
-			}
+				} else if (key.equals("perfFileCount"))
+					JTAPILoggingAdapter.setPerfFileCount(null);
+				else if (key.equals("perfFileSize"))
+					JTAPILoggingAdapter.setPerfFileSize(null);
 		}
-		initializeLogging();
-		if (perfFile != null) {
+		JTAPILoggingAdapter.initializeLogging();
+		if (JTAPILoggingAdapter.perfFile != null)
 			PerfStatisticsCollector.updatePerfStatisticsCollectorConfig();
-		}
 	}
 }
-

@@ -14,8 +14,7 @@ public abstract class CSTAUnsolicited extends TsapiPDU {
 		return 4;
 	}
 
-	public void setMonitorCrossRefID(int monitorCrossRefID) {
+	public void setMonitorCrossRefID(final int monitorCrossRefID) {
 		this.monitorCrossRefID = monitorCrossRefID;
 	}
 }
-

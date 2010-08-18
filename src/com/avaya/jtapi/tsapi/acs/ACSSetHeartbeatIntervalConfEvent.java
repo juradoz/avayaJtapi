@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class ACSSetHeartbeatIntervalConfEvent extends ACSConfirmation {
-	public static ACSSetHeartbeatIntervalConfEvent decode(InputStream in) {
-		ACSSetHeartbeatIntervalConfEvent _this = new ACSSetHeartbeatIntervalConfEvent();
+	public static ACSSetHeartbeatIntervalConfEvent decode(final InputStream in) {
+		final ACSSetHeartbeatIntervalConfEvent _this = new ACSSetHeartbeatIntervalConfEvent();
 
 		_this.doDecode(in);
 
@@ -23,17 +23,17 @@ public final class ACSSetHeartbeatIntervalConfEvent extends ACSConfirmation {
 	public ACSSetHeartbeatIntervalConfEvent() {
 	}
 
-	public ACSSetHeartbeatIntervalConfEvent(short heartbeatInterval) {
+	public ACSSetHeartbeatIntervalConfEvent(final short heartbeatInterval) {
 		this.heartbeatInterval = heartbeatInterval;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		heartbeatInterval = (short) ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(heartbeatInterval, memberStream);
 	}
 
@@ -48,11 +48,11 @@ public final class ACSSetHeartbeatIntervalConfEvent extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSSetHeartbeatIntervalConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(heartbeatInterval, "heartbeatInterval",
 				indent));
@@ -61,8 +61,7 @@ public final class ACSSetHeartbeatIntervalConfEvent extends ACSConfirmation {
 		return lines;
 	}
 
-	public void setHeartbeatInterval(short heartbeatInterval) {
+	public void setHeartbeatInterval(final short heartbeatInterval) {
 		this.heartbeatInterval = heartbeatInterval;
 	}
 }
-

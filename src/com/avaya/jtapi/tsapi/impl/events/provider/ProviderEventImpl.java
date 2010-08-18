@@ -9,7 +9,7 @@ public class ProviderEventImpl extends TsapiListenerEvent implements
 		ProviderEvent {
 	private final Provider provider;
 
-	public ProviderEventImpl(ProviderEventParams params) {
+	public ProviderEventImpl(final ProviderEventParams params) {
 		super(params.getId(), params.getCause(), params.getMetaEvent(), params
 				.getSource(), params.getPrivateData());
 
@@ -25,4 +25,3 @@ public class ProviderEventImpl extends TsapiListenerEvent implements
 		return super.toString() + ";provider=" + provider;
 	}
 }
-

@@ -10,7 +10,7 @@ public final class CSTASendPrivateEv extends CSTARequest {
 	public static final int PDU = 95;
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -21,12 +21,12 @@ public final class CSTASendPrivateEv extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASendPrivateEv ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -34,4 +34,3 @@ public final class CSTASendPrivateEv extends CSTARequest {
 		return lines;
 	}
 }
-

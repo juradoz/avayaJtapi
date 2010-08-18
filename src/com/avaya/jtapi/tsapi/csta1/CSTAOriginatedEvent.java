@@ -16,15 +16,15 @@ public final class CSTAOriginatedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 63;
 
-	public static CSTAOriginatedEvent decode(InputStream in) {
-		CSTAOriginatedEvent _this = new CSTAOriginatedEvent();
+	public static CSTAOriginatedEvent decode(final InputStream in) {
+		final CSTAOriginatedEvent _this = new CSTAOriginatedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		originatedConnection = CSTAConnectionID.decode(memberStream);
 		callingDevice = CSTAExtendedDeviceID.decode(memberStream);
 		calledDevice = CSTAExtendedDeviceID.decode(memberStream);
@@ -33,7 +33,7 @@ public final class CSTAOriginatedEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(originatedConnection, memberStream);
 		ASNSequence.encode(callingDevice, memberStream);
 		ASNSequence.encode(calledDevice, memberStream);
@@ -68,11 +68,11 @@ public final class CSTAOriginatedEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAOriginatedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(originatedConnection,
 				"originatedConnection", indent));
@@ -88,24 +88,23 @@ public final class CSTAOriginatedEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCalledDevice(CSTAExtendedDeviceID deviceId) {
+	public void setCalledDevice(final CSTAExtendedDeviceID deviceId) {
 		calledDevice = deviceId;
 	}
 
-	public void setCallingDevice(CSTAExtendedDeviceID deviceId) {
+	public void setCallingDevice(final CSTAExtendedDeviceID deviceId) {
 		callingDevice = deviceId;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 
-	public void setOriginatedConnection(CSTAConnectionID connectionId) {
+	public void setOriginatedConnection(final CSTAConnectionID connectionId) {
 		originatedConnection = connectionId;
 	}
 }
-

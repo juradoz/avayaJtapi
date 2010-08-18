@@ -11,20 +11,20 @@ public final class CSTARouteRegisterAbortEventReport extends CSTAEventReport {
 	int routeRegisterReqID;
 	public static final int PDU = 82;
 
-	public static CSTARouteRegisterAbortEventReport decode(InputStream in) {
-		CSTARouteRegisterAbortEventReport _this = new CSTARouteRegisterAbortEventReport();
+	public static CSTARouteRegisterAbortEventReport decode(final InputStream in) {
+		final CSTARouteRegisterAbortEventReport _this = new CSTARouteRegisterAbortEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class CSTARouteRegisterAbortEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRegisterAbortEventReport ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -53,7 +53,7 @@ public final class CSTARouteRegisterAbortEventReport extends CSTAEventReport {
 		return lines;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 }

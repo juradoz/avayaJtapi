@@ -42,17 +42,17 @@ public final class TSRouteSession {
 	int cause;
 	short csta_error;
 
-	TSRouteSession(TSProviderImpl _TSProviderImpl, TSDevice _tsDevice,
-			int _routingCrossRefID, TSDevice _currentRouteDevice,
-			TSDevice _callingDevice, TSCall _call, int _routeSelectAlgorithm,
-			String _isdnSetupMessage) {
+	TSRouteSession(final TSProviderImpl _TSProviderImpl,
+			final TSDevice _tsDevice, final int _routingCrossRefID,
+			final TSDevice _currentRouteDevice, final TSDevice _callingDevice,
+			final TSCall _call, final int _routeSelectAlgorithm,
+			final String _isdnSetupMessage) {
 		tsProvider = _TSProviderImpl;
 		tsDevice = _tsDevice;
 		routingCrossRefID = _routingCrossRefID;
 		currentRouteDevice = _currentRouteDevice;
-		if (_callingDevice.isTerminal()) {
+		if (_callingDevice.isTerminal())
 			callingTerminal = _callingDevice;
-		}
 		callingAddress = _callingDevice;
 		call = _call;
 		switch (_routeSelectAlgorithm) {
@@ -79,18 +79,19 @@ public final class TSRouteSession {
 		state = 1;
 		cause = 100;
 		tsDevice.addSession(routingCrossRefID, this);
-		log.info("Constructing route session " + this + " with xrefID "
-				+ routingCrossRefID + " for " + tsProvider);
+		TSRouteSession.log.info("Constructing route session " + this
+				+ " with xrefID " + routingCrossRefID + " for " + tsProvider);
 	}
 
 	public boolean canSetBillRate() {
 		return flexibleBilling;
 	}
 
-	void dump(String indent) {
-		log.trace(indent + "***** TSRouteSession DUMP *****");
-		log.trace(indent + "TSRouteSession: " + this);
-		log.trace(indent + "***** TSRouteSession DUMP END *****");
+	void dump(final String indent) {
+		TSRouteSession.log.trace(indent + "***** TSRouteSession DUMP *****");
+		TSRouteSession.log.trace(indent + "TSRouteSession: " + this);
+		TSRouteSession.log
+				.trace(indent + "***** TSRouteSession DUMP END *****");
 	}
 
 	public TSCall getCall() {
@@ -98,9 +99,8 @@ public final class TSRouteSession {
 	}
 
 	public int getCallOriginatorType() {
-		if (hasCallOriginatorType()) {
+		if (hasCallOriginatorType())
 			return callOriginatorInfo.getCallOriginatorType();
-		}
 		return -1;
 	}
 
@@ -152,18 +152,17 @@ public final class TSRouteSession {
 		return callOriginatorInfo != null;
 	}
 
-	void setCallingDevice(TSDevice _callingDevice) {
-		if (_callingDevice.isTerminal()) {
+	void setCallingDevice(final TSDevice _callingDevice) {
+		if (_callingDevice.isTerminal())
 			callingTerminal = _callingDevice;
-		}
 		callingAddress = _callingDevice;
 	}
 
-	void setCallOriginatorInfo(CSTACallOriginatorInfo _callOriginatorInfo) {
+	void setCallOriginatorInfo(final CSTACallOriginatorInfo _callOriginatorInfo) {
 		callOriginatorInfo = _callOriginatorInfo;
 	}
 
-	void setCause(int error) {
+	void setCause(final int error) {
 		csta_error = (short) error;
 		switch (error) {
 		case 0:
@@ -187,37 +186,35 @@ public final class TSRouteSession {
 		}
 	}
 
-	void setDeviceHistory(V7DeviceHistoryEntry[] deviceHistory) {
+	void setDeviceHistory(final V7DeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 
-	void setDomain(boolean _outOfDomain) {
+	void setDomain(final boolean _outOfDomain) {
 		outOfDomain = _outOfDomain;
 	}
 
-	void setFlexibleBilling(boolean _flexibleBilling) {
+	void setFlexibleBilling(final boolean _flexibleBilling) {
 		flexibleBilling = _flexibleBilling;
 	}
 
-	void setLAI(LookaheadInfo _lai) {
-		if (_lai == null) {
+	void setLAI(final LookaheadInfo _lai) {
+		if (_lai == null)
 			return;
-		}
 		lai = _lai;
 	}
 
-	void setLAI(LucentLookaheadInfo _lai) {
-		if (_lai == null) {
+	void setLAI(final LucentLookaheadInfo _lai) {
+		if (_lai == null)
 			return;
-		}
 		lai = TsapiPromoter.promoteLookaheadInfo(_lai);
 	}
 
-	void setRouteUsedDevice(TSDevice _routeUsedDevice) {
+	void setRouteUsedDevice(final TSDevice _routeUsedDevice) {
 		routeUsedDevice = _routeUsedDevice;
 	}
 
-	public synchronized TSEvent setState(int _state) {
+	public synchronized TSEvent setState(final int _state) {
 		state = _state;
 		switch (_state) {
 		case 1:
@@ -236,49 +233,43 @@ public final class TSRouteSession {
 		return null;
 	}
 
-	void setTrunk(TSTrunk _trunk) {
-		if (_trunk == null) {
+	void setTrunk(final TSTrunk _trunk) {
+		if (_trunk == null)
 			return;
-		}
 		trunk = _trunk;
 	}
 
-	void setUCID(String _ucid) {
-		if (_ucid == null) {
+	void setUCID(final String _ucid) {
+		if (_ucid == null)
 			return;
-		}
 		ucid = _ucid;
 	}
 
-	void setUEC(LucentUserEnteredCode _uec) {
-		if (_uec == null) {
+	void setUEC(final LucentUserEnteredCode _uec) {
+		if (_uec == null)
 			return;
-		}
 		uec = TsapiPromoter.promoteUserEnteredCode(tsProvider, _uec);
 	}
 
-	void setUEC(UserEnteredCode _uec) {
-		if (_uec == null) {
+	void setUEC(final UserEnteredCode _uec) {
+		if (_uec == null)
 			return;
-		}
 		uec = _uec;
 	}
 
-	void setUUI(LucentUserToUserInfo _uui) {
-		if (_uui == null) {
+	void setUUI(final LucentUserToUserInfo _uui) {
+		if (_uui == null)
 			return;
-		}
 		uui = TsapiPromoter.promoteUserToUserInfo(_uui);
 	}
 
-	void setUUI(UserToUserInfo _uui) {
-		if (_uui == null) {
+	void setUUI(final UserToUserInfo _uui) {
+		if (_uui == null)
 			return;
-		}
 		uui = _uui;
 	}
 
-	public void tsEndRoute(int errorValue, CSTAPrivate reqPriv) {
+	public void tsEndRoute(final int errorValue, final CSTAPrivate reqPriv) {
 		int cstaError;
 		switch (errorValue) {
 		case 2:
@@ -295,7 +286,7 @@ public final class TSRouteSession {
 		tsProvider.tsapi.routeEnd(tsDevice.getRegisterReqID(),
 				routingCrossRefID, (short) cstaError, reqPriv);
 
-		TSEvent routeEndEvent = setState(3);
+		final TSEvent routeEndEvent = setState(3);
 		tsDevice.getTSRouteCallback().deliverEvent(routeEndEvent);
 	}
 
@@ -307,17 +298,16 @@ public final class TSRouteSession {
 		return state;
 	}
 
-	public synchronized void tsSelectRoute(String[] routeSelected,
-			CSTAPrivate reqPriv) throws TsapiMethodNotSupportedException {
-		if (tsProvider.getCapabilities().getRouteSelect() == 0) {
+	public synchronized void tsSelectRoute(final String[] routeSelected,
+			final CSTAPrivate reqPriv) throws TsapiMethodNotSupportedException {
+		if (tsProvider.getCapabilities().getRouteSelect() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
 		if (state == 3) {
-			int cstaError = 17;
+			final int cstaError = 17;
 
-			String errorString = "Route already ended.";
+			final String errorString = "Route already ended.";
 			throw new TsapiPlatformException(2, cstaError, errorString);
 		}
 
@@ -326,13 +316,11 @@ public final class TSRouteSession {
 					routingCrossRefID, routeSelected[i], -2, "", true, reqPriv);
 			try {
 				super.wait(TSProviderImpl.TSAPI_RESPONSE_TIME);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				return;
 			}
-			if (state != 4) {
+			if (state != 4)
 				return;
-			}
 		}
 	}
 }
-

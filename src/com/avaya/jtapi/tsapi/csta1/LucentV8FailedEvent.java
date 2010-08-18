@@ -11,8 +11,8 @@ public final class LucentV8FailedEvent extends LucentFailedEvent {
 	CSTAExtendedDeviceID callingDevice_asn;
 	static final int PDU = 141;
 
-	static LucentFailedEvent decode(InputStream in) {
-		LucentV8FailedEvent _this = new LucentV8FailedEvent();
+	static LucentFailedEvent decode(final InputStream in) {
+		final LucentV8FailedEvent _this = new LucentV8FailedEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,13 +23,13 @@ public final class LucentV8FailedEvent extends LucentFailedEvent {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		callingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNSequence.encode(callingDevice_asn, memberStream);
 	}
@@ -45,11 +45,11 @@ public final class LucentV8FailedEvent extends LucentFailedEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentV8FailedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAExtendedDeviceID.print(callingDevice_asn,
 				"callingDevice", indent));
@@ -60,8 +60,7 @@ public final class LucentV8FailedEvent extends LucentFailedEvent {
 		return lines;
 	}
 
-	public void setCallingDevice(CSTAExtendedDeviceID device) {
+	public void setCallingDevice(final CSTAExtendedDeviceID device) {
 		callingDevice_asn = device;
 	}
 }
-

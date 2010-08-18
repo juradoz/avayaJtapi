@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public final class ACSNameSrvRequest extends ACSRequest {
-	public static ACSNameSrvRequest decode(InputStream in) {
-		ACSNameSrvRequest _this = new ACSNameSrvRequest();
+	public static ACSNameSrvRequest decode(final InputStream in) {
+		final ACSNameSrvRequest _this = new ACSNameSrvRequest();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class ACSNameSrvRequest extends ACSRequest {
 	public ACSNameSrvRequest() {
 	}
 
-	public ACSNameSrvRequest(short _streamType) {
+	public ACSNameSrvRequest(final short _streamType) {
 		streamType = _streamType;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(streamType, memberStream);
 	}
 
@@ -43,11 +43,11 @@ public final class ACSNameSrvRequest extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSNameSrvRequest ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(StreamType.print(streamType, "streamType", indent));
 
@@ -55,4 +55,3 @@ public final class ACSNameSrvRequest extends ACSRequest {
 		return lines;
 	}
 }
-

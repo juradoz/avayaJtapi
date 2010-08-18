@@ -11,20 +11,20 @@ public final class CSTARouteRegisterReqConfEvent extends CSTAConfirmation {
 	int registerReqID;
 	public static final int PDU = 79;
 
-	public static CSTARouteRegisterReqConfEvent decode(InputStream in) {
-		CSTARouteRegisterReqConfEvent _this = new CSTARouteRegisterReqConfEvent();
+	public static CSTARouteRegisterReqConfEvent decode(final InputStream in) {
+		final CSTARouteRegisterReqConfEvent _this = new CSTARouteRegisterReqConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		registerReqID = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(registerReqID, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class CSTARouteRegisterReqConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRegisterReqConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(registerReqID, "registerReqID", indent));
 
@@ -52,7 +52,7 @@ public final class CSTARouteRegisterReqConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setRegisterReqID(int registerReqID) {
+	public void setRegisterReqID(final int registerReqID) {
 		this.registerReqID = registerReqID;
 	}
 }

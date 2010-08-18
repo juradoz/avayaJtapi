@@ -7,28 +7,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class ASNReal extends ASN1 {
-	public static final float decode(InputStream in) {
+	public static final float decode(final InputStream in) {
 		throw new ASN1Exception("Decoder: REAL unimplemented");
 	}
 
-	public static final void encode(float value, OutputStream out) {
+	public static final void encode(final float value, final OutputStream out) {
 		try {
 			out.write(9);
 
-			if ((value == 0.0F) || ((value > -1.E-032D) && (value < 1.E-032D))) {
-				encodeLength(out, 0);
-			} else if ((value > 1.E+032D) || (value == (1.0F / 1.0F))) {
-				encodeLength(out, 1);
+			if (value == 0.0F || value > -1.E-032D && value < 1.E-032D)
+				ASN1.encodeLength(out, 0);
+			else if (value > 1.E+032D || value == 1.0F / 1.0F) {
+				ASN1.encodeLength(out, 1);
 				out.write(64);
-			} else if ((value < -1.E+032D) || (value == (1.0F / -1.0F))) {
-				encodeLength(out, 1);
+			} else if (value < -1.E+032D || value == 1.0F / -1.0F) {
+				ASN1.encodeLength(out, 1);
 				out.write(65);
 			} else {
-				int bits = Float.floatToIntBits(value);
+				final int bits = Float.floatToIntBits(value);
 
-				int s = ((bits & 0x80000000) == 0) ? 0 : 64;
+				final int s = (bits & 0x80000000) == 0 ? 0 : 64;
 				int e = (bits >>> 23 & 0xFF) - 150;
-				int m = (e == 0) ? (bits & 0x7FFFFF) << 1
+				int m = e == 0 ? (bits & 0x7FFFFF) << 1
 						: bits & 0x7FFFFF | 0x800000;
 
 				int length = 3;
@@ -37,26 +37,24 @@ public abstract class ASNReal extends ASN1 {
 					e += 8;
 					--length;
 				}
-				encodeLength(out, length + 2);
+				ASN1.encodeLength(out, length + 2);
 				out.write(0x80 | s);
 				out.write(e);
-				while (length-- > 0) {
+				while (length-- > 0)
 					out.write(m >>> length * 8 & 0xFF);
-				}
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new ASN1Exception("Encoder: REAL got unexpected IO error");
 		}
 	}
 
-	public static Collection<String> print(float value, String name,
-			String indent) {
-		Collection<String> lines = new ArrayList<String>();
-		StringBuffer buffer = new StringBuffer();
+	public static Collection<String> print(final float value,
+			final String name, final String indent) {
+		final Collection<String> lines = new ArrayList<String>();
+		final StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
-		if (name != null) {
+		if (name != null)
 			buffer.append(name + " ");
-		}
 		buffer.append(value);
 		lines.add(buffer.toString());
 		return lines;

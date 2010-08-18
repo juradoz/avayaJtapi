@@ -12,4 +12,3 @@ public abstract interface RouteUsedEvent extends RouteSessionEvent {
 
 	public abstract Terminal getRouteUsed();
 }
-

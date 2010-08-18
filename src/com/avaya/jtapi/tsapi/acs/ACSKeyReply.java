@@ -12,15 +12,15 @@ public final class ACSKeyReply extends ACSConfirmation {
 	byte[] key;
 	public static final int PDU = 9;
 
-	public static ACSKeyReply decode(InputStream in) {
-		ACSKeyReply _this = new ACSKeyReply();
+	public static ACSKeyReply decode(final InputStream in) {
+		final ACSKeyReply _this = new ACSKeyReply();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		objectID = ASNInteger.decode(memberStream);
 		key = ASNOctetString.decode(memberStream);
 	}
@@ -40,11 +40,11 @@ public final class ACSKeyReply extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSKeyReply ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(objectID, "objectID", indent));
 		lines.addAll(ASNOctetString.print(key, "key", indent));
@@ -53,4 +53,3 @@ public final class ACSKeyReply extends ACSConfirmation {
 		return lines;
 	}
 }
-

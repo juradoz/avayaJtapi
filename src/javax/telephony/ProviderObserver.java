@@ -7,4 +7,3 @@ import javax.telephony.events.ProvEv;
 public abstract interface ProviderObserver {
 	public abstract void providerChangedEvent(ProvEv[] paramArrayOfProvEv);
 }
-

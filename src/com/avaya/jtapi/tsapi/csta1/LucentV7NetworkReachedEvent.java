@@ -9,20 +9,20 @@ public final class LucentV7NetworkReachedEvent extends LucentPrivateData {
 	private LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 136;
 
-	public static LucentV7NetworkReachedEvent decode(InputStream in) {
-		LucentV7NetworkReachedEvent _this = new LucentV7NetworkReachedEvent();
+	public static LucentV7NetworkReachedEvent decode(final InputStream in) {
+		final LucentV7NetworkReachedEvent _this = new LucentV7NetworkReachedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
 	}
 
@@ -37,12 +37,12 @@ public final class LucentV7NetworkReachedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7NetworkReachedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
 				"deviceHistory", indent));
@@ -51,7 +51,7 @@ public final class LucentV7NetworkReachedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
+	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }

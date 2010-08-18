@@ -2,7 +2,7 @@ package com.avaya.jtapi.tsapi.impl.core;
 
 class TSDeviceStateActive extends TSDeviceState {
 	@Override
-	void recreate(TSDevice _tsDevice) {
+	void recreate(final TSDevice _tsDevice) {
 	}
 
 	@Override
@@ -15,4 +15,3 @@ class TSDeviceStateActive extends TSDeviceState {
 		return false;
 	}
 }
-

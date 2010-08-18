@@ -8,8 +8,8 @@ import javax.telephony.callcenter.Agent;
 public abstract class TsapiAgentTermEv extends TsapiCallCentTermEv {
 	public Agent agent = null;
 
-	public TsapiAgentTermEv(Terminal _device, Agent _agent, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiAgentTermEv(final Terminal _device, final Agent _agent,
+			final int _cause, final int _metaCode, final Object _privateData) {
 		super(_device, _cause, _metaCode, _privateData);
 		agent = _agent;
 	}
@@ -34,4 +34,3 @@ public abstract class TsapiAgentTermEv extends TsapiCallCentTermEv {
 		return agent.getState();
 	}
 }
-

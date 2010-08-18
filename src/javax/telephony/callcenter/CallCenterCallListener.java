@@ -12,4 +12,3 @@ public abstract interface CallCenterCallListener extends CallListener {
 	public abstract void trunkValid(
 			CallCenterTrunkEvent paramCallCenterTrunkEvent);
 }
-

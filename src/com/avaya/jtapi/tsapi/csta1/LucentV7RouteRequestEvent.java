@@ -12,21 +12,21 @@ public final class LucentV7RouteRequestEvent extends LucentV6RouteRequestEvent {
 	LucentDeviceHistoryEntry[] deviceHistory;
 	public static final int PDU = 131;
 
-	public static LucentRouteRequestEvent decode(InputStream in) {
-		LucentV7RouteRequestEvent _this = new LucentV7RouteRequestEvent();
+	public static LucentRouteRequestEvent decode(final InputStream in) {
+		final LucentV7RouteRequestEvent _this = new LucentV7RouteRequestEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
 	}
@@ -42,12 +42,12 @@ public final class LucentV7RouteRequestEvent extends LucentV6RouteRequestEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7RouteRequestEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(LucentLookaheadInfo.print(lookaheadInfo, "lookaheadInfo",
@@ -68,8 +68,7 @@ public final class LucentV7RouteRequestEvent extends LucentV6RouteRequestEvent {
 		return lines;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
+	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }
-

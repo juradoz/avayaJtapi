@@ -9,8 +9,8 @@ final class TsapiAlternateTlinkEntry {
 	private String preferredTlinkName;
 	private final List<String> alternateTlinks;
 
-	public TsapiAlternateTlinkEntry(String propertyName, String valueString)
-			throws TsapiPropertiesException {
+	public TsapiAlternateTlinkEntry(final String propertyName,
+			final String valueString) throws TsapiPropertiesException {
 		alternateTlinks = new ArrayList<String>();
 
 		parsePropertyName(propertyName);
@@ -29,32 +29,28 @@ final class TsapiAlternateTlinkEntry {
 			throws TsapiPropertiesException {
 		String tlinkName;
 		try {
-			if (!propertyName.regionMatches(true, 0, "Alternates", 0, 10)) {
+			if (!propertyName.regionMatches(true, 0, "Alternates", 0, 10))
 				throw new TsapiAlternateTlinkPropertyNameSyntaxException(
 						"property name must begin with \"Alternates\".");
-			}
 
 			propertyName = propertyName.substring(10);
 
 			propertyName = propertyName.trim();
 
-			if (!propertyName.startsWith("(")) {
+			if (!propertyName.startsWith("("))
 				throw new TsapiAlternateTlinkPropertyNameSyntaxException(
 						"expected opening parenthesis after \"Alternates\".");
-			}
 
 			propertyName = propertyName.substring(1);
 
-			int index = propertyName.indexOf(')');
-			if (index == -1) {
+			final int index = propertyName.indexOf(')');
+			if (index == -1)
 				throw new TsapiAlternateTlinkPropertyNameSyntaxException(
 						"the preferred Tlink name must be enclosed by parentheses.");
-			}
 
-			if (index < 1) {
+			if (index < 1)
 				throw new TsapiAlternateTlinkPropertyNameSyntaxException(
 						"no preferred Tlink name specified.");
-			}
 
 			tlinkName = propertyName.substring(0, index);
 
@@ -62,11 +58,10 @@ final class TsapiAlternateTlinkEntry {
 
 			propertyName = propertyName.substring(index);
 
-			if (!propertyName.equals(")")) {
+			if (!propertyName.equals(")"))
 				throw new TsapiAlternateTlinkPropertyNameSyntaxException(
 						"unexpected character(s) after closing parenthesis.");
-			}
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			throw new TsapiPropertiesException("Error parsing property name");
 		}
 
@@ -78,28 +73,26 @@ final class TsapiAlternateTlinkEntry {
 		try {
 			valueString = valueString.trim();
 
-			if (valueString.equals("")) {
+			if (valueString.equals(""))
 				throw new TsapiAlternateTlinkPropertyValueSyntaxException(
 						"no Alternate Tlinks specified.");
-			}
 
-			String[] tokens = valueString.split(":", 5);
+			final String[] tokens = valueString.split(":", 5);
 
-			int numTokens = tokens.length;
+			final int numTokens = tokens.length;
 
-			for (int i = 0; (i < 4) && (i < numTokens); ++i) {
+			for (int i = 0; i < 4 && i < numTokens; ++i) {
 				String token = tokens[i];
 
 				token = trimTlinkName(token);
 
-				if (token.equals("")) {
+				if (token.equals(""))
 					throw new TsapiAlternateTlinkPropertyValueSyntaxException(
 							"zero-length token for Alternate Tlink name.");
-				}
 
 				alternateTlinks.add(token);
 			}
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw new TsapiPropertiesException("Error parsing property value");
 		}
 	}
@@ -107,15 +100,12 @@ final class TsapiAlternateTlinkEntry {
 	private String trimTlinkName(String tlinkName) {
 		tlinkName = tlinkName.trim();
 
-		if (tlinkName.length() > 48) {
+		if (tlinkName.length() > 48)
 			try {
 				tlinkName = tlinkName.substring(0, 47);
-			} catch (IndexOutOfBoundsException e) {
+			} catch (final IndexOutOfBoundsException e) {
 			}
-
-		}
 
 		return new String(tlinkName);
 	}
 }
-

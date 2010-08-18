@@ -12,4 +12,3 @@ public abstract interface LucentProvider extends ITsapiProviderEx2 {
 	public abstract TrunkGroupInfo getTrunkGroupInfo(String paramString)
 			throws TsapiMethodNotSupportedException;
 }
-

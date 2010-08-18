@@ -28,4 +28,3 @@ public abstract interface TerminalConnection {
 			Terminal paramTerminal, Address paramAddress)
 			throws InvalidArgumentException, PlatformException;
 }
-

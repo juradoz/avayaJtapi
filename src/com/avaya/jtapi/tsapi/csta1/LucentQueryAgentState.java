@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentQueryAgentState extends LucentPrivateData {
-	public static LucentQueryAgentState decode(InputStream in) {
-		LucentQueryAgentState _this = new LucentQueryAgentState();
+	public static LucentQueryAgentState decode(final InputStream in) {
+		final LucentQueryAgentState _this = new LucentQueryAgentState();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class LucentQueryAgentState extends LucentPrivateData {
 	public LucentQueryAgentState() {
 	}
 
-	public LucentQueryAgentState(String _split) {
+	public LucentQueryAgentState(final String _split) {
 		split = _split;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		split = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(split, memberStream);
 	}
 
@@ -43,12 +43,12 @@ public final class LucentQueryAgentState extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAgentState ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(split, "split", indent));
 
@@ -56,4 +56,3 @@ public final class LucentQueryAgentState extends LucentPrivateData {
 		return lines;
 	}
 }
-

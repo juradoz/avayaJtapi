@@ -14,22 +14,22 @@ public final class CSTAMessageWaitingEvent extends CSTAUnsolicited {
 	boolean messageWaitingOn;
 	public static final int PDU = 71;
 
-	public static CSTAMessageWaitingEvent decode(InputStream in) {
-		CSTAMessageWaitingEvent _this = new CSTAMessageWaitingEvent();
+	public static CSTAMessageWaitingEvent decode(final InputStream in) {
+		final CSTAMessageWaitingEvent _this = new CSTAMessageWaitingEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceForMessage = CSTAExtendedDeviceID.decode(memberStream);
 		invokingDevice = CSTAExtendedDeviceID.decode(memberStream);
 		messageWaitingOn = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(deviceForMessage, memberStream);
 		ASNSequence.encode(invokingDevice, memberStream);
 		ASNBoolean.encode(messageWaitingOn, memberStream);
@@ -54,12 +54,12 @@ public final class CSTAMessageWaitingEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAMessageWaitingEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(deviceForMessage,
 				"deviceForMessage", indent));
@@ -74,16 +74,15 @@ public final class CSTAMessageWaitingEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setDeviceForMessage(CSTAExtendedDeviceID deviceForMessage) {
+	public void setDeviceForMessage(final CSTAExtendedDeviceID deviceForMessage) {
 		this.deviceForMessage = deviceForMessage;
 	}
 
-	public void setInvokingDevice(CSTAExtendedDeviceID invokingDevice) {
+	public void setInvokingDevice(final CSTAExtendedDeviceID invokingDevice) {
 		this.invokingDevice = invokingDevice;
 	}
 
-	public void setMessageWaitingOn(boolean messageWaitingOn) {
+	public void setMessageWaitingOn(final boolean messageWaitingOn) {
 		this.messageWaitingOn = messageWaitingOn;
 	}
 }
-

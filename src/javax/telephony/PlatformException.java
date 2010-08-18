@@ -6,8 +6,7 @@ public class PlatformException extends RuntimeException {
 	public PlatformException() {
 	}
 
-	public PlatformException(String s) {
+	public PlatformException(final String s) {
 		super(s);
 	}
 }
-

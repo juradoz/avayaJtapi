@@ -4,4 +4,3 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class CSTAMonitorCrossRefID extends ASNInteger {
 }
-

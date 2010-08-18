@@ -11,20 +11,20 @@ public final class LucentLoggedOffEvent extends LucentPrivateData {
 	int reasonCode;
 	static final int PDU = 79;
 
-	static LucentLoggedOffEvent decode(InputStream in) {
-		LucentLoggedOffEvent _this = new LucentLoggedOffEvent();
+	static LucentLoggedOffEvent decode(final InputStream in) {
+		final LucentLoggedOffEvent _this = new LucentLoggedOffEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		reasonCode = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(reasonCode, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class LucentLoggedOffEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentLoggedOffEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(reasonCode, "reasonCode", indent));
 
@@ -52,8 +52,7 @@ public final class LucentLoggedOffEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setReasonCode(int reasonCode) {
+	public void setReasonCode(final int reasonCode) {
 		this.reasonCode = reasonCode;
 	}
 }
-

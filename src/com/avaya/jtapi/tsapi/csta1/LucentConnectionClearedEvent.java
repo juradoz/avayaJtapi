@@ -9,20 +9,20 @@ public class LucentConnectionClearedEvent extends LucentPrivateData {
 	LucentUserToUserInfo userInfo;
 	static final int PDU = 36;
 
-	static LucentConnectionClearedEvent decode(InputStream in) {
-		LucentConnectionClearedEvent _this = new LucentConnectionClearedEvent();
+	static LucentConnectionClearedEvent decode(final InputStream in) {
+		final LucentConnectionClearedEvent _this = new LucentConnectionClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		LucentUserToUserInfo.encode(userInfo, memberStream);
 	}
 
@@ -37,12 +37,12 @@ public class LucentConnectionClearedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentConnectionClearedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
 
@@ -50,7 +50,7 @@ public class LucentConnectionClearedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setUserInfo(LucentUserToUserInfo userInfo) {
+	public void setUserInfo(final LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }

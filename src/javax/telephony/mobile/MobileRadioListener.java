@@ -14,4 +14,3 @@ public abstract interface MobileRadioListener {
 	public abstract void signalLevelChanged(
 			MobileRadioEvent paramMobileRadioEvent);
 }
-

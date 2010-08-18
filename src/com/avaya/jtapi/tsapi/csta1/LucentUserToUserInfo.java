@@ -10,44 +10,40 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 
 public class LucentUserToUserInfo extends LucentPrivateData {
-	public static LucentUserToUserInfo decode(InputStream in) {
-		LucentUserToUserInfo _this = new LucentUserToUserInfo();
+	public static LucentUserToUserInfo decode(final InputStream in) {
+		final LucentUserToUserInfo _this = new LucentUserToUserInfo();
 		_this.doDecode(in);
-		if ((_this.type == -1) || (_this.data == null)) {
+		if (_this.type == -1 || _this.data == null)
 			return null;
-		}
 		return _this;
 	}
 
-	public static void encode(LucentUserToUserInfo _this, OutputStream out) {
-		if (_this == null) {
+	public static void encode(LucentUserToUserInfo _this, final OutputStream out) {
+		if (_this == null)
 			_this = new LucentUserToUserInfo();
-		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(LucentUserToUserInfo _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final LucentUserToUserInfo _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(UUIProtocolType.print(_this.type, "type", indent));
-		if (_this.type == 4) {
+		if (_this.type == 4)
 			lines.addAll(ASNIA5String.print(new String(_this.data), "data",
 					indent));
-		} else {
+		else
 			lines.addAll(ASNOctetString.print(_this.data, "data", indent));
-		}
 
 		lines.add(_indent + "}");
 		return lines;
@@ -61,29 +57,29 @@ public class LucentUserToUserInfo extends LucentPrivateData {
 		type = -1;
 	}
 
-	public LucentUserToUserInfo(byte[] _data) {
+	public LucentUserToUserInfo(final byte[] _data) {
 		type = 0;
 		data = _data;
 	}
 
-	public LucentUserToUserInfo(byte[] _data, short _type) {
+	public LucentUserToUserInfo(final byte[] _data, final short _type) {
 		type = _type;
 		data = _data;
 	}
 
-	public LucentUserToUserInfo(String _data) {
+	public LucentUserToUserInfo(final String _data) {
 		type = 4;
 		data = _data.getBytes();
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		type = ASNEnumerated.decode(memberStream);
 		data = ASNOctetString.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(type, memberStream);
 		ASNOctetString.encode(data, memberStream);
 	}
@@ -104,4 +100,3 @@ public class LucentUserToUserInfo extends LucentPrivateData {
 		return type == 4;
 	}
 }
-

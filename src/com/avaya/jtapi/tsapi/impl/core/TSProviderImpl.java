@@ -87,11 +87,10 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 		public void run() {
 			Tsapi.updateVolatileConfigurationValues();
-			if (!Tsapi.isRefreshPeriodChanged()) {
+			if (!Tsapi.isRefreshPeriodChanged())
 				return;
-			}
 			timerThread.cancel();
-			int interval = Tsapi.getRefreshIntervalForTsapiPro() * 1000;
+			final int interval = Tsapi.getRefreshIntervalForTsapiPro() * 1000;
 			timerThread = new Timer("TsapiProReader");
 			timerThread.schedule(new TsapiProReaderTask(), interval, interval);
 		}
@@ -185,11 +184,11 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 	IDomainTracker m_providerTracker = new TSDomainTracker(this);
 
-	public TSProviderImpl(String _url, Vector<TsapiVendor> vendors) {
+	public TSProviderImpl(final String _url, final Vector<TsapiVendor> vendors) {
 		setInstanceNumber();
 
-		log.info("TSProvider: version '" + getProviderVersionDetails()
-				+ "', for " + this);
+		TSProviderImpl.log.info("TSProvider: version '"
+				+ getProviderVersionDetails() + "', for " + this);
 
 		state = 0;
 
@@ -221,14 +220,12 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		callMonitoring = false;
 
 		connectStringData = parseURL(_url);
-		if (connectStringData.telephonyServers != null) {
-			for (InetSocketAddress telephonyServer : connectStringData.telephonyServers) {
+		if (connectStringData.telephonyServers != null)
+			for (final InetSocketAddress telephonyServer : connectStringData.telephonyServers)
 				Tsapi.addServer(telephonyServer);
-			}
-		}
 		tsEHandler = new TSEventHandler(this);
 
-		log.info("TSProvider: calling acsOpenStream serverID="
+		TSProviderImpl.log.info("TSProvider: calling acsOpenStream serverID="
 				+ connectStringData.serverId + " loginID="
 				+ connectStringData.loginId + " passwd=******* for " + this);
 
@@ -243,7 +240,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 		timerThread = new Timer("TsapiProReader", true);
 
-		int timeInterval = Tsapi.getRefreshIntervalForTsapiPro() * 1000;
+		final int timeInterval = Tsapi.getRefreshIntervalForTsapiPro() * 1000;
 		timerThread.schedule(new TsapiProReaderTask(), timeInterval,
 				timeInterval);
 
@@ -256,17 +253,16 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		setCapabilities(getCaps());
 		setCallMonitor(getCallMonitor());
 		if (tsCaps.sysStatStart != 0) {
-			SysStatHandler handler = new SysStatHandler();
+			final SysStatHandler handler = new SysStatHandler();
 			try {
 				tsapi.startSystemStatusMonitoring(null, handler);
-			} catch (Exception e) {
-				if (e instanceof ITsapiException) {
+			} catch (final Exception e) {
+				if (e instanceof ITsapiException)
 					throw new TsapiPlatformException(((ITsapiException) e)
 							.getErrorType(), ((ITsapiException) e)
 							.getErrorCode(),
 							"startSystemStatusMonitoring() failure: "
 									+ e.getMessage());
-				}
 
 				throw new TsapiPlatformException(4, 0,
 						"startSystemStatusMonitoring() failure: "
@@ -283,122 +279,116 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		initNewProvider();
 	}
 
-	public void addAddressMonitorThread(TsapiAddressMonitor obs) {
-		if (addressMonitorThreads.contains(obs)) {
+	public void addAddressMonitorThread(final TsapiAddressMonitor obs) {
+		if (addressMonitorThreads.contains(obs))
 			return;
-		}
 
 		addressMonitorThreads.addElement(obs);
 	}
 
-	void addAgentToHash(TSAgent agent) {
+	void addAgentToHash(final TSAgent agent) {
 		synchronized (agentHash) {
-			TSAgentKey agentKey = agent.getAgentKey();
+			final TSAgentKey agentKey = agent.getAgentKey();
 			if (agentKey != null) {
-				Object oldObj = agentHash.put(agentKey, agent);
-				if (oldObj != null) {
-					log.info("NOTICE: agentHash.put() replaced " + oldObj
-							+ " for " + this);
-				}
+				final Object oldObj = agentHash.put(agentKey, agent);
+				if (oldObj != null)
+					TSProviderImpl.log.info("NOTICE: agentHash.put() replaced "
+							+ oldObj + " for " + this);
 			}
 		}
 	}
 
-	void addAgentToSaveHash(TSAgent agent) {
+	void addAgentToSaveHash(final TSAgent agent) {
 		auditor.putAgent(agent);
 	}
 
-	public void addCallMonitorThread(TsapiCallMonitor obs) {
-		if (callMonitorThreads.contains(obs)) {
+	public void addCallMonitorThread(final TsapiCallMonitor obs) {
+		if (callMonitorThreads.contains(obs))
 			return;
-		}
 
 		callMonitorThreads.addElement(obs);
 	}
 
-	public IDomainDevice addCallToDomain(IDomainDevice d, IDomainCall c) {
+	public IDomainDevice addCallToDomain(final IDomainDevice d,
+			final IDomainCall c) {
 		return m_providerTracker.addCallToDomain(d, c);
 	}
 
-	TSCall addCallToHash(TSCall call) {
+	TSCall addCallToHash(final TSCall call) {
 		synchronized (callHash) {
-			Object oldObj = callHash.put(new Integer(call.getCallID()), call);
-			if (oldObj != null) {
-				log.info("NOTICE: callHash.put() replaced " + oldObj + " for "
-						+ this);
-			}
+			final Object oldObj = callHash.put(new Integer(call.getCallID()),
+					call);
+			if (oldObj != null)
+				TSProviderImpl.log.info("NOTICE: callHash.put() replaced "
+						+ oldObj + " for " + this);
 			return (TSCall) oldObj;
 		}
 	}
 
-	void addCallToSaveHash(TSCall call) {
+	void addCallToSaveHash(final TSCall call) {
 		auditor.putCall(call);
 	}
 
-	TSConnection addConnectionToHash(TSConnection connection) {
+	TSConnection addConnectionToHash(final TSConnection connection) {
 		synchronized (connHash) {
 			Object oldObj = null;
-			CSTAConnectionID connID = connection.getConnID();
+			final CSTAConnectionID connID = connection.getConnID();
 			if (connID != null) {
 				oldObj = connHash.put(connID, connection);
 
 				TtConnHash("addConn", connection, connID);
 
-				log.info("NOTICE: connHash.put() replaced " + oldObj + " with "
-						+ connection + " for " + this);
+				TSProviderImpl.log.info("NOTICE: connHash.put() replaced "
+						+ oldObj + " with " + connection + " for " + this);
 			}
 
 			return (TSConnection) oldObj;
 		}
 	}
 
-	void addConnectionToSaveHash(TSConnection connection) {
+	void addConnectionToSaveHash(final TSConnection connection) {
 		auditor.putConn(connection);
 	}
 
-	private void addDeviceNameToPrintingBuffer(StringBuffer aBuffer,
-			String aName) {
-		if (aBuffer.length() > 0) {
+	private void addDeviceNameToPrintingBuffer(final StringBuffer aBuffer,
+			final String aName) {
+		if (aBuffer.length() > 0)
 			aBuffer.append(", ");
-		}
 		aBuffer.append(aName);
 	}
 
-	void addDeviceToHash(String deviceID, TSDevice device) {
+	void addDeviceToHash(final String deviceID, final TSDevice device) {
 		synchronized (devHash) {
 			if (deviceID != null) {
-				Object oldObj = devHash.put(deviceID, device);
-				if (oldObj != null) {
-					log.info("NOTICE: devHash.put() replaced " + oldObj
-							+ " for " + this);
-				}
+				final Object oldObj = devHash.put(deviceID, device);
+				if (oldObj != null)
+					TSProviderImpl.log.info("NOTICE: devHash.put() replaced "
+							+ oldObj + " for " + this);
 			}
 		}
 	}
 
-	void addDeviceToHash(TSDevice device) {
+	void addDeviceToHash(final TSDevice device) {
 		addDeviceToHash(device.getName(), device);
 	}
 
-	void addMonitor(int monitorCrossRefID, Object observed) {
+	void addMonitor(final int monitorCrossRefID, final Object observed) {
 		synchronized (xrefHash) {
-			Object oldObj = xrefHash.put(new Integer(monitorCrossRefID),
+			final Object oldObj = xrefHash.put(new Integer(monitorCrossRefID),
 					observed);
 
 			TtXrefHash("addMon", monitorCrossRefID, observed);
-			if (oldObj != null) {
-				log.info("NOTICE: xrefHash.put() replaced " + oldObj + " for "
-						+ this);
-			}
+			if (oldObj != null)
+				TSProviderImpl.log.info("NOTICE: xrefHash.put() replaced "
+						+ oldObj + " for " + this);
 		}
 	}
 
-	public void addMonitor(TsapiProviderMonitor monitor)
+	public void addMonitor(final TsapiProviderMonitor monitor)
 			throws TsapiResourceUnavailableException {
 		synchronized (obsSync) {
-			if (monitors.contains(monitor)) {
+			if (monitors.contains(monitor))
 				return;
-			}
 
 			monitors.addElement(monitor);
 
@@ -408,72 +398,66 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		sendSnapshot(monitor);
 	}
 
-	void addNonCallToHash(TSCall call) {
+	void addNonCallToHash(final TSCall call) {
 		synchronized (nonCallHash) {
-			Object oldObj = nonCallHash.put(new Integer(call.getNonCallID()),
-					call);
+			final Object oldObj = nonCallHash.put(new Integer(call
+					.getNonCallID()), call);
 
-			if (oldObj != null) {
-				log.info("NOTICE: nonCallHash.put() replaced " + oldObj
-						+ " for " + this);
-			}
+			if (oldObj != null)
+				TSProviderImpl.log.info("NOTICE: nonCallHash.put() replaced "
+						+ oldObj + " for " + this);
 		}
 	}
 
-	void addPrivateXref(int xrefID, TSDevice tsDevice) {
+	void addPrivateXref(final int xrefID, final TSDevice tsDevice) {
 		synchronized (privXrefHash) {
-			Object oldObj = privXrefHash.put(new Integer(xrefID), tsDevice);
-			if (oldObj != null) {
-				log.info("NOTICE: privXrefHash.put() replaced " + oldObj
-						+ " for " + this);
-			}
+			final Object oldObj = privXrefHash.put(new Integer(xrefID),
+					tsDevice);
+			if (oldObj != null)
+				TSProviderImpl.log.info("NOTICE: privXrefHash.put() replaced "
+						+ oldObj + " for " + this);
 		}
 	}
 
-	public void addProviderMonitorThread(TsapiProviderMonitor obs) {
-		if (providerMonitorThreads.contains(obs)) {
+	public void addProviderMonitorThread(final TsapiProviderMonitor obs) {
+		if (providerMonitorThreads.contains(obs))
 			return;
-		}
 
 		providerMonitorThreads.addElement(obs);
 	}
 
-	void addRoute(int routeRegisterID, TSDevice tsDevice) {
+	void addRoute(final int routeRegisterID, final TSDevice tsDevice) {
 		synchronized (routeRegHash) {
-			Object oldObj = routeRegHash.put(new Integer(routeRegisterID),
-					tsDevice);
+			final Object oldObj = routeRegHash.put(
+					new Integer(routeRegisterID), tsDevice);
 
-			if (oldObj != null) {
-				log.info("NOTICE: routeRegHash.put() replaced " + oldObj
-						+ " for " + this);
-			}
+			if (oldObj != null)
+				TSProviderImpl.log.info("NOTICE: routeRegHash.put() replaced "
+						+ oldObj + " for " + this);
 		}
 	}
 
-	public void addRouteMonitorThread(TsapiRouteMonitor obs) {
-		if (routeMonitorThreads.contains(obs)) {
+	public void addRouteMonitorThread(final TsapiRouteMonitor obs) {
+		if (routeMonitorThreads.contains(obs))
 			return;
-		}
 
 		routeMonitorThreads.addElement(obs);
 	}
 
-	public void addTerminalMonitorThread(TsapiTerminalMonitor obs) {
-		if (terminalMonitorThreads.contains(obs)) {
+	public void addTerminalMonitorThread(final TsapiTerminalMonitor obs) {
+		if (terminalMonitorThreads.contains(obs))
 			return;
-		}
 
 		terminalMonitorThreads.addElement(obs);
 	}
 
-	void addTrunkToHash(String name, TSTrunk trunk) {
+	void addTrunkToHash(final String name, final TSTrunk trunk) {
 		synchronized (trkHash) {
 			if (name != null) {
-				Object oldObj = trkHash.put(name, trunk);
-				if (oldObj != null) {
-					log.info("NOTICE: trkHash.put() replaced " + oldObj
-							+ " for " + this);
-				}
+				final Object oldObj = trkHash.put(name, trunk);
+				if (oldObj != null)
+					TSProviderImpl.log.info("NOTICE: trkHash.put() replaced "
+							+ oldObj + " for " + this);
 			}
 		}
 	}
@@ -483,87 +467,79 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	void callCleanup() {
-		Enumeration<TSCall> callEnum = callHash.elements();
+		final Enumeration<TSCall> callEnum = callHash.elements();
 
 		while (callEnum.hasMoreElements()) {
 			TSCall call;
 			try {
 				call = (TSCall) callEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
-			if (call == null) {
-				log
+			if (call == null)
+				TSProviderImpl.log
 						.error("callCleanup: handled AuditThread null call reference race condition for "
 								+ this);
-			}
 
 			if (call.hasReceivedCallClearedTransfer()) {
 				if (System.currentTimeMillis()
-						- call.getCallClearedTransferReceiptTime() < 3000L) {
+						- call.getCallClearedTransferReceiptTime() < 3000L)
 					continue;
-				}
-				Vector<TSEvent> eventList = new Vector<TSEvent>();
+				final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 				call.setState(34, eventList);
 
-				int jtapiCause = 212;
+				final int jtapiCause = 212;
 
 				tsEHandler.doCallMonitors(call, eventList, jtapiCause, null);
 			}
 
-			if (call.checkForMonitors()) {
+			if (call.checkForMonitors())
 				continue;
-			}
 			boolean is_confirmed_that_call_is_gone = false;
 
 			boolean lucent_tactics_get_an_answer = false;
 
-			if (isLucentV5()) {
+			if (isLucentV5())
 				try {
-					String old_ucid = call.getUCID();
-					String new_ucid = call.queryUCID();
+					final String old_ucid = call.getUCID();
+					final String new_ucid = call.queryUCID();
 
-					if ((old_ucid != null) && (new_ucid != null)
-							&& (old_ucid.compareTo(new_ucid) != 0)) {
+					if (old_ucid != null && new_ucid != null
+							&& old_ucid.compareTo(new_ucid) != 0)
 						is_confirmed_that_call_is_gone = true;
-					} else {
+					else
 						is_confirmed_that_call_is_gone = false;
-					}
 
 					lucent_tactics_get_an_answer = true;
-				} catch (TsapiUnableToSendException tue) {
+				} catch (final TsapiUnableToSendException tue) {
 					throw tue;
-				} catch (TsapiPlatformException e) {
-					if ((e.getErrorType() == 2)
-							&& (((e.getErrorCode() == 24) || (e.getErrorCode() == 11)))) {
+				} catch (final TsapiPlatformException e) {
+					if (e.getErrorType() == 2
+							&& (e.getErrorCode() == 24 || e.getErrorCode() == 11)) {
 						is_confirmed_that_call_is_gone = true;
 
 						lucent_tactics_get_an_answer = true;
-					} else if ((e.getErrorType() == 2)
-							&& (e.getErrorCode() == 15)) {
-						log
+					} else if (e.getErrorType() == 2 && e.getErrorCode() == 15)
+						TSProviderImpl.log
 								.info("Error: UCID not enabled on switch - interferes with JTAPI Call Auditing");
-					}
 
-				} catch (Exception e) {
-					log.error(e.getMessage(), e);
+				} catch (final Exception e) {
+					TSProviderImpl.log.error(e.getMessage(), e);
 				}
 
-			}
-
-			if (((lucent_tactics_get_an_answer) && (is_confirmed_that_call_is_gone))
-					|| ((!lucent_tactics_get_an_answer) && (!call
-							.updateObject()))) {
-				if (call.getTSState() == 34) {
-					if (callHash.get(new Integer(call.getCallID())) == null) {
-						log.info("Benign race condition: call (callid "
-								+ call.getCallID()
-								+ ") went INVALID while being audited");
-					} else {
-						log
+			if (lucent_tactics_get_an_answer && is_confirmed_that_call_is_gone
+					|| !lucent_tactics_get_an_answer && !call.updateObject()) {
+				if (call.getTSState() == 34)
+					if (callHash.get(new Integer(call.getCallID())) == null)
+						TSProviderImpl.log
+								.info("Benign race condition: call (callid "
+										+ call.getCallID()
+										+ ") went INVALID while being audited");
+					else {
+						TSProviderImpl.log
 								.info("ERROR: removing call (callid "
 										+ call.getCallID()
 										+ ") from Provider's records - Audit indicates call had ended");
@@ -571,24 +547,23 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 						call.delete();
 					}
 
-				}
-
 				call.setState(34, null);
 			}
 		}
 	}
 
-	public void changeCallIDInDomain(int old_callid, int new_callid) {
+	public void changeCallIDInDomain(final int old_callid, final int new_callid) {
 		m_providerTracker.changeCallIDInDomain(old_callid, new_callid);
 	}
 
-	TSAgent createAgent(TSAgentKey agentKey, String agentID, String password) {
+	TSAgent createAgent(final TSAgentKey agentKey, final String agentID,
+			final String password) {
 		return createAgent(agentKey, agentID, password,
-				CREATEAGENT_ACCEPT_DELETED);
+				TSProviderImpl.CREATEAGENT_ACCEPT_DELETED);
 	}
 
-	TSAgent createAgent(TSAgentKey agentKey, String agentID, String password,
-			int deletedAgentSearchPolicy) {
+	TSAgent createAgent(final TSAgentKey agentKey, final String agentID,
+			final String password, final int deletedAgentSearchPolicy) {
 		TSAgent agent = null;
 
 		boolean newObject = false;
@@ -597,94 +572,84 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		synchronized (agentHash) {
 			agent = (TSAgent) agentHash.get(agentKey);
 			if (agent == null) {
-				if (deletedAgentSearchPolicy == CREATEAGENT_ACCEPT_DELETED) {
+				if (deletedAgentSearchPolicy == TSProviderImpl.CREATEAGENT_ACCEPT_DELETED)
 					agent = auditor.getAgent(agentKey);
-				}
 
 				if (agent == null) {
 					newObject = true;
 					agent = new TSAgent(this, agentKey, password);
 					addAgentToHash(agent);
-				} else {
+				} else
 					auditObject = true;
-				}
 			}
 		}
 
-		if (newObject) {
+		if (newObject)
 			agent.finishConstruction();
-		} else {
+		else {
 			agent.waitForConstruction();
 
-			if ((agent.getACDDeviceID() == null)
-					&& (agentKey.acdDeviceID != null) && (!auditObject)) {
+			if (agent.getACDDeviceID() == null && agentKey.acdDeviceID != null
+					&& !auditObject)
 				agent.addToSkillsVector(agentKey.acdDeviceID);
-			}
 		}
 		return agent;
 	}
 
-	TSCall createCall(int callID) {
+	TSCall createCall(final int callID) {
 		synchronized (callHash) {
 			TSCall call = null;
 
 			if (callID != 0) {
 				call = findCall(callID);
-				if (call != null) {
+				if (call != null)
 					return call;
-				}
 
 				call = new TSCall(this, callID);
-			} else {
+			} else
 				call = new TSCall(this, callID);
-			}
 
 			return call;
 		}
 	}
 
-	TSCall createCall(int callID, Object privateData) {
-		TSCall call = createCall(callID);
+	TSCall createCall(final int callID, final Object privateData) {
+		final TSCall call = createCall(callID);
 		return validateCall(privateData, call, callID);
 	}
 
-	TSConnection createConnection(CSTAConnectionID connID, TSDevice device,
-			Vector<TSEvent> eventList) {
+	TSConnection createConnection(final CSTAConnectionID connID,
+			final TSDevice device, final Vector<TSEvent> eventList) {
 		TSConnection conn = null;
 
 		boolean newObject = false;
 
 		synchronized (connHash) {
-			if (connID != null) {
+			if (connID != null)
 				conn = (TSConnection) connHash.get(connID);
-			}
 			if (conn == null) {
-				if (connID != null) {
+				if (connID != null)
 					conn = auditor.getConn(connID);
-				}
 				if (conn == null) {
 					newObject = true;
 					conn = new TSConnection(this, connID, device, false);
-					if (connID != null) {
+					if (connID != null)
 						addConnectionToHash(conn);
-					}
 				}
 			}
 		}
-		if (newObject) {
+		if (newObject)
 			conn.finishConstruction(null, eventList);
-		} else {
+		else
 			conn.waitForConstruction();
-		}
 
 		return conn.getTSConn();
 	}
 
-	public TSDevice createDevice(CSTAExtendedDeviceID deviceID) {
-		if ((deviceID == null) || (deviceID.getDeviceIDStatus() != 0)
-				|| (deviceID.getDeviceID() == null)) {
+	public TSDevice createDevice(final CSTAExtendedDeviceID deviceID) {
+		if (deviceID == null || deviceID.getDeviceIDStatus() != 0
+				|| deviceID.getDeviceID() == null)
 			return null;
-		}
 
 		TSDevice device = null;
 
@@ -700,33 +665,30 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return device;
 	}
 
-	public TSDevice createDevice(CSTAExtendedDeviceID deviceID,
-			boolean checkValidity) throws TsapiInvalidArgumentException {
-		if ((deviceID == null) || (deviceID.getDeviceIDStatus() != 0)
-				|| (deviceID.getDeviceID() == null)) {
+	public TSDevice createDevice(final CSTAExtendedDeviceID deviceID,
+			final boolean checkValidity) throws TsapiInvalidArgumentException {
+		if (deviceID == null || deviceID.getDeviceIDStatus() != 0
+				|| deviceID.getDeviceID() == null)
 			return null;
-		}
 		if (checkValidity) {
-			if (deviceID.getDeviceID().equals("AllRouteAddress")) {
+			if (deviceID.getDeviceID().equals("AllRouteAddress"))
 				return createDevice(deviceID);
-			}
 
-			if ((state == 2) && (securityOn)
-					&& (!tsMonitorableDevices.contains(deviceID.getDeviceID()))) {
+			if (state == 2 && securityOn
+					&& !tsMonitorableDevices.contains(deviceID.getDeviceID()))
 				throw new TsapiInvalidArgumentException(0, 0,
 						"not in provider's domain");
-			}
 
 		}
 
 		return createDevice(deviceID);
 	}
 
-	TSDevice createDevice(CSTAExtendedDeviceID deviceID, CSTAConnectionID connID) {
-		if ((deviceID == null) || (deviceID.getDeviceIDStatus() != 0)
-				|| (deviceID.getDeviceID() == null)) {
+	TSDevice createDevice(final CSTAExtendedDeviceID deviceID,
+			final CSTAConnectionID connID) {
+		if (deviceID == null || deviceID.getDeviceIDStatus() != 0
+				|| deviceID.getDeviceID() == null)
 			return null;
-		}
 
 		TSDevice device = null;
 
@@ -735,23 +697,21 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		if (device == null) {
 			if (connID != null) {
 				TSConnection conn = (TSConnection) connHash.get(connID);
-				if (conn == null) {
+				if (conn == null)
 					conn = auditor.getConn(connID);
-				}
 				if (conn != null) {
 					device = conn.getTSDevice();
 
 					synchronized (device) {
 						device.addName(deviceID);
 						synchronized (devHash) {
-							TSDevice tmpDev = (TSDevice) devHash.get(deviceID
-									.getDeviceID());
+							final TSDevice tmpDev = (TSDevice) devHash
+									.get(deviceID.getDeviceID());
 
-							if (tmpDev == null) {
+							if (tmpDev == null)
 								addDeviceToHash(device);
-							} else {
+							else
 								device = tmpDev;
-							}
 						}
 					}
 				}
@@ -759,11 +719,10 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 			boolean notFound = false;
 			synchronized (devHash) {
-				if ((device == null)
-						&& ((device = (TSDevice) devHash.get(deviceID
-								.getDeviceID())) == null)) {
+				if (device == null
+						&& (device = (TSDevice) devHash.get(deviceID
+								.getDeviceID())) == null)
 					notFound = true;
-				}
 
 			}
 
@@ -779,32 +738,30 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return device;
 	}
 
-	TSDevice createDevice(String deviceID) {
+	TSDevice createDevice(final String deviceID) {
 		return createDevice(deviceID, null);
 	}
 
-	public TSDevice createDevice(String name, boolean checkValidity)
+	public TSDevice createDevice(final String name, final boolean checkValidity)
 			throws TsapiInvalidArgumentException {
-		if (name == null) {
+		if (name == null)
 			return null;
-		}
 
 		return createDevice(
 				new CSTAExtendedDeviceID(name, (short) 0, (short) 0),
 				checkValidity);
 	}
 
-	TSDevice createDevice(String deviceID, CSTAConnectionID connID) {
-		if (deviceID == null) {
+	TSDevice createDevice(final String deviceID, final CSTAConnectionID connID) {
+		if (deviceID == null)
 			return null;
-		}
 		return createDevice(new CSTAExtendedDeviceID(deviceID, (short) 0,
 				(short) 0), connID);
 	}
 
-	TSConnection createTerminalConnection(CSTAConnectionID connID,
-			TSDevice termConnDevice, Vector<TSEvent> eventList,
-			TSDevice connDevice) {
+	TSConnection createTerminalConnection(final CSTAConnectionID connID,
+			final TSDevice termConnDevice, final Vector<TSEvent> eventList,
+			final TSDevice connDevice) {
 		TSConnection conn = null;
 
 		boolean newObject = false;
@@ -820,46 +777,40 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					newObject = true;
 					conn = new TSConnection(this, connID, termConnDevice, true);
 					addConnectionToHash(conn);
-				} else {
+				} else
 					auditObject = true;
-				}
 			}
 		}
 
-		if (newObject) {
+		if (newObject)
 			conn.finishConstruction(connDevice, eventList);
-		} else {
+		else
 			conn.waitForConstruction();
-		}
 
-		if ((termConnDevice.isTerminal()) && (!conn.isTerminalConnection())) {
+		if (termConnDevice.isTerminal() && !conn.isTerminalConnection())
 			if (isLucent()) {
 				if (!auditObject) {
 					deleteConnectionFromHash(connID);
 					conn = createTerminalConnection(connID, termConnDevice,
 							eventList, connDevice);
 				}
-			} else {
+			} else
 				conn.setTerminalConnection();
-			}
-		}
 
 		return conn;
 	}
 
-	TSTrunk createTrunk(String trkName, int type) {
-		if (trkName == null) {
+	TSTrunk createTrunk(final String trkName, final int type) {
+		if (trkName == null)
 			return null;
-		}
 
 		synchronized (trkHash) {
 			TSTrunk trunk = null;
 
 			trunk = (TSTrunk) trkHash.get(trkName);
 
-			if (trunk != null) {
+			if (trunk != null)
 				return trunk;
-			}
 
 			trunk = new TSTrunk(this, trkName, type);
 
@@ -867,33 +818,32 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		}
 	}
 
-	public TSCall createTSCall(int callID) {
-		TSCall call = createCall(callID);
+	public TSCall createTSCall(final int callID) {
+		final TSCall call = createCall(callID);
 		call.updateObject();
 		return call;
 	}
 
-	public TSConnection createTSConnection(CSTAConnectionID connID,
-			TSDevice device) {
+	public TSConnection createTSConnection(final CSTAConnectionID connID,
+			final TSDevice device) {
 		return createConnection(connID, device, null);
 	}
 
-	public TSTrunk createTSTrunk(String trkName) {
-		TSTrunk trunk = createTrunk(trkName, 1);
+	public TSTrunk createTSTrunk(final String trkName) {
+		final TSTrunk trunk = createTrunk(trkName, 1);
 		return trunk;
 	}
 
-	void deleteAgentFromHash(TSAgentKey agentKey) {
-		if (agentKey != null) {
+	void deleteAgentFromHash(final TSAgentKey agentKey) {
+		if (agentKey != null)
 			agentHash.remove(agentKey);
-		}
 	}
 
-	void deleteCallFromHash(int callID) {
+	void deleteCallFromHash(final int callID) {
 		callHash.remove(new Integer(callID));
 	}
 
-	void deleteConnectionFromHash(CSTAConnectionID connID) {
+	void deleteConnectionFromHash(final CSTAConnectionID connID) {
 		if (connID != null) {
 			connHash.remove(connID);
 
@@ -901,54 +851,53 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		}
 	}
 
-	void deleteDeviceFromHash(String _deviceID) {
+	void deleteDeviceFromHash(final String _deviceID) {
 		synchronized (devHash) {
-			Object removedObj = devHash.remove(_deviceID);
-			log.info("NOTICE: devHash.remove() removed " + removedObj
-					+ " by device name " + _deviceID);
+			final Object removedObj = devHash.remove(_deviceID);
+			TSProviderImpl.log.info("NOTICE: devHash.remove() removed "
+					+ removedObj + " by device name " + _deviceID);
 		}
 	}
 
-	void deleteDeviceFromHash(TSDevice device) {
+	void deleteDeviceFromHash(final TSDevice device) {
 		synchronized (devHash) {
-			Vector<CSTAExtendedDeviceID> keys = device.getKeys();
+			final Vector<CSTAExtendedDeviceID> keys = device.getKeys();
 			for (int i = 0; i < keys.size(); ++i) {
-				String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
+				final String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
 						.getDeviceID();
-				Object removedObj = devHash.remove(key);
-				log.info("NOTICE: devHash.remove() removed " + removedObj
-						+ " for device name(" + i + ") " + key);
+				final Object removedObj = devHash.remove(key);
+				TSProviderImpl.log.info("NOTICE: devHash.remove() removed "
+						+ removedObj + " for device name(" + i + ") " + key);
 			}
 		}
 	}
 
-	void deleteInstanceOfDeviceFromHash(TSDevice _soughtObj) {
+	void deleteInstanceOfDeviceFromHash(final TSDevice _soughtObj) {
 		int keys_not_in_hash = 0;
 		int keys_pointing_elsewhere = 0;
-		Hashtable<String, Object> keys_pointing_at = new Hashtable<String, Object>();
+		final Hashtable<String, Object> keys_pointing_at = new Hashtable<String, Object>();
 
-		StringBuffer alias_names = new StringBuffer();
+		final StringBuffer alias_names = new StringBuffer();
 
-		StringBuffer elsewhere_names = new StringBuffer();
+		final StringBuffer elsewhere_names = new StringBuffer();
 
-		StringBuffer not_in_hash_names = new StringBuffer();
+		final StringBuffer not_in_hash_names = new StringBuffer();
 
 		synchronized (devHash) {
-			Vector<CSTAExtendedDeviceID> keys = _soughtObj.getKeys();
+			final Vector<CSTAExtendedDeviceID> keys = _soughtObj.getKeys();
 			for (int i = 0; i < keys.size(); ++i) {
-				String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
+				final String key = ((CSTAExtendedDeviceID) keys.elementAt(i))
 						.getDeviceID();
-				Object foundObj = devHash.get(key);
-				boolean foundAny = foundObj != null;
-				boolean foundThatOne = foundObj == _soughtObj;
+				final Object foundObj = devHash.get(key);
+				final boolean foundAny = foundObj != null;
+				final boolean foundThatOne = foundObj == _soughtObj;
 
-				if (foundThatOne) {
+				if (foundThatOne)
 					devHash.remove(key);
-				}
 
-				if (foundThatOne) {
+				if (foundThatOne)
 					addDeviceNameToPrintingBuffer(alias_names, key);
-				} else if (foundAny) {
+				else if (foundAny) {
 					++keys_pointing_elsewhere;
 					keys_pointing_at.put(key, foundObj);
 					addDeviceNameToPrintingBuffer(elsewhere_names, key);
@@ -961,18 +910,22 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 		}
 
-		if (keys_pointing_elsewhere + keys_not_in_hash == 0) {
-			log.info("NOTICE: devHash.remove() expected, found and removed "
-					+ _soughtObj + " by device name(s) [" + alias_names + "]");
-		} else {
+		if (keys_pointing_elsewhere + keys_not_in_hash == 0)
+			TSProviderImpl.log
+					.info("NOTICE: devHash.remove() expected, found and removed "
+							+ _soughtObj
+							+ " by device name(s) ["
+							+ alias_names
+							+ "]");
+		else {
 			if (keys_pointing_elsewhere > 0) {
-				Iterator<String> key_iter = keys_pointing_at.keySet()
+				final Iterator<String> key_iter = keys_pointing_at.keySet()
 						.iterator();
 
 				while (key_iter.hasNext()) {
-					String d = (String) key_iter.next();
-					TSDevice t = (TSDevice) keys_pointing_at.get(d);
-					log
+					final String d = (String) key_iter.next();
+					final TSDevice t = (TSDevice) keys_pointing_at.get(d);
+					TSProviderImpl.log
 							.info("NOTICE: devHash.remove() expected "
 									+ _soughtObj
 									+ " but found "
@@ -984,239 +937,235 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 			}
 
-			if (keys_not_in_hash > 0) {
-				log.info("NOTICE: attempted to devHash.remove() " + _soughtObj
-						+ " by device name(s) [" + not_in_hash_names
-						+ "] but no TSDevice there by those name(s)");
-			}
+			if (keys_not_in_hash > 0)
+				TSProviderImpl.log
+						.info("NOTICE: attempted to devHash.remove() "
+								+ _soughtObj + " by device name(s) ["
+								+ not_in_hash_names
+								+ "] but no TSDevice there by those name(s)");
 		}
 	}
 
-	void deleteMonitor(int monitorCrossRefID) {
+	void deleteMonitor(final int monitorCrossRefID) {
 		xrefHash.remove(new Integer(monitorCrossRefID));
 
 		TtXrefHash("delMon", monitorCrossRefID, "GONE");
 	}
 
-	void deleteNonCallFromHash(int nonCallId) {
+	void deleteNonCallFromHash(final int nonCallId) {
 		nonCallHash.remove(new Integer(nonCallId));
 	}
 
-	void deletePrivateXref(int xrefID) {
+	void deletePrivateXref(final int xrefID) {
 		synchronized (privXrefHash) {
 			privXrefHash.remove(new Integer(xrefID));
 		}
 	}
 
-	void deleteRoute(int routeRegisterID) {
+	void deleteRoute(final int routeRegisterID) {
 		routeRegHash.remove(new Integer(routeRegisterID));
 	}
 
-	void deleteTrunkFromHash(String name) {
+	void deleteTrunkFromHash(final String name) {
 		synchronized (trkHash) {
-			while (trkHash.remove(name) != null) {
+			while (trkHash.remove(name) != null)
 				;
-			}
 		}
 	}
 
 	public void disableHeartbeat() {
-		if (tsapi != null) {
+		if (tsapi != null)
 			tsapi.disableHeartbeat();
-		}
 	}
 
-	Vector<TSCall> doCallSnapshot(String device) {
-		if (tsCaps.getSnapshotDeviceReq() == 0) {
+	Vector<TSCall> doCallSnapshot(final String device) {
+		if (tsCaps.getSnapshotDeviceReq() == 0)
 			return null;
-		}
 
-		ProviderSnapshotDeviceConfHandler handler = new ProviderSnapshotDeviceConfHandler(
+		final ProviderSnapshotDeviceConfHandler handler = new ProviderSnapshotDeviceConfHandler(
 				this);
 		try {
 			tsapi.snapshotDevice(device, null, handler);
-		} catch (TsapiUnableToSendException tue) {
+		} catch (final TsapiUnableToSendException tue) {
 			throw tue;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			TSProviderImpl.log.error(e.getMessage(), e);
 			return null;
 		}
 
 		return handler.cv;
 	}
 
-	void dump(String indent) {
-		log.trace(indent + "***** PROVIDER DUMP *****");
-		log.trace(indent + "TSProvider: " + this);
+	void dump(final String indent) {
+		TSProviderImpl.log.trace(indent + "***** PROVIDER DUMP *****");
+		TSProviderImpl.log.trace(indent + "TSProvider: " + this);
 
-		log.trace(indent + "TSProvider: " + connectStringData.serverId
-				+ ";login=" + connectStringData.loginId + ";passwd=*******");
+		TSProviderImpl.log.trace(indent + "TSProvider: "
+				+ connectStringData.serverId + ";login="
+				+ connectStringData.loginId + ";passwd=*******");
 
-		log.trace(indent + "TSProvider state: " + state);
-		log.trace(indent + "TSProvider version details: "
+		TSProviderImpl.log.trace(indent + "TSProvider state: " + state);
+		TSProviderImpl.log.trace(indent + "TSProvider version details: "
 				+ getProviderVersionDetails());
 
-		log.trace(indent + "TSProvider calls: ");
-		Enumeration<TSCall> callEnum = callHash.elements();
+		TSProviderImpl.log.trace(indent + "TSProvider calls: ");
+		final Enumeration<TSCall> callEnum = callHash.elements();
 
 		while (callEnum.hasMoreElements()) {
 			TSCall call;
 			try {
 				call = (TSCall) callEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
 			call.dump(indent + " ");
 		}
-		log.trace(indent + "TSProvider non calls: ");
-		Enumeration<TSCall> nonCallEnum = nonCallHash.elements();
+		TSProviderImpl.log.trace(indent + "TSProvider non calls: ");
+		final Enumeration<TSCall> nonCallEnum = nonCallHash.elements();
 
 		while (nonCallEnum.hasMoreElements()) {
 			TSCall nonCall;
 			try {
 				nonCall = (TSCall) nonCallEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
 			nonCall.dump(indent + " ");
 		}
 
-		log.trace(indent + "TSProvider VDN Calls-to-VDN Domain Mapping: ");
+		TSProviderImpl.log.trace(indent
+				+ "TSProvider VDN Calls-to-VDN Domain Mapping: ");
 
 		dumpDomainData(indent);
 
-		log.trace(indent + "TSProvider devices: ");
-		Enumeration<TSDevice> deviceEnum = devHash.elements();
+		TSProviderImpl.log.trace(indent + "TSProvider devices: ");
+		final Enumeration<TSDevice> deviceEnum = devHash.elements();
 
 		while (deviceEnum.hasMoreElements()) {
 			TSDevice device;
 			try {
 				device = (TSDevice) deviceEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
 			device.dump(indent + " ");
 		}
-		log.trace(indent + "TSProvider conns: ");
-		Enumeration<TSConnection> connEnum = connHash.elements();
+		TSProviderImpl.log.trace(indent + "TSProvider conns: ");
+		final Enumeration<TSConnection> connEnum = connHash.elements();
 
 		while (connEnum.hasMoreElements()) {
 			TSConnection conn;
 			try {
 				conn = (TSConnection) connEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
 			conn.dump(indent + " ");
 		}
-		log.trace(indent + "TSProvider agents: ");
-		Enumeration<TSAgent> agentEnum = agentHash.elements();
+		TSProviderImpl.log.trace(indent + "TSProvider agents: ");
+		final Enumeration<TSAgent> agentEnum = agentHash.elements();
 
 		while (agentEnum.hasMoreElements()) {
 			TSAgent agent;
 			try {
 				agent = (TSAgent) agentEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
 			agent.dump(indent + " ");
 		}
-		log.trace(indent + "TSProvider trunks: ");
-		Enumeration<TSTrunk> trkEnum = trkHash.elements();
+		TSProviderImpl.log.trace(indent + "TSProvider trunks: ");
+		final Enumeration<TSTrunk> trkEnum = trkHash.elements();
 
 		while (trkEnum.hasMoreElements()) {
 			TSTrunk trk;
 			try {
 				trk = (TSTrunk) trkEnum.nextElement();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 				continue;
 			}
 
 			trk.dump(indent + " ");
 		}
-		log.trace(indent + "TSProvider xrefs: ");
-		Enumeration<Object> xrefEnum = xrefHash.elements();
-		while (xrefEnum.hasMoreElements()) {
+		TSProviderImpl.log.trace(indent + "TSProvider xrefs: ");
+		final Enumeration<Object> xrefEnum = xrefHash.elements();
+		while (xrefEnum.hasMoreElements())
 			try {
-				log.trace(indent + "xref object: " + xrefEnum.nextElement());
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage(), e);
+				TSProviderImpl.log.trace(indent + "xref object: "
+						+ xrefEnum.nextElement());
+			} catch (final NoSuchElementException e) {
+				TSProviderImpl.log.error(e.getMessage(), e);
 			}
-		}
 
-		log.trace(indent + "TSProvider audits: ");
+		TSProviderImpl.log.trace(indent + "TSProvider audits: ");
 		auditor.dump(indent + " ");
-		log.trace(indent + "***** PROVIDER DUMP END *****");
+		TSProviderImpl.log.trace(indent + "***** PROVIDER DUMP END *****");
 	}
 
-	void dumpAgent(TSAgentKey agentKey) {
+	void dumpAgent(final TSAgentKey agentKey) {
 		auditor.dumpAgent(agentKey);
 	}
 
-	void dumpCall(int callID) {
+	void dumpCall(final int callID) {
 		auditor.dumpCall(callID);
 	}
 
-	void dumpConn(CSTAConnectionID connID) {
+	void dumpConn(final CSTAConnectionID connID) {
 		auditor.dumpConn(connID);
 	}
 
-	public void dumpDomainData(String indent) {
+	public void dumpDomainData(final String indent) {
 		m_providerTracker.dumpDomainData(indent);
 	}
 
 	public void enableHeartbeat() {
-		if (tsapi != null) {
+		if (tsapi != null)
 			tsapi.enableHeartbeat();
-		} else {
+		else
 			enableTsapiHeartbeat = true;
-		}
 	}
 
 	public void finalizeOldProvider() {
-		synchronized (provider_count_lock) {
-			if (provider_count > 0) {
-				provider_count -= 1;
-				if (provider_count == 0) {
+		synchronized (TSProviderImpl.provider_count_lock) {
+			if (TSProviderImpl.provider_count > 0) {
+				TSProviderImpl.provider_count -= 1;
+				if (TSProviderImpl.provider_count == 0)
 					JtapiEventThreadManager.drainThreads();
-				}
 			}
 		}
 	}
 
-	TSDevice findACDDevice(int xrefID) {
+	TSDevice findACDDevice(final int xrefID) {
 		return (TSDevice) privXrefHash.get(new Integer(xrefID));
 	}
 
-	TSAgent findAgent(TSAgentKey agentKey) {
+	TSAgent findAgent(final TSAgentKey agentKey) {
 		return (TSAgent) agentHash.get(agentKey);
 	}
 
-	TSCall findCall(int callID) {
+	TSCall findCall(final int callID) {
 		synchronized (callHash) {
 			TSCall call = null;
 
 			if (callID != 0) {
 				call = (TSCall) callHash.get(new Integer(callID));
-				if (call != null) {
+				if (call != null)
 					return call;
-				}
 
 				call = auditor.getCall(callID);
-				if (call != null) {
+				if (call != null)
 					return call;
-				}
 
 			}
 
@@ -1224,7 +1173,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		}
 	}
 
-	TSDevice findDevice(String name) {
+	TSDevice findDevice(final String name) {
 		synchronized (devHash) {
 			return (TSDevice) devHash.get(name);
 		}
@@ -1240,30 +1189,27 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 	public CallClassifierInfo getCallClassifierInfo()
 			throws TsapiMethodNotSupportedException {
-		if (!isLucent()) {
+		if (!isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
 		try {
-			LucentQueryCallClassifier qcc = new LucentQueryCallClassifier();
-			Object result = sendPrivateData(qcc.makeTsapiPrivate());
+			final LucentQueryCallClassifier qcc = new LucentQueryCallClassifier();
+			final Object result = sendPrivateData(qcc.makeTsapiPrivate());
 
-			if (result instanceof LucentCallClassifierInfo) {
+			if (result instanceof LucentCallClassifierInfo)
 				return new CallClassifierInfo(
 						((LucentCallClassifierInfo) result).numAvailPorts,
 						((LucentCallClassifierInfo) result).numInUsePorts);
-			}
 
 			return null;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						" service failure");
-			}
 
 			throw new TsapiPlatformException(4, 0, " service failure");
 		}
@@ -1273,13 +1219,13 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		CSTAEvent event;
 		try {
 			event = tsapi.CSTAQueryCallMonitor();
-		} catch (TsapiUnableToSendException tue) {
+		} catch (final TsapiUnableToSendException tue) {
 			throw tue;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			TSProviderImpl.log.error(e.getMessage(), e);
 			return false;
 		}
-		CSTAQueryCallMonitorConfEvent qcmConf = (CSTAQueryCallMonitorConfEvent) event
+		final CSTAQueryCallMonitorConfEvent qcmConf = (CSTAQueryCallMonitorConfEvent) event
 				.getEvent();
 
 		return qcmConf.isCallMonitor();
@@ -1294,16 +1240,15 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	TSCapabilities getCaps() {
-		TSCapabilities tsCaps = new TSCapabilities();
+		final TSCapabilities tsCaps = new TSCapabilities();
 
-		if (isLucent()) {
+		if (isLucent())
 			tsCaps.setLucent(getLucentPDV());
-		}
 
 		try {
-			CSTAEvent event = tsapi.getApiCaps();
+			final CSTAEvent event = tsapi.getApiCaps();
 			if (event.getEvent() == null) {
-				log
+				TSProviderImpl.log
 						.info("Init Capabilities: Conf event null, enable all Capabilities for "
 								+ this);
 
@@ -1311,12 +1256,11 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				return tsCaps;
 			}
 			if (event.getEvent() instanceof CSTAGetAPICapsConfEvent) {
-				CSTAGetAPICapsConfEvent getAPICapsConf = (CSTAGetAPICapsConfEvent) event
+				final CSTAGetAPICapsConfEvent getAPICapsConf = (CSTAGetAPICapsConfEvent) event
 						.getEvent();
 
-				if (isLucentV5()) {
+				if (isLucentV5())
 					tsCaps.setAddParty(1);
-				}
 				tsCaps.setAlternateCall(getAPICapsConf.getAlternateCall());
 				tsCaps.setAnswerCall(getAPICapsConf.getAnswerCall());
 				tsCaps.setCallCompletion(getAPICapsConf.getCallCompletion());
@@ -1468,11 +1412,11 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 				tsCaps.setSysStatEvent(getAPICapsConf.getSysStatEvent());
 
-				Object replyPriv = event.getPrivData();
-				if ((replyPriv instanceof LucentGetAPICapsConfEvent)
-						&& (replyPriv instanceof LucentV5GetAPICapsConfEvent)
-						&& (replyPriv instanceof LucentV7GetAPICapsConfEvent)) {
-					LucentV7GetAPICapsConfEvent cf = (LucentV7GetAPICapsConfEvent) replyPriv;
+				final Object replyPriv = event.getPrivData();
+				if (replyPriv instanceof LucentGetAPICapsConfEvent
+						&& replyPriv instanceof LucentV5GetAPICapsConfEvent
+						&& replyPriv instanceof LucentV7GetAPICapsConfEvent) {
+					final LucentV7GetAPICapsConfEvent cf = (LucentV7GetAPICapsConfEvent) replyPriv;
 
 					setAdministeredSwitchSoftwareVersion(cf
 							.getAdministeredSwitchSoftwareVersion());
@@ -1485,7 +1429,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				}
 
 			} else {
-				log
+				TSProviderImpl.log
 						.info("Init Capabilities: expected conf event with pduType 125,received conf event with pduType "
 								+ event.getEvent().getPDU()
 								+ ", enable all Capabilities" + " for " + this);
@@ -1493,8 +1437,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				tsCaps.setAll();
 				return tsCaps;
 			}
-		} catch (Exception e) {
-			log
+		} catch (final Exception e) {
+			TSProviderImpl.log
 					.error("Init Capabilities: Exception, enable all Capabilities - Exception: "
 							+ e + " for " + this);
 
@@ -1504,94 +1448,85 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return tsCaps;
 	}
 
-	public TSConnection getConnection(CSTAConnectionID connID) {
+	public TSConnection getConnection(final CSTAConnectionID connID) {
 		TSConnection conn = null;
 
 		synchronized (connHash) {
-			if (connID != null) {
+			if (connID != null)
 				conn = (TSConnection) connHash.get(connID);
-			}
-			if ((conn == null) && (connID != null)) {
+			if (conn == null && connID != null)
 				conn = auditor.getConn(connID);
-			}
 		}
 
-		if (conn == null) {
+		if (conn == null)
 			return null;
-		}
 
 		conn.waitForConstruction();
 
 		return conn.getTSConn();
 	}
 
-	public int getCurrentStateOfCallFromTelephonyServer(int callId) {
+	public int getCurrentStateOfCallFromTelephonyServer(final int callId) {
 		TSCall currentCall = null;
 
-		if (callId < 1) {
+		if (callId < 1)
 			throw new TsapiPlatformException(3, 0,
 					"Please pass a Call ID value that is greater than 0.");
-		}
 
 		currentCall = createTSCall(callId);
 
 		return getCurrentStateOfCallFromTelephonyServer(currentCall);
 	}
 
-	public int getCurrentStateOfCallFromTelephonyServer(TSCall call) {
-		if (call == null) {
+	public int getCurrentStateOfCallFromTelephonyServer(final TSCall call) {
+		if (call == null)
 			throw new TsapiPlatformException(3, 0,
 					"Call object passed in is null.");
-		}
 
-		log
+		TSProviderImpl.log
 				.info("Forcing a query on telephony server to check state of call - "
 						+ call);
 		return call.getStateFromServer();
 	}
 
-	short getDeviceExt(String deviceID) {
-		if (tsCaps.getQueryDeviceInfo() == 0) {
+	short getDeviceExt(final String deviceID) {
+		if (tsCaps.getQueryDeviceInfo() == 0)
 			return 0;
-		}
 		CSTAEvent event;
 		try {
 			event = tsapi.queryDeviceInfo(deviceID, null);
-		} catch (TsapiUnableToSendException tue) {
+		} catch (final TsapiUnableToSendException tue) {
 			throw tue;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			TSProviderImpl.log.error(e.getMessage(), e);
 			return 0;
 		}
 
-		Object replyPriv = event.getPrivData();
+		final Object replyPriv = event.getPrivData();
 		if (replyPriv instanceof LucentQueryDeviceInfoConfEvent) {
 			if (((LucentQueryDeviceInfoConfEvent) replyPriv)
-					.getExtensionClass() == 0) {
+					.getExtensionClass() == 0)
 				return 1;
-			}
 			if (((LucentQueryDeviceInfoConfEvent) replyPriv)
-					.getExtensionClass() == 1) {
+					.getExtensionClass() == 1)
 				return 2;
-			}
 
-			if (!(replyPriv instanceof LucentV5QueryDeviceInfoConfEvent)) {
+			if (!(replyPriv instanceof LucentV5QueryDeviceInfoConfEvent))
 				;
-			}
 		}
 
 		return 0;
 	}
 
-	public IDomainCall getDomainCall(int callid) {
+	public IDomainCall getDomainCall(final int callid) {
 		return findCall(callid);
 	}
 
-	public IDomainDevice getDomainCallIsIn(IDomainCall c) {
+	public IDomainDevice getDomainCallIsIn(final IDomainCall c) {
 		return m_providerTracker.getDomainCallIsIn(c);
 	}
 
-	public IDomainDevice getDomainDevice(String name) {
+	public IDomainDevice getDomainDevice(final String name) {
 		return findDevice(name);
 	}
 
@@ -1602,26 +1537,25 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	public int getLucentPDV() {
 		if (lucent) {
 			if (lucentPDV == -1) {
-				byte[] version = tsapi.getVendorVersion();
+				final byte[] version = tsapi.getVendorVersion();
 
-				if ((version.length == 0) || (version[0] != 0)
-						|| (version[(version.length - 1)] != 0)) {
-					log
+				if (version.length == 0 || version[0] != 0
+						|| version[(version.length - 1)] != 0) {
+					TSProviderImpl.log
 							.info("Version bytes with no data, or missing discriminator byte or trailing NULL byte, found while decoding TSAPI private version string");
 
 					lucentPDV = 0;
-				} else {
+				} else
 					try {
 						lucentPDV = Integer.parseInt(new String(version, 1,
 								version.length - 2, "US-ASCII"));
-					} catch (Exception e) {
-						log
+					} catch (final Exception e) {
+						TSProviderImpl.log
 								.info("Exception occurred decoding TSAPI private version string: "
 										+ e);
 
 						lucentPDV = 0;
 					}
-				}
 			}
 			return lucentPDV;
 		}
@@ -1629,39 +1563,38 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	List<String> getMonitorableDevices() {
-		short[] level = { 1, 2, 3 };
+		final short[] level = { 1, 2, 3 };
 
-		List<String> listOfMonitorableDevices = new ArrayList<String>();
+		final List<String> listOfMonitorableDevices = new ArrayList<String>();
 		for (int i = 0; i < level.length; ++i) {
-			int index = GET_DEVICE_INITIAL_INDEX;
+			int index = TSProviderImpl.GET_DEVICE_INITIAL_INDEX;
 			do {
 				CSTAEvent event;
 				try {
 					event = tsapi.getDeviceList(index, level[i]);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					// break label164:
 					break;
 				}
 				if (event != null) {
-					CSTAGetDeviceListConfEvent getDeviceListConf = (CSTAGetDeviceListConfEvent) event
+					final CSTAGetDeviceListConfEvent getDeviceListConf = (CSTAGetDeviceListConfEvent) event
 							.getEvent();
 
-					if ((getDeviceListConf.getDriverSdbLevel() == 1)
-							|| (getDeviceListConf.getDriverSdbLevel() == -1)) {
+					if (getDeviceListConf.getDriverSdbLevel() == 1
+							|| getDeviceListConf.getDriverSdbLevel() == -1) {
 						setSecurity(false);
 						return listOfMonitorableDevices;
 					}
 					for (int j = 0; j < getDeviceListConf.getDevList().length; ++j) {
-						String device = getDeviceListConf.getDevList()[j];
+						final String device = getDeviceListConf.getDevList()[j];
 
-						if (!listOfMonitorableDevices.contains(device)) {
+						if (!listOfMonitorableDevices.contains(device))
 							listOfMonitorableDevices.add(device);
-						}
 					}
 					// label164:
 					index = getDeviceListConf.getIndex();
 				}
-			} while (index != GET_DEVICE_NO_MORE_INDEX);
+			} while (index != TSProviderImpl.GET_DEVICE_NO_MORE_INDEX);
 		}
 
 		return listOfMonitorableDevices;
@@ -1671,16 +1604,15 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return monitorCallsViaDevice;
 	}
 
-	Object getMonitoredObject(int xrefID) {
+	Object getMonitoredObject(final int xrefID) {
 		return xrefHash.get(new Integer(xrefID));
 	}
 
 	@SuppressWarnings("unchecked")
 	public String getMonitoredObjects() {
-		StringBuffer buffer = new StringBuffer();
-		for (Map.Entry entry : xrefHash.entrySet()) {
+		final StringBuffer buffer = new StringBuffer();
+		for (final Map.Entry entry : xrefHash.entrySet())
 			buffer.append(entry.getKey() + ":" + entry.getValue() + "\n");
-		}
 		return buffer.toString();
 	}
 
@@ -1693,16 +1625,14 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	synchronized int getNonCallID() {
-		int[] start = { nonCallID, 0 };
-		for (int j = 0; j < 1; ++j) {
-			for (int i = start[j]; i < 100; ++i) {
-				if (nonCallIDArray[i] == NOT_IN_USE) {
+		final int[] start = { nonCallID, 0 };
+		for (int j = 0; j < 1; ++j)
+			for (int i = start[j]; i < 100; ++i)
+				if (nonCallIDArray[i] == TSProviderImpl.NOT_IN_USE) {
 					nonCallID = i;
-					nonCallIDArray[i] = IN_USE;
+					nonCallIDArray[i] = TSProviderImpl.IN_USE;
 					return nonCallID;
 				}
-			}
-		}
 		return -1;
 	}
 
@@ -1711,9 +1641,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	public Object getPrivateData() {
-		if (replyPriv instanceof CSTAPrivate) {
+		if (replyPriv instanceof CSTAPrivate)
 			return replyPriv;
-		}
 		return null;
 	}
 
@@ -1724,9 +1653,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	String getProviderVersionDetails() {
 		// String std_string = "production build";
 
-		String stdver = "5.2.0.483";
+		final String stdver = "5.2.0.483";
 
-		String customver = "production build";
+		final String customver = "production build";
 
 		return stdver + " [" + customver + "]";
 	}
@@ -1753,25 +1682,25 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			int jtapiState = 16;
 
 			if (tsCaps.sysStatReq != 0) {
-				Vector<TSEvent> eventList = new Vector<TSEvent>();
-				SysStatHandler handler = new SysStatHandler();
+				final Vector<TSEvent> eventList = new Vector<TSEvent>();
+				final SysStatHandler handler = new SysStatHandler();
 				try {
 					tsapi.requestSystemStatus(null, handler);
-				} catch (Exception e) {
-					log
+				} catch (final Exception e) {
+					TSProviderImpl.log
 							.warn("Failed to get system status. Returning OUT_OF_SERVICE to be safe");
 					setState(0, eventList, true);
 					jtapiState = 17;
 				}
-				if ((handler.getSystemStatus() != 1)
-						&& (handler.getSystemStatus() != 2)) {
+				if (handler.getSystemStatus() != 1
+						&& handler.getSystemStatus() != 2) {
 					setState(0, eventList, true);
 					jtapiState = 17;
 				}
 				if (eventList.size() > 0) {
-					Vector<TsapiProviderMonitor> observers = getMonitors();
+					final Vector<TsapiProviderMonitor> observers = getMonitors();
 					for (int j = 0; j < observers.size(); ++j) {
-						TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
+						final TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 								.elementAt(j);
 
 						callback.deliverEvents(eventList, false);
@@ -1785,35 +1714,33 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	public Date getSwitchDateAndTime() throws TsapiMethodNotSupportedException {
-		if (!isLucent()) {
+		if (!isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
 		try {
-			LucentQueryTod qtod = new LucentQueryTod();
-			Object result = sendPrivateData(qtod.makeTsapiPrivate(), null, true);
+			final LucentQueryTod qtod = new LucentQueryTod();
+			final Object result = sendPrivateData(qtod.makeTsapiPrivate(),
+					null, true);
 
 			if (result instanceof LucentQueryTodConfEvent) {
-				LucentQueryTodConfEvent tod = (LucentQueryTodConfEvent) result;
-				if (tod.getYear() < 97) {
+				final LucentQueryTodConfEvent tod = (LucentQueryTodConfEvent) result;
+				if (tod.getYear() < 97)
 					tod.setYear(tod.getYear() + 100);
-				}
-				Calendar cal = Calendar.getInstance();
+				final Calendar cal = Calendar.getInstance();
 				cal.set(tod.getYear(), tod.getMonth() - 1, tod.getDay(), tod
 						.getHour(), tod.getMinute(), tod.getSecond());
 
 				return cal.getTime();
 			}
 			return null;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						" service failure");
-			}
 
 			throw new TsapiPlatformException(4, 0, " service failure");
 		}
@@ -1827,29 +1754,26 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return terminalMonitorThreads;
 	}
 
-	public LucentTrunkGroupInfo getTrunkGroupInfo(String trunkAccessCode)
+	public LucentTrunkGroupInfo getTrunkGroupInfo(final String trunkAccessCode)
 			throws TsapiMethodNotSupportedException {
-		if (!isLucent()) {
+		if (!isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
 		try {
-			LucentQueryTg qtg = new LucentQueryTg(trunkAccessCode);
-			Object result = sendPrivateData(qtg.makeTsapiPrivate());
+			final LucentQueryTg qtg = new LucentQueryTg(trunkAccessCode);
+			final Object result = sendPrivateData(qtg.makeTsapiPrivate());
 
-			if (result instanceof LucentTrunkGroupInfo) {
+			if (result instanceof LucentTrunkGroupInfo)
 				return (LucentTrunkGroupInfo) result;
-			}
 			return null;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						" service failure");
-			}
 
 			throw new TsapiPlatformException(4, 0, " service failure");
 		}
@@ -1857,89 +1781,78 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 	public Vector<TSDevice> getTSACDDevices()
 			throws TsapiMethodNotSupportedException {
-		if (!isLucent()) {
+		if (!isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		if (!securityOn) {
+		if (!securityOn)
 			throw new TsapiPlatformException(
 					4,
 					0,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered ACD addresses can be accessed.");
-		}
 
-		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
+		final Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
-		for (int i = 0; i < tsMonitorableDevices.size(); ++i) {
+		for (int i = 0; i < tsMonitorableDevices.size(); ++i)
 			if (getDeviceExt((String) tsMonitorableDevices.elementAt(i)) == 2) {
-				TSDevice device = createDevice((String) tsMonitorableDevices
+				final TSDevice device = createDevice((String) tsMonitorableDevices
 						.elementAt(i));
 
-				if (device != null) {
+				if (device != null)
 					tsDeviceVector.addElement(device);
-				}
 			}
-		}
 		return tsDeviceVector;
 	}
 
 	public Vector<TSDevice> getTSACDManagerDevices()
 			throws TsapiMethodNotSupportedException {
-		if (!isLucent()) {
+		if (!isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		if (!securityOn) {
+		if (!securityOn)
 			throw new TsapiPlatformException(
 					4,
 					0,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered ACD Manager addresses can be accessed.");
-		}
 
-		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
+		final Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
-		for (int i = 0; i < tsMonitorableDevices.size(); ++i) {
+		for (int i = 0; i < tsMonitorableDevices.size(); ++i)
 			if (getDeviceExt((String) tsMonitorableDevices.elementAt(i)) == 1) {
-				TSDevice device = createDevice((String) tsMonitorableDevices
+				final TSDevice device = createDevice((String) tsMonitorableDevices
 						.elementAt(i));
 
-				if (device != null) {
+				if (device != null)
 					tsDeviceVector.addElement(device);
-				}
 			}
-		}
 		return tsDeviceVector;
 	}
 
 	public Vector<TSDevice> getTSAddressDevices() {
-		if (!securityOn) {
+		if (!securityOn)
 			throw new TsapiPlatformException(
 					4,
 					0,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered Addesses can be accessed.");
-		}
 
-		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
+		final Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
 		for (int i = 0; i < tsMonitorableDevices.size(); ++i) {
-			TSDevice device = createDevice((String) tsMonitorableDevices
+			final TSDevice device = createDevice((String) tsMonitorableDevices
 					.elementAt(i));
-			if (device != null) {
+			if (device != null)
 				tsDeviceVector.addElement(device);
-			}
 		}
-		TSDevice device = createDevice("AllRouteAddress");
-		if (device != null) {
+		final TSDevice device = createDevice("AllRouteAddress");
+		if (device != null)
 			tsDeviceVector.addElement(device);
-		}
 		return tsDeviceVector;
 	}
 
@@ -1973,7 +1886,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 	@SuppressWarnings("unchecked")
 	public Vector<TSCall> getTSCalls() {
-		Vector tsCallVector = new Vector();
+		final Vector tsCallVector = new Vector();
 		Vector tsDevCallVector = null;
 
 		waitToInitialize();
@@ -1982,25 +1895,20 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			tsDevCallVector = doCallSnapshot((String) tsMonitorableDevices
 					.elementAt(i));
 
-			if (tsDevCallVector != null) {
-				for (int j = 0; j < tsDevCallVector.size(); ++j) {
-					if (!tsCallVector.contains(tsDevCallVector.elementAt(j))) {
+			if (tsDevCallVector != null)
+				for (int j = 0; j < tsDevCallVector.size(); ++j)
+					if (!tsCallVector.contains(tsDevCallVector.elementAt(j)))
 						tsCallVector.addElement(tsDevCallVector.elementAt(j));
-					}
-				}
-			}
 		}
 		Enumeration<TSCall> callEnum;
 		synchronized (nonCallHash) {
 			callEnum = nonCallHash.elements();
-			while (callEnum.hasMoreElements()) {
+			while (callEnum.hasMoreElements())
 				try {
 					tsCallVector.addElement(callEnum.nextElement());
-				} catch (NoSuchElementException e) {
-					log.error(e.getMessage(), e);
+				} catch (final NoSuchElementException e) {
+					TSProviderImpl.log.error(e.getMessage(), e);
 				}
-
-			}
 
 		}
 
@@ -2010,14 +1918,13 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				TSCall callVar;
 				try {
 					callVar = (TSCall) callEnum.nextElement();
-				} catch (NoSuchElementException e) {
-					log.error(e.getMessage(), e);
+				} catch (final NoSuchElementException e) {
+					TSProviderImpl.log.error(e.getMessage(), e);
 					continue;
 				}
 
-				if (!tsCallVector.contains(callVar)) {
+				if (!tsCallVector.contains(callVar))
 					;
-				}
 				tsCallVector.addElement(callVar);
 			}
 
@@ -2031,48 +1938,44 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	public Vector<TSDevice> getTSRouteDevices() {
-		if (!securityOn) {
+		if (!securityOn)
 			throw new TsapiPlatformException(
 					4,
 					0,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered Route addresses can be accessed.");
-		}
 
-		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
+		final Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
 		for (int i = 0; i < tsRouteDevices.size(); ++i) {
-			TSDevice device = createDevice((String) tsRouteDevices.elementAt(i));
-			if (device != null) {
+			final TSDevice device = createDevice((String) tsRouteDevices
+					.elementAt(i));
+			if (device != null)
 				tsDeviceVector.addElement(device);
-			}
 		}
-		TSDevice device = createDevice("AllRouteAddress");
-		if (device != null) {
+		final TSDevice device = createDevice("AllRouteAddress");
+		if (device != null)
 			tsDeviceVector.addElement(device);
-		}
 		return tsDeviceVector;
 	}
 
 	public Vector<TSDevice> getTSTerminalDevices() {
-		if (!securityOn) {
+		if (!securityOn)
 			throw new TsapiPlatformException(
 					4,
 					0,
 					"Either the security database is turned off or the user has an unrestricted access, No List will be returned but any administered Terminals can be accessed.");
-		}
 
-		Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
+		final Vector<TSDevice> tsDeviceVector = new Vector<TSDevice>();
 
 		waitToInitialize();
 
 		for (int i = 0; i < tsMonitorableDevices.size(); ++i) {
-			String devName = (String) tsMonitorableDevices.elementAt(i);
-			TSDevice device = createDevice(devName);
-			if ((device != null) && (device.isTerminal())) {
+			final String devName = (String) tsMonitorableDevices.elementAt(i);
+			final TSDevice device = createDevice(devName);
+			if (device != null && device.isTerminal())
 				tsDeviceVector.addElement(device);
-			}
 		}
 		return tsDeviceVector;
 	}
@@ -2086,50 +1989,49 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	public boolean heartbeatIsEnabled() {
-		if (tsapi != null) {
+		if (tsapi != null)
 			return tsapi.heartbeatIsEnabled();
-		}
 
 		return false;
 	}
 
 	public void heartbeatTimeout() {
-		log.info("*** Heartbeat timer expired.  Shutting down Provider. ***");
+		TSProviderImpl.log
+				.info("*** Heartbeat timer expired.  Shutting down Provider. ***");
 
 		shutdown();
 	}
 
 	public void initNewProvider() {
-		synchronized (provider_count_lock) {
-			provider_count += 1;
+		synchronized (TSProviderImpl.provider_count_lock) {
+			TSProviderImpl.provider_count += 1;
 		}
 	}
 
-	public boolean isCallInAnyDomain(IDomainCall c) {
+	public boolean isCallInAnyDomain(final IDomainCall c) {
 		return m_providerTracker.isCallInAnyDomain(c);
 	}
 
-	boolean isConnInActiveHash(CSTAConnectionID connID) {
+	boolean isConnInActiveHash(final CSTAConnectionID connID) {
 		return connHash.get(connID) != null;
 	}
 
-	boolean isConnInAnyHash(CSTAConnectionID connID) {
-		return (isConnInActiveHash(connID)) || (isConnInSaveHash(connID));
+	boolean isConnInAnyHash(final CSTAConnectionID connID) {
+		return isConnInActiveHash(connID) || isConnInSaveHash(connID);
 	}
 
-	boolean isConnInDisconnectedHash(CSTAConnectionID connID) {
+	boolean isConnInDisconnectedHash(final CSTAConnectionID connID) {
 		return auditor.getConn(connID) != null;
 	}
 
-	boolean isConnInSaveHash(CSTAConnectionID connID) {
+	boolean isConnInSaveHash(final CSTAConnectionID connID) {
 		return auditor.getConn(connID) != null;
 	}
 
-	boolean isDeviceMonitorable(String name) {
-		if ((state == 2) && (securityOn)) {
-			if (name == null) {
+	boolean isDeviceMonitorable(final String name) {
+		if (state == 2 && securityOn) {
+			if (name == null)
 				return false;
-			}
 			return tsMonitorableDevices.contains(name);
 		}
 
@@ -2156,127 +2058,119 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return getLucentPDV() >= 8;
 	}
 
-	public void logln(String s) {
-		if (log.isInfoEnabled()) {
-			log.info(s);
-		}
+	public void logln(final String s) {
+		if (TSProviderImpl.log.isInfoEnabled())
+			TSProviderImpl.log.info(s);
 	}
 
-	private ConnectStringData parseURL(String _url) {
+	private ConnectStringData parseURL(final String _url) {
 		String serverID = _url;
 		String loginID = "";
 		String passwd = "";
 		Collection<InetSocketAddress> telephonyServers = new LinkedHashSet<InetSocketAddress>();
-		int firstSemiColon_index = _url.indexOf(';');
+		final int firstSemiColon_index = _url.indexOf(';');
 		serverID = _url.substring(0, firstSemiColon_index);
 		if (firstSemiColon_index >= 0) {
-			StringTokenizer params = new StringTokenizer(_url
+			final StringTokenizer params = new StringTokenizer(_url
 					.substring(firstSemiColon_index + 1), ";");
 
 			while (params.hasMoreTokens()) {
-				StringTokenizer param = new StringTokenizer(params.nextToken(),
-						"=");
+				final StringTokenizer param = new StringTokenizer(params
+						.nextToken(), "=");
 
-				if (!param.hasMoreTokens()) {
+				if (!param.hasMoreTokens())
 					continue;
-				}
-				String key = param.nextToken();
-				if (!param.hasMoreTokens()) {
+				final String key = param.nextToken();
+				if (!param.hasMoreTokens())
 					continue;
-				}
-				String value = param.nextToken();
+				final String value = param.nextToken();
 
-				if ((key.equals("login")) || (key.equals("loginID"))) {
+				if (key.equals("login") || key.equals("loginID"))
 					loginID = value;
-				} else if (key.equals("passwd")) {
+				else if (key.equals("passwd"))
 					passwd = value;
-				} else if (key.equals("servers")) {
+				else if (key.equals("servers"))
 					telephonyServers = JtapiUtils.parseTelephonyServerEntry(
 							value, 450);
-				}
 			}
 		}
 
-		if (loginID.length() > 48) {
+		if (loginID.length() > 48)
 			throw new TsapiPlatformException(4, 0,
 					"Username provided is more than 48 characters in length. Login ID="
 							+ loginID);
-		}
 
-		if (passwd.length() > 47) {
+		if (passwd.length() > 47)
 			throw new TsapiPlatformException(4, 0,
 					"Password provided is more than 47 characters in length. Password length="
 							+ passwd.length());
-		}
 
 		return new ConnectStringData(serverID, loginID, passwd,
 				telephonyServers, _url);
 	}
 
-	synchronized void releaseNonCallID(int nonCallId) {
-		nonCallIDArray[nonCallId] = NOT_IN_USE;
+	synchronized void releaseNonCallID(final int nonCallId) {
+		nonCallIDArray[nonCallId] = TSProviderImpl.NOT_IN_USE;
 	}
 
-	public void removeAddressMonitorThread(TsapiAddressMonitor obs) {
+	public void removeAddressMonitorThread(final TsapiAddressMonitor obs) {
 		addressMonitorThreads.removeElement(obs);
 	}
 
-	public void removeAllCallsForDomain(IDomainDevice d) {
+	public void removeAllCallsForDomain(final IDomainDevice d) {
 		m_providerTracker.removeAllCallsForDomain(d);
 	}
 
-	public void removeCallFromDomain(IDomainCall c) {
+	public void removeCallFromDomain(final IDomainCall c) {
 		m_providerTracker.removeCallFromDomain(c);
 	}
 
-	public void removeCallMonitorThread(TsapiCallMonitor obs) {
+	public void removeCallMonitorThread(final TsapiCallMonitor obs) {
 		callMonitorThreads.removeElement(obs);
 	}
 
-	public void removeMonitor(TsapiProviderMonitor monitor) {
+	public void removeMonitor(final TsapiProviderMonitor monitor) {
 		removeMonitor(monitor, 100, null);
 	}
 
-	void removeMonitor(TsapiProviderMonitor monitor, int cause,
-			Object privateData) {
-		if (monitors.removeElement(monitor)) {
+	void removeMonitor(final TsapiProviderMonitor monitor, final int cause,
+			final Object privateData) {
+		if (monitors.removeElement(monitor))
 			monitor.deleteReference(cause, privateData);
-		}
 	}
 
-	void removeMonitors(int cause, Object privateData) {
-		Vector<TsapiProviderMonitor> obs = new Vector<TsapiProviderMonitor>(
+	void removeMonitors(final int cause, final Object privateData) {
+		final Vector<TsapiProviderMonitor> obs = new Vector<TsapiProviderMonitor>(
 				monitors);
-		for (int i = 0; i < obs.size(); ++i) {
+		for (int i = 0; i < obs.size(); ++i)
 			removeMonitor((TsapiProviderMonitor) obs.elementAt(i), cause,
 					privateData);
-		}
 	}
 
-	public void removeProviderMonitorThread(TsapiProviderMonitor obs) {
+	public void removeProviderMonitorThread(final TsapiProviderMonitor obs) {
 		providerMonitorThreads.removeElement(obs);
 	}
 
-	public void removeRouteMonitorThread(TsapiRouteMonitor obs) {
+	public void removeRouteMonitorThread(final TsapiRouteMonitor obs) {
 		routeMonitorThreads.removeElement(obs);
 	}
 
-	public void removeTerminalMonitorThread(TsapiTerminalMonitor obs) {
+	public void removeTerminalMonitorThread(final TsapiTerminalMonitor obs) {
 		terminalMonitorThreads.removeElement(obs);
 	}
 
 	public String requestPrivileges() throws TsapiInvalidArgumentException {
-		RequestPrivilegesConfHandler handler = new RequestPrivilegesConfHandler(
+		final RequestPrivilegesConfHandler handler = new RequestPrivilegesConfHandler(
 				this);
 
 		boolean request_failed = true;
 		try {
 			tsapi.requestPrivileges(null, handler);
 			request_failed = false;
-			String str = handler.get_nonce();
+			final String str = handler.get_nonce();
 
 			return str;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			switch (e.getErrorType()) {
 			case 120:
 			case 126:
@@ -2293,13 +2187,12 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					e.getErrorCode(),
 					"Unexpected requestPrivileges TSAPI failure: " + e);
 		} finally {
-			if (request_failed) {
+			if (request_failed)
 				shutdown();
-			}
 		}
 	}
 
-	public Object sendPrivateData(CSTAPrivate data)
+	public Object sendPrivateData(final CSTAPrivate data)
 			throws TsapiProviderUnavailableException,
 			TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
@@ -2307,7 +2200,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return sendPrivateData(data, null, false);
 	}
 
-	Object sendPrivateData(CSTAPrivate data, ConfHandler extraHandler)
+	Object sendPrivateData(final CSTAPrivate data,
+			final ConfHandler extraHandler)
 			throws TsapiProviderUnavailableException,
 			TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
@@ -2315,18 +2209,18 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return sendPrivateData(data, extraHandler, false);
 	}
 
-	Object sendPrivateData(CSTAPrivate data, ConfHandler extraHandler,
-			boolean priority) throws TsapiProviderUnavailableException,
+	Object sendPrivateData(final CSTAPrivate data,
+			final ConfHandler extraHandler, final boolean priority)
+			throws TsapiProviderUnavailableException,
 			TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		if (data.tsType == 89) {
 			ConfHandler handler;
-			if (priority) {
+			if (priority)
 				handler = new PriorityEscapeConfHandler(this, extraHandler);
-			} else {
+			else
 				handler = new EscapeConfHandler(this, extraHandler);
-			}
 			tsapi.CSTAEscapeService(data, handler);
 			return ((EscapeConfHandler) handler).getPrivateData();
 		}
@@ -2338,12 +2232,11 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				+ data.tsType + "]");
 	}
 
-	void sendSnapshot(TsapiProviderMonitor callback) {
-		if (callback == null) {
+	void sendSnapshot(final TsapiProviderMonitor callback) {
+		if (callback == null)
 			return;
-		}
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		switch (state) {
 		case 2:
@@ -2374,96 +2267,90 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 					new TsapiProviderTsapiShutdownEvent()));
 		}
 
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
 		callback.deliverEvents(eventList, true);
 	}
 
 	void setAdministeredSwitchSoftwareVersion(
-			String administeredSwitchSoftwareVersion) {
+			final String administeredSwitchSoftwareVersion) {
 		this.administeredSwitchSoftwareVersion = administeredSwitchSoftwareVersion;
 	}
 
-	public void setAdviceOfCharge(boolean flag)
+	public void setAdviceOfCharge(final boolean flag)
 			throws TsapiMethodNotSupportedException {
-		if (!isLucentV5()) {
+		if (!isLucentV5())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
 		try {
-			LucentSetAdviceOfCharge aoc = new LucentSetAdviceOfCharge(flag);
+			final LucentSetAdviceOfCharge aoc = new LucentSetAdviceOfCharge(
+					flag);
 			sendPrivateData(aoc.makeTsapiPrivate());
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						" service failure");
-			}
 
 			throw new TsapiPlatformException(4, 0, " service failure");
 		}
 	}
 
-	void setCallMonitor(boolean _callMonitoring) {
+	void setCallMonitor(final boolean _callMonitoring) {
 		callMonitoring = _callMonitoring;
 	}
 
-	void setCapabilities(TSCapabilities _tsCaps) {
+	void setCapabilities(final TSCapabilities _tsCaps) {
 		tsCaps = _tsCaps;
 	}
 
-	void setClientHeartbeatInterval(short heartbeatInterval) {
+	void setClientHeartbeatInterval(final short heartbeatInterval) {
 		tsapi.setClientHeartbeatInterval(heartbeatInterval);
 	}
 
-	public void setDebugPrinting(boolean enable) {
+	public void setDebugPrinting(final boolean enable) {
 		boolean traceLoggingEnabled = JTAPILoggingAdapter
 				.isTraceLoggingEnabled();
-		boolean errorLoggingEnabled = Logger.getLogger("com.avaya.jtapi.tsapi")
-				.isEnabledFor(Level.ERROR);
-		boolean isLog4jLoggingEnabled = JtapiUtils.isLog4jConfigured();
+		final boolean errorLoggingEnabled = Logger.getLogger(
+				"com.avaya.jtapi.tsapi").isEnabledFor(Level.ERROR);
+		final boolean isLog4jLoggingEnabled = JtapiUtils.isLog4jConfigured();
 
-		if ((!traceLoggingEnabled) && (isLog4jLoggingEnabled)) {
+		if (!traceLoggingEnabled && isLog4jLoggingEnabled)
 			traceLoggingEnabled = true;
-		}
 
 		if (enable) {
-			if (traceLoggingEnabled) {
+			if (traceLoggingEnabled)
 				Logger.getLogger("com.avaya.jtapi.tsapi").setLevel(Level.TRACE);
-			} else {
+			else {
 				JTAPILoggingAdapter.setTraceLoggerLevel("7");
 				JTAPILoggingAdapter.initializeLogging();
 			}
 
 		} else {
-			if (!traceLoggingEnabled) {
+			if (!traceLoggingEnabled)
 				return;
-			}
-			if (errorLoggingEnabled) {
+			if (errorLoggingEnabled)
 				Logger.getLogger("com.avaya.jtapi.tsapi").setLevel(Level.ERROR);
-			} else {
+			else
 				Logger.getLogger("com.avaya.jtapi.tsapi").setLevel(Level.OFF);
-			}
 		}
 	}
 
-	public void setHeartbeatInterval(short heartbeatInterval)
+	public void setHeartbeatInterval(final short heartbeatInterval)
 			throws TsapiInvalidArgumentException {
-		ConfHandler handler = new SetHeartbeatIntervalConfHandler(this);
+		final ConfHandler handler = new SetHeartbeatIntervalConfHandler(this);
 		try {
 			tsapi.setHeartbeatInterval(heartbeatInterval, null, handler);
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"setHeartbeatInterval() failure: " + e.getMessage());
-			}
 
 			throw new TsapiPlatformException(4, 0,
 					"setHeartbeatInterval() failure: " + e.getMessage());
@@ -2471,39 +2358,38 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	private void setInstanceNumber() {
-		synchronized (g_lock) {
-			m_instanceNumber = (++g_instanceNumber);
+		synchronized (TSProviderImpl.g_lock) {
+			m_instanceNumber = ++TSProviderImpl.g_instanceNumber;
 		}
 	}
 
-	void setMonitorCallsViaDevice(boolean monitorCallsViaDevice) {
+	void setMonitorCallsViaDevice(final boolean monitorCallsViaDevice) {
 		this.monitorCallsViaDevice = monitorCallsViaDevice;
 	}
 
-	void setOfferType(String offerType) {
+	void setOfferType(final String offerType) {
 		this.offerType = offerType;
 	}
 
-	public void setPrivateData(Object o) {
-		if (o instanceof CSTAPrivate) {
+	public void setPrivateData(final Object o) {
+		if (o instanceof CSTAPrivate)
 			replyPriv = o;
-		}
 	}
 
-	public void setPrivileges(String xmlData)
+	public void setPrivileges(final String xmlData)
 			throws TsapiInvalidArgumentException {
-		ConfHandler handler = new SetPrivilegesConfHandler(this);
+		final ConfHandler handler = new SetPrivilegesConfHandler(this);
 		try {
 			tsapi.setPrivileges(xmlData, null, handler);
 			return;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			shutdown();
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			shutdown();
 			throw new TsapiPlatformException(e.getErrorType(),
 					e.getErrorCode(), "setPrivileges TSAPI failure: " + e);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			shutdown();
 			throw new TsapiPlatformException(4, 0,
 					"Unexpected setPrivileges TSAPI failure: " + e);
@@ -2511,55 +2397,52 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	void setRouteDevices() {
-		int index = GET_DEVICE_INITIAL_INDEX;
+		int index = TSProviderImpl.GET_DEVICE_INITIAL_INDEX;
 		do {
 			CSTAEvent event;
 			try {
 				event = tsapi.getDeviceList(index, (short) 6);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				return;
 			}
 
-			CSTAGetDeviceListConfEvent getDeviceListConf = (CSTAGetDeviceListConfEvent) event
+			final CSTAGetDeviceListConfEvent getDeviceListConf = (CSTAGetDeviceListConfEvent) event
 					.getEvent();
 
 			for (int j = 0; j < getDeviceListConf.getDevList().length; ++j) {
-				String device = getDeviceListConf.getDevList()[j];
+				final String device = getDeviceListConf.getDevList()[j];
 
-				if (!tsRouteDevices.contains(device)) {
+				if (!tsRouteDevices.contains(device))
 					tsRouteDevices.addElement(device);
-				}
 			}
 			index = getDeviceListConf.getIndex();
-		} while (index != GET_DEVICE_NO_MORE_INDEX);
+		} while (index != TSProviderImpl.GET_DEVICE_NO_MORE_INDEX);
 	}
 
-	void setSecurity(boolean _securityOn) {
+	void setSecurity(final boolean _securityOn) {
 		securityOn = _securityOn;
 	}
 
-	void setServerType(String serverType) {
+	void setServerType(final String serverType) {
 		this.serverType = serverType;
 	}
 
-	public void setSessionTimeout(int timeout) {
+	public void setSessionTimeout(final int timeout) {
 		TsapiSession.setTimeout(timeout);
 	}
 
-	void setState(int tsapi_shutdown, Vector<TSEvent> eventList) {
+	void setState(final int tsapi_shutdown, final Vector<TSEvent> eventList) {
 		setState(tsapi_shutdown, eventList, false);
 	}
 
-	private void setState(int _state, Vector<TSEvent> eventList,
-			boolean ignoreOldState) {
+	private void setState(final int _state, final Vector<TSEvent> eventList,
+			final boolean ignoreOldState) {
 		int oldCoreState = 16;
-		if (!ignoreOldState) {
+		if (!ignoreOldState)
 			oldCoreState = getState();
-		}
 		synchronized (this) {
-			if (state == _state) {
+			if (state == _state)
 				return;
-			}
 
 			state = _state;
 		}
@@ -2568,9 +2451,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		case 2:
 			synchronized (eventList) {
 				if (eventList != null) {
-					if ((ignoreOldState) || (oldCoreState != 16)) {
+					if (ignoreOldState || oldCoreState != 16)
 						eventList.addElement(new TSEvent(1, this));
-					}
 
 					eventList.addElement(new TSEvent(9999, this,
 							new TsapiProviderTsapiInServiceEvent()));
@@ -2581,9 +2463,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		case 1:
 			synchronized (eventList) {
 				if (eventList != null) {
-					if ((ignoreOldState) || (oldCoreState != 17)) {
+					if (ignoreOldState || oldCoreState != 17)
 						eventList.addElement(new TSEvent(2, this));
-					}
 
 					eventList.addElement(new TSEvent(9999, this,
 							new TsapiProviderTsapiInitializingEvent()));
@@ -2594,9 +2475,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		case 0:
 			synchronized (eventList) {
 				if (eventList != null) {
-					if ((ignoreOldState) || (oldCoreState != 17)) {
+					if (ignoreOldState || oldCoreState != 17)
 						eventList.addElement(new TSEvent(2, this));
-					}
 
 					eventList.addElement(new TSEvent(9999, this,
 							new TsapiProviderTsapiOutOfServiceEvent()));
@@ -2607,9 +2487,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		case 3:
 			synchronized (eventList) {
 				if (eventList != null) {
-					if ((ignoreOldState) || (oldCoreState != 18)) {
+					if (ignoreOldState || oldCoreState != 18)
 						eventList.addElement(new TSEvent(3, this));
-					}
 
 					eventList.addElement(new TSEvent(9999, this,
 							new TsapiProviderTsapiShutdownEvent()));
@@ -2617,33 +2496,29 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 			}
 
-			Enumeration<Object> xrefEnum = xrefHash.elements();
+			final Enumeration<Object> xrefEnum = xrefHash.elements();
 			Object monitored = null;
 
 			while (xrefEnum.hasMoreElements()) {
 				try {
 					monitored = xrefEnum.nextElement();
-				} catch (NoSuchElementException e) {
-					log.error(e.getMessage(), e);
+				} catch (final NoSuchElementException e) {
+					TSProviderImpl.log.error(e.getMessage(), e);
 					continue;
 				}
 
-				if (monitored == null) {
+				if (monitored == null)
 					continue;
-				}
 
-				if (monitored instanceof TSDevice) {
+				if (monitored instanceof TSDevice)
 					((TSDevice) monitored).removeObservers(100, null, 0);
-				}
-				if (monitored instanceof TSCall) {
+				if (monitored instanceof TSCall)
 					;
-				}
 				((TSCall) monitored).removeObservers(100, null, 0);
 			}
 
-			if (tsapi != null) {
+			if (tsapi != null)
 				tsapi.shutdown();
-			}
 
 			devHash.clear();
 			trkHash.clear();
@@ -2663,15 +2538,14 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			callMonitorThreads.removeAllElements();
 			routeMonitorThreads.removeAllElements();
 
-			if (auditor != null) {
+			if (auditor != null)
 				auditor.stopRunning();
-			}
 
 			disableHeartbeat();
 		}
 	}
 
-	void setSwitchSoftwareVersion(String switchSoftwareVersion) {
+	void setSwitchSoftwareVersion(final String switchSoftwareVersion) {
 		this.switchSoftwareVersion = switchSoftwareVersion;
 	}
 
@@ -2679,53 +2553,51 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		shutdown(null);
 	}
 
-	public void shutdown(Object privateData) {
-		log.info("TSProvider.shutdown - attempting shutdown");
-		if (timerThread != null) {
+	public void shutdown(final Object privateData) {
+		TSProviderImpl.log.info("TSProvider.shutdown - attempting shutdown");
+		if (timerThread != null)
 			timerThread.cancel();
-		}
 		timerThread = null;
 
 		synchronized (shutdown_single_thread_lock) {
 			if (state == 3) {
-				log
+				TSProviderImpl.log
 						.info("TSProvider.shutdown - already in shutdown, redundant call, returning.");
 				return;
 			}
 
-			log.info("TSProvider.shutdown - Starting");
+			TSProviderImpl.log.info("TSProvider.shutdown - Starting");
 			if (tsCaps.sysStatStop != 0) {
-				SysStatHandler handler = new SysStatHandler();
+				final SysStatHandler handler = new SysStatHandler();
 				try {
 					tsapi.stopSystemStatusMonitoring(null, handler);
-				} catch (Exception e) {
-					log.error("stopSystemStatusMonitoring() failure: "
-							+ e.getMessage());
+				} catch (final Exception e) {
+					TSProviderImpl.log
+							.error("stopSystemStatusMonitoring() failure: "
+									+ e.getMessage());
 				}
 			}
 
-			Vector<TSEvent> eventList = new Vector<TSEvent>();
+			final Vector<TSEvent> eventList = new Vector<TSEvent>();
 			synchronized (eventList) {
 				setState(3, eventList);
 
 				if (privateData != null) {
 					for (int i = 0; i < eventList.size(); ++i) {
-						TSEvent ev = (TSEvent) eventList.elementAt(i);
-						if (ev.getPrivateData() == null) {
+						final TSEvent ev = (TSEvent) eventList.elementAt(i);
+						if (ev.getPrivateData() == null)
 							ev.setPrivateData(privateData);
-						}
 					}
-					if (!isLucent()) {
+					if (!isLucent())
 						eventList.addElement(new TSEvent(9999, this,
 								privateData));
-					}
 
 				}
 
 				if (eventList.size() > 0) {
-					Vector<TsapiProviderMonitor> observers = getMonitors();
+					final Vector<TsapiProviderMonitor> observers = getMonitors();
 					for (int j = 0; j < observers.size(); ++j) {
-						TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
+						final TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 								.elementAt(j);
 
 						callback.deliverEvents(eventList, false);
@@ -2736,7 +2608,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 			finalizeOldProvider();
 
-			log.info("TSProvider.shutdown - Done");
+			TSProviderImpl.log.info("TSProvider.shutdown - Done");
 		}
 	}
 
@@ -2745,58 +2617,54 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				+ Integer.toHexString(super.hashCode());
 	}
 
-	void TtConnHash(String s, Object connection, Object connID) {
+	void TtConnHash(final String s, final Object connection, final Object connID) {
 		Tt.println("#C=" + connHash.size() + " I=" + connID.toString() + " C="
 				+ connection.toString() + " //" + s);
 	}
 
-	void TtXrefHash(String s, int monitorCrossRefID, Object observed) {
+	void TtXrefHash(final String s, final int monitorCrossRefID,
+			final Object observed) {
 		Tt.println("#X=" + xrefHash.size() + " R=" + monitorCrossRefID + " O="
 				+ observed + " //" + s);
 	}
 
 	public void updateAddresses() {
 		List<String> monitorableDevices = getMonitorableDevices();
-		if ((monitorableDevices != null) && (monitorableDevices.size() != 0)) {
+		if (monitorableDevices != null && monitorableDevices.size() != 0)
 			synchronized (tsMonitorableDevices) {
-				for (Object element : monitorableDevices) {
-					if (!tsMonitorableDevices.contains(element)) {
+				for (final Object element : monitorableDevices)
+					if (!tsMonitorableDevices.contains(element))
 						tsMonitorableDevices.add((String) element);
-					}
-				}
 				tsMonitorableDevices.retainAll(monitorableDevices);
 			}
-		}
 		monitorableDevices = null;
 	}
 
-	TSCall validateCall(Object privateData, TSCall call, int callID) {
-		if (call == null) {
+	TSCall validateCall(final Object privateData, final TSCall call,
+			final int callID) {
+		if (call == null)
 			return call;
-		}
 
-		if ((privateData instanceof LucentTransferredEvent)
-				|| (privateData instanceof LucentConferencedEvent)) {
+		if (privateData instanceof LucentTransferredEvent
+				|| privateData instanceof LucentConferencedEvent)
 			return call;
-		}
 		if (privateData instanceof HasUCID) {
-			if (((HasUCID) privateData).getUcid() == null) {
+			if (((HasUCID) privateData).getUcid() == null)
 				return call;
-			}
-			if (call.ucid == null) {
+			if (call.ucid == null)
 				return call;
-			}
 			if (((HasUCID) privateData).getUcid().compareTo(call.ucid) != 0) {
-				log
+				TSProviderImpl.log
 						.info("Mismatched UCID for validateCall removing stale call obj "
 								+ call);
 
-				log.info("UCID for validateCall for the new call is "
-						+ ((HasUCID) privateData).getUcid());
+				TSProviderImpl.log
+						.info("UCID for validateCall for the new call is "
+								+ ((HasUCID) privateData).getUcid());
 
 				call.setState(34, null);
 				dumpCall(callID);
-				TSCall newCall = createCall(callID);
+				final TSCall newCall = createCall(callID);
 				return newCall;
 			}
 			return call;
@@ -2806,16 +2674,14 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 	}
 
 	void waitToInitialize() {
-		if (state == 2) {
+		if (state == 2)
 			return;
-		}
 		try {
 			synchronized (initThread) {
-				initThread.wait(DEFAULT_TIMEOUT);
+				initThread.wait(TSProviderImpl.DEFAULT_TIMEOUT);
 			}
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			throw new TsapiPlatformException(4, 0, "init time-out");
 		}
 	}
 }
-

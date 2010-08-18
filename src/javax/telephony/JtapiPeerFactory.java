@@ -2,30 +2,27 @@ package javax.telephony;
 
 public class JtapiPeerFactory {
 	private static String getDefaultJtapiPeerName() {
-		String JtapiPeerName = "DefaultJtapiPeer";
+		final String JtapiPeerName = "DefaultJtapiPeer";
 		return JtapiPeerName;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static synchronized JtapiPeer getJtapiPeer(String jtapiPeerName)
 			throws JtapiPeerUnavailableException {
-		if ((jtapiPeerName == null) || (jtapiPeerName.length() == 0)) {
-			jtapiPeerName = getDefaultJtapiPeerName();
-		}
+		if (jtapiPeerName == null || jtapiPeerName.length() == 0)
+			jtapiPeerName = JtapiPeerFactory.getDefaultJtapiPeerName();
 
-		if (jtapiPeerName == null) {
+		if (jtapiPeerName == null)
 			throw new JtapiPeerUnavailableException();
-		}
 		try {
-			Class jtapiPeerClass = Class.forName(jtapiPeerName);
+			final Class jtapiPeerClass = Class.forName(jtapiPeerName);
 
 			return (JtapiPeer) jtapiPeerClass.newInstance();
-		} catch (Exception e) {
-			String errmsg = "JtapiPeer: " + jtapiPeerName
+		} catch (final Exception e) {
+			final String errmsg = "JtapiPeer: " + jtapiPeerName
 					+ " could not be instantiated.";
 
 			throw new JtapiPeerUnavailableException(errmsg);
 		}
 	}
 }
-

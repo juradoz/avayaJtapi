@@ -14,22 +14,22 @@ public final class LucentV6QueryAgentStateConfEvent extends
 	int pendingReasonCode;
 	public static final int PDU = 104;
 
-	public static LucentQueryAgentStateConfEvent decode(InputStream in) {
-		LucentV6QueryAgentStateConfEvent _this = new LucentV6QueryAgentStateConfEvent();
+	public static LucentQueryAgentStateConfEvent decode(final InputStream in) {
+		final LucentV6QueryAgentStateConfEvent _this = new LucentV6QueryAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		pendingWorkMode = ASNEnumerated.decode(memberStream);
 		pendingReasonCode = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNEnumerated.encode(pendingWorkMode, memberStream);
 		ASNInteger.encode(pendingReasonCode, memberStream);
@@ -50,12 +50,12 @@ public final class LucentV6QueryAgentStateConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6QueryAgentStateConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 		lines.addAll(LucentTalkState.print(talkState, "talkState", indent));
@@ -69,11 +69,11 @@ public final class LucentV6QueryAgentStateConfEvent extends
 		return lines;
 	}
 
-	public void setPendingReasonCode(int pendingReasonCode) {
+	public void setPendingReasonCode(final int pendingReasonCode) {
 		this.pendingReasonCode = pendingReasonCode;
 	}
 
-	public void setPendingWorkMode(short pendingWorkMode) {
+	public void setPendingWorkMode(final short pendingWorkMode) {
 		this.pendingWorkMode = pendingWorkMode;
 	}
 }

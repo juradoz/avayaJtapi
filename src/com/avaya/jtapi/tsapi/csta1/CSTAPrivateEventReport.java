@@ -10,20 +10,20 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class CSTAPrivateEventReport extends CSTAEventReport {
 	public static final int PDU = 93;
 
-	public static CSTAPrivateEventReport decode(InputStream in) {
-		CSTAPrivateEventReport _this = new CSTAPrivateEventReport();
+	public static CSTAPrivateEventReport decode(final InputStream in) {
+		final CSTAPrivateEventReport _this = new CSTAPrivateEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -34,11 +34,11 @@ public final class CSTAPrivateEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAPrivateEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -46,4 +46,3 @@ public final class CSTAPrivateEventReport extends CSTAEventReport {
 		return lines;
 	}
 }
-

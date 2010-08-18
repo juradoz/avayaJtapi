@@ -8,7 +8,8 @@ public final class LucentTalkState extends ASNEnumerated {
 	public static final short TS_ON_CALL = 0;
 	public static final short TS_IDLE = 1;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -21,7 +22,6 @@ public final class LucentTalkState extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

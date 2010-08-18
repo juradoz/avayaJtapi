@@ -4,7 +4,8 @@ import com.avaya.jtapi.tsapi.LucentCallInfo;
 
 public class LucentConnQueuedEventImpl extends TsapiConnQueuedEvent implements
 		LucentCallInfo {
-	public LucentConnQueuedEventImpl(ConnEventParams params, int numberQueued) {
+	public LucentConnQueuedEventImpl(final ConnEventParams params,
+			final int numberQueued) {
 		super(params, numberQueued);
 	}
 }

@@ -12,48 +12,44 @@ final class PickupConfHandler implements ConfHandler {
 	TSDevice terminalAddress;
 	TSConnection pickConnection;
 
-	PickupConfHandler(TSDevice _device, TSDevice _terminalAddress,
-			TSConnection _pickConnection) {
+	PickupConfHandler(final TSDevice _device, final TSDevice _terminalAddress,
+			final TSConnection _pickConnection) {
 		device = _device;
 		terminalAddress = _terminalAddress;
 		pickConnection = _pickConnection;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTAPickupCallConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTAPickupCallConfEvent))
 			return;
-		}
 
 		device.replyTermPriv = event.getPrivData();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 		if (terminalAddress == pickConnection.getTSDevice()) {
 			pickConnection.setConnectionState(88, eventList);
 
-			if (eventList.size() <= 0) {
+			if (eventList.size() <= 0)
 				return;
-			}
-			TSCall pickCall = pickConnection.getTSCall();
-			Vector<TsapiCallMonitor> observers = pickCall.getObservers();
+			final TSCall pickCall = pickConnection.getTSCall();
+			final Vector<TsapiCallMonitor> observers = pickCall.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = observers.elementAt(j);
+				final TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 
 		} else {
 			pickConnection.setConnectionState(89, eventList);
 
-			if (eventList.size() <= 0) {
+			if (eventList.size() <= 0)
 				return;
-			}
-			TSCall pickCall = pickConnection.getTSCall();
-			Vector<TsapiCallMonitor> observers = pickCall.getObservers();
+			final TSCall pickCall = pickConnection.getTSCall();
+			final Vector<TsapiCallMonitor> observers = pickCall.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = observers.elementAt(j);
+				final TsapiCallMonitor callback = observers.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 		}
 	}
 }
-

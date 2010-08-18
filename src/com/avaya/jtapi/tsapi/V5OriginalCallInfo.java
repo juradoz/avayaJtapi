@@ -9,4 +9,3 @@ public abstract interface V5OriginalCallInfo extends OriginalCallInfo {
 
 	public abstract boolean hasCallOriginatorType();
 }
-

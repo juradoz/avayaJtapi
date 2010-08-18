@@ -7,8 +7,7 @@ public class TsapiPropertySyntaxException extends TsapiPropertiesException {
 		super("Syntax error.");
 	}
 
-	public TsapiPropertySyntaxException(String s) {
+	public TsapiPropertySyntaxException(final String s) {
 		super(s);
 	}
 }
-

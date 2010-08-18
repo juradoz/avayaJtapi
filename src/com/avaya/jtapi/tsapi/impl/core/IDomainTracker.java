@@ -17,4 +17,3 @@ abstract interface IDomainTracker {
 
 	public abstract void removeCallFromDomain(IDomainCall paramIDomainCall);
 }
-

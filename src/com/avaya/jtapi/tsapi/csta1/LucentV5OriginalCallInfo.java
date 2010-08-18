@@ -10,34 +10,32 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
-	public static LucentOriginalCallInfo decode(InputStream in) {
-		LucentV5OriginalCallInfo _this = new LucentV5OriginalCallInfo();
+	public static LucentOriginalCallInfo decode(final InputStream in) {
+		final LucentV5OriginalCallInfo _this = new LucentV5OriginalCallInfo();
 		_this.doDecode(in);
-		if ((_this.callingDevice_asn == null)
-				&& (_this.calledDevice_asn == null)
-				&& (_this.trunkGroup == null) && (_this.trunkMember == null)
-				&& (_this.lookaheadInfo == null)
-				&& (_this.userEnteredCode == null) && (_this.userInfo == null)
-				&& (_this.ucid == null) && (_this.callOriginatorInfo == null)) {
+		if (_this.callingDevice_asn == null && _this.calledDevice_asn == null
+				&& _this.trunkGroup == null && _this.trunkMember == null
+				&& _this.lookaheadInfo == null && _this.userEnteredCode == null
+				&& _this.userInfo == null && _this.ucid == null
+				&& _this.callOriginatorInfo == null)
 			return null;
-		}
 		return _this;
 	}
 
-	public static Collection<String> print(LucentV5OriginalCallInfo _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(
+			final LucentV5OriginalCallInfo _this, final String name,
+			final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ReasonForCallInfo.print(_this.reason, "reason", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.callingDevice_asn,
@@ -76,12 +74,12 @@ public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
 	}
 
 	@Override
-	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
+	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
 		return LucentV5LookaheadInfo.decode(memberStream);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		ucid = ASNIA5String.decode(memberStream);
 		callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
@@ -89,7 +87,7 @@ public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(ucid, memberStream);
 		ASNSequence.encode(callOriginatorInfo, memberStream);
@@ -101,9 +99,8 @@ public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
 	}
 
 	public int getCallOriginatorType() {
-		if (hasCallOriginatorType()) {
+		if (hasCallOriginatorType())
 			return callOriginatorInfo.getCallOriginatorType();
-		}
 		return -1;
 	}
 
@@ -115,16 +112,16 @@ public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
 		return callOriginatorInfo != null;
 	}
 
-	public void setCallOriginatorInfo(CSTACallOriginatorInfo _callOriginatorInfo) {
+	public void setCallOriginatorInfo(
+			final CSTACallOriginatorInfo _callOriginatorInfo) {
 		callOriginatorInfo = _callOriginatorInfo;
 	}
 
-	public void setFlexibleBilling(boolean flexibleBilling) {
+	public void setFlexibleBilling(final boolean flexibleBilling) {
 		this.flexibleBilling = flexibleBilling;
 	}
 
-	public void setUCID(String _ucid) {
+	public void setUCID(final String _ucid) {
 		ucid = _ucid;
 	}
 }
-

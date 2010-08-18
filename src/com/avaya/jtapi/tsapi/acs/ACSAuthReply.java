@@ -8,8 +8,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 
 public final class ACSAuthReply extends ACSConfirmation {
-	public static ACSAuthReply decode(InputStream in) {
-		ACSAuthReply _this = new ACSAuthReply();
+	public static ACSAuthReply decode(final InputStream in) {
+		final ACSAuthReply _this = new ACSAuthReply();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,7 +22,7 @@ public final class ACSAuthReply extends ACSConfirmation {
 	public static final int PDU = 12;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		objectID = ASNInteger.decode(memberStream);
 		key = ASNOctetString.decode(memberStream);
 		authInfo = ACSAuthInfo.decode(memberStream);
@@ -47,11 +47,11 @@ public final class ACSAuthReply extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSAuthReply ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(objectID, "objectID", indent));
 		lines.addAll(ASNOctetString.print(key, "key", indent));
@@ -61,4 +61,3 @@ public final class ACSAuthReply extends ACSConfirmation {
 		return lines;
 	}
 }
-

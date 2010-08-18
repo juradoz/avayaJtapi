@@ -13,12 +13,13 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public class LucentTrunkInfoMapItem {
 	public static LucentTrunkInfoMapItem createLucentTrunkInfo(
-			CSTATrunkInfo info, TSProviderImpl prov) {
+			final CSTATrunkInfo info, final TSProviderImpl prov) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentTrunkInfo[LucentTrunkInfo info, TSProviderImpl prov]",
 						LucentTrunkInfoMapItem.class);
-		LucentTrunkInfoMapItem _this = new LucentTrunkInfoMapItem(info, prov);
+		final LucentTrunkInfoMapItem _this = new LucentTrunkInfoMapItem(info,
+				prov);
 		TsapiTrace
 				.traceExit(
 						"createLucentTrunkInfo[LucentTrunkInfo info, TSProviderImpl prov]",
@@ -27,16 +28,16 @@ public class LucentTrunkInfoMapItem {
 	}
 
 	public static LucentTrunkInfoMapItem[] createLucentTrunkInfoMapItemArray(
-			CSTATrunkInfo[] input_array, TSProviderImpl prov) {
+			final CSTATrunkInfo[] input_array, final TSProviderImpl prov) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentTrunkInfoMapItemArray[LucentTrunkInfo[] input_array, TSProviderImpl prov]",
 						LucentTrunkInfoMapItem.class);
 
-		LucentTrunkInfoMapItem[] items = new LucentTrunkInfoMapItem[input_array.length];
-		for (int i = 0; i < items.length; ++i) {
-			items[i] = createLucentTrunkInfo(input_array[i], prov);
-		}
+		final LucentTrunkInfoMapItem[] items = new LucentTrunkInfoMapItem[input_array.length];
+		for (int i = 0; i < items.length; ++i)
+			items[i] = LucentTrunkInfoMapItem.createLucentTrunkInfo(
+					input_array[i], prov);
 		TsapiTrace
 				.traceExit(
 						"createLucentTrunkInfoMapItemArray[LucentTrunkInfo[] input_array, TSProviderImpl prov]",
@@ -44,13 +45,14 @@ public class LucentTrunkInfoMapItem {
 		return items;
 	}
 
-	private TSConnection tsConnection;
+	private final TSConnection tsConnection;
 
 	private TSTrunk tsTrunk;
 
-	private LucentTrunkInfoMapItem(CSTATrunkInfo info, TSProviderImpl provider) {
-		String trunkName = TsapiTrunk.makeTrunkName(info.getTrunkGroup(), info
-				.getTrunkMember());
+	private LucentTrunkInfoMapItem(final CSTATrunkInfo info,
+			final TSProviderImpl provider) {
+		final String trunkName = TsapiTrunk.makeTrunkName(info.getTrunkGroup(),
+				info.getTrunkMember());
 		if (trunkName != null) {
 			tsTrunk = provider.createTSTrunk(trunkName);
 			if (tsTrunk != null) {
@@ -80,23 +82,21 @@ public class LucentTrunkInfoMapItem {
 		return tsTrunk;
 	}
 
-	public void interLinkConnectionCallAndTrunk(Vector<TSEvent> eventList) {
+	public void interLinkConnectionCallAndTrunk(final Vector<TSEvent> eventList) {
 		TsapiTrace.traceEntry(
 				"interLinkConnectionCallAndTrunk[Vector<TSEvent> eventList]",
 				this);
-		if ((tsTrunk != null) && (tsConnection != null)) {
+		if (tsTrunk != null && tsConnection != null) {
 			tsConnection.setTrunk(tsTrunk);
 
 			tsTrunk.setTSConnection(tsConnection);
 
-			TSCall call = tsConnection.getTSCall();
-			if (call != null) {
+			final TSCall call = tsConnection.getTSCall();
+			if (call != null)
 				call.addTrunk(tsTrunk, eventList);
-			}
 		}
 		TsapiTrace.traceExit(
 				"interLinkConnectionCallAndTrunk[Vector<TSEvent> eventList]",
 				this);
 	}
 }
-

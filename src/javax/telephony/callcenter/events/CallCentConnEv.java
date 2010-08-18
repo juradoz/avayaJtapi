@@ -6,4 +6,3 @@ import javax.telephony.events.ConnEv;
 @Deprecated
 public abstract interface CallCentConnEv extends CallCentCallEv, ConnEv {
 }
-

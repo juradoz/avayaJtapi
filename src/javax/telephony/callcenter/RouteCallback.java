@@ -18,4 +18,3 @@ public abstract interface RouteCallback {
 
 	public abstract void routeUsedEvent(RouteUsedEvent paramRouteUsedEvent);
 }
-

@@ -9,4 +9,3 @@ public abstract interface PrivateCallEv extends CallEv {
 
 	public abstract Object getPrivateData();
 }
-

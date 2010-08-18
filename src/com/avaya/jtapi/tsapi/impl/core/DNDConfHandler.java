@@ -13,49 +13,47 @@ final class DNDConfHandler implements ConfHandler {
 	int pdu;
 	boolean enable;
 
-	DNDConfHandler(TSDevice _device) {
+	DNDConfHandler(final TSDevice _device) {
 		device = _device;
 		pdu = 30;
 	}
 
-	DNDConfHandler(TSDevice _device, boolean _enable) {
+	DNDConfHandler(final TSDevice _device, final boolean _enable) {
 		device = _device;
 		pdu = 46;
 		enable = _enable;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null) || (event.getEventHeader().getEventClass() != 5)
-				|| (event.getEventHeader().getEventType() != pdu)) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null || event.getEventHeader().getEventClass() != 5
+				|| event.getEventHeader().getEventType() != pdu)
 			return;
-		}
 
-		if (pdu == 30) {
+		if (pdu == 30)
 			enable = ((CSTAQueryDndConfEvent) event.getEvent())
 					.isDoNotDisturb();
-		}
 
 		device.replyAddrPriv = event.getPrivData();
 		device.replyTermPriv = event.getPrivData();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		device.updateDNDState(enable, eventList);
 
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
-		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
+		final Vector<TsapiAddressMonitor> observers = device
+				.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = observers.elementAt(j);
+			final TsapiAddressMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
-		Vector<TsapiTerminalMonitor> terminalObservers = device
+		final Vector<TsapiTerminalMonitor> terminalObservers = device
 				.getTerminalObservers();
 		for (int j = 0; j < terminalObservers.size(); ++j) {
-			TsapiTerminalMonitor callback = terminalObservers.elementAt(j);
+			final TsapiTerminalMonitor callback = terminalObservers
+					.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}
 }
-

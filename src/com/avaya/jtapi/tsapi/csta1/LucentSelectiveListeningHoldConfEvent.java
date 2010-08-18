@@ -11,20 +11,20 @@ public final class LucentSelectiveListeningHoldConfEvent extends
 		LucentPrivateData {
 	public static final int PDU = 68;
 
-	static LucentSelectiveListeningHoldConfEvent decode(InputStream in) {
-		LucentSelectiveListeningHoldConfEvent _this = new LucentSelectiveListeningHoldConfEvent();
+	static LucentSelectiveListeningHoldConfEvent decode(final InputStream in) {
+		final LucentSelectiveListeningHoldConfEvent _this = new LucentSelectiveListeningHoldConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -35,12 +35,12 @@ public final class LucentSelectiveListeningHoldConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSelectiveListeningHoldConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

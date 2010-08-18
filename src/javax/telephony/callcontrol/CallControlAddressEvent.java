@@ -14,4 +14,3 @@ public abstract interface CallControlAddressEvent extends CallControlEvent,
 
 	public abstract boolean getMessageWaitingState();
 }
-

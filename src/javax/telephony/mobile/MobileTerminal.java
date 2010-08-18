@@ -20,4 +20,3 @@ public abstract interface MobileTerminal extends Terminal {
 
 	public abstract void stopDTMF();
 }
-

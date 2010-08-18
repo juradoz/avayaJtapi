@@ -49,4 +49,3 @@ public abstract interface Address {
 
 	public abstract void removeObserver(AddressObserver paramAddressObserver);
 }
-

@@ -5,13 +5,12 @@ import javax.telephony.Connection;
 import javax.telephony.callcenter.CallCenterTrunk;
 
 public abstract class TsapiTrunk implements CallCenterTrunk {
-	public static String makeTrunkName(String groupName, String memberName) {
-		if (groupName == null) {
+	public static String makeTrunkName(final String groupName,
+			final String memberName) {
+		if (groupName == null)
 			return null;
-		}
-		if (memberName == null) {
+		if (memberName == null)
 			return groupName + ":0";
-		}
 		return groupName + ":" + memberName;
 	}
 
@@ -35,4 +34,3 @@ public abstract class TsapiTrunk implements CallCenterTrunk {
 	@Override
 	public abstract int hashCode();
 }
-

@@ -15,15 +15,15 @@ public final class CSTAConnectionClearedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 56;
 
-	public static CSTAConnectionClearedEvent decode(InputStream in) {
-		CSTAConnectionClearedEvent _this = new CSTAConnectionClearedEvent();
+	public static CSTAConnectionClearedEvent decode(final InputStream in) {
+		final CSTAConnectionClearedEvent _this = new CSTAConnectionClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		droppedConnection = CSTAConnectionID.decode(memberStream);
 		releasingDevice = CSTAExtendedDeviceID.decode(memberStream);
 		localConnectionInfo = ASNEnumerated.decode(memberStream);
@@ -31,7 +31,7 @@ public final class CSTAConnectionClearedEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(droppedConnection, memberStream);
 		ASNSequence.encode(releasingDevice, memberStream);
 		ASNEnumerated.encode(localConnectionInfo, memberStream);
@@ -61,11 +61,11 @@ public final class CSTAConnectionClearedEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAConnectionClearedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(droppedConnection,
 				"droppedConnection", indent));
@@ -79,20 +79,19 @@ public final class CSTAConnectionClearedEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setDroppedConnection(CSTAConnectionID droppedConnection) {
+	public void setDroppedConnection(final CSTAConnectionID droppedConnection) {
 		this.droppedConnection = droppedConnection;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 
-	public void setReleasingDevice(CSTAExtendedDeviceID releasingDevice) {
+	public void setReleasingDevice(final CSTAExtendedDeviceID releasingDevice) {
 		this.releasingDevice = releasingDevice;
 	}
 }
-

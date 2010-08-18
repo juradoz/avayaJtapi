@@ -15,15 +15,15 @@ public final class CSTALoggedOnEvent extends CSTAUnsolicited {
 	String password;
 	public static final int PDU = 72;
 
-	public static CSTALoggedOnEvent decode(InputStream in) {
-		CSTALoggedOnEvent _this = new CSTALoggedOnEvent();
+	public static CSTALoggedOnEvent decode(final InputStream in) {
+		final CSTALoggedOnEvent _this = new CSTALoggedOnEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		agentDevice = CSTAExtendedDeviceID.decode(memberStream);
 		agentID = ASNIA5String.decode(memberStream);
 		agentGroup = ASNIA5String.decode(memberStream);
@@ -31,7 +31,7 @@ public final class CSTALoggedOnEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(agentDevice, memberStream);
 		ASNIA5String.encode(agentID, memberStream);
 		ASNIA5String.encode(agentGroup, memberStream);
@@ -61,11 +61,11 @@ public final class CSTALoggedOnEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTALoggedOnEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(agentDevice, "agentDevice",
 				indent));
@@ -77,20 +77,19 @@ public final class CSTALoggedOnEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setAgentDevice(CSTAExtendedDeviceID agentDevice) {
+	public void setAgentDevice(final CSTAExtendedDeviceID agentDevice) {
 		this.agentDevice = agentDevice;
 	}
 
-	public void setAgentGroup(String agentGroup) {
+	public void setAgentGroup(final String agentGroup) {
 		this.agentGroup = agentGroup;
 	}
 
-	public void setAgentID(String agentID) {
+	public void setAgentID(final String agentID) {
 		this.agentID = agentID;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 }
-

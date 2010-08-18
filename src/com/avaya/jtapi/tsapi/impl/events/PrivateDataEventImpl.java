@@ -5,9 +5,9 @@ import javax.telephony.privatedata.PrivateDataEvent;
 
 public class PrivateDataEventImpl extends TsapiListenerEvent implements
 		PrivateDataEvent {
-	public PrivateDataEventImpl(int eventId, int _cause, MetaEvent metaEvent,
-			Object source, Object privateData) {
+	public PrivateDataEventImpl(final int eventId, final int _cause,
+			final MetaEvent metaEvent, final Object source,
+			final Object privateData) {
 		super(eventId, _cause, metaEvent, source, privateData);
 	}
 }
-

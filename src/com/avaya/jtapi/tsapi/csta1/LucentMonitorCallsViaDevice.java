@@ -11,14 +11,14 @@ public class LucentMonitorCallsViaDevice extends LucentPrivateData {
 	int privateFilter;
 	static final int PDU = 144;
 
-	public LucentMonitorCallsViaDevice(boolean _flowPredictiveCallEvents,
-			int _privateFilter) {
+	public LucentMonitorCallsViaDevice(final boolean _flowPredictiveCallEvents,
+			final int _privateFilter) {
 		flowPredictiveCallEvents = _flowPredictiveCallEvents;
 		privateFilter = _privateFilter;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		LucentPrivateFilter.encode(privateFilter, memberStream);
 		ASNBoolean.encode(flowPredictiveCallEvents, memberStream);
 	}
@@ -30,12 +30,12 @@ public class LucentMonitorCallsViaDevice extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorCallsViaDevice ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentPrivateFilter.print(privateFilter, "privateFilter",
 				indent));

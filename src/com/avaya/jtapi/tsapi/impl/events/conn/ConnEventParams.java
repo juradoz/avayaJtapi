@@ -15,8 +15,7 @@ public class ConnEventParams extends CallEventParams {
 		return connection;
 	}
 
-	public void setConnection(Connection connection) {
+	public void setConnection(final Connection connection) {
 		this.connection = connection;
 	}
 }
-

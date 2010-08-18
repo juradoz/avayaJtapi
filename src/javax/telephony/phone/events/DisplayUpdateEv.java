@@ -7,4 +7,3 @@ public abstract interface DisplayUpdateEv extends PhoneTermEv {
 
 	public abstract String getDisplay(int paramInt1, int paramInt2);
 }
-

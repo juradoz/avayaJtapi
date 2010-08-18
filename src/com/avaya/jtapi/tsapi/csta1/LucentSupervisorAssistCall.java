@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public class LucentSupervisorAssistCall extends LucentPrivateData {
-	public static LucentSupervisorAssistCall decode(InputStream in) {
-		LucentSupervisorAssistCall _this = new LucentSupervisorAssistCall();
+	public static LucentSupervisorAssistCall decode(final InputStream in) {
+		final LucentSupervisorAssistCall _this = new LucentSupervisorAssistCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,20 +23,20 @@ public class LucentSupervisorAssistCall extends LucentPrivateData {
 	public LucentSupervisorAssistCall() {
 	}
 
-	public LucentSupervisorAssistCall(String _split,
-			LucentUserToUserInfo _userInfo) {
+	public LucentSupervisorAssistCall(final String _split,
+			final LucentUserToUserInfo _userInfo) {
 		split = _split;
 		userInfo = _userInfo;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		split = ASNIA5String.decode(memberStream);
 		userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(split, memberStream);
 		LucentUserToUserInfo.encode(userInfo, memberStream);
 	}
@@ -48,12 +48,12 @@ public class LucentSupervisorAssistCall extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSupervisorAssistCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(split, "split", indent));
 		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
@@ -62,4 +62,3 @@ public class LucentSupervisorAssistCall extends LucentPrivateData {
 		return lines;
 	}
 }
-

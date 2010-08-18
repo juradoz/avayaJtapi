@@ -13,33 +13,33 @@ public class LucentV5TransferredEvent extends LucentTransferredEvent implements
 	String ucid;
 	static final int PDU = 82;
 
-	public static LucentTransferredEvent decode(InputStream in) {
-		LucentV5TransferredEvent _this = new LucentV5TransferredEvent();
+	public static LucentTransferredEvent decode(final InputStream in) {
+		final LucentV5TransferredEvent _this = new LucentV5TransferredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		ucid = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public LucentOriginalCallInfo decodeOCI(InputStream memberStream) {
+	public LucentOriginalCallInfo decodeOCI(final InputStream memberStream) {
 		return LucentV5OriginalCallInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(ucid, memberStream);
 	}
 
 	@Override
-	public void encodeOCI(LucentOriginalCallInfo callInfo,
-			OutputStream memberStream) {
+	public void encodeOCI(final LucentOriginalCallInfo callInfo,
+			final OutputStream memberStream) {
 		ASNSequence.encode(callInfo, memberStream);
 	}
 
@@ -54,12 +54,12 @@ public class LucentV5TransferredEvent extends LucentTransferredEvent implements
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5TransferredEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentOriginalCallInfo.print(originalCallInfo,
 				"originalCallInfo", indent));
@@ -71,8 +71,7 @@ public class LucentV5TransferredEvent extends LucentTransferredEvent implements
 		return lines;
 	}
 
-	public void setUcid(String ucid) {
+	public void setUcid(final String ucid) {
 		this.ucid = ucid;
 	}
 }
-

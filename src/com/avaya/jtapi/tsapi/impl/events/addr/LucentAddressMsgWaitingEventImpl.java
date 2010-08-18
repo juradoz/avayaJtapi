@@ -6,8 +6,9 @@ import com.avaya.jtapi.tsapi.LucentAddressMsgWaitingEvent;
 
 public final class LucentAddressMsgWaitingEventImpl extends
 		TsapiAddressMsgWaitingEvent implements LucentAddressMsgWaitingEvent {
-	public LucentAddressMsgWaitingEventImpl(Address _device, int _mwBits,
-			int _cause, int _metaCode, Object _privateData) {
+	public LucentAddressMsgWaitingEventImpl(final Address _device,
+			final int _mwBits, final int _cause, final int _metaCode,
+			final Object _privateData) {
 		super(_device, _mwBits, _cause, _metaCode, _privateData);
 	}
 }

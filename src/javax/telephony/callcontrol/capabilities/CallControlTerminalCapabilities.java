@@ -33,4 +33,3 @@ public abstract interface CallControlTerminalCapabilities extends
 
 	public abstract boolean canSetDoNotDisturb();
 }
-

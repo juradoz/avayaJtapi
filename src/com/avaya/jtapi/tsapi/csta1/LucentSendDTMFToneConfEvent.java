@@ -10,20 +10,20 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class LucentSendDTMFToneConfEvent extends LucentPrivateData {
 	static final int PDU = 9;
 
-	static LucentSendDTMFToneConfEvent decode(InputStream in) {
-		LucentSendDTMFToneConfEvent _this = new LucentSendDTMFToneConfEvent();
+	static LucentSendDTMFToneConfEvent decode(final InputStream in) {
+		final LucentSendDTMFToneConfEvent _this = new LucentSendDTMFToneConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -34,12 +34,12 @@ public final class LucentSendDTMFToneConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSendDTMFToneConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

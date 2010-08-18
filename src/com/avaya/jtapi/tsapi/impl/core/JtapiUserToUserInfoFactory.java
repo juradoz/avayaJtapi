@@ -6,25 +6,22 @@ import com.avaya.jtapi.tsapi.csta1.LucentQ931UserToUserInfo;
 import com.avaya.jtapi.tsapi.csta1.LucentUserToUserInfo;
 
 class JtapiUserToUserInfoFactory {
-	static UserToUserInfo createUserToUserInfo(LucentUserToUserInfo csta_obj) {
-		if (csta_obj == null) {
+	static UserToUserInfo createUserToUserInfo(
+			final LucentUserToUserInfo csta_obj) {
+		if (csta_obj == null)
 			return null;
-		}
 
-		if (csta_obj instanceof LucentQ931UserToUserInfo) {
+		if (csta_obj instanceof LucentQ931UserToUserInfo)
 			return new Q931UserToUserInfo(csta_obj.getBytes());
-		}
 
 		return new UserToUserInfo(csta_obj.getBytes(), csta_obj.getType());
 	}
 
-	static LucentUserToUserInfo createUserToUserInfo(UserToUserInfo uui) {
-		if (uui == null) {
+	static LucentUserToUserInfo createUserToUserInfo(final UserToUserInfo uui) {
+		if (uui == null)
 			return null;
-		}
-		if (uui instanceof Q931UserToUserInfo) {
+		if (uui instanceof Q931UserToUserInfo)
 			return new LucentQ931UserToUserInfo(uui.getBytes());
-		}
 
 		return new LucentUserToUserInfo(uui.getBytes(), uui.getType());
 	}

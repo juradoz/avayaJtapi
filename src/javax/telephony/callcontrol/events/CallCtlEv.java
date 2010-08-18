@@ -21,4 +21,3 @@ public abstract interface CallCtlEv extends Ev {
 
 	public abstract int getCallControlCause();
 }
-

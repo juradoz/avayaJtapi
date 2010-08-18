@@ -18,15 +18,15 @@ public final class CSTATransferredEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 67;
 
-	public static CSTATransferredEvent decode(InputStream in) {
-		CSTATransferredEvent _this = new CSTATransferredEvent();
+	public static CSTATransferredEvent decode(final InputStream in) {
+		final CSTATransferredEvent _this = new CSTATransferredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		primaryOldCall = CSTAConnectionID.decode(memberStream);
 		secondaryOldCall = CSTAConnectionID.decode(memberStream);
 		transferringDevice = CSTAExtendedDeviceID.decode(memberStream);
@@ -37,7 +37,7 @@ public final class CSTATransferredEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(primaryOldCall, memberStream);
 		CSTAConnectionID.encode(secondaryOldCall, memberStream);
 		ASNSequence.encode(transferringDevice, memberStream);
@@ -82,12 +82,12 @@ public final class CSTATransferredEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTATransferredEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(primaryOldCall, "primaryOldCall",
 				indent));
@@ -107,33 +107,34 @@ public final class CSTATransferredEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCause(short _cause) {
+	public void setCause(final short _cause) {
 		cause = _cause;
 	}
 
-	public void setLocalConnectionInfo(short _localConnectionInfo) {
+	public void setLocalConnectionInfo(final short _localConnectionInfo) {
 		localConnectionInfo = _localConnectionInfo;
 	}
 
-	public void setPrimaryOldCall(CSTAConnectionID _primaryOldCall) {
+	public void setPrimaryOldCall(final CSTAConnectionID _primaryOldCall) {
 		primaryOldCall = _primaryOldCall;
 	}
 
-	public void setSecondaryOldCall(CSTAConnectionID _secondaryOldCall) {
+	public void setSecondaryOldCall(final CSTAConnectionID _secondaryOldCall) {
 		secondaryOldCall = _secondaryOldCall;
 	}
 
 	public void setTransferredConnections(
-			CSTAConnection[] _transferredConnections) {
+			final CSTAConnection[] _transferredConnections) {
 		transferredConnections = _transferredConnections;
 	}
 
-	public void setTransferredDevice(CSTAExtendedDeviceID _transferredDevice) {
+	public void setTransferredDevice(
+			final CSTAExtendedDeviceID _transferredDevice) {
 		transferredDevice = _transferredDevice;
 	}
 
-	public void setTransferringDevice(CSTAExtendedDeviceID _transferringDevice) {
+	public void setTransferringDevice(
+			final CSTAExtendedDeviceID _transferringDevice) {
 		transferringDevice = _transferringDevice;
 	}
 }
-

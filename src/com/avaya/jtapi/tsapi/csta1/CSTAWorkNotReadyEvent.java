@@ -11,15 +11,15 @@ public final class CSTAWorkNotReadyEvent extends CSTAUnsolicited {
 	String agentID;
 	public static final int PDU = 76;
 
-	public static CSTAWorkNotReadyEvent decode(InputStream in) {
-		CSTAWorkNotReadyEvent _this = new CSTAWorkNotReadyEvent();
+	public static CSTAWorkNotReadyEvent decode(final InputStream in) {
+		final CSTAWorkNotReadyEvent _this = new CSTAWorkNotReadyEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		agentDevice = CSTAExtendedDeviceID.decode(memberStream);
 		agentID = ASNIA5String.decode(memberStream);
 	}
@@ -39,12 +39,12 @@ public final class CSTAWorkNotReadyEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAWorkNotReadyEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(agentDevice, "agentDevice",
 				indent));
@@ -54,12 +54,11 @@ public final class CSTAWorkNotReadyEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setAgentDevice(CSTAExtendedDeviceID agentDevice) {
+	public void setAgentDevice(final CSTAExtendedDeviceID agentDevice) {
 		this.agentDevice = agentDevice;
 	}
 
-	public void setAgentID(String agentID) {
+	public void setAgentID(final String agentID) {
 		this.agentID = agentID;
 	}
 }
-

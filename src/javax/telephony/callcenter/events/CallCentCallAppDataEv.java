@@ -7,4 +7,3 @@ public abstract interface CallCentCallAppDataEv extends CallCentCallEv {
 
 	public abstract Object getApplicationData();
 }
-

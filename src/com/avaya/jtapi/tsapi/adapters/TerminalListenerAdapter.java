@@ -4,6 +4,6 @@ import javax.telephony.TerminalEvent;
 import javax.telephony.TerminalListener;
 
 public abstract class TerminalListenerAdapter implements TerminalListener {
-	public void terminalListenerEnded(TerminalEvent event) {
+	public void terminalListenerEnded(final TerminalEvent event) {
 	}
 }

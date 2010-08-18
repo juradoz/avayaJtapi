@@ -20,27 +20,25 @@ final class SysStatHandler implements ConfHandler, HandleConfOnCurrentThread {
 		return systemStatus;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if (event == null) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null)
 			return;
-		}
 		if (event.getEvent() instanceof CSTASysStatStartConfEvent) {
-			log.info("Filter set at "
+			SysStatHandler.log.info("Filter set at "
 					+ SystemStatusFilter.print(
 							((CSTASysStatStartConfEvent) event.getEvent())
 									.getFilter(), "", ""));
 
 			if (event.getPrivData() instanceof LucentLinkStatusEvent) {
-				short state = ((LucentLinkStatusEvent) event.getPrivData())
-						.getLinkStatus().getLinkState();
-				log.info("Link state is " + LinkState.print(state, "", ""));
+				final short state = ((LucentLinkStatusEvent) event
+						.getPrivData()).getLinkStatus().getLinkState();
+				SysStatHandler.log.info("Link state is "
+						+ LinkState.print(state, "", ""));
 			}
-		} else if (event.getEvent() instanceof CSTASysStatStopConfEvent) {
-			log.info("Event monitoring was ended successfully");
-		} else if (event.getEvent() instanceof CSTASysStatReqConfEvent) {
+		} else if (event.getEvent() instanceof CSTASysStatStopConfEvent)
+			SysStatHandler.log.info("Event monitoring was ended successfully");
+		else if (event.getEvent() instanceof CSTASysStatReqConfEvent)
 			systemStatus = ((CSTASysStatReqConfEvent) event.getEvent())
 					.getSystemStatus();
-		}
 	}
 }
-

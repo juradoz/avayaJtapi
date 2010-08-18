@@ -1,9 +1,9 @@
 package javax.telephony.callcontrol;
 
 public class CallControlForwarding {
-	private String destAddress;
-	private String caller;
-	private int type;
+	private final String destAddress;
+	private final String caller;
+	private final int type;
 	private int whichCalls;
 	public static final int ALL_CALLS = 1;
 	public static final int INTERNAL_CALLS = 2;
@@ -13,33 +13,33 @@ public class CallControlForwarding {
 	public static final int FORWARD_ON_BUSY = 2;
 	public static final int FORWARD_ON_NOANSWER = 3;
 
-	public CallControlForwarding(String destAddress) {
+	public CallControlForwarding(final String destAddress) {
 		this.destAddress = destAddress;
 		type = 1;
 		caller = null;
 		whichCalls = 1;
 	}
 
-	public CallControlForwarding(String destAddress, int type) {
+	public CallControlForwarding(final String destAddress, final int type) {
 		this.destAddress = destAddress;
 		this.type = type;
 		caller = null;
 		whichCalls = 1;
 	}
 
-	public CallControlForwarding(String destAddress, int type,
-			boolean internalCalls) {
+	public CallControlForwarding(final String destAddress, final int type,
+			final boolean internalCalls) {
 		this.destAddress = destAddress;
 		this.type = type;
 		caller = null;
-		if (internalCalls) {
+		if (internalCalls)
 			whichCalls = 2;
-		} else {
+		else
 			whichCalls = 3;
-		}
 	}
 
-	public CallControlForwarding(String destAddress, int type, String caller) {
+	public CallControlForwarding(final String destAddress, final int type,
+			final String caller) {
 		this.destAddress = destAddress;
 		this.type = type;
 		this.caller = caller;
@@ -62,4 +62,3 @@ public class CallControlForwarding {
 		return type;
 	}
 }
-

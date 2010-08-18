@@ -8,15 +8,15 @@ public final class TsapiPrivilegeViolationException extends
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiPrivilegeViolationException(int _errorType, int _errorCode,
-			int type) {
+	public TsapiPrivilegeViolationException(final int _errorType,
+			final int _errorCode, final int type) {
 		super(type);
 		errorType = _errorType;
 		errorCode = _errorCode;
 	}
 
-	public TsapiPrivilegeViolationException(int _errorType, int _errorCode,
-			int type, String s) {
+	public TsapiPrivilegeViolationException(final int _errorType,
+			final int _errorCode, final int type, final String s) {
 		super(type, s);
 		errorType = _errorType;
 		errorCode = _errorCode;
@@ -30,4 +30,3 @@ public final class TsapiPrivilegeViolationException extends
 		return errorType;
 	}
 }
-

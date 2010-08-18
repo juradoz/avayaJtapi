@@ -5,8 +5,8 @@ import javax.telephony.events.ProvShutdownEv;
 
 public final class TsapiProviderShutdownEvent extends TsapiProvEvent implements
 		ProvShutdownEv {
-	public TsapiProviderShutdownEvent(Provider _provider, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiProviderShutdownEvent(final Provider _provider,
+			final int _cause, final int _metaCode, final Object _privateData) {
 		super(_provider, _cause, _metaCode, _privateData);
 	}
 
@@ -14,4 +14,3 @@ public final class TsapiProviderShutdownEvent extends TsapiProvEvent implements
 		return 114;
 	}
 }
-

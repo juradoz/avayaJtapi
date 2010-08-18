@@ -5,37 +5,36 @@ import javax.telephony.CallListener;
 import javax.telephony.MetaEvent;
 
 public class CallListenerAdapter implements CallListener {
-	public void callActive(CallEvent event) {
+	public void callActive(final CallEvent event) {
 	}
 
-	public void callEventTransmissionEnded(CallEvent event) {
+	public void callEventTransmissionEnded(final CallEvent event) {
 	}
 
-	public void callInvalid(CallEvent event) {
+	public void callInvalid(final CallEvent event) {
 	}
 
-	public void multiCallMetaMergeEnded(MetaEvent event) {
+	public void multiCallMetaMergeEnded(final MetaEvent event) {
 	}
 
-	public void multiCallMetaMergeStarted(MetaEvent event) {
+	public void multiCallMetaMergeStarted(final MetaEvent event) {
 	}
 
-	public void multiCallMetaTransferEnded(MetaEvent event) {
+	public void multiCallMetaTransferEnded(final MetaEvent event) {
 	}
 
-	public void multiCallMetaTransferStarted(MetaEvent event) {
+	public void multiCallMetaTransferStarted(final MetaEvent event) {
 	}
 
-	public void singleCallMetaProgressEnded(MetaEvent event) {
+	public void singleCallMetaProgressEnded(final MetaEvent event) {
 	}
 
-	public void singleCallMetaProgressStarted(MetaEvent event) {
+	public void singleCallMetaProgressStarted(final MetaEvent event) {
 	}
 
-	public void singleCallMetaSnapshotEnded(MetaEvent event) {
+	public void singleCallMetaSnapshotEnded(final MetaEvent event) {
 	}
 
-	public void singleCallMetaSnapshotStarted(MetaEvent event) {
+	public void singleCallMetaSnapshotStarted(final MetaEvent event) {
 	}
 }
-

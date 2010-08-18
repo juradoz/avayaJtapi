@@ -16,48 +16,44 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 public class LucentCallControlConnectionNetworkReachedEvent extends
 		CallControlConnectionNetworkReachedEventImpl implements LucentCallInfo {
 	public LucentCallControlConnectionNetworkReachedEvent(
-			CallEventParams params, MetaEvent event, int eventId,
-			int numInQueue, String digits) {
+			final CallEventParams params, final MetaEvent event,
+			final int eventId, final int numInQueue, final String digits) {
 		super(params, event, eventId, numInQueue, digits);
 	}
 
 	public ACDAddress getDeliveringACDAddress() {
 		ACDAddress acdAddr = null;
-		if (callEventParams.getSplit() != null) {
+		if (callEventParams.getSplit() != null)
 			acdAddr = callEventParams.getSplit();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			acdAddr = ((LucentCall) getCall()).getDeliveringACDAddress();
-		}
 		return acdAddr;
 	}
 
 	public CallCenterAddress getDistributingAddress() {
 		CallCenterAddress cca = null;
-		if (callEventParams.getDistributingDevice() != null) {
+		if (callEventParams.getDistributingDevice() != null)
 			cca = callEventParams.getDistributingDevice();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			cca = ((LucentCall) getCall()).getDistributingAddress();
-		}
 		return cca;
 	}
 
 	public LookaheadInfo getLookaheadInfo() {
 		LookaheadInfo lai = null;
-		if (callEventParams.getLookaheadInfo() != null) {
+		if (callEventParams.getLookaheadInfo() != null)
 			lai = callEventParams.getLookaheadInfo();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			lai = ((LucentCall) getCall()).getLookaheadInfo();
-		}
 		return lai;
 	}
 
 	public OriginalCallInfo getOriginalCallInfo() {
 		OriginalCallInfo oci = null;
-		if (callEventParams.getOriginalCallInfo() != null) {
+		if (callEventParams.getOriginalCallInfo() != null)
 			oci = callEventParams.getOriginalCallInfo();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			oci = ((LucentCall) getCall()).getOriginalCallInfo();
-		}
 		return oci;
 	}
 
@@ -67,31 +63,28 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 
 	public CallCenterTrunk getTrunk() {
 		CallCenterTrunk trunk = null;
-		if (callEventParams.getTrunk() != null) {
+		if (callEventParams.getTrunk() != null)
 			trunk = callEventParams.getTrunk();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			trunk = ((LucentCall) getCall()).getTrunk();
-		}
 		return trunk;
 	}
 
 	public UserEnteredCode getUserEnteredCode() {
 		UserEnteredCode uec = null;
-		if (callEventParams.getUserEnteredCode() != null) {
+		if (callEventParams.getUserEnteredCode() != null)
 			uec = callEventParams.getUserEnteredCode();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			uec = ((LucentCall) getCall()).getUserEnteredCode();
-		}
 		return uec;
 	}
 
 	public UserToUserInfo getUserToUserInfo() {
 		UserToUserInfo uui = null;
-		if (callEventParams.getUserToUserInfo() != null) {
+		if (callEventParams.getUserToUserInfo() != null)
 			uui = callEventParams.getUserToUserInfo();
-		} else if (getCall() instanceof LucentCall) {
+		else if (getCall() instanceof LucentCall)
 			uui = ((LucentCall) getCall()).getUserToUserInfo();
-		}
 		return uui;
 	}
 }

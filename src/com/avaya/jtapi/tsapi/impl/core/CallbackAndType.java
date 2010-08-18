@@ -6,9 +6,9 @@ final class CallbackAndType {
 	TsapiCallMonitor callback;
 	DevWithType devWithType;
 
-	CallbackAndType(TsapiCallMonitor _callback, DevWithType _devWithType) {
+	CallbackAndType(final TsapiCallMonitor _callback,
+			final DevWithType _devWithType) {
 		callback = _callback;
 		devWithType = _devWithType;
 	}
 }
-

@@ -12,17 +12,17 @@ import com.avaya.jtapi.tsapi.impl.core.TSTrunk;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public class TsapiTrunkImpl extends TsapiTrunk {
-	public static String makeTrunkName(String groupName, String memberName) {
+	public static String makeTrunkName(final String groupName,
+			final String memberName) {
 		TsapiTrace.traceEntry(
 				"makeTrunkName[String groupName, String memberName]", null);
 		String name = null;
-		if (groupName == null) {
+		if (groupName == null)
 			name = null;
-		} else if (memberName == null) {
+		else if (memberName == null)
 			name = groupName + ":0";
-		} else {
+		else
 			name = groupName + ":" + memberName;
-		}
 		TsapiTrace.traceExit(
 				"makeTrunkName[String groupName, String memberName]", null);
 		return name;
@@ -32,16 +32,15 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 
 	String name;
 
-	TsapiTrunkImpl(TSProviderImpl tsProvider, String trkName) {
+	TsapiTrunkImpl(final TSProviderImpl tsProvider, final String trkName) {
 		tsTrunk = tsProvider.createTSTrunk(trkName);
-		if (tsTrunk == null) {
+		if (tsTrunk == null)
 			throw new TsapiPlatformException(4, 0, "could not create trunk");
-		}
 		name = trkName;
 		TsapiTrace.traceConstruction(this, TsapiTrunkImpl.class);
 	}
 
-	TsapiTrunkImpl(TSTrunk _tsTrunk) {
+	TsapiTrunkImpl(final TSTrunk _tsTrunk) {
 		tsTrunk = _tsTrunk;
 
 		name = tsTrunk.getName();
@@ -49,10 +48,9 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TsapiTrunkImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof TsapiTrunkImpl)
 			return tsTrunk.equals(((TsapiTrunkImpl) obj).tsTrunk);
-		}
 
 		return false;
 	}
@@ -66,11 +64,10 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 	@Override
 	public Call getCall() {
 		TsapiTrace.traceEntry("getCall[]", this);
-		TSCall tsCall = tsTrunk.getTSCall();
+		final TSCall tsCall = tsTrunk.getTSCall();
 		Call call = null;
-		if (tsCall != null) {
+		if (tsCall != null)
 			call = (Call) TsapiCreateObject.getTsapiObject(tsCall, false);
-		}
 		TsapiTrace.traceExit("getCall[]", this);
 		return call;
 	}
@@ -78,11 +75,10 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 	@Override
 	public Connection getConnection() {
 		TsapiTrace.traceEntry("getConnection[]", this);
-		TSConnection tsconn = tsTrunk.getTSConnection();
+		final TSConnection tsconn = tsTrunk.getTSConnection();
 		Connection conn = null;
-		if (tsconn != null) {
+		if (tsconn != null)
 			conn = (Connection) TsapiCreateObject.getTsapiObject(tsconn, true);
-		}
 		TsapiTrace.traceEntry("getConnection[]", this);
 		return conn;
 	}
@@ -90,7 +86,7 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 	@Override
 	public String getGroupName() {
 		TsapiTrace.traceEntry("getGroupName[]", this);
-		String name = tsTrunk.getGroupName();
+		final String name = tsTrunk.getGroupName();
 		TsapiTrace.traceExit("getGroupName[]", this);
 		return name;
 	}
@@ -98,7 +94,7 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 	@Override
 	public String getMemberName() {
 		TsapiTrace.traceEntry("getMemberName[]", this);
-		String name = tsTrunk.getMemberName();
+		final String name = tsTrunk.getMemberName();
 		TsapiTrace.traceExit("getMemberName[]", this);
 		return name;
 	}
@@ -126,7 +122,7 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 	@Override
 	public int getType() {
 		TsapiTrace.traceEntry("getType[]", this);
-		int type = tsTrunk.getType();
+		final int type = tsTrunk.getType();
 		TsapiTrace.traceExit("getType[]", this);
 		return type;
 	}
@@ -136,4 +132,3 @@ public class TsapiTrunkImpl extends TsapiTrunk {
 		return tsTrunk.hashCode();
 	}
 }
-

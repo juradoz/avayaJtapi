@@ -11,8 +11,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 public final class LucentV6MakeCall extends LucentMakeCall {
 	public static final int PDU = 110;
 
-	public static LucentMakeCall decode(InputStream in) {
-		LucentV6MakeCall _this = new LucentV6MakeCall();
+	public static LucentMakeCall decode(final InputStream in) {
+		final LucentV6MakeCall _this = new LucentV6MakeCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,18 +21,18 @@ public final class LucentV6MakeCall extends LucentMakeCall {
 	public LucentV6MakeCall() {
 	}
 
-	public LucentV6MakeCall(String _destRoute, boolean _priorityCalling,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6MakeCall(final String _destRoute,
+			final boolean _priorityCalling, final LucentUserToUserInfo _userInfo) {
 		super(_destRoute, _priorityCalling, _userInfo);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
@@ -43,12 +43,12 @@ public final class LucentV6MakeCall extends LucentMakeCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6MakeCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(destRoute, "destRoute", indent));
 		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",
@@ -59,4 +59,3 @@ public final class LucentV6MakeCall extends LucentMakeCall {
 		return lines;
 	}
 }
-

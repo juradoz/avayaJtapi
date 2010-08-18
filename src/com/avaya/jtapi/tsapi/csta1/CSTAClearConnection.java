@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTAClearConnection extends CSTARequest {
-	public static CSTAClearConnection decode(InputStream in) {
-		CSTAClearConnection _this = new CSTAClearConnection();
+	public static CSTAClearConnection decode(final InputStream in) {
+		final CSTAClearConnection _this = new CSTAClearConnection();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,17 +20,17 @@ public final class CSTAClearConnection extends CSTARequest {
 	public CSTAClearConnection() {
 	}
 
-	public CSTAClearConnection(CSTAConnectionID _call) {
+	public CSTAClearConnection(final CSTAConnectionID _call) {
 		call = _call;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		call = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(call, memberStream);
 	}
 
@@ -45,11 +45,11 @@ public final class CSTAClearConnection extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAClearConnection ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(call, "call", indent));
 
@@ -57,4 +57,3 @@ public final class CSTAClearConnection extends CSTARequest {
 		return lines;
 	}
 }
-

@@ -7,4 +7,3 @@ public abstract interface CallCtlConnQueuedEv extends CallCtlConnEv {
 
 	public abstract int getNumberInQueue();
 }
-

@@ -14,8 +14,8 @@ public final class CSTARouteEndRequestInv extends CSTARequest {
 	short errorValue;
 	public static final int PDU = 133;
 
-	public static CSTARouteEndRequestInv decode(InputStream in) {
-		CSTARouteEndRequestInv _this = new CSTARouteEndRequestInv();
+	public static CSTARouteEndRequestInv decode(final InputStream in) {
+		final CSTARouteEndRequestInv _this = new CSTARouteEndRequestInv();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,22 +24,22 @@ public final class CSTARouteEndRequestInv extends CSTARequest {
 	public CSTARouteEndRequestInv() {
 	}
 
-	public CSTARouteEndRequestInv(int _routeRegisterReqID,
-			int _routingCrossRefID, short _errorValue) {
+	public CSTARouteEndRequestInv(final int _routeRegisterReqID,
+			final int _routingCrossRefID, final short _errorValue) {
 		routeRegisterReqID = _routeRegisterReqID;
 		routingCrossRefID = _routingCrossRefID;
 		errorValue = _errorValue;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		errorValue = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 		ASNInteger.encode(routingCrossRefID, memberStream);
 		ASNEnumerated.encode(errorValue, memberStream);
@@ -64,11 +64,11 @@ public final class CSTARouteEndRequestInv extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTARouteEndRequestInv ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -81,4 +81,3 @@ public final class CSTARouteEndRequestInv extends CSTARequest {
 		return lines;
 	}
 }
-

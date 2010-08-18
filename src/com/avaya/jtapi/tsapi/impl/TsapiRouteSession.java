@@ -38,7 +38,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	TSRouteSession tsRouteSession;
 	CSTAPrivate privData = null;
 
-	TsapiRouteSession(TSRouteSession _tsRouteSession) {
+	TsapiRouteSession(final TSRouteSession _tsRouteSession) {
 		tsRouteSession = _tsRouteSession;
 		TsapiTrace.traceConstruction(this, TsapiRouteSession.class);
 	}
@@ -46,7 +46,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final boolean canSetBillRate() {
 		TsapiTrace.traceEntry("canSetBillRate[]", this);
 		try {
-			boolean can = tsRouteSession.canSetBillRate();
+			final boolean can = tsRouteSession.canSetBillRate();
 			TsapiTrace.traceExit("canSetBillRate[]", this);
 			return can;
 		} finally {
@@ -54,39 +54,38 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		}
 	}
 
-	private LucentRouteSelect createLucentRouteSelect(String callingDevice,
-			String directAgentCallSplit, boolean priorityCalling,
-			String destRoute, LucentUserCollectCode collectCode,
-			LucentUserProvidedCode userProvidedCode, UserToUserInfo userInfo,
-			short networkRedirectCallType) {
+	private LucentRouteSelect createLucentRouteSelect(
+			final String callingDevice, final String directAgentCallSplit,
+			final boolean priorityCalling, final String destRoute,
+			final LucentUserCollectCode collectCode,
+			final LucentUserProvidedCode userProvidedCode,
+			final UserToUserInfo userInfo, final short networkRedirectCallType) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentRouteSelect[String callingDevice, String directAgentCallSplit, boolean priorityCalling, String destRoute, UserCollectCode collectCode, UserProvidedCode userProvidedCode, UserToUserInfo userInfo, short networkRedirectCallType]",
 						this);
-		TSProviderImpl provider = tsRouteSession.getTSProviderImpl();
-		LucentUserToUserInfo asn_uui = TsapiPromoter
+		final TSProviderImpl provider = tsRouteSession.getTSProviderImpl();
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
 				.demoteUserToUserInfo(userInfo);
 
 		LucentRouteSelect route = null;
 		if (provider != null) {
-			if (provider.isLucentV7()) {
+			if (provider.isLucentV7())
 				route = new LucentV7RouteSelect(callingDevice,
 						directAgentCallSplit, priorityCalling, destRoute,
 						collectCode, userProvidedCode, asn_uui,
 						networkRedirectCallType);
-			} else if (provider.isLucentV6()) {
+			else if (provider.isLucentV6())
 				route = new LucentV6RouteSelect(callingDevice,
 						directAgentCallSplit, priorityCalling, destRoute,
 						collectCode, userProvidedCode, asn_uui);
-			} else {
+			else
 				route = new LucentRouteSelect(callingDevice,
 						directAgentCallSplit, priorityCalling, destRoute,
 						collectCode, userProvidedCode, asn_uui);
-			}
 
-		} else {
+		} else
 			route = null;
-		}
 		TsapiTrace
 				.traceExit(
 						"createLucentRouteSelect[String callingDevice, String directAgentCallSplit, boolean priorityCalling, String destRoute, UserCollectCode collectCode, UserProvidedCode userProvidedCode, UserToUserInfo userInfo, short networkRedirectCallType]",
@@ -94,7 +93,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		return route;
 	}
 
-	public final void endRoute(int errorValue) {
+	public final void endRoute(final int errorValue) {
 		TsapiTrace.traceEntry("endRoute[int errorValue]", this);
 		try {
 			tsRouteSession.tsEndRoute(errorValue, privData);
@@ -105,11 +104,10 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TsapiRouteSession) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof TsapiRouteSession)
 			return tsRouteSession
 					.equals(((TsapiRouteSession) obj).tsRouteSession);
-		}
 
 		return false;
 	}
@@ -123,8 +121,8 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final Call getCall() {
 		TsapiTrace.traceEntry("getCall[]", this);
 		try {
-			Call call = (Call) TsapiCreateObject.getTsapiObject(tsRouteSession
-					.getCall(), false);
+			final Call call = (Call) TsapiCreateObject.getTsapiObject(
+					tsRouteSession.getCall(), false);
 			TsapiTrace.traceExit("getCall[]", this);
 			return call;
 		} finally {
@@ -135,7 +133,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final int getCallOriginatorType() {
 		TsapiTrace.traceEntry("getCallOriginatorType[]", this);
 		try {
-			int type = tsRouteSession.getCallOriginatorType();
+			final int type = tsRouteSession.getCallOriginatorType();
 			TsapiTrace.traceExit("getCallOriginatorType[]", this);
 			return type;
 		} finally {
@@ -146,7 +144,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final int getCause() {
 		TsapiTrace.traceEntry("getCause[]", this);
 		try {
-			int i = tsRouteSession.tsGetCause();
+			final int i = tsRouteSession.tsGetCause();
 			TsapiTrace.traceExit("getCause[]", this);
 			return i;
 		} finally {
@@ -156,7 +154,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 
 	public short getCSTAErrorCode() {
 		TsapiTrace.traceEntry("getCSTAErrorCode[]", this);
-		short code = tsRouteSession.getCSTAErrorCode();
+		final short code = tsRouteSession.getCSTAErrorCode();
 		TsapiTrace.traceExit("getCSTAErrorCode[]", this);
 		return code;
 	}
@@ -194,7 +192,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final LookaheadInfo getLookaheadInfo() {
 		TsapiTrace.traceEntry("getLookaheadInfo[]", this);
 		try {
-			LookaheadInfo lai = tsRouteSession.getLAI();
+			final LookaheadInfo lai = tsRouteSession.getLAI();
 			TsapiTrace.traceExit("getLookaheadInfo[]", this);
 			return lai;
 		} finally {
@@ -231,7 +229,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	// ERROR //
 	public final javax.telephony.callcenter.RouteAddress getRouteAddress() {
 		try {
-			TSDevice tsRouteDevice = tsRouteSession.getTSRouteDevice();
+			final TSDevice tsRouteDevice = tsRouteSession.getTSRouteDevice();
 			RouteAddress localRouteAddress;
 			if (tsRouteDevice != null) {
 				localRouteAddress = (RouteAddress) TsapiCreateObject
@@ -250,7 +248,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final int getRouteCrossRefID() {
 		TsapiTrace.traceEntry("getRouteCrossRefID[]", this);
 		try {
-			int xref = tsRouteSession.getRtXrefID();
+			final int xref = tsRouteSession.getRtXrefID();
 			TsapiTrace.traceExit("getRouteCrossRefID[]", this);
 			return xref;
 		} finally {
@@ -261,7 +259,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final int getRouteRegisterID() {
 		TsapiTrace.traceEntry("getRouteRegisterID[]", this);
 		try {
-			int id = tsRouteSession.getRtRegID();
+			final int id = tsRouteSession.getRtRegID();
 			TsapiTrace.traceExit("getRouteRegisterID[]", this);
 			return id;
 		} finally {
@@ -272,7 +270,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final int getState() {
 		TsapiTrace.traceEntry("getState[]", this);
 		try {
-			int state = tsRouteSession.tsGetState();
+			final int state = tsRouteSession.tsGetState();
 			TsapiTrace.traceExit("getState[]", this);
 			return state;
 		} finally {
@@ -283,7 +281,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final CallCenterTrunk getTrunk() {
 		TsapiTrace.traceEntry("getTrunk[]", this);
 		try {
-			TSTrunk tsTrunk = tsRouteSession.getTrunk();
+			final TSTrunk tsTrunk = tsRouteSession.getTrunk();
 			CallCenterTrunk trunk;
 			if (tsTrunk != null) {
 				trunk = (TsapiTrunk) TsapiCreateObject.getTsapiObject(tsTrunk,
@@ -302,7 +300,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final String getUCID() {
 		TsapiTrace.traceEntry("getUCID[]", this);
 		try {
-			String ucid = tsRouteSession.getUCID();
+			final String ucid = tsRouteSession.getUCID();
 			TsapiTrace.traceExit("getUCID[]", this);
 			return ucid;
 		} finally {
@@ -313,7 +311,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final UserEnteredCode getUserEnteredCode() {
 		TsapiTrace.traceEntry("getUserEnteredCode[]", this);
 		try {
-			UserEnteredCode uec = tsRouteSession.getUEC();
+			final UserEnteredCode uec = tsRouteSession.getUEC();
 			TsapiTrace.traceExit("getUserEnteredCode[]", this);
 			return uec;
 		} finally {
@@ -324,7 +322,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final UserToUserInfo getUserToUserInfo() {
 		TsapiTrace.traceEntry("getUserToUserInfo[]", this);
 		try {
-			UserToUserInfo uui = tsRouteSession.getUUI();
+			final UserToUserInfo uui = tsRouteSession.getUUI();
 			TsapiTrace.traceExit("getUserToUserInfo[]", this);
 			return uui;
 		} finally {
@@ -335,7 +333,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	public final boolean hasCallOriginatorType() {
 		TsapiTrace.traceEntry("hasCallOriginatorType[]", this);
 		try {
-			boolean has = tsRouteSession.hasCallOriginatorType();
+			final boolean has = tsRouteSession.hasCallOriginatorType();
 			TsapiTrace.traceExit("hasCallOriginatorType[]", this);
 			return has;
 		} finally {
@@ -348,16 +346,17 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		return tsRouteSession.hashCode();
 	}
 
-	public final void selectRoute(String routeSelected, boolean priorityCall,
-			UserToUserInfo userInfo) throws TsapiMethodNotSupportedException {
+	public final void selectRoute(final String routeSelected,
+			final boolean priorityCall, final UserToUserInfo userInfo)
+			throws TsapiMethodNotSupportedException {
 		TsapiTrace
 				.traceEntry(
 						"selectRoute[String routeSelected, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		String[] routes = new String[1];
+		final String[] routes = new String[1];
 		routes[0] = routeSelected;
 		try {
-			LucentRouteSelect lrs = createLucentRouteSelect(null, null,
+			final LucentRouteSelect lrs = createLucentRouteSelect(null, null,
 					priorityCall, null, null, null, userInfo, (short) 0);
 			privData = lrs.makeTsapiPrivate();
 			tsRouteSession.tsSelectRoute(routes, privData);
@@ -370,7 +369,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
-	public final void selectRoute(String[] routeSelected)
+	public final void selectRoute(final String[] routeSelected)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("selectRoute[String[] routeSelected]", this);
 		try {
@@ -381,22 +380,23 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		TsapiTrace.traceExit("selectRoute[String[] routeSelected]", this);
 	}
 
-	public final void selectRouteAndCollect(String routeSelected,
-			int digitsToBeCollected, int timeout, boolean priorityCall,
-			UserToUserInfo userInfo) throws TsapiMethodNotSupportedException {
+	public final void selectRouteAndCollect(final String routeSelected,
+			final int digitsToBeCollected, final int timeout,
+			final boolean priorityCall, final UserToUserInfo userInfo)
+			throws TsapiMethodNotSupportedException {
 		TsapiTrace
 				.traceEntry(
 						"selectRouteAndCollect[String routeSelected, int digitsToBeCollected, int timeout, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
 		try {
-			LucentUserCollectCode ucc = new LucentUserCollectCode((short) 32,
-					digitsToBeCollected, timeout, null, (short) 11);
+			final LucentUserCollectCode ucc = new LucentUserCollectCode(
+					(short) 32, digitsToBeCollected, timeout, null, (short) 11);
 
-			LucentRouteSelect lrs = createLucentRouteSelect(null, null,
+			final LucentRouteSelect lrs = createLucentRouteSelect(null, null,
 					priorityCall, null, ucc, null, userInfo, (short) 0);
 
 			privData = lrs.makeTsapiPrivate();
-			String[] routes = new String[1];
+			final String[] routes = new String[1];
 			routes[0] = routeSelected;
 			tsRouteSession.tsSelectRoute(routes, privData);
 		} finally {
@@ -408,8 +408,8 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
-	public final void selectRouteDirectAgent(LucentAgent calledAgent,
-			boolean priorityCall, UserToUserInfo userInfo)
+	public final void selectRouteDirectAgent(final LucentAgent calledAgent,
+			final boolean priorityCall, final UserToUserInfo userInfo)
 			throws TsapiMethodNotSupportedException,
 			TsapiInvalidArgumentException {
 		TsapiTrace
@@ -417,17 +417,16 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						"selectRouteDirectAgent[LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
 		try {
-			if (calledAgent == null) {
+			if (calledAgent == null)
 				throw new TsapiInvalidArgumentException(3, 0,
 						"called Agent is null");
-			}
 
-			LucentRouteSelect lrs = createLucentRouteSelect(null, calledAgent
-					.getACDAddress().getName(), priorityCall, null, null, null,
-					userInfo, (short) 0);
+			final LucentRouteSelect lrs = createLucentRouteSelect(null,
+					calledAgent.getACDAddress().getName(), priorityCall, null,
+					null, null, userInfo, (short) 0);
 
 			privData = lrs.makeTsapiPrivate();
-			String[] routes = new String[1];
+			final String[] routes = new String[1];
 			routes[0] = calledAgent.getAgentAddress().getName();
 			tsRouteSession.tsSelectRoute(routes, privData);
 		} finally {
@@ -439,8 +438,9 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
-	public final void selectRouteWithDigits(String routeSelected,
-			String digits, boolean priorityCall, UserToUserInfo userInfo)
+	public final void selectRouteWithDigits(final String routeSelected,
+			final String digits, final boolean priorityCall,
+			final UserToUserInfo userInfo)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace
 				.traceEntry(
@@ -448,16 +448,15 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 		try {
 			LucentUserProvidedCode upc;
-			if (digits == null) {
+			if (digits == null)
 				upc = null;
-			} else {
+			else
 				upc = new LucentUserProvidedCode((short) 17, digits);
-			}
-			LucentRouteSelect lrs = createLucentRouteSelect(null, null,
+			final LucentRouteSelect lrs = createLucentRouteSelect(null, null,
 					priorityCall, null, null, upc, userInfo, (short) 0);
 
 			privData = lrs.makeTsapiPrivate();
-			String[] routes = new String[1];
+			final String[] routes = new String[1];
 			routes[0] = routeSelected;
 			tsRouteSession.tsSelectRoute(routes, privData);
 		} finally {
@@ -469,17 +468,18 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
-	public void selectRouteWithNetworkRedirection(String routeSelected,
-			UserToUserInfo userInfo) throws TsapiMethodNotSupportedException {
+	public void selectRouteWithNetworkRedirection(final String routeSelected,
+			final UserToUserInfo userInfo)
+			throws TsapiMethodNotSupportedException {
 		TsapiTrace
 				.traceEntry(
 						"selectRouteWithNetworkRedirection[String routeSelected, UserToUserInfo userInfo]",
 						this);
-		String[] routes = new String[1];
+		final String[] routes = new String[1];
 		routes[0] = routeSelected;
 		try {
-			LucentRouteSelect lrs = createLucentRouteSelect(null, null, false,
-					null, null, null, userInfo, (short) 1);
+			final LucentRouteSelect lrs = createLucentRouteSelect(null, null,
+					false, null, null, null, userInfo, (short) 1);
 			privData = lrs.makeTsapiPrivate();
 			tsRouteSession.tsSelectRoute(routes, privData);
 		} finally {
@@ -491,17 +491,17 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
-	public final Object sendPrivateData(Object data) {
+	public final Object sendPrivateData(final Object data) {
 		TsapiTrace.traceEntry("sendPrivateData[Object data]", this);
 		TsapiTrace.traceExit("sendPrivateData[Object data]", this);
 		return null;
 	}
 
-	public final void setPrivateData(Object data) {
+	public final void setPrivateData(final Object data) {
 		TsapiTrace.traceEntry("setPrivateData[Object data]", this);
 		try {
 			privData = TsapiPromoter.demoteTsapiPrivate((TsapiPrivate) data);
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
@@ -509,4 +509,3 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		TsapiTrace.traceExit("setPrivateData[Object data]", this);
 	}
 }
-

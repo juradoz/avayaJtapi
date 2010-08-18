@@ -9,4 +9,3 @@ public final class TsapiProviderTsapiOutOfServiceEvent extends
 		super(0);
 	}
 }
-

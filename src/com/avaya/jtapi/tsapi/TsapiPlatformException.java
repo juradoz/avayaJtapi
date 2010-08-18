@@ -8,7 +8,8 @@ public class TsapiPlatformException extends PlatformException implements
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiPlatformException(int _errorType, int _errorCode, String s) {
+	public TsapiPlatformException(final int _errorType, final int _errorCode,
+			final String s) {
 		super(s);
 		errorType = _errorType;
 		errorCode = _errorCode;
@@ -22,4 +23,3 @@ public class TsapiPlatformException extends PlatformException implements
 		return errorType;
 	}
 }
-

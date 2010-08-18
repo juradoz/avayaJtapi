@@ -7,4 +7,3 @@ public abstract interface SpeakerVolumeEv extends PhoneTermEv {
 
 	public abstract int getVolume();
 }
-

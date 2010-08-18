@@ -10,26 +10,25 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public class CSTALinkStatus extends ASNSequence {
-	static CSTALinkStatus decode(InputStream in) {
-		CSTALinkStatus _this = new CSTALinkStatus();
+	static CSTALinkStatus decode(final InputStream in) {
+		final CSTALinkStatus _this = new CSTALinkStatus();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static Collection<String> print(CSTALinkStatus _this, String name,
-			String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final CSTALinkStatus _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ASNInteger.print(_this.linkID, "linkID", indent));
 		lines.addAll(LinkState.print(_this.linkState, "linkState", indent));
@@ -43,13 +42,13 @@ public class CSTALinkStatus extends ASNSequence {
 	private short linkState;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		linkID = ASNInteger.decode(memberStream);
 		linkState = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(linkID, memberStream);
 		ASNEnumerated.encode(linkState, memberStream);
 	}
@@ -62,12 +61,11 @@ public class CSTALinkStatus extends ASNSequence {
 		return linkState;
 	}
 
-	public void setLinkID(int linkID) {
+	public void setLinkID(final int linkID) {
 		this.linkID = linkID;
 	}
 
-	public void setLinkState(short linkState) {
+	public void setLinkState(final short linkState) {
 		this.linkState = linkState;
 	}
 }
-

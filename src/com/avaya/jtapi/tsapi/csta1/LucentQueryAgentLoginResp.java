@@ -12,21 +12,21 @@ public final class LucentQueryAgentLoginResp extends LucentPrivateData {
 	String[] devices;
 	public static final int PDU = 15;
 
-	public static LucentQueryAgentLoginResp decode(InputStream in) {
-		LucentQueryAgentLoginResp _this = new LucentQueryAgentLoginResp();
+	public static LucentQueryAgentLoginResp decode(final InputStream in) {
+		final LucentQueryAgentLoginResp _this = new LucentQueryAgentLoginResp();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		privEventCrossRefID = ASNInteger.decode(memberStream);
 		devices = LucentQueryAgentLoginRespList.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(privEventCrossRefID, memberStream);
 		LucentQueryAgentLoginRespList.encode(devices, memberStream);
 	}
@@ -46,12 +46,12 @@ public final class LucentQueryAgentLoginResp extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAgentLoginResp ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(privEventCrossRefID,
 				"privEventCrossRefID", indent));
@@ -62,12 +62,11 @@ public final class LucentQueryAgentLoginResp extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDevices(String[] devices) {
+	public void setDevices(final String[] devices) {
 		this.devices = devices;
 	}
 
-	public void setPrivEventCrossRefID(int privEventCrossRefID) {
+	public void setPrivEventCrossRefID(final int privEventCrossRefID) {
 		this.privEventCrossRefID = privEventCrossRefID;
 	}
 }
-

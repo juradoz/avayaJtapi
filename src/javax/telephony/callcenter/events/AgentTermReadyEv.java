@@ -5,4 +5,3 @@ package javax.telephony.callcenter.events;
 public abstract interface AgentTermReadyEv extends AgentTermEv {
 	public static final int ID = 312;
 }
-

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTASnapshotCall extends CSTARequest {
-	public static CSTASnapshotCall decode(InputStream in) {
-		CSTASnapshotCall _this = new CSTASnapshotCall();
+	public static CSTASnapshotCall decode(final InputStream in) {
+		final CSTASnapshotCall _this = new CSTASnapshotCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,17 +20,17 @@ public final class CSTASnapshotCall extends CSTARequest {
 	public CSTASnapshotCall() {
 	}
 
-	public CSTASnapshotCall(CSTAConnectionID _snapshotObject) {
+	public CSTASnapshotCall(final CSTAConnectionID _snapshotObject) {
 		snapshotObject = _snapshotObject;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		snapshotObject = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(snapshotObject, memberStream);
 	}
 
@@ -45,12 +45,12 @@ public final class CSTASnapshotCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASnapshotCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(snapshotObject, "snapshotObject",
 				indent));
@@ -59,4 +59,3 @@ public final class CSTASnapshotCall extends CSTARequest {
 		return lines;
 	}
 }
-

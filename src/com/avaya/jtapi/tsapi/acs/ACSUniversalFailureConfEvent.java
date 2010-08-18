@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public final class ACSUniversalFailureConfEvent extends ACSConfirmation {
-	public static ACSUniversalFailureConfEvent decode(InputStream in) {
-		ACSUniversalFailureConfEvent _this = new ACSUniversalFailureConfEvent();
+	public static ACSUniversalFailureConfEvent decode(final InputStream in) {
+		final ACSUniversalFailureConfEvent _this = new ACSUniversalFailureConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class ACSUniversalFailureConfEvent extends ACSConfirmation {
 	public ACSUniversalFailureConfEvent() {
 	}
 
-	public ACSUniversalFailureConfEvent(short _error) {
+	public ACSUniversalFailureConfEvent(final short _error) {
 		error = _error;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		error = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(error, memberStream);
 	}
 
@@ -47,11 +47,11 @@ public final class ACSUniversalFailureConfEvent extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSUniversalFailureConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ACSUniversalFailure.print(error, "error", indent));
 
@@ -59,4 +59,3 @@ public final class ACSUniversalFailureConfEvent extends ACSConfirmation {
 		return lines;
 	}
 }
-

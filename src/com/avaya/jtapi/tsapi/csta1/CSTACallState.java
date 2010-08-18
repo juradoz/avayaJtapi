@@ -9,34 +9,32 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
 
 public final class CSTACallState extends ASNSequenceOf {
-	public static short[] decode(InputStream in) {
-		CSTACallState _this = new CSTACallState();
+	public static short[] decode(final InputStream in) {
+		final CSTACallState _this = new CSTACallState();
 		_this.doDecode(in);
 		return _this.array;
 	}
 
-	public static void encode(short[] array, OutputStream out) {
-		CSTACallState _this = new CSTACallState(array);
+	public static void encode(final short[] array, final OutputStream out) {
+		final CSTACallState _this = new CSTACallState(array);
 		_this.doEncode(array.length, out);
 	}
 
-	public static Collection<String> print(short[] array, String name,
-			String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final short[] array,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (array == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
-		for (int i = 0; i < array.length; ++i) {
+		for (int i = 0; i < array.length; ++i)
 			lines.addAll(LocalConnectionState.print(array[i], null, indent));
-		}
 		lines.add(_indent + "}");
 		return lines;
 	}
@@ -46,28 +44,27 @@ public final class CSTACallState extends ASNSequenceOf {
 	public CSTACallState() {
 	}
 
-	public CSTACallState(short[] _array) {
+	public CSTACallState(final short[] _array) {
 		array = _array;
 	}
 
 	@Override
-	public Object decodeMember(InputStream memberStream) {
+	public Object decodeMember(final InputStream memberStream) {
 		return new Integer(ASNEnumerated.decode(memberStream));
 	}
 
 	@Override
-	public void doDecode(InputStream in) {
+	public void doDecode(final InputStream in) {
 		super.doDecode(in);
 
 		array = new short[vec.size()];
 
-		for (int i = 0; i < array.length; ++i) {
+		for (int i = 0; i < array.length; ++i)
 			array[i] = (short) ((Integer) vec.elementAt(i)).intValue();
-		}
 	}
 
 	@Override
-	public void encodeMember(int index, OutputStream memberStream) {
+	public void encodeMember(final int index, final OutputStream memberStream) {
 		ASNEnumerated.encode(array[index], memberStream);
 	}
 
@@ -75,4 +72,3 @@ public final class CSTACallState extends ASNSequenceOf {
 		return array;
 	}
 }
-

@@ -34,4 +34,3 @@ public abstract interface Ev {
 
 	public abstract boolean isNewMetaEvent();
 }
-

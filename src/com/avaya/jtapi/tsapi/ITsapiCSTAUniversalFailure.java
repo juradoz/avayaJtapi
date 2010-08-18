@@ -72,4 +72,3 @@ public abstract interface ITsapiCSTAUniversalFailure {
 	public static final short MISTYPED_PARAMETER_REJECTION = 90;
 	public static final short NON_STANDARD = 100;
 }
-

@@ -8,4 +8,3 @@ public abstract class CSTAEventReport extends TsapiPDU {
 		return 6;
 	}
 }
-

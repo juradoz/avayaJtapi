@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 public class CSTASysStatReqConfEvent extends CSTAConfirmation {
 	public static final int PDU = 99;
 
-	public static CSTASysStatReqConfEvent decode(InputStream in) {
-		CSTASysStatReqConfEvent _this = new CSTASysStatReqConfEvent();
+	public static CSTASysStatReqConfEvent decode(final InputStream in) {
+		final CSTASysStatReqConfEvent _this = new CSTASysStatReqConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,12 +20,12 @@ public class CSTASysStatReqConfEvent extends CSTAConfirmation {
 	private short systemStatus;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		systemStatus = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(systemStatus, memberStream);
 	}
 
@@ -40,17 +40,16 @@ public class CSTASysStatReqConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatReqConfEvent ::=");
 		lines.add("{");
-		String indent = "  ";
+		final String indent = "  ";
 		lines.addAll(SystemStatus.print(systemStatus, "systemStatus", indent));
 		lines.add("}");
 		return lines;
 	}
 
-	public void setSystemStatus(short systemStatus) {
+	public void setSystemStatus(final short systemStatus) {
 		this.systemStatus = systemStatus;
 	}
 }
-

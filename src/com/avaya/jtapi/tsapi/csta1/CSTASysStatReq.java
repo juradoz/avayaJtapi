@@ -10,19 +10,19 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public class CSTASysStatReq extends CSTARequest {
 	public static final int PDU = 98;
 
-	public static CSTASysStatReq decode(InputStream in) {
-		CSTASysStatReq _this = new CSTASysStatReq();
+	public static CSTASysStatReq decode(final InputStream in) {
+		final CSTASysStatReq _this = new CSTASysStatReq();
 		_this.doDecode(in);
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -33,11 +33,11 @@ public class CSTASysStatReq extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatReq ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -45,4 +45,3 @@ public class CSTASysStatReq extends CSTARequest {
 		return lines;
 	}
 }
-

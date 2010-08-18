@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class CSTAEscapeSvcReqEvent extends CSTAUnsolicited {
 	static final int PDU = 91;
 
-	public static CSTAEscapeSvcReqEvent decode(InputStream in) {
-		CSTAEscapeSvcReqEvent _this = new CSTAEscapeSvcReqEvent();
+	public static CSTAEscapeSvcReqEvent decode(final InputStream in) {
+		final CSTAEscapeSvcReqEvent _this = new CSTAEscapeSvcReqEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,11 +28,11 @@ public final class CSTAEscapeSvcReqEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAEscapeSvcReqEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(ASNNull.print(indent));
 
@@ -40,4 +40,3 @@ public final class CSTAEscapeSvcReqEvent extends CSTAUnsolicited {
 		return lines;
 	}
 }
-

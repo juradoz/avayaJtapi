@@ -9,20 +9,20 @@ public final class CSTAQueryFwdConfEvent extends CSTAConfirmation {
 	CSTAForwardingInfo[] forward;
 	public static final int PDU = 32;
 
-	public static CSTAQueryFwdConfEvent decode(InputStream in) {
-		CSTAQueryFwdConfEvent _this = new CSTAQueryFwdConfEvent();
+	public static CSTAQueryFwdConfEvent decode(final InputStream in) {
+		final CSTAQueryFwdConfEvent _this = new CSTAQueryFwdConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		forward = ListForwardParameters.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ListForwardParameters.encode(forward, memberStream);
 	}
 
@@ -37,12 +37,12 @@ public final class CSTAQueryFwdConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryFwdConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ListForwardParameters.print(forward, "forward", indent));
 
@@ -50,8 +50,7 @@ public final class CSTAQueryFwdConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setForward(CSTAForwardingInfo[] forward) {
+	public void setForward(final CSTAForwardingInfo[] forward) {
 		this.forward = forward;
 	}
 }
-

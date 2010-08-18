@@ -28,4 +28,3 @@ public abstract interface ITsapiProvider extends Provider, CallCenterProvider {
 
 	public abstract void updateAddresses();
 }
-

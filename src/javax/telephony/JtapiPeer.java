@@ -8,4 +8,3 @@ public abstract interface JtapiPeer {
 
 	public abstract String[] getServices();
 }
-

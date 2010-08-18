@@ -44,4 +44,3 @@ public abstract interface LucentEventCause {
 	public static final short EC_UNASSIGNED_NUMBER = 81;
 	public static final short EC_INCOMPATIBLE_BEARER_SERVICE = 87;
 }
-

@@ -11,20 +11,20 @@ public final class CSTAQueryAgentStateConfEvent extends CSTAConfirmation {
 	short agentState;
 	public static final int PDU = 34;
 
-	public static CSTAQueryAgentStateConfEvent decode(InputStream in) {
-		CSTAQueryAgentStateConfEvent _this = new CSTAQueryAgentStateConfEvent();
+	public static CSTAQueryAgentStateConfEvent decode(final InputStream in) {
+		final CSTAQueryAgentStateConfEvent _this = new CSTAQueryAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		agentState = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(agentState, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class CSTAQueryAgentStateConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryAgentStateConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(AgentState.print(agentState, "agentState", indent));
 
@@ -52,7 +52,7 @@ public final class CSTAQueryAgentStateConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setAgentState(short agentState) {
+	public void setAgentState(final short agentState) {
 		this.agentState = agentState;
 	}
 }

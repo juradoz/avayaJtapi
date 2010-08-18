@@ -74,24 +74,22 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	TSCall tsCall;
 	CSTAPrivate privData = null;
 
-	TsapiCall(TsapiProvider _provider) {
+	TsapiCall(final TsapiProvider _provider) {
 		this(_provider, 0);
 	}
 
-	TsapiCall(TsapiProvider _provider, CSTAConnectionID connID) {
+	TsapiCall(final TsapiProvider _provider, final CSTAConnectionID connID) {
 		this(_provider, connID.getCallID());
 	}
 
-	TsapiCall(TsapiProvider _provider, int callID) {
-		TSProviderImpl tsProv = _provider.getTSProviderImpl();
+	TsapiCall(final TsapiProvider _provider, final int callID) {
+		final TSProviderImpl tsProv = _provider.getTSProviderImpl();
 		if (tsProv != null) {
 			tsCall = tsProv.createTSCall(callID);
-			if (tsCall == null) {
+			if (tsCall == null)
 				throw new TsapiPlatformException(4, 0, "could not create call");
-			}
-		} else {
+		} else
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
-		}
 		tsCall.referenced();
 		TsapiTrace.traceConstruction(this, TsapiCall.class);
 	}
@@ -103,49 +101,48 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceConstruction(this, TsapiCall.class);
 	}
 
-	TsapiCall(TSProviderImpl _provider, CSTAConnectionID connID) {
+	TsapiCall(final TSProviderImpl _provider, final CSTAConnectionID connID) {
 		tsCall = _provider.createTSCall(connID.getCallID());
-		if (tsCall == null) {
+		if (tsCall == null)
 			throw new TsapiPlatformException(4, 0, "could not create call");
-		}
 
 		tsCall.referenced();
 		TsapiTrace.traceConstruction(this, TsapiCall.class);
 	}
 
-	public void addCallListener(CallListener listener)
+	public void addCallListener(final CallListener listener)
 			throws ResourceUnavailableException {
 		TsapiTrace.traceEntry("addCallListener(CallListener listener)", this);
 		try {
 			addTsapiCallEventMonitor(null, listener);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			TsapiCall.log.error(e.getMessage(), e);
 		}
 		TsapiTrace.traceExit("addCallListener(CallListener listener)", this);
 	}
 
-	public void addObserver(CallObserver observer)
+	public void addObserver(final CallObserver observer)
 			throws TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("addObserver[CallObserver observer]", this);
 		try {
 			addTsapiCallEventMonitor(observer, null);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			TsapiCall.log.error(e.getMessage(), e);
 		}
 		TsapiTrace.traceExit("addObserver[CallObserver observer]", this);
 	}
 
-	public final Connection addParty(String newParty)
+	public final Connection addParty(final String newParty)
 			throws TsapiInvalidStateException, TsapiInvalidPartyException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("addParty[String newParty]", this);
-		Connection conn = addParty(newParty, true);
+		final Connection conn = addParty(newParty, true);
 		TsapiTrace.traceExit("addParty[String newParty]", this);
 		return conn;
 	}
 
-	public final Connection addParty(String newParty, boolean active)
+	public final Connection addParty(final String newParty, final boolean active)
 			throws TsapiInvalidStateException, TsapiInvalidPartyException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
@@ -153,7 +150,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry("addParty[String newParty, boolean active]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSConnection tsConn = tsCall.addParty(newParty, active);
+			final TSConnection tsConn = tsCall.addParty(newParty, active);
 			Connection conn;
 			if (tsConn != null) {
 				conn = (Connection) TsapiCreateObject.getTsapiObject(tsConn,
@@ -171,26 +168,25 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	private void addTsapiCallEventMonitor(CallObserver observer,
-			CallListener listener) throws Exception {
+	private void addTsapiCallEventMonitor(final CallObserver observer,
+			final CallListener listener) throws Exception {
 		TsapiTrace
 				.traceEntry(
 						"addTsapiCallEventMonitor(CallObserver observer, CallListener listener)",
 						this);
-		if ((observer != null) && (listener != null)) {
+		if (observer != null && listener != null)
 			throw new Exception(
 					"Invalid call to add event monitor. At a time either a listener or an observer can be added");
-		}
 		try {
 			tsCall = tsCall.getHandOff();
-			TSProviderImpl prov = tsCall.getTSProviderImpl();
+			final TSProviderImpl prov = tsCall.getTSProviderImpl();
 
-			if (prov == null) {
+			if (prov == null)
 				throw new TsapiPlatformException(4, 0,
 						"could not locate provider");
-			}
 
-			Vector<TsapiCallMonitor> observers = prov.getCallMonitorThreads();
+			final Vector<TsapiCallMonitor> observers = prov
+					.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
@@ -199,29 +195,25 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				for (int i = 0; i < observers.size(); ++i) {
 					obs = (TsapiCallMonitor) observers.elementAt(i);
 					if (observer != null) {
-						if (obs.getObserver() != observer) {
+						if (obs.getObserver() != observer)
 							continue;
-						}
 						obsToUse = obs;
 						break;
 					}
-					if ((listener == null) || (obs.getListener() != listener)) {
+					if (listener == null || obs.getListener() != listener)
 						continue;
-					}
 					obsToUse = obs;
 					break;
 				}
 
 				if (obsToUse == null) {
-					if (observer != null) {
+					if (observer != null)
 						obsToUse = new TsapiCallMonitor(prov, observer);
-					} else if (listener != null) {
+					else if (listener != null)
 						obsToUse = new TsapiCallMonitor(prov, listener);
-					}
-					if (obsToUse == null) {
+					if (obsToUse == null)
 						throw new TsapiPlatformException(4, 0,
 								"could not allocate Monitor wrapper");
-					}
 
 				}
 
@@ -241,7 +233,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("canSetBillRate[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			boolean can = tsCall.canSetBillRate();
+			final boolean can = tsCall.canSetBillRate();
 			TsapiTrace.traceExit("canSetBillRate[]", this);
 			return can;
 		} finally {
@@ -249,34 +241,33 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final void conference(Call otherCall)
+	public final void conference(final Call otherCall)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("conference[Call otherCall]", this);
 		try {
-			if (!(otherCall instanceof LucentV7Call)) {
+			if (!(otherCall instanceof LucentV7Call))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"other Call is not an instanceof ITsapiCall");
-			}
 
-			TSCall oCall = ((TsapiCall) otherCall).getTSCall();
+			final TSCall oCall = ((TsapiCall) otherCall).getTSCall();
 			if (oCall != null) {
 				tsCall = tsCall.getHandOff();
 				tsCall.conference(oCall, privData);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate other call");
-			}
 		} finally {
 			privData = null;
 		}
 		TsapiTrace.traceExit("conference[Call otherCall]", this);
 	}
 
-	public final Connection[] connect(LucentTerminal origterm,
-			LucentAddress origaddr, String dialedDigits, boolean priorityCall,
-			UserToUserInfo userInfo) throws TsapiResourceUnavailableException,
+	public final Connection[] connect(final LucentTerminal origterm,
+			final LucentAddress origaddr, final String dialedDigits,
+			final boolean priorityCall, final UserToUserInfo userInfo)
+			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException {
@@ -284,19 +275,18 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry(
 						"connect[LucentTerminal origterm, LucentAddress origaddr, String dialedDigits, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		if (origterm == null) {
+		if (origterm == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"orig Terminal is null");
-		}
 
-		if (origaddr == null) {
+		if (origaddr == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"orig Address is null");
-		}
 
-		LucentMakeCall lmc = createLucentMakeCall(null, priorityCall, userInfo);
+		final LucentMakeCall lmc = createLucentMakeCall(null, priorityCall,
+				userInfo);
 		privData = lmc.makeTsapiPrivate();
-		Connection[] conns = connect(origterm, origaddr, dialedDigits);
+		final Connection[] conns = connect(origterm, origaddr, dialedDigits);
 		TsapiTrace
 				.traceExit(
 						"connect[LucentTerminal origterm, LucentAddress origaddr, String dialedDigits, boolean priorityCall, UserToUserInfo userInfo]",
@@ -305,36 +295,33 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	// ERROR //
-	public final Connection[] connect(Terminal origterm, Address origaddr,
-			String dialedDigits) throws TsapiResourceUnavailableException,
+	public final Connection[] connect(final Terminal origterm,
+			final Address origaddr, final String dialedDigits)
+			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException {
 		try {
-			if (!(origterm instanceof ITsapiTerminal)) {
+			if (!(origterm instanceof ITsapiTerminal))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"orig Terminal is not an instanceof ITsapiTerminal");
-			}
-			if (!(origaddr instanceof ITsapiAddress)) {
+			if (!(origaddr instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"orig Address is not an instanceof ITsapiAddress");
-			}
 
 			Vector<TSConnection> tsConn = null;
-			TSDevice tsDevice = ((TsapiAddress) origaddr).getTSDevice();
-			TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
-			if ((tsDevice != null) && (tsDevice1 != null)) {
+			final TSDevice tsDevice = ((TsapiAddress) origaddr).getTSDevice();
+			final TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
+			if (tsDevice != null && tsDevice1 != null) {
 				if (tsDevice.equals(tsDevice1)) {
 					tsCall = tsCall.getHandOff();
 					tsConn = tsCall.connect(tsDevice, dialedDigits, privData);
-				} else {
+				} else
 					throw new TsapiInvalidArgumentException(3, 0,
 							"orig Terminal not associated with orig Address");
-				}
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
-			}
 			if (tsConn == null) {
 
 				privData = null;
@@ -345,12 +332,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				Connection[] tsapiConn = new Connection[tsConn.size()];
-				for (int i = 0; i < tsConn.size(); ++i) {
-					tsapiConn[i] = ((Connection) TsapiCreateObject
+				final Connection[] tsapiConn = new Connection[tsConn.size()];
+				for (int i = 0; i < tsConn.size(); ++i)
+					tsapiConn[i] = (Connection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsConn.elementAt(i),
-									true));
-				}
+									true);
 				privData = null;
 				return tsapiConn;
 			}
@@ -359,9 +345,9 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final Connection[] connectDirectAgent(LucentTerminal origterm,
-			LucentAddress origaddr, LucentAgent calledAgent,
-			boolean priorityCall, UserToUserInfo userInfo)
+	public final Connection[] connectDirectAgent(final LucentTerminal origterm,
+			final LucentAddress origaddr, final LucentAgent calledAgent,
+			final boolean priorityCall, final UserToUserInfo userInfo)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
@@ -370,16 +356,16 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry(
 						"connectDirectAgent[LucentTerminal origterm, LucentAddress origaddr, LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		if (calledAgent == null) {
+		if (calledAgent == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"called Agent is null");
-		}
 
 		if (calledAgent.getACDAddress() != null) {
-			LucentDirectAgentCall lda = createLucentDirectAgentCall(calledAgent
-					.getACDAddress().getName(), priorityCall, userInfo);
+			final LucentDirectAgentCall lda = createLucentDirectAgentCall(
+					calledAgent.getACDAddress().getName(), priorityCall,
+					userInfo);
 			privData = lda.makeTsapiPrivate();
-			Connection[] conns = connect(origterm, origaddr, calledAgent
+			final Connection[] conns = connect(origterm, origaddr, calledAgent
 					.getAgentAddress().getName());
 			TsapiTrace
 					.traceExit(
@@ -388,9 +374,9 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			return conns;
 		}
 
-		log
+		TsapiCall.log
 				.info("*****connectDirectAgent: ACDAddress is NULL, using default Skill (ACD)");
-		Connection[] conns = connect(origterm, origaddr, calledAgent
+		final Connection[] conns = connect(origterm, origaddr, calledAgent
 				.getAgentID());
 		TsapiTrace
 				.traceExit(
@@ -399,9 +385,10 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		return conns;
 	}
 
-	public final Connection[] connectDirectAgent(LucentTerminal origterm,
-			LucentAddress origaddr, LucentAgent calledAgent,
-			boolean priorityCall, UserToUserInfo userInfo, ACDAddress acdaddress)
+	public final Connection[] connectDirectAgent(final LucentTerminal origterm,
+			final LucentAddress origaddr, final LucentAgent calledAgent,
+			final boolean priorityCall, final UserToUserInfo userInfo,
+			final ACDAddress acdaddress)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
@@ -410,16 +397,15 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry(
 						"connectDirectAgent[LucentTerminal origterm, LucentAddress origaddr, LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		if (calledAgent == null) {
+		if (calledAgent == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"called Agent is null");
-		}
 
 		if (acdaddress != null) {
-			LucentDirectAgentCall lda = createLucentDirectAgentCall(acdaddress
-					.getName(), priorityCall, userInfo);
+			final LucentDirectAgentCall lda = createLucentDirectAgentCall(
+					acdaddress.getName(), priorityCall, userInfo);
 			privData = lda.makeTsapiPrivate();
-			Connection[] conns = connect(origterm, origaddr, calledAgent
+			final Connection[] conns = connect(origterm, origaddr, calledAgent
 					.getAgentAddress().getName());
 			TsapiTrace
 					.traceExit(
@@ -428,7 +414,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			return conns;
 		}
 
-		Connection[] conns = connectDirectAgent(origterm, origaddr,
+		final Connection[] conns = connectDirectAgent(origterm, origaddr,
 				calledAgent, priorityCall, userInfo);
 		TsapiTrace
 				.traceExit(
@@ -439,41 +425,39 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 
 	// ERROR //
 	public final Connection[] connectPredictive(
-			LucentTerminal originatorTerminal, LucentAddress origAddress,
-			String dialedDigits, int connectionState, int maxRings,
-			int answeringTreatment, int answeringEndpointType,
-			boolean priorityCall, UserToUserInfo userInfo)
+			final LucentTerminal originatorTerminal,
+			final LucentAddress origAddress, final String dialedDigits,
+			final int connectionState, final int maxRings,
+			final int answeringTreatment, final int answeringEndpointType,
+			final boolean priorityCall, final UserToUserInfo userInfo)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException {
 		try {
-			if (origAddress == null) {
+			if (origAddress == null)
 				throw new TsapiInvalidArgumentException(3, 0,
 						"originator Address is null");
-			}
 
 			Vector<TSConnection> tsConn = null;
-			TSDevice tsDevice = ((TsapiAddress) origAddress).getTSDevice();
+			final TSDevice tsDevice = ((TsapiAddress) origAddress)
+					.getTSDevice();
 			TSDevice tsDevice1 = null;
-			if (originatorTerminal != null) {
+			if (originatorTerminal != null)
 				tsDevice1 = ((TsapiTerminal) originatorTerminal).getTSDevice();
-			}
 			if (tsDevice != null) {
-				if ((tsDevice1 != null) && (!tsDevice.equals(tsDevice1))) {
+				if (tsDevice1 != null && !tsDevice.equals(tsDevice1))
 					throw new TsapiInvalidArgumentException(3, 0,
 							"originator Terminal not associated with orig Address");
-				}
 
 				tsCall = tsCall.getHandOff();
 				tsConn = tsCall.connectPredictive(tsDevice, dialedDigits,
 						connectionState, maxRings, answeringTreatment,
 						answeringEndpointType, null, priorityCall, userInfo,
 						privData);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
-			}
 			if (tsConn == null) {
 				privData = null;
 				return null;
@@ -483,12 +467,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				Connection[] tsapiConn = new Connection[tsConn.size()];
-				for (int i = 0; i < tsConn.size(); ++i) {
-					tsapiConn[i] = ((Connection) TsapiCreateObject
+				final Connection[] tsapiConn = new Connection[tsConn.size()];
+				for (int i = 0; i < tsConn.size(); ++i)
+					tsapiConn[i] = (Connection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsConn.elementAt(i),
-									true));
-				}
+									true);
 
 				privData = null;
 				return tsapiConn;
@@ -499,46 +482,44 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	// ERROR //
-	public final Connection[] connectPredictive(Terminal originatorTerminal,
-			Address origAddress, String dialedDigits, int connectionState,
-			int maxRings, int answeringTreatment, int answeringEndpointType)
+	public final Connection[] connectPredictive(
+			final Terminal originatorTerminal, final Address origAddress,
+			final String dialedDigits, final int connectionState,
+			final int maxRings, final int answeringTreatment,
+			final int answeringEndpointType)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException {
 		try {
-			if ((originatorTerminal != null)
-					&& (!(originatorTerminal instanceof ITsapiTerminal))) {
+			if (originatorTerminal != null
+					&& !(originatorTerminal instanceof ITsapiTerminal))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"originator Terminal is not an instanceof ITsapiTerminal");
-			}
 
-			if (!(origAddress instanceof ITsapiAddress)) {
+			if (!(origAddress instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"originator Address is not an instanceof ITsapiAddress");
-			}
 
 			Vector<TSConnection> tsConn = null;
 
-			TSDevice tsDevice = ((TsapiAddress) origAddress).getTSDevice();
+			final TSDevice tsDevice = ((TsapiAddress) origAddress)
+					.getTSDevice();
 			TSDevice tsDevice1 = null;
-			if (originatorTerminal != null) {
+			if (originatorTerminal != null)
 				tsDevice1 = ((TsapiTerminal) originatorTerminal).getTSDevice();
-			}
 			if (tsDevice != null) {
-				if ((tsDevice1 != null) && (!tsDevice.equals(tsDevice1))) {
+				if (tsDevice1 != null && !tsDevice.equals(tsDevice1))
 					throw new TsapiInvalidArgumentException(3, 0,
 							"originator Terminal not associated with originator Address");
-				}
 
 				tsCall = tsCall.getHandOff();
 				tsConn = tsCall.connectPredictive(tsDevice, dialedDigits,
 						connectionState, maxRings, answeringTreatment,
 						answeringEndpointType, null, false, null, privData);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
-			}
 			if (tsConn == null) {
 				privData = null;
 				return null;
@@ -548,12 +529,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				Connection[] tsapiConn = new Connection[tsConn.size()];
-				for (int i = 0; i < tsConn.size(); ++i) {
-					tsapiConn[i] = ((Connection) TsapiCreateObject
+				final Connection[] tsapiConn = new Connection[tsConn.size()];
+				for (int i = 0; i < tsConn.size(); ++i)
+					tsapiConn[i] = (Connection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsConn.elementAt(i),
-									true));
-				}
+									true);
 				privData = null;
 				return tsapiConn;
 			}
@@ -562,8 +542,9 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final Connection[] connectSupervisorAssist(LucentAgent callingAgent,
-			String dialedDigits, UserToUserInfo userInfo)
+	public final Connection[] connectSupervisorAssist(
+			final LucentAgent callingAgent, final String dialedDigits,
+			final UserToUserInfo userInfo)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
@@ -572,15 +553,14 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry(
 						"connectSupervisorAssist[LucentAgent callingAgent, String dialedDigits, UserToUserInfo userInfo]",
 						this);
-		if (callingAgent == null) {
+		if (callingAgent == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"calling Agent is null");
-		}
 
-		LucentSupervisorAssistCall lsa = createLucentSupervisorAssistCall(
+		final LucentSupervisorAssistCall lsa = createLucentSupervisorAssistCall(
 				callingAgent.getACDAddress().getName(), userInfo);
 		privData = lsa.makeTsapiPrivate();
-		Connection[] conns = connect(callingAgent.getAgentTerminal(),
+		final Connection[] conns = connect(callingAgent.getAgentTerminal(),
 				callingAgent.getAgentAddress(), dialedDigits);
 		TsapiTrace
 				.traceExit(
@@ -589,24 +569,23 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		return conns;
 	}
 
-	public final Connection[] consult(LucentTerminalConnection termconn,
-			String address, boolean priorityCall, UserToUserInfo userInfo)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiMethodNotSupportedException,
+	public final Connection[] consult(final LucentTerminalConnection termconn,
+			final String address, final boolean priorityCall,
+			final UserToUserInfo userInfo) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
 		TsapiTrace
 				.traceEntry(
 						"consult[LucentTerminalConnection termconn, String address, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		if (termconn == null) {
+		if (termconn == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"The given TerminalConnection is null");
-		}
 
-		LucentConsultationCall lcc = createLucentConsultationCall(null,
+		final LucentConsultationCall lcc = createLucentConsultationCall(null,
 				priorityCall, userInfo);
 		privData = lcc.makeTsapiPrivate();
-		Connection[] conns = consult(termconn, address);
+		final Connection[] conns = consult(termconn, address);
 		TsapiTrace
 				.traceExit(
 						"consult[LucentTerminalConnection termconn, String address, boolean priorityCall, UserToUserInfo userInfo]",
@@ -614,7 +593,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		return conns;
 	}
 
-	public final Connection consult(TerminalConnection termconn)
+	public final Connection consult(final TerminalConnection termconn)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
@@ -628,26 +607,24 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	// ERROR //
-	public final Connection[] consult(TerminalConnection termconn,
-			String address) throws TsapiInvalidStateException,
+	public final Connection[] consult(final TerminalConnection termconn,
+			final String address) throws TsapiInvalidStateException,
 			TsapiInvalidArgumentException, TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
 		try {
-			if (!(termconn instanceof ITsapiTerminalConnection)) {
+			if (!(termconn instanceof ITsapiTerminalConnection))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"The given TerminalConnection is not an instanceof ITsapiTerminalConnection");
-			}
 
 			Vector<TSConnection> tsConnVector = null;
-			TSConnection tsConn = ((TsapiTerminalConnection) termconn)
+			final TSConnection tsConn = ((TsapiTerminalConnection) termconn)
 					.getTSConnection();
 			if (tsConn != null) {
 				tsCall = tsCall.getHandOff();
 				tsConnVector = tsCall.consult(tsConn, address, privData);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate terminal connection");
-			}
 			if (tsConnVector == null) {
 				privData = null;
 				return null;
@@ -658,12 +635,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				Connection[] tsapiConn = new Connection[tsConnVector.size()];
-				for (int i = 0; i < tsConnVector.size(); ++i) {
-					tsapiConn[i] = ((Connection) TsapiCreateObject
+				final Connection[] tsapiConn = new Connection[tsConnVector
+						.size()];
+				for (int i = 0; i < tsConnVector.size(); ++i)
+					tsapiConn[i] = (Connection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsConnVector
-									.elementAt(i), true));
-				}
+									.elementAt(i), true);
 
 				privData = null;
 				return tsapiConn;
@@ -674,30 +651,29 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	public final Connection[] consultDirectAgent(
-			LucentTerminalConnection termconn, LucentAgent calledAgent,
-			boolean priorityCall, UserToUserInfo userInfo)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiMethodNotSupportedException,
+			final LucentTerminalConnection termconn,
+			final LucentAgent calledAgent, final boolean priorityCall,
+			final UserToUserInfo userInfo) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
 		TsapiTrace
 				.traceEntry(
 						"consultDirectAgent[LucentTerminalConnection termconn, LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		if (termconn == null) {
+		if (termconn == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"The given TerminalConnection is null");
-		}
 
-		if (calledAgent == null) {
+		if (calledAgent == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"called Agent is null");
-		}
 
 		if (calledAgent.getACDAddress() != null) {
-			LucentDirectAgentCall lda = createLucentDirectAgentCall(calledAgent
-					.getACDAddress().getName(), priorityCall, userInfo);
+			final LucentDirectAgentCall lda = createLucentDirectAgentCall(
+					calledAgent.getACDAddress().getName(), priorityCall,
+					userInfo);
 			privData = lda.makeTsapiPrivate();
-			Connection[] conns = consult(termconn, calledAgent
+			final Connection[] conns = consult(termconn, calledAgent
 					.getAgentAddress().getName());
 			TsapiTrace
 					.traceExit(
@@ -706,9 +682,9 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			return conns;
 		}
 
-		log
+		TsapiCall.log
 				.info("*****consultDirectAgent: ACDAddress is Null, using default skill(ACD)");
-		Connection[] conns = consult(termconn, calledAgent.getAgentID());
+		final Connection[] conns = consult(termconn, calledAgent.getAgentID());
 		TsapiTrace
 				.traceExit(
 						"consultDirectAgent[LucentTerminalConnection termconn, LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo]",
@@ -717,8 +693,9 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	public final Connection[] consultDirectAgent(
-			LucentTerminalConnection termconn, LucentAgent calledAgent,
-			boolean priorityCall, UserToUserInfo userInfo, ACDAddress acdaddress)
+			final LucentTerminalConnection termconn,
+			final LucentAgent calledAgent, final boolean priorityCall,
+			final UserToUserInfo userInfo, final ACDAddress acdaddress)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
@@ -726,21 +703,19 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry(
 						"consultDirectAgent[LucentTerminalConnection termconn, LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo, ACDAddress acdaddress]",
 						this);
-		if (termconn == null) {
+		if (termconn == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"The given TerminalConnection is null");
-		}
 
-		if (calledAgent == null) {
+		if (calledAgent == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"called Agent is null");
-		}
 
 		if (acdaddress != null) {
-			LucentDirectAgentCall lda = createLucentDirectAgentCall(acdaddress
-					.getName(), priorityCall, userInfo);
+			final LucentDirectAgentCall lda = createLucentDirectAgentCall(
+					acdaddress.getName(), priorityCall, userInfo);
 			privData = lda.makeTsapiPrivate();
-			Connection[] conns = consult(termconn, calledAgent
+			final Connection[] conns = consult(termconn, calledAgent
 					.getAgentAddress().getName());
 			TsapiTrace
 					.traceExit(
@@ -749,7 +724,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 			return conns;
 		}
 
-		Connection[] conns = consultDirectAgent(termconn, calledAgent,
+		final Connection[] conns = consultDirectAgent(termconn, calledAgent,
 				priorityCall, userInfo);
 		TsapiTrace
 				.traceExit(
@@ -759,8 +734,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	public final Connection[] consultSupervisorAssist(
-			LucentTerminalConnection termconn, ACDAddress split,
-			String address, UserToUserInfo userInfo)
+			final LucentTerminalConnection termconn, final ACDAddress split,
+			final String address, final UserToUserInfo userInfo)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException {
@@ -768,20 +743,18 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				.traceEntry(
 						"consultSupervisorAssist[LucentTerminalConnection termconn, ACDAddress split, String address, UserToUserInfo userInfo]",
 						this);
-		if (termconn == null) {
+		if (termconn == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"The given TerminalConnection is null");
-		}
 
-		if (!(split instanceof LucentAddress)) {
+		if (!(split instanceof LucentAddress))
 			throw new TsapiInvalidArgumentException(3, 0,
 					"The given ACD Address is not an instanceof LucentAddress");
-		}
 
-		LucentSupervisorAssistCall lsa = createLucentSupervisorAssistCall(split
-				.getName(), userInfo);
+		final LucentSupervisorAssistCall lsa = createLucentSupervisorAssistCall(
+				split.getName(), userInfo);
 		privData = lsa.makeTsapiPrivate();
-		Connection[] conns = consult(termconn, address);
+		final Connection[] conns = consult(termconn, address);
 		TsapiTrace
 				.traceExit(
 						"consultSupervisorAssist[LucentTerminalConnection termconn, ACDAddress split, String address, UserToUserInfo userInfo]",
@@ -790,25 +763,24 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	private LucentConsultationCall createLucentConsultationCall(
-			String destRoute, boolean priorityCall, UserToUserInfo userInfo) {
+			final String destRoute, final boolean priorityCall,
+			final UserToUserInfo userInfo) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentConsultationCall[String destRoute, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
-		LucentUserToUserInfo asn_uui = TsapiPromoter
+		final TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
 				.demoteUserToUserInfo(userInfo);
 
 		LucentConsultationCall call = null;
-		if (TSProviderImpl != null) {
-			if (TSProviderImpl.isLucentV6()) {
+		if (TSProviderImpl != null)
+			if (TSProviderImpl.isLucentV6())
 				call = new LucentV6ConsultationCall(destRoute, priorityCall,
 						asn_uui);
-			} else {
+			else
 				call = new LucentConsultationCall(destRoute, priorityCall,
 						asn_uui);
-			}
-		}
 		TsapiTrace
 				.traceExit(
 						"createLucentConsultationCall[String destRoute, boolean priorityCall, UserToUserInfo userInfo]",
@@ -816,19 +788,20 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		return call;
 	}
 
-	private LucentDirectAgentCall createLucentDirectAgentCall(String split,
-			boolean priorityCall, UserToUserInfo userInfo) {
+	private LucentDirectAgentCall createLucentDirectAgentCall(
+			final String split, final boolean priorityCall,
+			final UserToUserInfo userInfo) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentDirectAgentCall[String split, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
-		LucentUserToUserInfo asn_uui = TsapiPromoter
+		final TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
 				.demoteUserToUserInfo(userInfo);
 
 		if (TSProviderImpl != null) {
 			if (TSProviderImpl.isLucentV6()) {
-				LucentV6DirectAgentCall call = new LucentV6DirectAgentCall(
+				final LucentV6DirectAgentCall call = new LucentV6DirectAgentCall(
 						split, priorityCall, asn_uui);
 				TsapiTrace
 						.traceExit(
@@ -837,7 +810,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				return call;
 			}
 
-			LucentDirectAgentCall call = new LucentDirectAgentCall(split,
+			final LucentDirectAgentCall call = new LucentDirectAgentCall(split,
 					priorityCall, asn_uui);
 			TsapiTrace
 					.traceExit(
@@ -853,19 +826,19 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		return null;
 	}
 
-	private LucentMakeCall createLucentMakeCall(String destRoute,
-			boolean priorityCall, UserToUserInfo userInfo) {
+	private LucentMakeCall createLucentMakeCall(final String destRoute,
+			final boolean priorityCall, final UserToUserInfo userInfo) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentMakeCall[String destRoute, boolean priorityCall, UserToUserInfo userInfo]",
 						this);
-		TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
-		LucentUserToUserInfo asn_uui = TsapiPromoter
+		final TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
 				.demoteUserToUserInfo(userInfo);
 
 		if (TSProviderImpl != null) {
 			if (TSProviderImpl.isLucentV6()) {
-				LucentV6MakeCall call = new LucentV6MakeCall(destRoute,
+				final LucentV6MakeCall call = new LucentV6MakeCall(destRoute,
 						priorityCall, asn_uui);
 				TsapiTrace
 						.traceExit(
@@ -874,8 +847,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				return call;
 			}
 
-			LucentMakeCall call = new LucentMakeCall(destRoute, priorityCall,
-					asn_uui);
+			final LucentMakeCall call = new LucentMakeCall(destRoute,
+					priorityCall, asn_uui);
 			TsapiTrace
 					.traceExit(
 							"createLucentMakeCall[String destRoute, boolean priorityCall, UserToUserInfo userInfo]",
@@ -891,18 +864,18 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	private LucentSupervisorAssistCall createLucentSupervisorAssistCall(
-			String split, UserToUserInfo userInfo) {
+			final String split, final UserToUserInfo userInfo) {
 		TsapiTrace
 				.traceEntry(
 						"createLucentSupervisorAssistCall[String split, UserToUserInfo userInfo]",
 						this);
-		TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
-		LucentUserToUserInfo asn_uui = TsapiPromoter
+		final TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
 				.demoteUserToUserInfo(userInfo);
 
 		if (TSProviderImpl != null) {
 			if (TSProviderImpl.isLucentV6()) {
-				LucentV6SupervisorAssistCall call = new LucentV6SupervisorAssistCall(
+				final LucentV6SupervisorAssistCall call = new LucentV6SupervisorAssistCall(
 						split, asn_uui);
 				TsapiTrace
 						.traceExit(
@@ -911,7 +884,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				return call;
 			}
 
-			LucentSupervisorAssistCall call = new LucentSupervisorAssistCall(
+			final LucentSupervisorAssistCall call = new LucentSupervisorAssistCall(
 					split, asn_uui);
 			TsapiTrace
 					.traceExit(
@@ -940,7 +913,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceExit("drop[]", this);
 	}
 
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof TsapiCall) {
 			tsCall = tsCall.getHandOff();
 			return tsCall.equals(((TsapiCall) obj).getTSCall());
@@ -950,33 +923,31 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	}
 
 	// ERROR //
-	public final Connection fastConnect(Terminal origterm, Address origaddr,
-			String dialedDigits, boolean priorityCall, UserToUserInfo userInfo,
-			String destRoute) throws TsapiResourceUnavailableException,
+	public final Connection fastConnect(final Terminal origterm,
+			final Address origaddr, final String dialedDigits,
+			final boolean priorityCall, final UserToUserInfo userInfo,
+			final String destRoute) throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException {
 		try {
-			if (!(origterm instanceof ITsapiTerminal)) {
+			if (!(origterm instanceof ITsapiTerminal))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"orig Terminal is not an instanceof ITsapiTerminal");
-			}
 
-			if (!(origaddr instanceof ITsapiAddress)) {
+			if (!(origaddr instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"orig Address is not an instanceof ITsapiAddress");
-			}
 
 			Vector<TSConnection> tsConn = null;
-			TSDevice tsDevice = ((TsapiAddress) origaddr).getTSDevice();
-			TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
+			final TSDevice tsDevice = ((TsapiAddress) origaddr).getTSDevice();
+			final TSDevice tsDevice1 = ((TsapiTerminal) origterm).getTSDevice();
 			LucentMakeCall lmc;
-			if ((tsDevice != null) && (tsDevice1 != null)) {
+			if (tsDevice != null && tsDevice1 != null) {
 				if (tsDevice.equals(tsDevice1)) {
-					if ((destRoute == null) && (!priorityCall)
-							&& (userInfo == null)) {
+					if (destRoute == null && !priorityCall && userInfo == null)
 						privData = null;
-					} else {
+					else {
 						lmc = createLucentMakeCall(destRoute, priorityCall,
 								userInfo);
 						privData = lmc.makeTsapiPrivate();
@@ -985,14 +956,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					tsCall = tsCall.getHandOff();
 					tsConn = tsCall.fastConnect(tsDevice, dialedDigits,
 							privData);
-				} else {
+				} else
 					throw new TsapiInvalidArgumentException(3, 0,
 							"orig Terminal not associated with orig Address");
-				}
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate orig address");
-			}
 
 			if (tsConn == null) {
 				lmc = null;
@@ -1006,11 +975,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				Connection tsapiConn = (Connection) TsapiCreateObject
+				final Connection tsapiConn = (Connection) TsapiCreateObject
 						.getTsapiObject((TSConnection) tsConn.elementAt(0),
 								true);
 
-				Connection localConnection1 = tsapiConn;
+				final Connection localConnection1 = tsapiConn;
 
 				privData = null;
 				return localConnection1;
@@ -1040,11 +1009,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final CallCapabilities getCallCapabilities(Terminal term,
-			Address addr) throws InvalidArgumentException, PlatformException {
+	public final CallCapabilities getCallCapabilities(final Terminal term,
+			final Address addr) throws InvalidArgumentException,
+			PlatformException {
 		TsapiTrace.traceEntry(
 				"getCallCapabilities[Terminal term, Address addr]", this);
-		CallCapabilities caps = getCapabilities(null, null);
+		final CallCapabilities caps = getCapabilities(null, null);
 		TsapiTrace.traceExit(
 				"getCallCapabilities[Terminal term, Address addr]", this);
 		return caps;
@@ -1054,7 +1024,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getCalledAddress[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getCalledDevice();
+			final TSDevice tsDevice = tsCall.getCalledDevice();
 			Address addr;
 			if (tsDevice != null) {
 				addr = (Address) TsapiCreateObject.getTsapiObject(tsDevice,
@@ -1074,7 +1044,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getCallingAddress[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getCallingAddress();
+			final TSDevice tsDevice = tsCall.getCallingAddress();
 			Address addr;
 			if (tsDevice != null) {
 				addr = (Address) TsapiCreateObject.getTsapiObject(tsDevice,
@@ -1094,7 +1064,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getCallingTerminal[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getCallingTerminal();
+			final TSDevice tsDevice = tsCall.getCallingTerminal();
 			Terminal term;
 			if (tsDevice != null) {
 				term = (Terminal) TsapiCreateObject.getTsapiObject(tsDevice,
@@ -1114,26 +1084,25 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getCallListeners[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+			final Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
 					.getCallObservers();
 
-			if ((tsapiCallObservers == null)
-					|| (tsapiCallObservers.size() == 0)) {
+			if (tsapiCallObservers == null || tsapiCallObservers.size() == 0) {
 				TsapiTrace.traceExit("getCallListeners[]", this);
 				return null;
 			}
-			ArrayList<CallListener> callListeners = new ArrayList<CallListener>();
+			final ArrayList<CallListener> callListeners = new ArrayList<CallListener>();
 
 			synchronized (tsapiCallObservers) {
-				for (Object obs : tsapiCallObservers) {
-					CallListener listener = ((TsapiCallMonitor) obs)
+				for (final Object obs : tsapiCallObservers) {
+					final CallListener listener = ((TsapiCallMonitor) obs)
 							.getListener();
-					if (listener != null) {
+					if (listener != null)
 						callListeners.add(listener);
-					}
 				}
 			}
-			CallListener[] callListener = new CallListener[callListeners.size()];
+			final CallListener[] callListener = new CallListener[callListeners
+					.size()];
 			TsapiTrace.traceExit("getCallListeners[]", this);
 			return (CallListener[]) callListeners.toArray(callListener);
 		} finally {
@@ -1145,7 +1114,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getCallOriginatorType[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			int type = tsCall.getCallOriginatorType();
+			final int type = tsCall.getCallOriginatorType();
 			TsapiTrace.traceExit("getCallOriginatorType[]", this);
 			return type;
 		} finally {
@@ -1153,13 +1122,13 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final CallCapabilities getCapabilities(Terminal terminal,
-			Address address) {
+	public final CallCapabilities getCapabilities(final Terminal terminal,
+			final Address address) {
 		TsapiTrace.traceEntry(
 				"getCapabilities[Terminal terminal, Address address]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			CallCapabilities caps = tsCall.getTsapiCallCapabilities();
+			final CallCapabilities caps = tsCall.getTsapiCallCapabilities();
 			TsapiTrace
 					.traceExit(
 							"getCapabilities[Terminal terminal, Address address]",
@@ -1174,7 +1143,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getConferenceController[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSConnection tsConn = tsCall.getConfController();
+			final TSConnection tsConn = tsCall.getConfController();
 			TerminalConnection conn;
 			if (tsConn != null) {
 				conn = (TerminalConnection) TsapiCreateObject.getTsapiObject(
@@ -1194,7 +1163,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getConferenceEnable[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			boolean enable = tsCall.getConfEnable();
+			final boolean enable = tsCall.getConfEnable();
 			TsapiTrace.traceExit("getConferenceEnable[]", this);
 			return enable;
 		} finally {
@@ -1217,12 +1186,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				Connection[] tsapiConn = new Connection[tsconn.size()];
-				for (int i = 0; i < tsconn.size(); ++i) {
-					tsapiConn[i] = ((Connection) TsapiCreateObject
+				final Connection[] tsapiConn = new Connection[tsconn.size()];
+				for (int i = 0; i < tsconn.size(); ++i)
+					tsapiConn[i] = (Connection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsconn.elementAt(i),
-									true));
-				}
+									true);
 
 				privData = null;
 				return tsapiConn;
@@ -1236,13 +1204,13 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getDeliveringACDAddress[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getDeliveringACDDevice();
+			final TSDevice tsDevice = tsCall.getDeliveringACDDevice();
 			if (tsDevice == null) {
 				TsapiTrace.traceExit("getDeliveringACDAddress[]", this);
 				return null;
 			}
-			ACDAddress addr = (ACDAddress) TsapiCreateObject.getTsapiObject(
-					tsDevice, true);
+			final ACDAddress addr = (ACDAddress) TsapiCreateObject
+					.getTsapiObject(tsDevice, true);
 			TsapiTrace.traceExit("getDeliveringACDAddress[]", this);
 			return addr;
 		} finally {
@@ -1254,7 +1222,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getDeviceHistory[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			V7DeviceHistoryEntry[] history = tsCall.getDeviceHistory();
+			final V7DeviceHistoryEntry[] history = tsCall.getDeviceHistory();
 			TsapiTrace.traceExit("getDeviceHistory[]", this);
 			return history;
 		} finally {
@@ -1266,12 +1234,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getDistributingAddress[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getDistributingDevice();
+			final TSDevice tsDevice = tsCall.getDistributingDevice();
 			if (tsDevice == null) {
 				TsapiTrace.traceExit("getDistributingAddress[]", this);
 				return null;
 			}
-			CallCenterAddress addr = (CallCenterAddress) TsapiCreateObject
+			final CallCenterAddress addr = (CallCenterAddress) TsapiCreateObject
 					.getTsapiObject(tsDevice, true);
 			TsapiTrace.traceExit("getDistributingAddress[]", this);
 			return addr;
@@ -1284,12 +1252,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getDistributingVDNAddress[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getDistributingVDN();
+			final TSDevice tsDevice = tsCall.getDistributingVDN();
 			if (tsDevice == null) {
 				TsapiTrace.traceExit("getDistributingVDNAddress[]", this);
 				return null;
 			}
-			CallCenterAddress addr = (CallCenterAddress) TsapiCreateObject
+			final CallCenterAddress addr = (CallCenterAddress) TsapiCreateObject
 					.getTsapiObject(tsDevice, true);
 			TsapiTrace.traceExit("getDistributingVDNAddress[]", this);
 			return addr;
@@ -1302,7 +1270,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getLastRedirectedAddress[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSDevice tsDevice = tsCall.getLastRedirectionDevice();
+			final TSDevice tsDevice = tsCall.getLastRedirectionDevice();
 			Address addr;
 			if (tsDevice != null) {
 				addr = (Address) TsapiCreateObject.getTsapiObject(tsDevice,
@@ -1322,7 +1290,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getLookaheadInfo[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			LookaheadInfo lai = tsCall.getLAI();
+			final LookaheadInfo lai = tsCall.getLAI();
 			TsapiTrace.traceExit("getLookaheadInfo[]", this);
 			return lai;
 		} finally {
@@ -1334,26 +1302,25 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getObservers[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+			final Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
 					.getCallObservers();
 
-			if ((tsapiCallObservers == null)
-					|| (tsapiCallObservers.size() == 0)) {
+			if (tsapiCallObservers == null || tsapiCallObservers.size() == 0) {
 				TsapiTrace.traceExit("getObservers[]", this);
 				return null;
 			}
 
-			ArrayList<CallObserver> observers = new ArrayList<CallObserver>();
+			final ArrayList<CallObserver> observers = new ArrayList<CallObserver>();
 
-			for (TsapiCallMonitor tsapiCallMonitor : tsapiCallObservers) {
-				TsapiCallMonitor obs = (TsapiCallMonitor) tsapiCallMonitor;
-				if (obs.getObserver() != null) {
+			for (final TsapiCallMonitor tsapiCallMonitor : tsapiCallObservers) {
+				final TsapiCallMonitor obs = (TsapiCallMonitor) tsapiCallMonitor;
+				if (obs.getObserver() != null)
 					observers.add(obs.getObserver());
-				}
 			}
 
 			TsapiTrace.traceExit("getObservers[]", this);
-			CallObserver[] observerArray = new CallObserver[observers.size()];
+			final CallObserver[] observerArray = new CallObserver[observers
+					.size()];
 			return (CallObserver[]) observers.toArray(observerArray);
 		} finally {
 			privData = null;
@@ -1364,7 +1331,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getOriginalCallInfo[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			OriginalCallInfo oci = tsCall.getOCI();
+			final OriginalCallInfo oci = tsCall.getOCI();
 			TsapiTrace.traceExit("getOriginalCallInfo[]", this);
 			return oci;
 		} finally {
@@ -1375,8 +1342,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	public final Object getPrivateData() {
 		TsapiTrace.traceEntry("getPrivateData[]", this);
 		tsCall = tsCall.getHandOff();
-		Object obj = TsapiPromoter.promoteTsapiPrivate((CSTAPrivate) tsCall
-				.getPrivateData());
+		final Object obj = TsapiPromoter
+				.promoteTsapiPrivate((CSTAPrivate) tsCall.getPrivateData());
 		TsapiTrace.traceExit("getPrivateData[]", this);
 		return obj;
 	}
@@ -1385,7 +1352,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	public final javax.telephony.Provider getProvider() {
 		try {
 			tsCall = tsCall.getHandOff();
-			TSProvider tsProvider = tsCall.getTSProviderImpl();
+			final TSProvider tsProvider = tsCall.getTSProviderImpl();
 			Provider localProvider;
 			if (tsProvider != null) {
 				localProvider = (Provider) TsapiCreateObject.getTsapiObject(
@@ -1404,7 +1371,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getReason[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			short reason = tsCall.getReason();
+			final short reason = tsCall.getReason();
 			TsapiTrace.traceExit("getReason[]", this);
 			return reason;
 		} finally {
@@ -1416,7 +1383,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getState[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			int state = tsCall.getState();
+			final int state = tsCall.getState();
 			TsapiTrace.traceExit("getState[]", this);
 			return state;
 		} finally {
@@ -1428,7 +1395,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getTransferController[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			TSConnection tsConn = tsCall.getXferController();
+			final TSConnection tsConn = tsCall.getXferController();
 			TerminalConnection obj;
 			if (tsConn != null) {
 				obj = (TerminalConnection) TsapiCreateObject.getTsapiObject(
@@ -1448,7 +1415,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getTransferEnable[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			boolean enabled = tsCall.getXferEnable();
+			final boolean enabled = tsCall.getXferEnable();
 			TsapiTrace.traceExit("getTransferEnable[]", this);
 			return enabled;
 		} finally {
@@ -1459,12 +1426,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	public final CallCenterTrunk getTrunk() {
 		TsapiTrace.traceEntry("getTrunk[]", this);
 		try {
-			CallCenterTrunk[] trks = getTrunks();
-			if ((trks == null) || (trks.length == 0)) {
+			final CallCenterTrunk[] trks = getTrunks();
+			if (trks == null || trks.length == 0) {
 				TsapiTrace.traceExit("getTrunk[]", this);
 				return null;
 			}
-			CallCenterTrunk trunk = trks[0];
+			final CallCenterTrunk trunk = trks[0];
 			TsapiTrace.traceExit("getTrunk[]", this);
 			return trunk;
 		} finally {
@@ -1488,11 +1455,10 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 					privData = null;
 					return null;
 				}
-				TsapiTrunk[] tsapiTrunk = new TsapiTrunk[tstrunk.size()];
-				for (int i = 0; i < tstrunk.size(); ++i) {
-					tsapiTrunk[i] = ((TsapiTrunk) TsapiCreateObject
-							.getTsapiObject(tstrunk.elementAt(i), false));
-				}
+				final TsapiTrunk[] tsapiTrunk = new TsapiTrunk[tstrunk.size()];
+				for (int i = 0; i < tstrunk.size(); ++i)
+					tsapiTrunk[i] = (TsapiTrunk) TsapiCreateObject
+							.getTsapiObject(tstrunk.elementAt(i), false);
 
 				privData = null;
 				return tsapiTrunk;
@@ -1506,7 +1472,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getTsapiCallID[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			int id = tsCall.getCallID();
+			final int id = tsCall.getCallID();
 			TsapiTrace.traceExit("getTsapiCallID[]", this);
 			return id;
 		} finally {
@@ -1525,7 +1491,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getUCID[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			String ucid = tsCall.getUCID();
+			final String ucid = tsCall.getUCID();
 			TsapiTrace.traceExit("getUCID[]", this);
 			return ucid;
 		} finally {
@@ -1537,7 +1503,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getUserEnteredCode[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			UserEnteredCode uec = tsCall.getUEC();
+			final UserEnteredCode uec = tsCall.getUEC();
 			TsapiTrace.traceExit("getUserEnteredCode[]", this);
 			return uec;
 		} finally {
@@ -1549,7 +1515,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("getUserToUserInfo[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			UserToUserInfo uui = tsCall.getUUI();
+			final UserToUserInfo uui = tsCall.getUUI();
 			TsapiTrace.traceExit("getUserToUserInfo[]", this);
 			return uui;
 		} finally {
@@ -1561,7 +1527,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceEntry("hasCallOriginatorType[]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			boolean has = tsCall.hasCallOriginatorType();
+			final boolean has = tsCall.hasCallOriginatorType();
 			TsapiTrace.traceExit("hasCallOriginatorType[]", this);
 			return has;
 		} finally {
@@ -1572,12 +1538,12 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 	public final int hashCode() {
 		tsCall = tsCall.getHandOff();
 
-		TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
+		final TSProviderImpl TSProviderImpl = tsCall.getTSProviderImpl();
 		return TSProviderImpl.hashCode();
 	}
 
-	public final Connection offHook(Address origaddress, Terminal origterminal)
-			throws TsapiInvalidStateException,
+	public final Connection offHook(final Address origaddress,
+			final Terminal origterminal) throws TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
@@ -1590,23 +1556,22 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public void removeCallListener(CallListener listener) {
+	public void removeCallListener(final CallListener listener) {
 		TsapiTrace
 				.traceEntry("removeCallListener[CallListener listener]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+			final Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
 					.getCallObservers();
 
-			if ((tsapiCallObservers == null)
-					|| (tsapiCallObservers.size() == 0)) {
+			if (tsapiCallObservers == null || tsapiCallObservers.size() == 0) {
 				TsapiTrace.traceExit(
 						"removeCallListener[CallListener listener]", this);
 
 				return;
 			}
 
-			for (Object obs : tsapiCallObservers) {
+			for (final Object obs : tsapiCallObservers)
 				if (((TsapiCallMonitor) obs).getListener() == listener) {
 					tsCall = tsCall.getHandOff();
 					tsCall.removeCallMonitor((TsapiCallMonitor) obs);
@@ -1615,32 +1580,29 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 
 					return;
 				}
-			}
 		} finally {
 			privData = null;
 		}
 	}
 
-	public void removeObserver(CallObserver observer) {
+	public void removeObserver(final CallObserver observer) {
 		TsapiTrace.traceEntry("removeObserver[CallObserver observer]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
+			final Vector<TsapiCallMonitor> tsapiCallObservers = tsCall
 					.getCallObservers();
 
-			if ((tsapiCallObservers == null)
-					|| (tsapiCallObservers.size() == 0)) {
+			if (tsapiCallObservers == null || tsapiCallObservers.size() == 0) {
 				TsapiTrace.traceExit("removeObserver[CallObserver observer]",
 						this);
 				return;
 			}
 
 			for (int i = 0; i < tsapiCallObservers.size(); ++i) {
-				TsapiCallMonitor obs = (TsapiCallMonitor) tsapiCallObservers
+				final TsapiCallMonitor obs = (TsapiCallMonitor) tsapiCallObservers
 						.elementAt(i);
-				if (obs.getObserver() != observer) {
+				if (obs.getObserver() != observer)
 					continue;
-				}
 				tsCall = tsCall.getHandOff();
 				tsCall.removeCallMonitor(obs);
 				TsapiTrace.traceExit("removeObserver[CallObserver observer]",
@@ -1653,21 +1615,21 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final Object sendPrivateData(Object data) {
+	public final Object sendPrivateData(final Object data) {
 		TsapiTrace.traceEntry("sendPrivateData[Object data]", this);
 		try {
 			tsCall = tsCall.getHandOff();
-			Object obj = tsCall.sendPrivateData(TsapiPromoter
+			final Object obj = tsCall.sendPrivateData(TsapiPromoter
 					.demoteTsapiPrivate((TsapiPrivate) data));
 			TsapiTrace.traceExit("sendPrivateData[Object data]", this);
 			return obj;
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
 	}
 
-	public final void setApplicationData(Object data)
+	public final void setApplicationData(final Object data)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("setApplicationData[Object data]", this);
 		try {
@@ -1678,7 +1640,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 
-	public final void setBillRate(short billType, float billRate)
+	public final void setBillRate(final short billType, final float billRate)
 			throws TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("setBillRate[short billType, float billRate]",
@@ -1693,27 +1655,25 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				this);
 	}
 
-	public final void setConferenceController(TerminalConnection termconn)
+	public final void setConferenceController(final TerminalConnection termconn)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiResourceUnavailableException {
 		try {
 			TsapiTrace.traceEntry(
 					"setConferenceController[TerminalConnection termconn]",
 					this);
-			if (!(termconn instanceof ITsapiTerminalConnection)) {
+			if (!(termconn instanceof ITsapiTerminalConnection))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"The given TerminalConnection is not an instanceof ITsapiTerminalConnection");
-			}
 
-			TSConnection tsConn = ((TsapiTerminalConnection) termconn)
+			final TSConnection tsConn = ((TsapiTerminalConnection) termconn)
 					.getTSConnection();
 			if (tsConn != null) {
 				tsCall = tsCall.getHandOff();
 				tsCall.setConfController(tsConn);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate terminal connection");
-			}
 		} finally {
 			privData = null;
 		}
@@ -1721,7 +1681,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				"setConferenceController[TerminalConnection termconn]", this);
 	}
 
-	public final void setConferenceEnable(boolean enable)
+	public final void setConferenceEnable(final boolean enable)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException {
 		TsapiTrace.traceEntry("setConferenceEnable[boolean enable]", this);
@@ -1734,11 +1694,11 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceExit("setConferenceEnable[boolean enable]", this);
 	}
 
-	public final void setPrivateData(Object data) {
+	public final void setPrivateData(final Object data) {
 		TsapiTrace.traceEntry("setPrivateData[Object data]", this);
 		try {
 			privData = TsapiPromoter.demoteTsapiPrivate((TsapiPrivate) data);
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
@@ -1746,26 +1706,24 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceExit("setPrivateData[Object data]", this);
 	}
 
-	public final void setTransferController(TerminalConnection termconn)
+	public final void setTransferController(final TerminalConnection termconn)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"setTransferController[TerminalConnection termconn]", this);
 		try {
-			if (!(termconn instanceof ITsapiTerminalConnection)) {
+			if (!(termconn instanceof ITsapiTerminalConnection))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"The given TerminalConnection is not an instanceof ITsapiTerminalConnection");
-			}
 
-			TSConnection tsConn = ((TsapiTerminalConnection) termconn)
+			final TSConnection tsConn = ((TsapiTerminalConnection) termconn)
 					.getTSConnection();
 			if (tsConn != null) {
 				tsCall = tsCall.getHandOff();
 				tsCall.setXferController(tsConn);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate terminal connection");
-			}
 		} finally {
 			privData = null;
 		}
@@ -1773,7 +1731,7 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 				"setTransferController[TerminalConnection termconn]", this);
 	}
 
-	public final void setTransferEnable(boolean enable)
+	public final void setTransferEnable(final boolean enable)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException {
 		TsapiTrace.traceEntry("setTransferEnable[boolean enable]", this);
@@ -1786,44 +1744,41 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		TsapiTrace.traceExit("setTransferEnable[boolean enable]", this);
 	}
 
-	public final void transfer(Call otherCall)
+	public final void transfer(final Call otherCall)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiMethodNotSupportedException,
 			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("transfer[Call otherCall]", this);
 		try {
-			if (!(otherCall instanceof LucentV7Call)) {
+			if (!(otherCall instanceof LucentV7Call))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"other Call is not an instanceof ITsapiCall");
-			}
 
-			TSCall oCall = ((TsapiCall) otherCall).getTSCall();
+			final TSCall oCall = ((TsapiCall) otherCall).getTSCall();
 			if (oCall != null) {
 				tsCall = tsCall.getHandOff();
 				tsCall.transfer(oCall, privData);
-			} else {
+			} else
 				throw new TsapiPlatformException(4, 0,
 						"could not locate other call");
-			}
 		} finally {
 			privData = null;
 		}
 		TsapiTrace.traceExit("transfer[Call otherCall]", this);
 	}
 
-	public final Connection transfer(String address)
+	public final Connection transfer(final String address)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiInvalidPartyException, TsapiMethodNotSupportedException,
 			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("transfer[String address]", this);
 		try {
-			if ((address == null) || (address.equals(""))) {
+			if (address == null || address.equals(""))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"address null or an empty string");
-			}
 
 			tsCall = tsCall.getHandOff();
-			TSConnection tsConn = tsCall.transfer(address, privData);
+			final TSConnection tsConn = tsCall.transfer(address, privData);
 			Connection conn;
 			if (tsConn != null) {
 				conn = (Connection) TsapiCreateObject.getTsapiObject(tsConn,
@@ -1839,4 +1794,3 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 		}
 	}
 }
-

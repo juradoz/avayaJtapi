@@ -13,15 +13,15 @@ public class LucentSetBillRate extends LucentPrivateData {
 	float billRate;
 	static final int PDU = 74;
 
-	public LucentSetBillRate(CSTAConnectionID _call, short _billType,
-			float _billRate) {
+	public LucentSetBillRate(final CSTAConnectionID _call,
+			final short _billType, final float _billRate) {
 		call = _call;
 		billType = _billType;
 		billRate = _billRate;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(call, memberStream);
 		ASNEnumerated.encode(billType, memberStream);
 		ASNReal.encode(billRate, memberStream);
@@ -34,12 +34,12 @@ public class LucentSetBillRate extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetBillRate ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(call, "call", indent));
 		lines.addAll(BillType.print(billType, "billType", indent));
@@ -49,4 +49,3 @@ public class LucentSetBillRate extends LucentPrivateData {
 		return lines;
 	}
 }
-

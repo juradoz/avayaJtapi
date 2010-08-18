@@ -6,4 +6,3 @@ public abstract interface CallCenterAddressCapabilities extends
 		AddressCapabilities {
 	public abstract boolean canAddCallObserver(boolean paramBoolean);
 }
-

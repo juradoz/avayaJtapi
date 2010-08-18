@@ -7,17 +7,19 @@ import com.avaya.jtapi.tsapi.LucentChargeAdviceEvent;
 import com.avaya.jtapi.tsapi.TsapiTrunk;
 
 public class LucentChargeAdviceEventImpl implements LucentChargeAdviceEvent {
-	private short chargeType;
-	private int charge;
-	private short error;
-	private LucentCall call;
-	private ITsapiAddress calledDevice;
-	private ITsapiAddress chargingDevice;
-	private TsapiTrunk trunk;
+	private final short chargeType;
+	private final int charge;
+	private final short error;
+	private final LucentCall call;
+	private final ITsapiAddress calledDevice;
+	private final ITsapiAddress chargingDevice;
+	private final TsapiTrunk trunk;
 
-	public LucentChargeAdviceEventImpl(short _chargeType, int _charge,
-			LucentCall _call, ITsapiAddress _calledDevice,
-			ITsapiAddress _chargingDevice, short _error, TsapiTrunk _trunk) {
+	public LucentChargeAdviceEventImpl(final short _chargeType,
+			final int _charge, final LucentCall _call,
+			final ITsapiAddress _calledDevice,
+			final ITsapiAddress _chargingDevice, final short _error,
+			final TsapiTrunk _trunk) {
 		chargeType = _chargeType;
 		charge = _charge;
 		call = _call;

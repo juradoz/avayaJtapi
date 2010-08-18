@@ -7,8 +7,8 @@ import javax.telephony.callcenter.events.AgentTermWorkNotReadyEv;
 @SuppressWarnings("deprecation")
 public final class TsapiTermWorkNotReadyEv extends TsapiAgentTermEv implements
 		AgentTermWorkNotReadyEv {
-	public TsapiTermWorkNotReadyEv(Terminal _device, Agent _agent, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiTermWorkNotReadyEv(final Terminal _device, final Agent _agent,
+			final int _cause, final int _metaCode, final Object _privateData) {
 		super(_device, _agent, _cause, _metaCode, _privateData);
 	}
 
@@ -16,4 +16,3 @@ public final class TsapiTermWorkNotReadyEv extends TsapiAgentTermEv implements
 		return 314;
 	}
 }
-

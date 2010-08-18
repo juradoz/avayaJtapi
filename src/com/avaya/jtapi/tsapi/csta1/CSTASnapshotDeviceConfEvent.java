@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTASnapshotDeviceConfEvent extends CSTAConfirmation {
-	public static CSTASnapshotDeviceConfEvent decode(InputStream in) {
-		CSTASnapshotDeviceConfEvent _this = new CSTASnapshotDeviceConfEvent();
+	public static CSTASnapshotDeviceConfEvent decode(final InputStream in) {
+		final CSTASnapshotDeviceConfEvent _this = new CSTASnapshotDeviceConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,17 +21,17 @@ public final class CSTASnapshotDeviceConfEvent extends CSTAConfirmation {
 	}
 
 	public CSTASnapshotDeviceConfEvent(
-			CSTASnapshotDeviceResponseInfo[] _snapshotData) {
+			final CSTASnapshotDeviceResponseInfo[] _snapshotData) {
 		snapshotData = _snapshotData;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		snapshotData = CSTASnapshotDeviceData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTASnapshotDeviceData.encode(snapshotData, memberStream);
 	}
 
@@ -46,12 +46,12 @@ public final class CSTASnapshotDeviceConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASnapshotDeviceConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTASnapshotDeviceData.print(snapshotData, "snapshotData",
 				indent));

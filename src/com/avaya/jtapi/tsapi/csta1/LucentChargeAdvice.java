@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public class LucentChargeAdvice extends LucentPrivateData {
-	public static LucentChargeAdvice decode(InputStream in) {
-		LucentChargeAdvice _this = new LucentChargeAdvice();
+	public static LucentChargeAdvice decode(final InputStream in) {
+		final LucentChargeAdvice _this = new LucentChargeAdvice();
 		_this.doDecode(in);
 
 		return _this;
@@ -29,7 +29,7 @@ public class LucentChargeAdvice extends LucentPrivateData {
 	static final int PDU = 96;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		connection_asn = CSTAConnectionID.decode(memberStream);
 		calledDevice_asn = ASNIA5String.decode(memberStream);
 		chargingDevice_asn = ASNIA5String.decode(memberStream);
@@ -41,7 +41,7 @@ public class LucentChargeAdvice extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(connection_asn, memberStream);
 		ASNIA5String.encode(calledDevice_asn, memberStream);
 		ASNIA5String.encode(chargingDevice_asn, memberStream);
@@ -95,12 +95,12 @@ public class LucentChargeAdvice extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentChargeAdviceEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(connection_asn, "connection",
 				indent));
@@ -118,36 +118,35 @@ public class LucentChargeAdvice extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setCalledDevice_asn(String calledDevice_asn) {
+	public void setCalledDevice_asn(final String calledDevice_asn) {
 		this.calledDevice_asn = calledDevice_asn;
 	}
 
-	public void setCharge(int charge) {
+	public void setCharge(final int charge) {
 		this.charge = charge;
 	}
 
-	public void setChargeType(short chargeType) {
+	public void setChargeType(final short chargeType) {
 		this.chargeType = chargeType;
 	}
 
-	public void setChargingDevice_asn(String chargingDevice_asn) {
+	public void setChargingDevice_asn(final String chargingDevice_asn) {
 		this.chargingDevice_asn = chargingDevice_asn;
 	}
 
-	public void setConnection_asn(CSTAConnectionID connection_asn) {
+	public void setConnection_asn(final CSTAConnectionID connection_asn) {
 		this.connection_asn = connection_asn;
 	}
 
-	public void setError(short error) {
+	public void setError(final short error) {
 		this.error = error;
 	}
 
-	public void setTrunkGroup(String trunkGroup) {
+	public void setTrunkGroup(final String trunkGroup) {
 		this.trunkGroup = trunkGroup;
 	}
 
-	public void setTrunkMember(String trunkMember) {
+	public void setTrunkMember(final String trunkMember) {
 		this.trunkMember = trunkMember;
 	}
 }
-

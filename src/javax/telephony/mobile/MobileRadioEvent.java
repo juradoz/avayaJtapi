@@ -11,4 +11,3 @@ public abstract interface MobileRadioEvent extends Event {
 
 	public abstract MobileRadio getMobileRadio();
 }
-

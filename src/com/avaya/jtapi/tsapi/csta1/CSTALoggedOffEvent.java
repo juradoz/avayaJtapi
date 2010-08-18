@@ -14,22 +14,22 @@ public final class CSTALoggedOffEvent extends CSTAUnsolicited {
 	String agentGroup;
 	public static final int PDU = 73;
 
-	public static CSTALoggedOffEvent decode(InputStream in) {
-		CSTALoggedOffEvent _this = new CSTALoggedOffEvent();
+	public static CSTALoggedOffEvent decode(final InputStream in) {
+		final CSTALoggedOffEvent _this = new CSTALoggedOffEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		agentDevice = CSTAExtendedDeviceID.decode(memberStream);
 		agentID = ASNIA5String.decode(memberStream);
 		agentGroup = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(agentDevice, memberStream);
 		ASNIA5String.encode(agentID, memberStream);
 		ASNIA5String.encode(agentGroup, memberStream);
@@ -54,11 +54,11 @@ public final class CSTALoggedOffEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTALoggedOffEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(agentDevice, "agentDevice",
 				indent));
@@ -69,16 +69,15 @@ public final class CSTALoggedOffEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setAgentDevice(CSTAExtendedDeviceID agentDevice) {
+	public void setAgentDevice(final CSTAExtendedDeviceID agentDevice) {
 		this.agentDevice = agentDevice;
 	}
 
-	public void setAgentGroup(String agentGroup) {
+	public void setAgentGroup(final String agentGroup) {
 		this.agentGroup = agentGroup;
 	}
 
-	public void setAgentID(String agentID) {
+	public void setAgentID(final String agentID) {
 		this.agentID = agentID;
 	}
 }
-

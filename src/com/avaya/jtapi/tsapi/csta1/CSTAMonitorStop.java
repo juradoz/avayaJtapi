@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class CSTAMonitorStop extends CSTARequest {
-	public static CSTAMonitorStop decode(InputStream in) {
-		CSTAMonitorStop _this = new CSTAMonitorStop();
+	public static CSTAMonitorStop decode(final InputStream in) {
+		final CSTAMonitorStop _this = new CSTAMonitorStop();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class CSTAMonitorStop extends CSTARequest {
 	public CSTAMonitorStop() {
 	}
 
-	public CSTAMonitorStop(int _monitorCrossRefID) {
+	public CSTAMonitorStop(final int _monitorCrossRefID) {
 		monitorCrossRefID = _monitorCrossRefID;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		monitorCrossRefID = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(monitorCrossRefID, memberStream);
 	}
 
@@ -47,12 +47,12 @@ public final class CSTAMonitorStop extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAMonitorStop ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(monitorCrossRefID, "monitorCrossRefID",
 				indent));
@@ -61,4 +61,3 @@ public final class CSTAMonitorStop extends CSTARequest {
 		return lines;
 	}
 }
-

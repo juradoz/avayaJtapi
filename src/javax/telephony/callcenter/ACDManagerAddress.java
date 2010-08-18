@@ -6,4 +6,3 @@ public abstract interface ACDManagerAddress extends CallCenterAddress {
 	public abstract ACDAddress[] getACDAddresses()
 			throws MethodNotSupportedException;
 }
-

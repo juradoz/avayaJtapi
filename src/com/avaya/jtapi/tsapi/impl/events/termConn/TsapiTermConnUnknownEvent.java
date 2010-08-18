@@ -4,7 +4,7 @@ import javax.telephony.events.TermConnUnknownEv;
 
 public final class TsapiTermConnUnknownEvent extends TsapiTermConnEvent
 		implements TermConnUnknownEv {
-	public TsapiTermConnUnknownEvent(TermConnEventParams params) {
+	public TsapiTermConnUnknownEvent(final TermConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiTermConnUnknownEvent extends TsapiTermConnEvent
 		return 120;
 	}
 }
-

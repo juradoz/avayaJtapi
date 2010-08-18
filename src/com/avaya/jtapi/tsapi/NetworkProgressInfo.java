@@ -16,9 +16,8 @@ public class NetworkProgressInfo {
 	public NetworkProgressInfo() {
 	}
 
-	NetworkProgressInfo(short location, short description) {
+	NetworkProgressInfo(final short location, final short description) {
 		progressLocation = location;
 		progressDescription = description;
 	}
 }
-

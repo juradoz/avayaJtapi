@@ -7,11 +7,11 @@ import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallControlEvent;
 
 public class CallControlTerminalEventImpl extends TsapiListenerCallControlEvent
 		implements CallControlTerminalEvent {
-	private Terminal terminal;
+	private final Terminal terminal;
 	private boolean state = false;
 
 	public CallControlTerminalEventImpl(
-			TerminalEventParams terminalEventParams, boolean state) {
+			final TerminalEventParams terminalEventParams, final boolean state) {
 		super(terminalEventParams.getEventId(), terminalEventParams.getCause(),
 				terminalEventParams.getMetaEvent(), terminalEventParams
 						.getSource(), terminalEventParams.getPrivateData());
@@ -28,4 +28,3 @@ public class CallControlTerminalEventImpl extends TsapiListenerCallControlEvent
 		return terminal;
 	}
 }
-

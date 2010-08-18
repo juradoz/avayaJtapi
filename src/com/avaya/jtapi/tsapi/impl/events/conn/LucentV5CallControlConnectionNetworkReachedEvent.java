@@ -10,8 +10,8 @@ public class LucentV5CallControlConnectionNetworkReachedEvent extends
 		LucentCallControlConnectionNetworkReachedEvent implements
 		LucentV5CallInfo {
 	public LucentV5CallControlConnectionNetworkReachedEvent(
-			CallEventParams params, MetaEvent event, int eventId,
-			int numInQueue, String digits) {
+			final CallEventParams params, final MetaEvent event,
+			final int eventId, final int numInQueue, final String digits) {
 		super(params, event, eventId, numInQueue, digits);
 	}
 
@@ -25,11 +25,10 @@ public class LucentV5CallControlConnectionNetworkReachedEvent extends
 
 	public String getUCID() {
 		String ucid = null;
-		if (callEventParams.getUcid() != null) {
+		if (callEventParams.getUcid() != null)
 			ucid = callEventParams.getUcid();
-		} else if (getCall() instanceof LucentV5Call) {
+		else if (getCall() instanceof LucentV5Call)
 			ucid = ((LucentV5Call) getCall()).getUCID();
-		}
 		return ucid;
 	}
 

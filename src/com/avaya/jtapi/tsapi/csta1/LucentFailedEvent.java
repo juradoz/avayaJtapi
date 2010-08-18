@@ -9,8 +9,8 @@ public class LucentFailedEvent extends LucentPrivateData {
 	LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 137;
 
-	static LucentFailedEvent decode(InputStream in) {
-		LucentFailedEvent _this = new LucentFailedEvent();
+	static LucentFailedEvent decode(final InputStream in) {
+		final LucentFailedEvent _this = new LucentFailedEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -19,17 +19,17 @@ public class LucentFailedEvent extends LucentPrivateData {
 	LucentFailedEvent() {
 	}
 
-	LucentFailedEvent(LucentDeviceHistoryEntry[] _deviceHistory) {
+	LucentFailedEvent(final LucentDeviceHistoryEntry[] _deviceHistory) {
 		deviceHistory = _deviceHistory;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
 	}
 
@@ -44,12 +44,12 @@ public class LucentFailedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentFailedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
 				"deviceHistory", indent));
@@ -58,8 +58,7 @@ public class LucentFailedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] entry) {
+	public void setDeviceHistory(final LucentDeviceHistoryEntry[] entry) {
 		deviceHistory = entry;
 	}
 }
-

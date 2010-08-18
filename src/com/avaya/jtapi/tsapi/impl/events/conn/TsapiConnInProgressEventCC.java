@@ -7,7 +7,7 @@ import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 @SuppressWarnings("deprecation")
 public class TsapiConnInProgressEventCC extends TsapiCallCtrConnEvent implements
 		CallCentConnInProgressEv, ITsapiCallInfo {
-	public TsapiConnInProgressEventCC(ConnEventParams params) {
+	public TsapiConnInProgressEventCC(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -15,4 +15,3 @@ public class TsapiConnInProgressEventCC extends TsapiCallCtrConnEvent implements
 		return 319;
 	}
 }
-

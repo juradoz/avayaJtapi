@@ -8,7 +8,8 @@ public final class RetryValue extends ASNInteger {
 	public static final short noListAvailable = -1;
 	public static final short noCountAvailable = -2;
 
-	public static Collection<String> print(int value, String name, String indent) {
+	public static Collection<String> print(final int value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -21,7 +22,6 @@ public final class RetryValue extends ASNInteger {
 			str = String.valueOf(value);
 		}
 
-		return print(str, name, indent);
+		return ASNInteger.print(str, name, indent);
 	}
 }
-

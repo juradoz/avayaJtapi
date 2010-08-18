@@ -2,7 +2,7 @@ package com.avaya.jtapi.tsapi.impl.core;
 
 class TSDeviceStateDeleted extends TSDeviceState {
 	@Override
-	void recreate(TSDevice _tsDevice) {
+	void recreate(final TSDevice _tsDevice) {
 		_tsDevice.internalRecreate();
 	}
 
@@ -16,4 +16,3 @@ class TSDeviceStateDeleted extends TSDeviceState {
 		return true;
 	}
 }
-

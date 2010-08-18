@@ -8,11 +8,11 @@ import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallCenterEvent;
 
 public class AgentTerminalEventImpl extends TsapiListenerCallCenterEvent
 		implements AgentTerminalEvent {
-	private Terminal terminal;
-	private Agent agent;
+	private final Terminal terminal;
+	private final Agent agent;
 
-	public AgentTerminalEventImpl(TerminalEventParams terminalEventParams,
-			Agent agent) {
+	public AgentTerminalEventImpl(
+			final TerminalEventParams terminalEventParams, final Agent agent) {
 		super(terminalEventParams.getEventId(), terminalEventParams.getCause(),
 				terminalEventParams.getMetaEvent(), terminalEventParams
 						.getSource(), terminalEventParams.getPrivateData());
@@ -29,4 +29,3 @@ public class AgentTerminalEventImpl extends TsapiListenerCallCenterEvent
 		return terminal;
 	}
 }
-

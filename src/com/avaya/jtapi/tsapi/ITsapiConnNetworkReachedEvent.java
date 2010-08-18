@@ -6,4 +6,3 @@ import javax.telephony.callcontrol.events.CallCtlConnNetworkReachedEv;
 public abstract interface ITsapiConnNetworkReachedEvent extends
 		CallCtlConnNetworkReachedEv {
 }
-

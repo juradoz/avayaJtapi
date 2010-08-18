@@ -54,53 +54,50 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	CSTAPrivate privData = null;
 	String name;
 
-	TsapiTerminal(TsapiProvider _provider, String _name)
+	TsapiTerminal(final TsapiProvider _provider, final String _name)
 			throws TsapiInvalidArgumentException {
 		this(_provider, _name, false);
 	}
 
-	TsapiTerminal(TsapiProvider _provider, String _name, boolean checkValidity)
-			throws TsapiInvalidArgumentException {
-		TSProviderImpl tsProv = _provider.getTSProviderImpl();
+	TsapiTerminal(final TsapiProvider _provider, final String _name,
+			final boolean checkValidity) throws TsapiInvalidArgumentException {
+		final TSProviderImpl tsProv = _provider.getTSProviderImpl();
 		if (tsProv != null) {
 			tsDevice = tsProv.createDevice(_name, checkValidity);
-			if ((tsDevice == null) || (!tsDevice.isTerminal())) {
+			if (tsDevice == null || !tsDevice.isTerminal()) {
 				String info = "";
 
-				if (tsDevice == null) {
+				if (tsDevice == null)
 					info = "; device is null";
-				} else if (!tsDevice.isTerminal()) {
+				else if (!tsDevice.isTerminal())
 					info = "; device is not a terminal";
-				}
 				throw new TsapiPlatformException(4, 0,
 						"could not create terminal: " + _name + info);
 			}
-		} else {
+		} else
 			throw new TsapiPlatformException(4, 0, "could not locate provider");
-		}
 		name = tsDevice.referenced();
 		TsapiTrace.traceConstruction(this, TsapiTerminal.class);
 	}
 
-	TsapiTerminal(TSDevice _tsDevice) {
+	TsapiTerminal(final TSDevice _tsDevice) {
 		tsDevice = _tsDevice;
 
 		name = tsDevice.referenced();
 		TsapiTrace.traceConstruction(this, TsapiTerminal.class);
 	}
 
-	TsapiTerminal(TSProviderImpl _provider, String _name)
+	TsapiTerminal(final TSProviderImpl _provider, final String _name)
 			throws TsapiInvalidArgumentException {
 		tsDevice = _provider.createDevice(_name, false);
 
-		if ((tsDevice == null) || (!tsDevice.isTerminal())) {
+		if (tsDevice == null || !tsDevice.isTerminal()) {
 			String info = "";
 
-			if (tsDevice == null) {
+			if (tsDevice == null)
 				info = "; device is null";
-			} else if (!tsDevice.isTerminal()) {
+			else if (!tsDevice.isTerminal())
 				info = "; device is not a terminal";
-			}
 			throw new TsapiPlatformException(4, 0,
 					"could not create terminal: " + _name + info);
 		}
@@ -110,39 +107,35 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	// ERROR //
-	public final Agent addAgent(Address agentAddress, ACDAddress acdAddress,
-			int initialState, String agentID, String password)
+	public final Agent addAgent(final Address agentAddress,
+			final ACDAddress acdAddress, final int initialState,
+			final String agentID, final String password)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		try {
-			if (!(agentAddress instanceof ITsapiAddress)) {
+			if (!(agentAddress instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"agent address is not an instanceof ITsapiAddress");
-			}
 
-			if (tsDevice != ((TsapiAddress) agentAddress).getTSDevice()) {
+			if (tsDevice != ((TsapiAddress) agentAddress).getTSDevice())
 				throw new TsapiInvalidArgumentException(3, 0,
 						"agent address name must be the same as this terminal's name");
-			}
 
 			TSDevice tsACDDevice = null;
 			if (acdAddress != null) {
-				if (!(acdAddress instanceof ITsapiAddress)) {
+				if (!(acdAddress instanceof ITsapiAddress))
 					throw new TsapiInvalidArgumentException(3, 0,
 							"acd address is not an instanceof ITsapiAddress");
-				}
 
 				tsACDDevice = ((TsapiAddress) acdAddress).getTSDevice();
-				if (tsACDDevice == null) {
+				if (tsACDDevice == null)
 					throw new TsapiPlatformException(4, 0,
 							"could not locate address");
-				}
-			} else if (agentID == null) {
+			} else if (agentID == null)
 				throw new TsapiInvalidArgumentException(3, 0,
 						"both acd address and agentID were null");
-			}
 
-			TSAgent tsAgent = tsDevice.addTSAgent(tsACDDevice, initialState, 0,
-					0, agentID, password, privData);
+			final TSAgent tsAgent = tsDevice.addTSAgent(tsACDDevice,
+					initialState, 0, 0, agentID, password, privData);
 			Agent localAgent;
 			if (tsAgent != null) {
 				localAgent = (Agent) TsapiCreateObject.getTsapiObject(tsAgent,
@@ -159,33 +152,32 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	// ERROR //
-	public final Agent addAgent(LucentAddress agentAddress,
-			ACDAddress acdAddress, int initialState, int workMode,
-			int reasonCode, String agentID, String password)
-			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
-		if (agentAddress == null) {
+	public final Agent addAgent(final LucentAddress agentAddress,
+			final ACDAddress acdAddress, final int initialState,
+			final int workMode, final int reasonCode, final String agentID,
+			final String password) throws TsapiInvalidArgumentException,
+			TsapiInvalidStateException {
+		if (agentAddress == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"agent Address is null");
-		}
 
 		return addAgent(agentAddress, acdAddress, initialState, workMode, 0,
 				agentID, password);
 	}
 
-	public final Agent addAgent(LucentAddress agentAddress,
-			ACDAddress acdAddress, int initialState, int workMode,
-			String agentID, String password)
+	public final Agent addAgent(final LucentAddress agentAddress,
+			final ACDAddress acdAddress, final int initialState,
+			final int workMode, final String agentID, final String password)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		TsapiTrace
 				.traceEntry(
 						"addAgent[LucentAddress agentAddress, ACDAddress acdAddress, int initialState, int workMode, String agentID, String password]",
 						this);
-		if (agentAddress == null) {
+		if (agentAddress == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"agent Address is null");
-		}
 
-		Agent agent = addAgent(agentAddress, acdAddress, initialState,
+		final Agent agent = addAgent(agentAddress, acdAddress, initialState,
 				workMode, 0, agentID, password);
 
 		TsapiTrace
@@ -195,33 +187,32 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		return agent;
 	}
 
-	public void addCallListener(CallListener listener)
+	public void addCallListener(final CallListener listener)
 			throws ResourceUnavailableException {
 		TsapiTrace.traceEntry("addCallListener(CallListener listener)", this);
 		addTsapiCallEventMonitor(null, listener);
 		TsapiTrace.traceExit("addCallListener(CallListener listener)", this);
 	}
 
-	public void addCallObserver(CallObserver observer)
+	public void addCallObserver(final CallObserver observer)
 			throws TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("addCallObserver[CallObserver observer]", this);
 		addTsapiCallEventMonitor(observer, null);
 		TsapiTrace.traceExit("addCallObserver[CallObserver observer]", this);
 	}
 
-	public void addObserver(TerminalObserver observer)
+	public void addObserver(final TerminalObserver observer)
 			throws TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry("addObserver[TerminalObserver observer]", this);
 		try {
 			TSProviderImpl prov = null;
 			prov = tsDevice.getTSProviderImpl();
 
-			if (prov == null) {
+			if (prov == null)
 				throw new TsapiPlatformException(4, 0,
 						"could not locate provider");
-			}
 
-			Vector<TsapiTerminalMonitor> observers = prov
+			final Vector<TsapiTerminalMonitor> observers = prov
 					.getTerminalMonitorThreads();
 
 			TsapiTerminalMonitor obs = null;
@@ -231,24 +222,21 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			synchronized (observers) {
 				for (int i = 0; i < observers.size(); ++i) {
 					obs = (TsapiTerminalMonitor) observers.elementAt(i);
-					if (obs.getObserver() != observer) {
+					if (obs.getObserver() != observer)
 						continue;
-					}
 					found = true;
 					break;
 				}
 
-				if (!found) {
+				if (!found)
 					obs = new TsapiTerminalMonitor(prov, observer);
-				}
 			}
 
 			try {
 				tsDevice.addTerminalMonitor(obs);
-			} catch (TsapiResourceUnavailableException e) {
-				if ((!found) && (obs != null)) {
+			} catch (final TsapiResourceUnavailableException e) {
+				if (!found && obs != null)
 					prov.removeTerminalMonitorThread(obs);
-				}
 				throw e;
 			}
 
@@ -258,7 +246,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceExit("addObserver[TerminalObserver observer]", this);
 	}
 
-	public void addTerminalListener(TerminalListener listener)
+	public void addTerminalListener(final TerminalListener listener)
 			throws ResourceUnavailableException, MethodNotSupportedException {
 		TsapiTrace.traceEntry("addTerminalListener[TerminalListener listener]",
 				this);
@@ -266,12 +254,11 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			TSProviderImpl prov = null;
 			prov = tsDevice.getTSProviderImpl();
 
-			if (prov == null) {
+			if (prov == null)
 				throw new TsapiPlatformException(4, 0,
 						"could not locate provider");
-			}
 
-			Vector<TsapiTerminalMonitor> observers = prov
+			final Vector<TsapiTerminalMonitor> observers = prov
 					.getTerminalMonitorThreads();
 
 			TsapiTerminalMonitor obs = null;
@@ -281,24 +268,21 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			synchronized (observers) {
 				for (int i = 0; i < observers.size(); ++i) {
 					obs = (TsapiTerminalMonitor) observers.elementAt(i);
-					if (obs.getListener() != listener) {
+					if (obs.getListener() != listener)
 						continue;
-					}
 					found = true;
 					break;
 				}
 
-				if (!found) {
+				if (!found)
 					obs = new TsapiTerminalMonitor(prov, listener);
-				}
 			}
 
 			try {
 				tsDevice.addTerminalMonitor(obs);
-			} catch (TsapiResourceUnavailableException e) {
-				if ((!found) && (obs != null)) {
+			} catch (final TsapiResourceUnavailableException e) {
+				if (!found && obs != null)
 					prov.removeTerminalMonitorThread(obs);
-				}
 				throw e;
 			}
 
@@ -309,17 +293,18 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 				this);
 	}
 
-	private void addTsapiCallEventMonitor(CallObserver observer,
-			CallListener listener) throws TsapiResourceUnavailableException {
+	private void addTsapiCallEventMonitor(final CallObserver observer,
+			final CallListener listener)
+			throws TsapiResourceUnavailableException {
 		try {
-			TSProviderImpl prov = tsDevice.getTSProviderImpl();
+			final TSProviderImpl prov = tsDevice.getTSProviderImpl();
 
-			if (prov == null) {
+			if (prov == null)
 				throw new TsapiPlatformException(4, 0,
 						"could not locate provider");
-			}
 
-			Vector<TsapiCallMonitor> observers = prov.getCallMonitorThreads();
+			final Vector<TsapiCallMonitor> observers = prov
+					.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
@@ -328,30 +313,26 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 				for (int i = 0; i < observers.size(); ++i) {
 					obs = (TsapiCallMonitor) observers.elementAt(i);
 					if (observer != null) {
-						if (obs.getObserver() != observer) {
+						if (obs.getObserver() != observer)
 							continue;
-						}
 						obsToUse = obs;
 
 						break;
 					}
-					if ((listener == null) || (obs.getListener() != listener)) {
+					if (listener == null || obs.getListener() != listener)
 						continue;
-					}
 					obsToUse = obs;
 					break;
 				}
 
 				if (obsToUse == null) {
-					if (observer != null) {
+					if (observer != null)
 						obsToUse = new TsapiCallMonitor(prov, observer);
-					} else if (listener != null) {
+					else if (listener != null)
 						obsToUse = new TsapiCallMonitor(prov, listener);
-					}
-					if (obsToUse == null) {
+					if (obsToUse == null)
 						throw new TsapiPlatformException(4, 0,
 								"could not allocate Monitor wrapper");
-					}
 
 				}
 
@@ -364,10 +345,9 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TsapiTerminal) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof TsapiTerminal)
 			return tsDevice.equals(((TsapiTerminal) obj).tsDevice);
-		}
 
 		return false;
 	}
@@ -385,17 +365,17 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public final Address[] getAddresses() {
 		TsapiTrace.traceEntry("getAddresses[]", this);
 		try {
-			Vector<TSDevice> tsAddrDevices = tsDevice.getTSAddressDevices();
-			if ((tsAddrDevices == null) || (tsAddrDevices.size() == 0)) {
+			final Vector<TSDevice> tsAddrDevices = tsDevice
+					.getTSAddressDevices();
+			if (tsAddrDevices == null || tsAddrDevices.size() == 0) {
 				TsapiTrace.traceExit("getAddresses[]", this);
 				return null;
 			}
 
-			Address[] tsapiAddr = new Address[tsAddrDevices.size()];
-			for (int i = 0; i < tsAddrDevices.size(); ++i) {
-				tsapiAddr[i] = ((Address) TsapiCreateObject.getTsapiObject(
-						tsAddrDevices.elementAt(i), true));
-			}
+			final Address[] tsapiAddr = new Address[tsAddrDevices.size()];
+			for (int i = 0; i < tsAddrDevices.size(); ++i)
+				tsapiAddr[i] = (Address) TsapiCreateObject.getTsapiObject(
+						tsAddrDevices.elementAt(i), true);
 
 			TsapiTrace.traceExit("getAddresses[]", this);
 			return tsapiAddr;
@@ -407,7 +387,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	// ERROR //
 	public final Agent[] getAgents() {
 		try {
-			Vector<TSAgent> tsAgents = tsDevice.getTSAgentsForAgentTerm();
+			final Vector<TSAgent> tsAgents = tsDevice.getTSAgentsForAgentTerm();
 			if (tsAgents == null) {
 				privData = null;
 				return null;
@@ -417,11 +397,10 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 					privData = null;
 					return null;
 				}
-				Agent[] agents = new Agent[tsAgents.size()];
-				for (int i = 0; i < tsAgents.size(); ++i) {
-					agents[i] = ((Agent) TsapiCreateObject.getTsapiObject(
-							(TSAgent) tsAgents.elementAt(i), false));
-				}
+				final Agent[] agents = new Agent[tsAgents.size()];
+				for (int i = 0; i < tsAgents.size(); ++i)
+					agents[i] = (Agent) TsapiCreateObject.getTsapiObject(
+							(TSAgent) tsAgents.elementAt(i), false);
 				privData = null;
 				return agents;
 			}
@@ -433,26 +412,25 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public CallListener[] getCallListeners() {
 		TsapiTrace.traceEntry("getCallListeners[]", this);
 		try {
-			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
+			final Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
-			if ((tsapiTerminalCallObservers == null)
-					|| (tsapiTerminalCallObservers.size() == 0)) {
+			if (tsapiTerminalCallObservers == null
+					|| tsapiTerminalCallObservers.size() == 0) {
 				TsapiTrace.traceExit("getCallListeners[]", this);
 				return null;
 			}
 
 			CallListener[] listeners = null;
-			ArrayList<CallListener> callListenerList = new ArrayList<CallListener>();
+			final ArrayList<CallListener> callListenerList = new ArrayList<CallListener>();
 
 			synchronized (tsapiTerminalCallObservers) {
-				for (Object obs : tsapiTerminalCallObservers) {
-					CallListener listener = ((TsapiCallMonitor) obs)
+				for (final Object obs : tsapiTerminalCallObservers) {
+					final CallListener listener = ((TsapiCallMonitor) obs)
 							.getListener();
-					if (listener != null) {
+					if (listener != null)
 						callListenerList.add(((TsapiCallMonitor) obs)
 								.getListener());
-					}
 				}
 			}
 			listeners = new CallListener[callListenerList.size()];
@@ -466,24 +444,23 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public CallObserver[] getCallObservers() {
 		TsapiTrace.traceEntry("getCallObservers[]", this);
 		try {
-			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
+			final Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
-			if ((tsapiTerminalCallObservers == null)
-					|| (tsapiTerminalCallObservers.size() == 0)) {
+			if (tsapiTerminalCallObservers == null
+					|| tsapiTerminalCallObservers.size() == 0) {
 				TsapiTrace.traceExit("getCallObservers[]", this);
 				return null;
 			}
 
-			ArrayList<CallObserver> callObserverList = new ArrayList<CallObserver>();
+			final ArrayList<CallObserver> callObserverList = new ArrayList<CallObserver>();
 			CallObserver[] observers = null;
 
-			for (Object obs : tsapiTerminalCallObservers) {
-				CallObserver callObserver = ((TsapiCallMonitor) obs)
+			for (final Object obs : tsapiTerminalCallObservers) {
+				final CallObserver callObserver = ((TsapiCallMonitor) obs)
 						.getObserver();
-				if (callObserver != null) {
+				if (callObserver != null)
 					callObserverList.add(callObserver);
-				}
 			}
 			observers = new CallObserver[callObserverList.size()];
 			return (CallObserver[]) callObserverList.toArray(observers);
@@ -496,7 +473,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public final TerminalCapabilities getCapabilities() {
 		TsapiTrace.traceEntry("getCapabilities[]", this);
 		try {
-			TerminalCapabilities caps = tsDevice.getTsapiTerminalCapabilities();
+			final TerminalCapabilities caps = tsDevice
+					.getTsapiTerminalCapabilities();
 			TsapiTrace.traceExit("getCapabilities[]", this);
 			return caps;
 		} finally {
@@ -506,7 +484,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 
 	public final String getDirectoryName() {
 		TsapiTrace.traceEntry("getDirectoryName[]", this);
-		String name = tsDevice.getDirectoryName();
+		final String name = tsDevice.getDirectoryName();
 		TsapiTrace.traceExit("getDirectoryName[]", this);
 		return name;
 	}
@@ -515,7 +493,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getDoNotDisturb[]", this);
 		try {
-			boolean dnd = tsDevice.getDoNotDisturb();
+			final boolean dnd = tsDevice.getDoNotDisturb();
 			TsapiTrace.traceExit("getDoNotDisturb[]", this);
 			return dnd;
 		} finally {
@@ -536,29 +514,27 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public TerminalObserver[] getObservers() {
 		TsapiTrace.traceEntry("getObservers[]", this);
 		try {
-			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+			final Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
 					.getTerminalObservers();
 
-			if ((tsapiTerminalObservers == null)
-					|| (tsapiTerminalObservers.size() == 0)) {
+			if (tsapiTerminalObservers == null
+					|| tsapiTerminalObservers.size() == 0) {
 				TsapiTrace.traceExit("getObservers[]", this);
 				return null;
 			}
 
-			Vector<TerminalObserver> observers = new Vector<TerminalObserver>();
+			final Vector<TerminalObserver> observers = new Vector<TerminalObserver>();
 
 			for (int i = 0; i < tsapiTerminalObservers.size(); ++i) {
-				TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
+				final TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
 						.elementAt(i);
-				if (obs.getObserver() != null) {
+				if (obs.getObserver() != null)
 					observers.add(obs.getObserver());
-				}
 			}
 			TsapiTrace.traceExit("getObservers[]", this);
-			if (observers.size() > 0) {
+			if (observers.size() > 0)
 				return (TerminalObserver[]) observers
 						.toArray(new TerminalObserver[1]);
-			}
 			return null;
 		} finally {
 			privData = null;
@@ -567,8 +543,9 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 
 	public final Object getPrivateData() {
 		TsapiTrace.traceEntry("getPrivateData[]", this);
-		Object obj = TsapiPromoter.promoteTsapiPrivate((CSTAPrivate) tsDevice
-				.getAddrPrivateData());
+		final Object obj = TsapiPromoter
+				.promoteTsapiPrivate((CSTAPrivate) tsDevice
+						.getAddrPrivateData());
 		TsapiTrace.traceExit("getPrivateData[]", this);
 		return obj;
 	}
@@ -576,7 +553,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	// ERROR //
 	public final javax.telephony.Provider getProvider() {
 		try {
-			TSProvider tsProvider = tsDevice.getTSProviderImpl();
+			final TSProvider tsProvider = tsDevice.getTSProviderImpl();
 			Provider localProvider;
 			if (tsProvider != null) {
 				localProvider = (Provider) TsapiCreateObject.getTsapiObject(
@@ -593,12 +570,12 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	public final TerminalCapabilities getTerminalCapabilities(
-			Terminal terminal, Address address)
+			final Terminal terminal, final Address address)
 			throws InvalidArgumentException, PlatformException {
 		TsapiTrace.traceEntry(
 				"getTerminalCapabilities[Terminal terminal, Address address]",
 				this);
-		TerminalCapabilities caps = getCapabilities();
+		final TerminalCapabilities caps = getCapabilities();
 		TsapiTrace.traceExit(
 				"getTerminalCapabilities[Terminal terminal, Address address]",
 				this);
@@ -610,10 +587,11 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public final TerminalConnection[] getTerminalConnections() {
 		try {
 			Vector<TSConnection> tsconn = null;
-			Vector<TSConnection> vec = tsDevice.getTSTerminalConnections();
-			if (vec != null) {
+			final Vector<TSConnection> vec = tsDevice
+					.getTSTerminalConnections();
+			if (vec != null)
 				tsconn = (Vector) vec.clone();
-			} else {
+			else {
 				privData = null;
 				return null;
 			}
@@ -622,13 +600,12 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 					privData = null;
 					return null;
 				}
-				TerminalConnection[] tsapiTermConn = new TerminalConnection[tsconn
+				final TerminalConnection[] tsapiTermConn = new TerminalConnection[tsconn
 						.size()];
-				for (int i = 0; i < tsconn.size(); ++i) {
-					tsapiTermConn[i] = ((TerminalConnection) TsapiCreateObject
+				for (int i = 0; i < tsconn.size(); ++i)
+					tsapiTermConn[i] = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject((TSConnection) tsconn.elementAt(i),
-									false));
-				}
+									false);
 				privData = null;
 				return tsapiTermConn;
 			}
@@ -640,29 +617,27 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	public TerminalListener[] getTerminalListeners() {
 		TsapiTrace.traceEntry("getTerminalListeners[]", this);
 		try {
-			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+			final Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
 					.getTerminalObservers();
 
-			if ((tsapiTerminalObservers == null)
-					|| (tsapiTerminalObservers.size() == 0)) {
+			if (tsapiTerminalObservers == null
+					|| tsapiTerminalObservers.size() == 0) {
 				TsapiTrace.traceExit("getTerminalListeners[]", this);
 				return null;
 			}
 
-			Vector<TerminalListener> listeners = new Vector<TerminalListener>();
+			final Vector<TerminalListener> listeners = new Vector<TerminalListener>();
 
 			for (int i = 0; i < tsapiTerminalObservers.size(); ++i) {
-				TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
+				final TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
 						.elementAt(i);
-				if (obs.getListener() != null) {
+				if (obs.getListener() != null)
 					listeners.add(obs.getListener());
-				}
 			}
 			TsapiTrace.traceExit("getTerminalListeners[]", this);
-			if (listeners.size() > 0) {
+			if (listeners.size() > 0)
 				return (TerminalListener[]) listeners
 						.toArray(new TerminalListener[1]);
-			}
 
 			return null;
 		} finally {
@@ -682,28 +657,29 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	// ERROR //
-	public final TerminalConnection pickup(Address pickAddress,
-			Address terminalAddress) throws TsapiInvalidArgumentException,
-			TsapiInvalidStateException, TsapiMethodNotSupportedException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+	public final TerminalConnection pickup(final Address pickAddress,
+			final Address terminalAddress)
+			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
+			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
 		try {
-			if (!(pickAddress instanceof ITsapiAddress)) {
+			if (!(pickAddress instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"pick Address is not an instanceof ITsapiAddress");
-			}
 
-			if (!(terminalAddress instanceof ITsapiAddress)) {
+			if (!(terminalAddress instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"terminal Address is not an instanceof ITsapiAddress");
-			}
 
-			TSDevice tsDevice1 = ((TsapiAddress) pickAddress).getTSDevice();
-			TSDevice tsDevice2 = ((TsapiAddress) terminalAddress).getTSDevice();
-			if ((tsDevice1 != null) && (tsDevice2 != null)) {
-				TSConnection conn = tsDevice.pickup(tsDevice1, tsDevice2,
+			final TSDevice tsDevice1 = ((TsapiAddress) pickAddress)
+					.getTSDevice();
+			final TSDevice tsDevice2 = ((TsapiAddress) terminalAddress)
+					.getTSDevice();
+			if (tsDevice1 != null && tsDevice2 != null) {
+				final TSConnection conn = tsDevice.pickup(tsDevice1, tsDevice2,
 						privData);
 				if (conn != null) {
-					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
+					final TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
 					return localTerminalConnection;
 				}
@@ -711,9 +687,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate terminal connection to return");
 			}
 
-			if (tsDevice1 == null) {
+			if (tsDevice1 == null)
 				;
-			}
 			throw new TsapiPlatformException(4, 0,
 					"could not locate terminal address");
 		} finally {
@@ -723,28 +698,29 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 
 	// ERROR //
 	public final TerminalConnection pickup(
-			javax.telephony.Connection pickConnection, Address terminalAddress)
+			final javax.telephony.Connection pickConnection,
+			final Address terminalAddress)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		try {
-			if (!(pickConnection instanceof ITsapiConnection)) {
+			if (!(pickConnection instanceof ITsapiConnection))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"pick Connection is not an instanceof ITsapiConnection");
-			}
 
-			if (!(terminalAddress instanceof ITsapiAddress)) {
+			if (!(terminalAddress instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"terminal Address is not an instanceof ITsapiAddress");
-			}
 
-			TSConnection tsConn = ((TsapiConnection) pickConnection)
+			final TSConnection tsConn = ((TsapiConnection) pickConnection)
 					.getTSConnection();
-			TSDevice tsDevice = ((TsapiAddress) terminalAddress).getTSDevice();
-			if ((tsConn != null) && (tsDevice != null)) {
-				TSConnection conn = tsDevice.pickup(tsConn, tsDevice, privData);
+			final TSDevice tsDevice = ((TsapiAddress) terminalAddress)
+					.getTSDevice();
+			if (tsConn != null && tsDevice != null) {
+				final TSConnection conn = tsDevice.pickup(tsConn, tsDevice,
+						privData);
 				if (conn != null) {
-					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
+					final TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
 					return localTerminalConnection;
 				}
@@ -752,9 +728,8 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 						"could not locate terminal connection to return");
 			}
 
-			if (tsConn == null) {
+			if (tsConn == null)
 				;
-			}
 			throw new TsapiPlatformException(4, 0, "could not locate address");
 		} finally {
 			privData = null;
@@ -762,60 +737,62 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	// ERROR //
-	public final TerminalConnection pickup(TerminalConnection pickTermConn,
-			Address terminalAddress) throws TsapiInvalidArgumentException,
-			TsapiInvalidStateException, TsapiMethodNotSupportedException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		try {
-			if (!(pickTermConn instanceof ITsapiTerminalConnection)) {
-				throw new TsapiInvalidArgumentException(3, 0,
-						"pick TerminalConnection is not an instanceof ITsapiTerminalConnection");
-			}
-
-			if (!(terminalAddress instanceof ITsapiAddress)) {
-				throw new TsapiInvalidArgumentException(3, 0,
-						"terminal Address is not an instanceof ITsapiAddress");
-			}
-
-			TSConnection tsConn = ((TsapiTerminalConnection) pickTermConn)
-					.getTSConnection();
-			TSDevice tsDevice = ((TsapiAddress) terminalAddress).getTSDevice();
-			if ((tsConn != null) && (tsDevice != null)) {
-				TSConnection conn = tsDevice.pickup(tsConn, tsDevice, privData);
-				if (conn != null) {
-					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
-							.getTsapiObject(conn, false);
-					return localTerminalConnection;
-				}
-				throw new TsapiPlatformException(4, 0,
-						"could not locate terminal connection to return");
-			}
-
-			if (tsConn == null) {
-				;
-			}
-			throw new TsapiPlatformException(4, 0, "could not locate address");
-		} finally {
-			privData = null;
-		}
-	}
-
-	// ERROR //
-	public final TerminalConnection pickupFromGroup(Address terminalAddress)
+	public final TerminalConnection pickup(
+			final TerminalConnection pickTermConn, final Address terminalAddress)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
 		try {
-			if (!(terminalAddress instanceof ITsapiAddress)) {
+			if (!(pickTermConn instanceof ITsapiTerminalConnection))
+				throw new TsapiInvalidArgumentException(3, 0,
+						"pick TerminalConnection is not an instanceof ITsapiTerminalConnection");
+
+			if (!(terminalAddress instanceof ITsapiAddress))
 				throw new TsapiInvalidArgumentException(3, 0,
 						"terminal Address is not an instanceof ITsapiAddress");
+
+			final TSConnection tsConn = ((TsapiTerminalConnection) pickTermConn)
+					.getTSConnection();
+			final TSDevice tsDevice = ((TsapiAddress) terminalAddress)
+					.getTSDevice();
+			if (tsConn != null && tsDevice != null) {
+				final TSConnection conn = tsDevice.pickup(tsConn, tsDevice,
+						privData);
+				if (conn != null) {
+					final TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
+							.getTsapiObject(conn, false);
+					return localTerminalConnection;
+				}
+				throw new TsapiPlatformException(4, 0,
+						"could not locate terminal connection to return");
 			}
 
-			TSDevice tsDevice = ((TsapiAddress) terminalAddress).getTSDevice();
+			if (tsConn == null)
+				;
+			throw new TsapiPlatformException(4, 0, "could not locate address");
+		} finally {
+			privData = null;
+		}
+	}
+
+	// ERROR //
+	public final TerminalConnection pickupFromGroup(
+			final Address terminalAddress)
+			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
+			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		try {
+			if (!(terminalAddress instanceof ITsapiAddress))
+				throw new TsapiInvalidArgumentException(3, 0,
+						"terminal Address is not an instanceof ITsapiAddress");
+
+			final TSDevice tsDevice = ((TsapiAddress) terminalAddress)
+					.getTSDevice();
 			if (tsDevice != null) {
-				TSConnection conn = tsDevice.groupPickup(tsDevice, privData);
+				final TSConnection conn = tsDevice.groupPickup(tsDevice,
+						privData);
 				if (conn != null) {
-					TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
+					final TerminalConnection localTerminalConnection = (TerminalConnection) TsapiCreateObject
 							.getTsapiObject(conn, false);
 					return localTerminalConnection;
 				}
@@ -826,10 +803,11 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		}
 	}
 
-	public final TerminalConnection pickupFromGroup(String pickupGroup,
-			Address terminalAddress) throws TsapiInvalidArgumentException,
-			TsapiInvalidStateException, TsapiMethodNotSupportedException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+	public final TerminalConnection pickupFromGroup(final String pickupGroup,
+			final Address terminalAddress)
+			throws TsapiInvalidArgumentException, TsapiInvalidStateException,
+			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
 		TsapiTrace.traceEntry(
 				"pickupFromGroup[String pickupGroup, Address terminalAddress]",
 				this);
@@ -841,32 +819,30 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		}
 	}
 
-	public final void removeAgent(Agent agent)
+	public final void removeAgent(final Agent agent)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException {
 		TsapiTrace.traceEntry("removeAgent[Agent agent]", this);
 		removeAgent(agent, 0);
 		TsapiTrace.traceExit("removeAgent[Agent agent]", this);
 	}
 
-	public final void removeAgent(Agent agent, int reasonCode)
+	public final void removeAgent(final Agent agent, final int reasonCode)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException {
 		TsapiTrace.traceEntry("removeAgent[Agent agent, int reasonCode]", this);
 		try {
-			if (agent == null) {
+			if (agent == null)
 				tsDevice.removeTSAgent(null, reasonCode);
-			} else {
-				if (!(agent instanceof ITsapiAgent)) {
+			else {
+				if (!(agent instanceof ITsapiAgent))
 					throw new TsapiInvalidArgumentException(3, 0,
 							"The given Agent is not an instanceof ITsapiAgent");
-				}
 
-				TSAgent tsAgent = ((TsapiAgent) agent).getTSAgent();
-				if (tsAgent != null) {
+				final TSAgent tsAgent = ((TsapiAgent) agent).getTSAgent();
+				if (tsAgent != null)
 					tsDevice.removeTSAgent(tsAgent, reasonCode);
-				} else {
+				else
 					throw new TsapiPlatformException(4, 0,
 							"could not locate agent");
-				}
 			}
 		} finally {
 			privData = null;
@@ -874,15 +850,15 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceExit("removeAgent[Agent agent, int reasonCode]", this);
 	}
 
-	public void removeCallListener(CallListener listener) {
+	public void removeCallListener(final CallListener listener) {
 		TsapiTrace
 				.traceEntry("removeCallListener[CallListener listener]", this);
 		try {
-			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
+			final Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
-			if ((tsapiTerminalCallObservers == null)
-					|| (tsapiTerminalCallObservers.size() == 0)) {
+			if (tsapiTerminalCallObservers == null
+					|| tsapiTerminalCallObservers.size() == 0) {
 				TsapiTrace.traceExit(
 						"removeCallListener[CallListener listener]", this);
 
@@ -890,7 +866,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			}
 
 			for (int i = 0; i < tsapiTerminalCallObservers.size(); ++i) {
-				TsapiCallMonitor obs = (TsapiCallMonitor) tsapiTerminalCallObservers
+				final TsapiCallMonitor obs = (TsapiCallMonitor) tsapiTerminalCallObservers
 						.elementAt(i);
 				if (obs.getListener() == listener) {
 					tsDevice.removeTerminalCallMonitor(obs);
@@ -905,26 +881,25 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceExit("removeCallListener[CallListener listener]", this);
 	}
 
-	public void removeCallObserver(CallObserver observer) {
+	public void removeCallObserver(final CallObserver observer) {
 		TsapiTrace
 				.traceEntry("removeCallObserver[CallObserver observer]", this);
 		try {
-			Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
+			final Vector<TsapiCallMonitor> tsapiTerminalCallObservers = tsDevice
 					.getTerminalCallObservers();
 
-			if ((tsapiTerminalCallObservers == null)
-					|| (tsapiTerminalCallObservers.size() == 0)) {
+			if (tsapiTerminalCallObservers == null
+					|| tsapiTerminalCallObservers.size() == 0) {
 				TsapiTrace.traceExit(
 						"removeCallObserver[CallObserver observer]", this);
 				return;
 			}
 
 			for (int i = 0; i < tsapiTerminalCallObservers.size(); ++i) {
-				TsapiCallMonitor obs = (TsapiCallMonitor) tsapiTerminalCallObservers
+				final TsapiCallMonitor obs = (TsapiCallMonitor) tsapiTerminalCallObservers
 						.elementAt(i);
-				if (obs.getObserver() != observer) {
+				if (obs.getObserver() != observer)
 					continue;
-				}
 				tsDevice.removeTerminalCallMonitor(obs);
 				TsapiTrace.traceExit(
 						"removeCallObserver[CallObserver observer]", this);
@@ -937,26 +912,25 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceExit("removeCallObserver[CallObserver observer]", this);
 	}
 
-	public void removeObserver(TerminalObserver observer) {
+	public void removeObserver(final TerminalObserver observer) {
 		TsapiTrace
 				.traceEntry("removeObserver[TerminalObserver observer]", this);
 		try {
-			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+			final Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
 					.getTerminalObservers();
 
-			if ((tsapiTerminalObservers == null)
-					|| (tsapiTerminalObservers.size() == 0)) {
+			if (tsapiTerminalObservers == null
+					|| tsapiTerminalObservers.size() == 0) {
 				TsapiTrace.traceExit(
 						"removeObserver[TerminalObserver observer]", this);
 				return;
 			}
 
 			for (int i = 0; i < tsapiTerminalObservers.size(); ++i) {
-				TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
+				final TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
 						.elementAt(i);
-				if (obs.getObserver() != observer) {
+				if (obs.getObserver() != observer)
 					continue;
-				}
 				tsDevice.removeTerminalMonitor(obs);
 				TsapiTrace.traceExit(
 						"removeObserver[TerminalObserver observer]", this);
@@ -968,15 +942,15 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		}
 	}
 
-	public void removeTerminalListener(TerminalListener listener) {
+	public void removeTerminalListener(final TerminalListener listener) {
 		TsapiTrace.traceEntry(
 				"removeTerminalListener[TerminalListener listener]", this);
 		try {
-			Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
+			final Vector<TsapiTerminalMonitor> tsapiTerminalObservers = tsDevice
 					.getTerminalObservers();
 
-			if ((tsapiTerminalObservers == null)
-					|| (tsapiTerminalObservers.size() == 0)) {
+			if (tsapiTerminalObservers == null
+					|| tsapiTerminalObservers.size() == 0) {
 				TsapiTrace.traceExit(
 						"removeTerminalListener[TerminalListener listener]",
 						this);
@@ -984,11 +958,10 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 			}
 
 			for (int i = 0; i < tsapiTerminalObservers.size(); ++i) {
-				TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
+				final TsapiTerminalMonitor obs = (TsapiTerminalMonitor) tsapiTerminalObservers
 						.elementAt(i);
-				if (obs.getListener() != listener) {
+				if (obs.getListener() != listener)
 					continue;
-				}
 				tsDevice.removeTerminalMonitor(obs);
 				TsapiTrace.traceExit(
 						"removeTerminalListener[TerminalListener listener]",
@@ -1003,20 +976,20 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 				"removeTerminalListener[TerminalListener listener]", this);
 	}
 
-	public final Object sendPrivateData(Object data) {
+	public final Object sendPrivateData(final Object data) {
 		TsapiTrace.traceEntry("sendPrivateData[Object data]", this);
 		try {
-			Object obj = tsDevice.sendPrivateData(TsapiPromoter
+			final Object obj = tsDevice.sendPrivateData(TsapiPromoter
 					.demoteTsapiPrivate((TsapiPrivate) data));
 			TsapiTrace.traceExit("sendPrivateData[Object data]", this);
 			return obj;
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
 	}
 
-	public final void setAgents(Agent[] agents)
+	public final void setAgents(final Agent[] agents)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("setAgents[Agent[] agents]", this);
 		try {
@@ -1027,7 +1000,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		}
 	}
 
-	public final void setDoNotDisturb(boolean enable)
+	public final void setDoNotDisturb(final boolean enable)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("setDoNotDisturb[boolean enable]", this);
 		try {
@@ -1038,11 +1011,11 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceExit("setDoNotDisturb[boolean enable]", this);
 	}
 
-	public final void setPrivateData(Object data) {
+	public final void setPrivateData(final Object data) {
 		TsapiTrace.traceEntry("setPrivateData[Object data]", this);
 		try {
 			privData = TsapiPromoter.demoteTsapiPrivate((TsapiPrivate) data);
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			throw new TsapiPlatformException(3, 0,
 					"data is not a TsapiPrivate object");
 		}
@@ -1050,4 +1023,3 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 		TsapiTrace.traceExit("setPrivateData[Object data]", this);
 	}
 }
-

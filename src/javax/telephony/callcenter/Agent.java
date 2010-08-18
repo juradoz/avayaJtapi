@@ -27,4 +27,3 @@ public abstract interface Agent {
 	public abstract void setState(int paramInt)
 			throws InvalidArgumentException, InvalidStateException;
 }
-

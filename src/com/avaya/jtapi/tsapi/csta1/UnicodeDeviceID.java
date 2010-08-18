@@ -9,23 +9,23 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
 
 public final class UnicodeDeviceID extends ASNSequenceOf {
-	public static String decode(InputStream in) {
-		UnicodeDeviceID _this = new UnicodeDeviceID();
+	public static String decode(final InputStream in) {
+		final UnicodeDeviceID _this = new UnicodeDeviceID();
 		_this.doDecode(in);
-		if (_this.array.length > 0) {
+		if (_this.array.length > 0)
 			return new String(_this.array);
-		}
 		return null;
 	}
 
-	public static void encode(String device, OutputStream memberStream) {
-		char[] deviceArray = device.toCharArray();
-		UnicodeDeviceID _this = new UnicodeDeviceID(deviceArray);
+	public static void encode(final String device,
+			final OutputStream memberStream) {
+		final char[] deviceArray = device.toCharArray();
+		final UnicodeDeviceID _this = new UnicodeDeviceID(deviceArray);
 		_this.doEncode(deviceArray.length, memberStream);
 	}
 
-	public static Collection<String> print(String str, String name,
-			String indent) {
+	public static Collection<String> print(final String str, final String name,
+			final String indent) {
 		return ASNIA5String.print(str, name, indent);
 	}
 
@@ -34,29 +34,27 @@ public final class UnicodeDeviceID extends ASNSequenceOf {
 	public UnicodeDeviceID() {
 	}
 
-	public UnicodeDeviceID(char[] _array) {
+	public UnicodeDeviceID(final char[] _array) {
 		array = _array;
 	}
 
 	@Override
-	public Object decodeMember(InputStream memberStream) {
+	public Object decodeMember(final InputStream memberStream) {
 		return new Character((char) ASNInteger.decode(memberStream));
 	}
 
 	@Override
-	public void doDecode(InputStream in) {
+	public void doDecode(final InputStream in) {
 		super.doDecode(in);
 
 		array = new char[vec.size()];
 
-		for (int i = 0; i < array.length; ++i) {
+		for (int i = 0; i < array.length; ++i)
 			array[i] = ((Character) vec.elementAt(i)).charValue();
-		}
 	}
 
 	@Override
-	public void encodeMember(int idx, OutputStream memberStream) {
+	public void encodeMember(final int idx, final OutputStream memberStream) {
 		ASNInteger.encode(array[idx], memberStream);
 	}
 }
-

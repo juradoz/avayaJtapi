@@ -8,8 +8,9 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public class LucentV5SetAgentState extends LucentSetAgentState {
-	public static LucentSetAgentState decode(InputStream in, CSTATSProvider prov) {
-		LucentV5SetAgentState _this = new LucentV5SetAgentState();
+	public static LucentSetAgentState decode(final InputStream in,
+			final CSTATSProvider prov) {
+		final LucentV5SetAgentState _this = new LucentV5SetAgentState();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,19 +23,19 @@ public class LucentV5SetAgentState extends LucentSetAgentState {
 	public LucentV5SetAgentState() {
 	}
 
-	public LucentV5SetAgentState(short _workMode, int _reasonCode) {
+	public LucentV5SetAgentState(final short _workMode, final int _reasonCode) {
 		super(_workMode);
 		reasonCode = _reasonCode;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		reasonCode = ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNInteger.encode(reasonCode, memberStream);
 	}
@@ -46,12 +47,12 @@ public class LucentV5SetAgentState extends LucentSetAgentState {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5SetAgentState ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 		lines.addAll(ASNInteger.print(reasonCode, "reasonCode", indent));
@@ -60,4 +61,3 @@ public class LucentV5SetAgentState extends LucentSetAgentState {
 		return lines;
 	}
 }
-

@@ -7,4 +7,3 @@ public abstract interface LucentChargeError {
 	public static final short CE_CHARGE_TOO_LARGE = 3;
 	public static final short CE_NETWORK_BUSY = 4;
 }
-

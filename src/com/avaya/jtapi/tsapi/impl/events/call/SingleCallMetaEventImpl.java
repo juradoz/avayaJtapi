@@ -5,10 +5,10 @@ import javax.telephony.MetaEvent;
 import javax.telephony.SingleCallMetaEvent;
 
 public class SingleCallMetaEventImpl implements SingleCallMetaEvent {
-	private CallEventParams callEventParams;
-	private int id;
+	private final CallEventParams callEventParams;
+	private final int id;
 
-	public SingleCallMetaEventImpl(CallEventParams params, int id) {
+	public SingleCallMetaEventImpl(final CallEventParams params, final int id) {
 		callEventParams = params;
 		this.id = id;
 	}

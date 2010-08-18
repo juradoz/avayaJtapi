@@ -12,7 +12,7 @@ public class TsapiPeerImpl extends AbstractTsapiPeer implements ITsapiPeer {
 	}
 
 	@Override
-	public void addVendor(String name, String versions) {
+	public void addVendor(final String name, final String versions) {
 		TsapiTrace.traceEntry("addVendor[String name, String versions]", this);
 		super.addVendor(name, versions);
 		TsapiTrace.traceExit("addVendor[String name, String versions]", this);
@@ -26,23 +26,23 @@ public class TsapiPeerImpl extends AbstractTsapiPeer implements ITsapiPeer {
 
 	public String getName() {
 		TsapiTrace.traceEntry("getName[]", this);
-		String name = super.getClass().getName();
+		final String name = super.getClass().getName();
 		TsapiTrace.traceExit("getName[]", this);
 		return name;
 	}
 
-	public final Provider getProvider(String providerString) {
+	public final Provider getProvider(final String providerString) {
 		TsapiTrace.traceEntry("getProvider[String providerString]", this);
 
-		TsapiProvider tsapiProvider = new TsapiProvider(providerString, vendors);
+		final TsapiProvider tsapiProvider = new TsapiProvider(providerString,
+				vendors);
 		vendors = null;
 		Provider provider;
-		if (tsapiProvider.tsProvider.isLucent()) {
+		if (tsapiProvider.tsProvider.isLucent())
 			provider = (Provider) TsapiCreateObject.getTsapiObject(
 					tsapiProvider.tsProvider, false);
-		} else {
+		else
 			provider = tsapiProvider;
-		}
 		TsapiTrace.traceExit("getProvider[String providerString]", this);
 		return provider;
 	}
@@ -50,9 +50,8 @@ public class TsapiPeerImpl extends AbstractTsapiPeer implements ITsapiPeer {
 	@Override
 	public String[] getServices() {
 		TsapiTrace.traceEntry("getServices[]", this);
-		String[] services = super.getServices();
+		final String[] services = super.getServices();
 		TsapiTrace.traceExit("getServices[]", this);
 		return services;
 	}
 }
-

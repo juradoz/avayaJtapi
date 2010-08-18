@@ -13,51 +13,48 @@ final class MWIConfHandler implements ConfHandler {
 	int pdu;
 	int bits;
 
-	MWIConfHandler(TSDevice _device) {
+	MWIConfHandler(final TSDevice _device) {
 		device = _device;
 		pdu = 28;
 	}
 
-	MWIConfHandler(TSDevice _device, int _bits) {
+	MWIConfHandler(final TSDevice _device, final int _bits) {
 		device = _device;
 		pdu = 44;
 		bits = _bits;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null) || (event.getEventHeader().getEventClass() != 5)
-				|| (event.getEventHeader().getEventType() != pdu)) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null || event.getEventHeader().getEventClass() != 5
+				|| event.getEventHeader().getEventType() != pdu)
 			return;
-		}
 
 		if (pdu == 28) {
-			boolean enable = ((CSTAQueryMwiConfEvent) event.getEvent())
+			final boolean enable = ((CSTAQueryMwiConfEvent) event.getEvent())
 					.isMessages();
 			if (event.getPrivData() instanceof LucentQueryMwiConfEvent) {
-				LucentQueryMwiConfEvent luPrivData = (LucentQueryMwiConfEvent) event
+				final LucentQueryMwiConfEvent luPrivData = (LucentQueryMwiConfEvent) event
 						.getPrivData();
 				bits = luPrivData.getApplicationType();
-			} else if (enable) {
+			} else if (enable)
 				bits = -1;
-			} else {
+			else
 				bits = 0;
-			}
 		}
 
 		device.replyAddrPriv = event.getPrivData();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 
 		device.updateMessageWaitingBits(bits, eventList);
 
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
-		Vector<TsapiAddressMonitor> observers = device.getAddressObservers();
+		final Vector<TsapiAddressMonitor> observers = device
+				.getAddressObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiAddressMonitor callback = observers.elementAt(j);
+			final TsapiAddressMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, false);
 		}
 	}
 }
-

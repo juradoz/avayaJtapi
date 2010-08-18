@@ -9,15 +9,14 @@ final class SnapshotDeviceConfHandler implements ConfHandler {
 	TSDevice device;
 	CSTASnapshotDeviceResponseInfo[] info;
 
-	SnapshotDeviceConfHandler(TSDevice _device) {
+	SnapshotDeviceConfHandler(final TSDevice _device) {
 		device = _device;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTASnapshotDeviceConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTASnapshotDeviceConfEvent))
 			return;
-		}
 
 		info = ((CSTASnapshotDeviceConfEvent) event.getEvent())
 				.getSnapshotData();

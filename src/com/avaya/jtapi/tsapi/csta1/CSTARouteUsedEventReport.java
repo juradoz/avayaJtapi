@@ -16,15 +16,15 @@ public final class CSTARouteUsedEventReport extends CSTAEventReport {
 	boolean domain;
 	public static final int PDU = 86;
 
-	public static CSTARouteUsedEventReport decode(InputStream in) {
-		CSTARouteUsedEventReport _this = new CSTARouteUsedEventReport();
+	public static CSTARouteUsedEventReport decode(final InputStream in) {
+		final CSTARouteUsedEventReport _this = new CSTARouteUsedEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		routeUsed = ASNIA5String.decode(memberStream);
@@ -59,12 +59,12 @@ public final class CSTARouteUsedEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteUsedEventReport ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -80,24 +80,23 @@ public final class CSTARouteUsedEventReport extends CSTAEventReport {
 		return lines;
 	}
 
-	public void setCallingDevice(String callingDevice) {
+	public void setCallingDevice(final String callingDevice) {
 		this.callingDevice = callingDevice;
 	}
 
-	public void setDomain(boolean domain) {
+	public void setDomain(final boolean domain) {
 		this.domain = domain;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRouteUsed(String routeUsed) {
+	public void setRouteUsed(final String routeUsed) {
 		this.routeUsed = routeUsed;
 	}
 
-	public void setRoutingCrossRefID(int routingCrossRefID) {
+	public void setRoutingCrossRefID(final int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }
-

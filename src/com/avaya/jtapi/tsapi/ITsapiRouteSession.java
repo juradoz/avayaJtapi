@@ -7,4 +7,3 @@ public abstract interface ITsapiRouteSession extends RouteSession,
 		ITsapiCallInfo {
 	public abstract Call getCall();
 }
-

@@ -35,4 +35,3 @@ public abstract interface CallControlTerminalConnection extends
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 }
-

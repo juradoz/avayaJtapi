@@ -8,13 +8,14 @@ public final class TsapiMethodNotSupportedException extends
 	int errorCode = 0;
 	static final long serialVersionUID = 1L;
 
-	public TsapiMethodNotSupportedException(int _errorType, int _errorCode) {
+	public TsapiMethodNotSupportedException(final int _errorType,
+			final int _errorCode) {
 		errorType = _errorType;
 		errorCode = _errorCode;
 	}
 
-	public TsapiMethodNotSupportedException(int _errorType, int _errorCode,
-			String s) {
+	public TsapiMethodNotSupportedException(final int _errorType,
+			final int _errorCode, final String s) {
 		super(s);
 		errorType = _errorType;
 		errorCode = _errorCode;
@@ -28,4 +29,3 @@ public final class TsapiMethodNotSupportedException extends
 		return errorType;
 	}
 }
-

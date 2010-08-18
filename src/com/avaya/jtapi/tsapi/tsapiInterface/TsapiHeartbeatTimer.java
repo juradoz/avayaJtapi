@@ -10,9 +10,8 @@ class TsapiHeartbeatTimer {
 
 		@Override
 		public void run() {
-			if (listener == null) {
+			if (listener == null)
 				return;
-			}
 			listener.heartbeatTimeout();
 		}
 	}
@@ -22,7 +21,7 @@ class TsapiHeartbeatTimer {
 
 	private ITsapiHeartbeatTimeoutListener listener;
 
-	TsapiHeartbeatTimer(int delay) {
+	TsapiHeartbeatTimer(final int delay) {
 		this.delay = delay;
 		timer = null;
 	}
@@ -32,9 +31,8 @@ class TsapiHeartbeatTimer {
 	}
 
 	private void cancelCurrentTimer() {
-		if (timer == null) {
+		if (timer == null)
 			return;
-		}
 		timer.cancel();
 		timer = null;
 	}
@@ -48,7 +46,7 @@ class TsapiHeartbeatTimer {
 		scheduleNewTimer();
 	}
 
-	void reset(int delay) throws IllegalArgumentException,
+	void reset(final int delay) throws IllegalArgumentException,
 			IllegalStateException {
 		this.delay = delay;
 		cancelCurrentTimer();
@@ -61,8 +59,8 @@ class TsapiHeartbeatTimer {
 		timer.schedule(new TsapiHeartbeatTimerTask(), delay * 1000);
 	}
 
-	void setHeartbeatTimeoutListener(ITsapiHeartbeatTimeoutListener listener) {
+	void setHeartbeatTimeoutListener(
+			final ITsapiHeartbeatTimeoutListener listener) {
 		this.listener = listener;
 	}
 }
-

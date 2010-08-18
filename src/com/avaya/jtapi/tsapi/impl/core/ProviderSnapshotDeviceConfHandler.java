@@ -12,22 +12,21 @@ final class ProviderSnapshotDeviceConfHandler implements ConfHandler {
 	TSProviderImpl provider;
 	Vector<TSCall> cv = new Vector<TSCall>();
 
-	ProviderSnapshotDeviceConfHandler(TSProviderImpl _provider) {
+	ProviderSnapshotDeviceConfHandler(final TSProviderImpl _provider) {
 		provider = _provider;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTASnapshotDeviceConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTASnapshotDeviceConfEvent))
 			return;
-		}
 
-		CSTASnapshotDeviceResponseInfo[] info = ((CSTASnapshotDeviceConfEvent) event
+		final CSTASnapshotDeviceResponseInfo[] info = ((CSTASnapshotDeviceConfEvent) event
 				.getEvent()).getSnapshotData();
 
 		if (info != null) {
 			TSCall call = null;
-			for (int i = 0; i < info.length; ++i) {
+			for (int i = 0; i < info.length; ++i)
 				try {
 					call = provider.createCall(info[i].getCallIdentifier()
 							.getCallID());
@@ -41,9 +40,8 @@ final class ProviderSnapshotDeviceConfHandler implements ConfHandler {
 					}
 
 					cv.addElement(call);
-				} catch (TsapiPlatformException e) {
+				} catch (final TsapiPlatformException e) {
 				}
-			}
 		}
 	}
 }

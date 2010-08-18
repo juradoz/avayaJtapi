@@ -4,9 +4,8 @@ final class SavedCall {
 	TSCall call;
 	long saveTime;
 
-	SavedCall(TSCall _call) {
+	SavedCall(final TSCall _call) {
 		call = _call;
 		saveTime = System.currentTimeMillis();
 	}
 }
-

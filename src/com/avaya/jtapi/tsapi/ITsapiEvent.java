@@ -21,4 +21,3 @@ public abstract interface ITsapiEvent {
 
 	public abstract Object getPrivateData();
 }
-

@@ -11,4 +11,3 @@ public abstract interface PhoneHookswitch extends Component {
 	public abstract void setHookSwitch(int paramInt)
 			throws InvalidArgumentException;
 }
-

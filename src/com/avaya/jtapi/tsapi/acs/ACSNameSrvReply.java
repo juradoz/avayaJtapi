@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 
 public final class ACSNameSrvReply extends ACSConfirmation {
-	public static ACSNameSrvReply decode(InputStream in) {
-		ACSNameSrvReply _this = new ACSNameSrvReply();
+	public static ACSNameSrvReply decode(final InputStream in) {
+		final ACSNameSrvReply _this = new ACSNameSrvReply();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,19 +23,19 @@ public final class ACSNameSrvReply extends ACSConfirmation {
 	public ACSNameSrvReply() {
 	}
 
-	public ACSNameSrvReply(boolean _more, ACSNameAddr[] _list) {
+	public ACSNameSrvReply(final boolean _more, final ACSNameAddr[] _list) {
 		more = _more;
 		list = _list;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		more = ASNBoolean.decode(memberStream);
 		list = ACSNameAddrList.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNBoolean.encode(more, memberStream);
 		ACSNameAddrList.encode(list, memberStream);
 	}
@@ -55,11 +55,11 @@ public final class ACSNameSrvReply extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSNameSrvReply ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(more, "more", indent));
 		lines.addAll(ACSNameAddrList.print(list, "list", indent));
@@ -68,4 +68,3 @@ public final class ACSNameSrvReply extends ACSConfirmation {
 		return lines;
 	}
 }
-

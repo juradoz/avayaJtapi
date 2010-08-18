@@ -10,15 +10,15 @@ public class LucentMonitorConfEvent extends LucentPrivateData {
 	int usedFilter;
 	static final int PDU = 30;
 
-	static LucentMonitorConfEvent decode(InputStream in) {
-		LucentMonitorConfEvent _this = new LucentMonitorConfEvent();
+	static LucentMonitorConfEvent decode(final InputStream in) {
+		final LucentMonitorConfEvent _this = new LucentMonitorConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		usedFilter = ASNBitString.decode(memberStream);
 	}
 
@@ -29,12 +29,12 @@ public class LucentMonitorConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentPrivateFilter
 				.print(usedFilter, "usedFilter", indent));
@@ -43,4 +43,3 @@ public class LucentMonitorConfEvent extends LucentPrivateData {
 		return lines;
 	}
 }
-

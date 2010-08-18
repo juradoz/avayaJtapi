@@ -7,4 +7,3 @@ public abstract interface RingerVolumeEv extends PhoneTermEv {
 
 	public abstract int getVolume();
 }
-

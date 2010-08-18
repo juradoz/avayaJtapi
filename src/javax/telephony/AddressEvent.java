@@ -5,4 +5,3 @@ public abstract interface AddressEvent extends Event {
 
 	public abstract Address getAddress();
 }
-

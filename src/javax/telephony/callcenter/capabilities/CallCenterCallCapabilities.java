@@ -9,4 +9,3 @@ public abstract interface CallCenterCallCapabilities extends CallCapabilities {
 
 	public abstract boolean canHandleApplicationData();
 }
-

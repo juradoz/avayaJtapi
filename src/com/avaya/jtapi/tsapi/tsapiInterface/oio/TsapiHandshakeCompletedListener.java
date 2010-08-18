@@ -12,14 +12,13 @@ class TsapiHandshakeCompletedListener implements HandshakeCompletedListener {
 	}
 
 	SSLSession getSslSession() {
-		if (event != null) {
+		if (event != null)
 			return event.getSession();
-		}
 
 		return null;
 	}
 
-	public void handshakeCompleted(HandshakeCompletedEvent event) {
+	public void handshakeCompleted(final HandshakeCompletedEvent event) {
 		this.event = event;
 
 		synchronized (this) {
@@ -27,4 +26,3 @@ class TsapiHandshakeCompletedListener implements HandshakeCompletedListener {
 		}
 	}
 }
-

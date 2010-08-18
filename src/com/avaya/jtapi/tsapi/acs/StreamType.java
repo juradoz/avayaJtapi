@@ -12,8 +12,9 @@ public final class StreamType extends ASNEnumerated {
 	public static final short ST_NMSRV = 4;
 	public static final short ST_CSTA_TRUSTED_APP = 5;
 
-	static Collection<String> print(short value, String name, String indent) {
-		Collection<String> lines = new ArrayList<String>();
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 1:
@@ -35,8 +36,7 @@ public final class StreamType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		lines.addAll(print(value, str, name, indent));
+		lines.addAll(ASNEnumerated.print(value, str, name, indent));
 		return lines;
 	}
 }
-

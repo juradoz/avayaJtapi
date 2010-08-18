@@ -10,13 +10,14 @@ public abstract class TsapiTerminalEvent extends TsapiObserverEvent implements
 		PrivateTermEv {
 	private Terminal terminal = null;
 
-	public TsapiTerminalEvent(Terminal _terminal, int _cause, int _metaCode,
-			Object _privateData) {
+	public TsapiTerminalEvent(final Terminal _terminal, final int _cause,
+			final int _metaCode, final Object _privateData) {
 		this(_terminal, _cause, _metaCode, _privateData, 0);
 	}
 
-	public TsapiTerminalEvent(Terminal _terminal, int _cause, int _metaCode,
-			Object _privateData, int _eventPackage) {
+	public TsapiTerminalEvent(final Terminal _terminal, final int _cause,
+			final int _metaCode, final Object _privateData,
+			final int _eventPackage) {
 		super(_cause, _metaCode, _privateData, _eventPackage);
 		terminal = _terminal;
 	}
@@ -25,4 +26,3 @@ public abstract class TsapiTerminalEvent extends TsapiObserverEvent implements
 		return terminal;
 	}
 }
-

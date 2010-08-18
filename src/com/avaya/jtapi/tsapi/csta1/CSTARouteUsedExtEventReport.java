@@ -17,15 +17,15 @@ public final class CSTARouteUsedExtEventReport extends CSTAEventReport {
 	boolean domain;
 	public static final int PDU = 131;
 
-	public static CSTARouteUsedExtEventReport decode(InputStream in) {
-		CSTARouteUsedExtEventReport _this = new CSTARouteUsedExtEventReport();
+	public static CSTARouteUsedExtEventReport decode(final InputStream in) {
+		final CSTARouteUsedExtEventReport _this = new CSTARouteUsedExtEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		routeUsed = CSTAExtendedDeviceID.decode(memberStream);
@@ -34,7 +34,7 @@ public final class CSTARouteUsedExtEventReport extends CSTAEventReport {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 		ASNInteger.encode(routingCrossRefID, memberStream);
 		ASNSequence.encode(routeUsed, memberStream);
@@ -69,12 +69,12 @@ public final class CSTARouteUsedExtEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteUsedExtEventReport ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -91,23 +91,23 @@ public final class CSTARouteUsedExtEventReport extends CSTAEventReport {
 		return lines;
 	}
 
-	public void setCallingDevice(CSTAExtendedDeviceID callingDevice) {
+	public void setCallingDevice(final CSTAExtendedDeviceID callingDevice) {
 		this.callingDevice = callingDevice;
 	}
 
-	public void setDomain(boolean domain) {
+	public void setDomain(final boolean domain) {
 		this.domain = domain;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRouteUsed(CSTAExtendedDeviceID routeUsed) {
+	public void setRouteUsed(final CSTAExtendedDeviceID routeUsed) {
 		this.routeUsed = routeUsed;
 	}
 
-	public void setRoutingCrossRefID(int routingCrossRefID) {
+	public void setRoutingCrossRefID(final int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }

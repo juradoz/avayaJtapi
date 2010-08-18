@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class ACSKeyRequest extends ACSRequest {
-	public static ACSKeyRequest decode(InputStream in) {
-		ACSKeyRequest _this = new ACSKeyRequest();
+	public static ACSKeyRequest decode(final InputStream in) {
+		final ACSKeyRequest _this = new ACSKeyRequest();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class ACSKeyRequest extends ACSRequest {
 	public ACSKeyRequest() {
 	}
 
-	public ACSKeyRequest(String _loginID) {
+	public ACSKeyRequest(final String _loginID) {
 		loginID = _loginID;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		loginID = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(loginID, memberStream);
 	}
 
@@ -47,11 +47,11 @@ public final class ACSKeyRequest extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSKeyRequest ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(loginID, "loginID", indent));
 
@@ -59,4 +59,3 @@ public final class ACSKeyRequest extends ACSRequest {
 		return lines;
 	}
 }
-

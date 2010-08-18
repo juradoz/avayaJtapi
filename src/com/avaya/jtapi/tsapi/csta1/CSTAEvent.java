@@ -15,14 +15,14 @@ public final class CSTAEvent {
 		privData = null;
 	}
 
-	CSTAEvent(ACSEventHeader _eventHeader, TsapiPDU _event) {
+	CSTAEvent(final ACSEventHeader _eventHeader, final TsapiPDU _event) {
 		eventHeader = _eventHeader;
 		event = _event;
 		privData = null;
 	}
 
-	public CSTAEvent(ACSEventHeader _eventHeader, TsapiPDU _event,
-			CSTAPrivate _priv) {
+	public CSTAEvent(final ACSEventHeader _eventHeader, final TsapiPDU _event,
+			final CSTAPrivate _priv) {
 		eventHeader = _eventHeader;
 		event = _event;
 		privData = _priv;
@@ -38,13 +38,13 @@ public final class CSTAEvent {
 
 	private String getMyCustomString() {
 		String s;
-		if (event == null) {
+		if (event == null)
 			s = "-";
-		} else {
+		else {
 			s = event.getClass().getName();
-			int i = s.lastIndexOf('.');
+			final int i = s.lastIndexOf('.');
 
-			s = (i >= 0) ? s.substring(i + 1) : s;
+			s = i >= 0 ? s.substring(i + 1) : s;
 		}
 		return s;
 	}
@@ -57,11 +57,11 @@ public final class CSTAEvent {
 		return queuedTimeStamp;
 	}
 
-	public void setPrivData(Object privData) {
+	public void setPrivData(final Object privData) {
 		this.privData = privData;
 	}
 
-	public void setQueuedTimeStamp(long queuedTimeStamp) {
+	public void setQueuedTimeStamp(final long queuedTimeStamp) {
 		this.queuedTimeStamp = queuedTimeStamp;
 	}
 
@@ -71,4 +71,3 @@ public final class CSTAEvent {
 				+ Integer.toHexString(super.hashCode());
 	}
 }
-

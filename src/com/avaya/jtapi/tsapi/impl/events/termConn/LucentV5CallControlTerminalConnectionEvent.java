@@ -7,8 +7,9 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 
 public class LucentV5CallControlTerminalConnectionEvent extends
 		LucentCallControlTerminalConnectionEvent implements LucentV5CallInfo {
-	public LucentV5CallControlTerminalConnectionEvent(CallEventParams params,
-			MetaEvent event, int eventId) {
+	public LucentV5CallControlTerminalConnectionEvent(
+			final CallEventParams params, final MetaEvent event,
+			final int eventId) {
 		super(params, event, eventId);
 	}
 
@@ -28,4 +29,3 @@ public class LucentV5CallControlTerminalConnectionEvent extends
 		return callEventParams.hasCallOriginatorType();
 	}
 }
-

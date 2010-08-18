@@ -5,4 +5,3 @@ public abstract interface LucentV6Agent extends LucentAgent {
 			int paramInt3, boolean paramBoolean)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException;
 }
-

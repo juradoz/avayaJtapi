@@ -8,8 +8,8 @@ import javax.telephony.callcenter.CallCenterTrunk;
 public abstract class TsapiACDAddrEv extends TsapiCallCentAddrEv {
 	Agent agent = null;
 
-	public TsapiACDAddrEv(Address _device, Agent _agent, int _cause,
-			int _metaCode, Object _privateData) {
+	public TsapiACDAddrEv(final Address _device, final Agent _agent,
+			final int _cause, final int _metaCode, final Object _privateData) {
 		super(_device, _cause, _metaCode, _privateData);
 		agent = _agent;
 	}
@@ -38,4 +38,3 @@ public abstract class TsapiACDAddrEv extends TsapiCallCentAddrEv {
 		return null;
 	}
 }
-

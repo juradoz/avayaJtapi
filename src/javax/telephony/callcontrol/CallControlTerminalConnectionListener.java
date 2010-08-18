@@ -25,4 +25,3 @@ public abstract interface CallControlTerminalConnectionListener extends
 	public abstract void terminalConnectionUnknown(
 			CallControlTerminalConnectionEvent paramCallControlTerminalConnectionEvent);
 }
-

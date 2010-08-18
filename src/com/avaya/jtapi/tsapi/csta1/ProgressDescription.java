@@ -11,7 +11,8 @@ public final class ProgressDescription extends ASNEnumerated {
 	public static final short PD_CALL_ON_ISDN = 4;
 	public static final short PD_INBAND = 8;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 1:
@@ -36,7 +37,6 @@ public final class ProgressDescription extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

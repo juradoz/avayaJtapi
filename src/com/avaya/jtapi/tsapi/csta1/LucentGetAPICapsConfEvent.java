@@ -20,15 +20,15 @@ public class LucentGetAPICapsConfEvent extends LucentPrivateData {
 	boolean reserved2;
 	static final int PDU = 64;
 
-	static LucentGetAPICapsConfEvent decode(InputStream in) {
-		LucentGetAPICapsConfEvent _this = new LucentGetAPICapsConfEvent();
+	static LucentGetAPICapsConfEvent decode(final InputStream in) {
+		final LucentGetAPICapsConfEvent _this = new LucentGetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		switchVersion = ASNIA5String.decode(memberStream);
 		sendDTMFTone = ASNBoolean.decode(memberStream);
 		enteredDigitsEvent = ASNBoolean.decode(memberStream);
@@ -48,12 +48,12 @@ public class LucentGetAPICapsConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentGetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(switchVersion, "switchVersion",
@@ -78,4 +78,3 @@ public class LucentGetAPICapsConfEvent extends LucentPrivateData {
 		return lines;
 	}
 }
-

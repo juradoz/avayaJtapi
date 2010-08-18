@@ -9,35 +9,33 @@ import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentV7OriginalCallInfo extends LucentV5OriginalCallInfo {
-	public static LucentOriginalCallInfo decode(InputStream in) {
-		LucentV7OriginalCallInfo _this = new LucentV7OriginalCallInfo();
+	public static LucentOriginalCallInfo decode(final InputStream in) {
+		final LucentV7OriginalCallInfo _this = new LucentV7OriginalCallInfo();
 		_this.doDecode(in);
-		if ((_this.callingDevice_asn == null)
-				&& (_this.calledDevice_asn == null)
-				&& (_this.trunkGroup == null) && (_this.trunkMember == null)
-				&& (_this.lookaheadInfo == null)
-				&& (_this.userEnteredCode == null) && (_this.userInfo == null)
-				&& (_this.ucid == null) && (_this.callOriginatorInfo == null)
-				&& (_this.asn_deviceHistory == null)) {
+		if (_this.callingDevice_asn == null && _this.calledDevice_asn == null
+				&& _this.trunkGroup == null && _this.trunkMember == null
+				&& _this.lookaheadInfo == null && _this.userEnteredCode == null
+				&& _this.userInfo == null && _this.ucid == null
+				&& _this.callOriginatorInfo == null
+				&& _this.asn_deviceHistory == null)
 			return null;
-		}
 		return _this;
 	}
 
-	public static Collection<String> print(LucentV7OriginalCallInfo _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(
+			final LucentV7OriginalCallInfo _this, final String name,
+			final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(ReasonForCallInfo.print(_this.reason, "reason", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.callingDevice_asn,
@@ -70,13 +68,13 @@ public final class LucentV7OriginalCallInfo extends LucentV5OriginalCallInfo {
 	private LucentDeviceHistoryEntry[] asn_deviceHistory;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		asn_deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		CSTADeviceHistoryData.encode(asn_deviceHistory, memberStream);
 	}
@@ -89,8 +87,8 @@ public final class LucentV7OriginalCallInfo extends LucentV5OriginalCallInfo {
 		return asn_deviceHistory != null;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] asn_deviceHistory) {
+	public void setDeviceHistory(
+			final LucentDeviceHistoryEntry[] asn_deviceHistory) {
 		this.asn_deviceHistory = asn_deviceHistory;
 	}
 }
-

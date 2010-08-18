@@ -7,4 +7,3 @@ public abstract interface Component {
 
 	public abstract String getName();
 }
-

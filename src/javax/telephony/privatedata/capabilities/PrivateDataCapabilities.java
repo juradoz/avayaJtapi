@@ -7,4 +7,3 @@ public abstract interface PrivateDataCapabilities {
 
 	public abstract boolean canSetPrivateData();
 }
-

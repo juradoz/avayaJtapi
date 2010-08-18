@@ -72,18 +72,19 @@ public final class TSEvent {
 	TSDevice skillDevice;
 	private short snapshotCstaCause = -1;
 
-	TSEvent(int _eventType, Object _eventTarget) {
+	TSEvent(final int _eventType, final Object _eventTarget) {
 		eventType = _eventType;
 		eventTarget = _eventTarget;
 		privateData = null;
 	}
 
-	public TSEvent(int _eventType, Object _eventTarget, Object _privateData) {
+	public TSEvent(final int _eventType, final Object _eventTarget,
+			final Object _privateData) {
 		this(_eventType, _eventTarget, _privateData, null);
 	}
 
-	public TSEvent(int _eventType, Object _eventTarget, Object _privateData,
-			TSProviderImpl _provider) {
+	public TSEvent(final int _eventType, final Object _eventTarget,
+			final Object _privateData, final TSProviderImpl _provider) {
 		eventType = _eventType;
 		eventTarget = _eventTarget;
 
@@ -115,20 +116,20 @@ public final class TSEvent {
 		return transferredEventParams;
 	}
 
-	public void setPrivateData(Object _privateData) {
+	public void setPrivateData(final Object _privateData) {
 		privateData = _privateData;
 	}
 
-	public void setSkillDevice(TSDevice _skillDevice) {
+	public void setSkillDevice(final TSDevice _skillDevice) {
 		skillDevice = _skillDevice;
 	}
 
-	public void setSnapshotCstaCause(short snapshotCstaCause) {
+	public void setSnapshotCstaCause(final short snapshotCstaCause) {
 		this.snapshotCstaCause = snapshotCstaCause;
 	}
 
 	public void setTransferredEventParams(
-			TransferredEventParams transferredEventParams) {
+			final TransferredEventParams transferredEventParams) {
 		this.transferredEventParams = transferredEventParams;
 	}
 
@@ -137,4 +138,3 @@ public final class TSEvent {
 		return "eventTarget=" + eventTarget + ";eventType=" + eventType;
 	}
 }
-

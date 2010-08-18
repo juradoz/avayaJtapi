@@ -10,20 +10,20 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class CSTASetAgentStateConfEvent extends CSTAConfirmation {
 	public static final int PDU = 50;
 
-	public static CSTASetAgentStateConfEvent decode(InputStream in) {
-		CSTASetAgentStateConfEvent _this = new CSTASetAgentStateConfEvent();
+	public static CSTASetAgentStateConfEvent decode(final InputStream in) {
+		final CSTASetAgentStateConfEvent _this = new CSTASetAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -34,12 +34,12 @@ public final class CSTASetAgentStateConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetAgentStateConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -47,4 +47,3 @@ public final class CSTASetAgentStateConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 }
-

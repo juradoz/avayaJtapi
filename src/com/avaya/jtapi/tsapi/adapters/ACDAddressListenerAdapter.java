@@ -5,28 +5,27 @@ import javax.telephony.callcenter.ACDAddressListener;
 
 public abstract class ACDAddressListenerAdapter extends AddressListenerAdapter
 		implements ACDAddressListener {
-	public void acdAddressBusy(ACDAddressEvent event) {
+	public void acdAddressBusy(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressLoggedOff(ACDAddressEvent event) {
+	public void acdAddressLoggedOff(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressLoggedOn(ACDAddressEvent event) {
+	public void acdAddressLoggedOn(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressNotReady(ACDAddressEvent event) {
+	public void acdAddressNotReady(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressReady(ACDAddressEvent event) {
+	public void acdAddressReady(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressUnknown(ACDAddressEvent event) {
+	public void acdAddressUnknown(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressWorkNotReady(ACDAddressEvent event) {
+	public void acdAddressWorkNotReady(final ACDAddressEvent event) {
 	}
 
-	public void acdAddressWorkReady(ACDAddressEvent event) {
+	public void acdAddressWorkReady(final ACDAddressEvent event) {
 	}
 }
-

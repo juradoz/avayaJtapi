@@ -39,4 +39,3 @@ public abstract interface CallControlCallCapabilities extends CallCapabilities {
 
 	public abstract boolean canTransfer(String paramString);
 }
-

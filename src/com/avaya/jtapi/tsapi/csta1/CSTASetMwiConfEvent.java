@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class CSTASetMwiConfEvent extends CSTAConfirmation {
 	public static final int PDU = 44;
 
-	public static CSTASetMwiConfEvent decode(InputStream in) {
-		CSTASetMwiConfEvent _this = new CSTASetMwiConfEvent();
+	public static CSTASetMwiConfEvent decode(final InputStream in) {
+		final CSTASetMwiConfEvent _this = new CSTASetMwiConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,12 +28,12 @@ public final class CSTASetMwiConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetMwiConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -41,4 +41,3 @@ public final class CSTASetMwiConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 }
-

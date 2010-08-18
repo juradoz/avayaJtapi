@@ -8,10 +8,10 @@ public final class ACSEventHeader {
 	public static final int CSTAUNSOLICITED = 4;
 	public static final int CSTACONFIRMATION = 5;
 	public static final int CSTAEVENTREPORT = 6;
-	private int eventClass;
-	private int eventType;
+	private final int eventClass;
+	private final int eventType;
 
-	public ACSEventHeader(int _eventClass, int _eventType) {
+	public ACSEventHeader(final int _eventClass, final int _eventType) {
 		eventClass = _eventClass;
 		eventType = _eventType;
 	}
@@ -24,4 +24,3 @@ public final class ACSEventHeader {
 		return eventType;
 	}
 }
-

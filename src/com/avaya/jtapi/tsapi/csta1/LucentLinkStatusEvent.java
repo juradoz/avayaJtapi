@@ -11,20 +11,20 @@ public class LucentLinkStatusEvent extends LucentPrivateData {
 	private CSTALinkStatus linkStatus;
 	static final int PDU = 73;
 
-	public static LucentLinkStatusEvent decode(InputStream in) {
-		LucentLinkStatusEvent _this = new LucentLinkStatusEvent();
+	public static LucentLinkStatusEvent decode(final InputStream in) {
+		final LucentLinkStatusEvent _this = new LucentLinkStatusEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		linkStatus = CSTALinkStatus.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(linkStatus, memberStream);
 	}
 
@@ -39,20 +39,19 @@ public class LucentLinkStatusEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentLinkStatusEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.addAll(CSTALinkStatus.print(linkStatus, "linkStatus", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setLinkStatus(CSTALinkStatus linkStatus) {
+	public void setLinkStatus(final CSTALinkStatus linkStatus) {
 		this.linkStatus = linkStatus;
 	}
 }
-

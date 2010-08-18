@@ -22,15 +22,15 @@ public class LucentDeliveredEvent extends LucentPrivateData {
 	CSTAExtendedDeviceID distributingDevice_asn;
 	static final int PDU = 60;
 
-	public static LucentDeliveredEvent decode(InputStream in) {
-		LucentDeliveredEvent _this = new LucentDeliveredEvent();
+	public static LucentDeliveredEvent decode(final InputStream in) {
+		final LucentDeliveredEvent _this = new LucentDeliveredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deliveredType = ASNEnumerated.decode(memberStream);
 		trunkGroup = ASNIA5String.decode(memberStream);
 		trunkMember = ASNIA5String.decode(memberStream);
@@ -44,7 +44,7 @@ public class LucentDeliveredEvent extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(deliveredType, memberStream);
 		ASNIA5String.encode(trunkGroup, memberStream);
 		ASNIA5String.encode(trunkMember, memberStream);
@@ -104,12 +104,12 @@ public class LucentDeliveredEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentDeliveredEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentDeliveredType.print(deliveredType, "deliveredType",
 				indent));
@@ -131,45 +131,45 @@ public class LucentDeliveredEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDeliveredType(short deliveredType) {
+	public void setDeliveredType(final short deliveredType) {
 		this.deliveredType = deliveredType;
 	}
 
 	public void setDistributingDevice_asn(
-			CSTAExtendedDeviceID distributingDevice_asn) {
+			final CSTAExtendedDeviceID distributingDevice_asn) {
 		this.distributingDevice_asn = distributingDevice_asn;
 	}
 
-	public void setLookaheadInfo(LucentLookaheadInfo lookaheadInfo) {
+	public void setLookaheadInfo(final LucentLookaheadInfo lookaheadInfo) {
 		this.lookaheadInfo = lookaheadInfo;
 	}
 
-	public void setOriginalCallInfo(LucentOriginalCallInfo originalCallInfo) {
+	public void setOriginalCallInfo(
+			final LucentOriginalCallInfo originalCallInfo) {
 		this.originalCallInfo = originalCallInfo;
 	}
 
-	public void setReason(short reason) {
+	public void setReason(final short reason) {
 		this.reason = reason;
 	}
 
-	public void setSplit_asn(String split_asn) {
+	public void setSplit_asn(final String split_asn) {
 		this.split_asn = split_asn;
 	}
 
-	public void setTrunkGroup(String trunkGroup) {
+	public void setTrunkGroup(final String trunkGroup) {
 		this.trunkGroup = trunkGroup;
 	}
 
-	public void setTrunkMember(String trunkMember) {
+	public void setTrunkMember(final String trunkMember) {
 		this.trunkMember = trunkMember;
 	}
 
-	public void setUserEnteredCode(LucentUserEnteredCode userEnteredCode) {
+	public void setUserEnteredCode(final LucentUserEnteredCode userEnteredCode) {
 		this.userEnteredCode = userEnteredCode;
 	}
 
-	public void setUserInfo(LucentUserToUserInfo userInfo) {
+	public void setUserInfo(final LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }
-

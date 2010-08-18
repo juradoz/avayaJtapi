@@ -18,15 +18,15 @@ public final class LucentV7GetAPICapsConfEvent extends
 	private String serverType;
 	static final int PDU = 127;
 
-	static LucentGetAPICapsConfEvent decode(InputStream in) {
-		LucentV7GetAPICapsConfEvent _this = new LucentV7GetAPICapsConfEvent();
+	static LucentGetAPICapsConfEvent decode(final InputStream in) {
+		final LucentV7GetAPICapsConfEvent _this = new LucentV7GetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		maxDeviceHistoryCount = ASNInteger.decode(memberStream);
 		administeredSwitchSoftwareVersion = ASNIA5String.decode(memberStream);
@@ -36,7 +36,7 @@ public final class LucentV7GetAPICapsConfEvent extends
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNInteger.encode(maxDeviceHistoryCount, memberStream);
 		ASNIA5String.encode(administeredSwitchSoftwareVersion, memberStream);
@@ -80,12 +80,12 @@ public final class LucentV7GetAPICapsConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7GetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(switchVersion, "switchVersion",
@@ -143,23 +143,23 @@ public final class LucentV7GetAPICapsConfEvent extends
 	}
 
 	public void setAdministeredSwitchSoftwareVersion(
-			String administeredSwitchSoftwareVersion) {
+			final String administeredSwitchSoftwareVersion) {
 		this.administeredSwitchSoftwareVersion = administeredSwitchSoftwareVersion;
 	}
 
-	public void setMaxDeviceHistoryCount(int maxDeviceHistoryCount) {
+	public void setMaxDeviceHistoryCount(final int maxDeviceHistoryCount) {
 		this.maxDeviceHistoryCount = maxDeviceHistoryCount;
 	}
 
-	public void setOfferType(String offerType) {
+	public void setOfferType(final String offerType) {
 		this.offerType = offerType;
 	}
 
-	public void setServerType(String serverType) {
+	public void setServerType(final String serverType) {
 		this.serverType = serverType;
 	}
 
-	public void setSwitchSoftwareVersion(String switchSoftwareVersion) {
+	public void setSwitchSoftwareVersion(final String switchSoftwareVersion) {
 		this.switchSoftwareVersion = switchSoftwareVersion;
 	}
 }

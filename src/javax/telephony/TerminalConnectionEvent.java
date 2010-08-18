@@ -10,4 +10,3 @@ public abstract interface TerminalConnectionEvent extends CallEvent {
 
 	public abstract TerminalConnection getTerminalConnection();
 }
-

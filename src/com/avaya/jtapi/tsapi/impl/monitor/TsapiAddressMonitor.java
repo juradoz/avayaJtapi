@@ -63,8 +63,8 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 
 	Object syncObject = new Object();
 
-	public TsapiAddressMonitor(TSProviderImpl _provider,
-			AddressListener _addressListener) {
+	public TsapiAddressMonitor(final TSProviderImpl _provider,
+			final AddressListener _addressListener) {
 		provider = _provider;
 		addressListener = _addressListener;
 		listenerEventList = new Vector<Event>();
@@ -74,8 +74,8 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 		deliverEvents(null, false);
 	}
 
-	public TsapiAddressMonitor(TSProviderImpl _provider,
-			AddressObserver _observer) {
+	public TsapiAddressMonitor(final TSProviderImpl _provider,
+			final AddressObserver _observer) {
 		provider = _provider;
 		observer = _observer;
 		eventList = new Vector<AddrEv>();
@@ -83,78 +83,80 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 		provider.addAddressMonitorThread(this);
 
 		observerType.set(0);
-		if (observer instanceof CallControlAddressObserver) {
+		if (observer instanceof CallControlAddressObserver)
 			observerType.set(1);
-		}
-		if (observer instanceof ACDAddressObserver) {
+		if (observer instanceof ACDAddressObserver)
 			observerType.set(2);
-		}
 
 		observerType.set(5);
 
 		deliverEvents(null, false);
 	}
 
-	private void addCallCenterAddressEvents(ACDAddressEvent event,
-			String tsEventLog) {
-		if (!(addressListener instanceof ACDAddressListener)) {
+	private void addCallCenterAddressEvents(final ACDAddressEvent event,
+			final String tsEventLog) {
+		if (!(addressListener instanceof ACDAddressListener))
 			return;
-		}
-		log.debug(tsEventLog + " for listener " + addressListener);
+		TsapiAddressMonitor.log.debug(tsEventLog + " for listener "
+				+ addressListener);
 
 		listenerEventList.addElement(event);
 	}
 
-	private void addCallControlAddressEvents(CallControlAddressEvent event,
-			String tsEventLog) {
-		if (!(addressListener instanceof CallControlAddressListener)) {
+	private void addCallControlAddressEvents(
+			final CallControlAddressEvent event, final String tsEventLog) {
+		if (!(addressListener instanceof CallControlAddressListener))
 			return;
-		}
-		log.debug(tsEventLog + " for listener " + addressListener);
+		TsapiAddressMonitor.log.debug(tsEventLog + " for listener "
+				+ addressListener);
 
 		listenerEventList.addElement(event);
 	}
 
-	private void addCoreAddressEvents(AddressEvent event, String tsEventLog) {
-		if (!(addressListener instanceof AddressListener)) {
+	private void addCoreAddressEvents(final AddressEvent event,
+			final String tsEventLog) {
+		if (!(addressListener instanceof AddressListener))
 			return;
-		}
-		log.debug(tsEventLog + " for listener " + addressListener);
+		TsapiAddressMonitor.log.debug(tsEventLog + " for listener "
+				+ addressListener);
 
 		listenerEventList.addElement(event);
 	}
 
-	void addEvent(AddrEv event, String tsEventLog) {
-		if ((observerType.get(0))
-				&& (((ITsapiEvent) event).getEventPackage() == 0)) {
-			log.debug(tsEventLog + " for observer " + observer);
+	void addEvent(final AddrEv event, final String tsEventLog) {
+		if (observerType.get(0) && ((ITsapiEvent) event).getEventPackage() == 0) {
+			TsapiAddressMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(1))
-				&& (((ITsapiEvent) event).getEventPackage() == 1)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(1)
+				&& ((ITsapiEvent) event).getEventPackage() == 1) {
+			TsapiAddressMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(2))
-				&& (((ITsapiEvent) event).getEventPackage() == 2)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(2)
+				&& ((ITsapiEvent) event).getEventPackage() == 2) {
+			TsapiAddressMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(5))
-				&& (((ITsapiEvent) event).getEventPackage() == 5)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(5)
+				&& ((ITsapiEvent) event).getEventPackage() == 5) {
+			TsapiAddressMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else {
-			log.debug(tsEventLog + " ignored");
-		}
+		} else
+			TsapiAddressMonitor.log.debug(tsEventLog + " ignored");
 	}
 
-	private void addPrivateEvents(PrivateDataEvent event, String tsEventLog) {
-		if (!(addressListener instanceof PrivateDataAddressListener)) {
+	private void addPrivateEvents(final PrivateDataEvent event,
+			final String tsEventLog) {
+		if (!(addressListener instanceof PrivateDataAddressListener))
 			return;
-		}
-		log.debug(tsEventLog + " for listener " + addressListener);
+		TsapiAddressMonitor.log.debug(tsEventLog + " for listener "
+				+ addressListener);
 
 		listenerEventList.addElement(event);
 	}
@@ -163,33 +165,29 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 		reference += 1L;
 	}
 
-	private Address createAddress(TSDevice device) {
-		if (device == null) {
+	private Address createAddress(final TSDevice device) {
+		if (device == null)
 			return null;
-		}
 
 		return (Address) TsapiCreateObject.getTsapiObject(device, true);
 	}
 
-	private Agent createAgent(TSAgent agent) {
-		if (agent == null) {
+	private Agent createAgent(final TSAgent agent) {
+		if (agent == null)
 			return null;
-		}
 
 		return (Agent) TsapiCreateObject.getTsapiObject(agent, true);
 	}
 
-	private void createEventsForListener(Vector<TSEvent> _eventList,
-			boolean snapshot) {
-		if (_eventList == null) {
+	private void createEventsForListener(final Vector<TSEvent> _eventList,
+			final boolean snapshot) {
+		if (_eventList == null)
 			return;
-		}
 		int cause;
-		if (snapshot) {
+		if (snapshot)
 			cause = 110;
-		} else {
+		else
 			cause = 100;
-		}
 
 		TSEvent tsEvent = null;
 		Object tsTarget = null;
@@ -212,9 +210,8 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 				agent = createAgent(targetAgent);
 				source = agent;
 				target = targetAgent.getTSACDDevice();
-				if (target == null) {
+				if (target == null)
 					target = tsEvent.getSkillDevice();
-				}
 				address = createAddress(target);
 			}
 			privateData = tsEvent.getPrivateData();
@@ -225,10 +222,9 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 					previousPrivateData = privateData;
 				}
 
-			} else {
+			} else
 				previousPrivateData = null;
-			}
-			AddressEventParams addressEventParams = new AddressEventParams();
+			final AddressEventParams addressEventParams = new AddressEventParams();
 			addressEventParams.setCause(cause);
 			addressEventParams.setPrivateData(privateData);
 			String tsEventLog;
@@ -246,15 +242,14 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 				addressEventParams.setSource(source);
 				addressEventParams.setEventId(352);
 				addressEventParams.setMwBits(target.msgWaitingBits);
-				if (provider.isLucent()) {
+				if (provider.isLucent())
 					addCallControlAddressEvents(
 							new LucentCallControlAddressMsgWaitingEventImpl(
 									addressEventParams, address), tsEventLog);
-				} else {
+				else
 					addCallControlAddressEvents(
 							new CallControlAddressEventImpl(addressEventParams,
 									address), tsEventLog);
-				}
 				break;
 			case 39:
 				tsEventLog = "ADDRESSFORWARDEVENT for " + target;
@@ -330,18 +325,18 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 		}
 
 		if (listenerEventList.size() == 0) {
-			log.debug("no events to send to " + addressListener);
+			TsapiAddressMonitor.log.debug("no events to send to "
+					+ addressListener);
 			return;
 		}
 		JtapiEventThreadManager.execute(this);
 	}
 
-	private void createEventsForObserver(Vector<TSEvent> _eventList,
-			boolean snapshot) {
+	private void createEventsForObserver(final Vector<TSEvent> _eventList,
+			final boolean snapshot) {
 		String tsEventLog = null;
-		if (_eventList == null) {
+		if (_eventList == null)
 			return;
-		}
 		int cause;
 		int metaCode;
 		if (snapshot) {
@@ -352,26 +347,25 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 			cause = 100;
 		}
 
-		int nextMetaEventIndex = eventList.size();
+		final int nextMetaEventIndex = eventList.size();
 
 		TSEvent ev = null;
 		Object tsTarget = null;
 		TSDevice target = null;
 		TSAgent agent = null;
 		Object privateData = null;
-		log.debug("meta event BEGIN: cause (" + cause + ") metaCode ("
-				+ metaCode + ")" + " for " + observer);
+		TsapiAddressMonitor.log.debug("meta event BEGIN: cause (" + cause
+				+ ") metaCode (" + metaCode + ")" + " for " + observer);
 		for (int i = 0; i < _eventList.size(); ++i) {
 			ev = (TSEvent) _eventList.elementAt(i);
 			tsTarget = ev.getEventTarget();
-			if (tsTarget instanceof TSDevice) {
+			if (tsTarget instanceof TSDevice)
 				target = (TSDevice) tsTarget;
-			} else if (tsTarget instanceof TSAgent) {
+			else if (tsTarget instanceof TSAgent) {
 				agent = (TSAgent) tsTarget;
 				target = agent.getTSACDDevice();
-				if (target == null) {
+				if (target == null)
 					target = ev.getSkillDevice();
-				}
 			}
 			privateData = ev.getPrivateData();
 
@@ -387,15 +381,14 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 			case 38:
 				tsEventLog = "ADDRESSMESSAGEWAITINGEVENT for " + target;
 
-				if (provider.isLucent()) {
+				if (provider.isLucent())
 					addEvent(new LucentAddressMsgWaitingEventImpl(
 							createAddress(target), target.msgWaitingBits,
 							cause, metaCode, privateData), tsEventLog);
-				} else {
+				else
 					addEvent(new TsapiAddressMsgWaitingEvent(
 							createAddress(target), target.msgWaitingBits,
 							cause, metaCode, privateData), tsEventLog);
-				}
 
 				break;
 			case 39:
@@ -473,44 +466,44 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 		}
 
 		synchronized (eventList) {
-			log.debug("meta event END for " + observer + " eventList size="
-					+ eventList.size());
+			TsapiAddressMonitor.log.debug("meta event END for " + observer
+					+ " eventList size=" + eventList.size());
 
 			if (eventList.size() == 0) {
-				log.debug("no events to send to " + observer);
+				TsapiAddressMonitor.log.debug("no events to send to "
+						+ observer);
 				return;
 			}
 
-			if (nextMetaEventIndex < eventList.size()) {
+			if (nextMetaEventIndex < eventList.size())
 				((TsapiObserverEvent) eventList.elementAt(nextMetaEventIndex))
 						.setNewMetaEventFlag();
-			}
 		}
 		JtapiEventThreadManager.execute(this);
 	}
 
-	public void deleteReference(TSDevice device, int cause, Object privateData) {
-		log
+	public void deleteReference(final TSDevice device, final int cause,
+			final Object privateData) {
+		TsapiAddressMonitor.log
 				.debug("Getting TsapiAddressMonitor lock to deliver deleteReference events for observer "
 						+ observer);
-		if (observer != null) {
+		if (observer != null)
 			deleteReferenceInternalForObserver(device, cause, privateData);
-		} else {
+		else
 			deleteReferenceInternalForListener(device, cause, privateData);
-		}
 		JtapiEventThreadManager.execute(this);
 	}
 
 	private synchronized void deleteReferenceInternalForListener(
-			TSDevice device, int cause, Object privateData) {
+			final TSDevice device, final int cause, final Object privateData) {
 		String tsEventLog = null;
 		reference -= 1L;
 		tsEventLog = "OBSERVATIONENDEDEVENT for " + device;
 
-		AddressEventParams addressEventParams = new AddressEventParams();
+		final AddressEventParams addressEventParams = new AddressEventParams();
 		addressEventParams.setCause(cause);
 		addressEventParams.setEventId(100);
-		Address address = createAddress(device);
+		final Address address = createAddress(device);
 		addressEventParams.setSource(address);
 		addCoreAddressEvents(new AddressEventImpl(addressEventParams, address),
 				tsEventLog);
@@ -520,23 +513,22 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 					address, privateData), tsEventLog);
 		}
 
-		if (reference > 0L) {
+		if (reference > 0L)
 			return;
-		}
 		provider.removeAddressMonitorThread(this);
 	}
 
 	private synchronized void deleteReferenceInternalForObserver(
-			TSDevice device, int cause, Object privateData) {
+			final TSDevice device, final int cause, final Object privateData) {
 		String tsEventLog = null;
 		reference -= 1L;
 
-		log.debug("meta event BEGIN: cause (" + cause + ") metaCode (" + 136
-				+ ")" + " for " + observer);
+		TsapiAddressMonitor.log.debug("meta event BEGIN: cause (" + cause
+				+ ") metaCode (" + 136 + ")" + " for " + observer);
 		tsEventLog = "OBSERVATIONENDEDEVENT for " + device;
 
 		synchronized (eventList) {
-			int nextMetaEventIndex = eventList.size();
+			final int nextMetaEventIndex = eventList.size();
 
 			addEvent(new TsapiAddrObservationEndedEvent(createAddress(device),
 					cause, privateData), tsEventLog);
@@ -548,50 +540,49 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 				addEvent(new TsapiPrivateAddressEvent(createAddress(device),
 						cause, 136, privateData), tsEventLog);
 			}
-			log.debug("meta event END for " + observer + " eventList size="
-					+ eventList.size());
+			TsapiAddressMonitor.log.debug("meta event END for " + observer
+					+ " eventList size=" + eventList.size());
 		}
-		if (reference > 0L) {
+		if (reference > 0L)
 			return;
-		}
 		provider.removeAddressMonitorThread(this);
 	}
 
-	public void deliverEvents(Vector<TSEvent> _eventList, boolean snapshot) {
-		if ((_eventList == null) || (_eventList.size() == 0)) {
+	public void deliverEvents(final Vector<TSEvent> _eventList,
+			final boolean snapshot) {
+		if (_eventList == null || _eventList.size() == 0)
 			return;
-		}
-		if (observer != null) {
-			log
+		if (observer != null)
+			TsapiAddressMonitor.log
 					.debug("Getting TsapiAddressMonitor lock to deliver events for observer "
 							+ observer);
-		} else {
-			log
+		else
+			TsapiAddressMonitor.log
 					.debug("Getting TsapiAddressMonitor lock to deliver events for listener "
 							+ addressListener);
-		}
 		synchronized (_eventList) {
 			deliverEventsInternal(_eventList, snapshot);
 		}
 	}
 
-	private synchronized void deliverEventsInternal(Vector<TSEvent> _eventList,
-			boolean snapshot) {
-		if (observer != null) {
+	private synchronized void deliverEventsInternal(
+			final Vector<TSEvent> _eventList, final boolean snapshot) {
+		if (observer != null)
 			createEventsForObserver(_eventList, snapshot);
-		} else {
+		else
 			createEventsForListener(_eventList, snapshot);
-		}
 	}
 
 	private void dispatchEventsForlisteners() {
-		log.debug("Got syncObject for AddressListener - " + addressListener);
+		TsapiAddressMonitor.log.debug("Got syncObject for AddressListener - "
+				+ addressListener);
 		Event[] eventArray = null;
 		synchronized (this) {
-			log.debug("Got this for AddressListener - " + addressListener);
+			TsapiAddressMonitor.log.debug("Got this for AddressListener - "
+					+ addressListener);
 			synchronized (listenerEventList) {
 				if (listenerEventList.size() == 0) {
-					log
+					TsapiAddressMonitor.log
 							.debug("TsapiAddressMonitor: events delivered by previous thread; no events to deliver in this thread");
 					TsapiTrace.traceExit("run[]", this);
 					return;
@@ -602,124 +593,152 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 			}
 		}
 		try {
-			for (Event event : eventArray) {
+			for (final Event event : eventArray)
 				switch (event.getID()) {
 				case 100:
-					log.debug("calling addressListenerEnded in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling addressListenerEnded in "
+									+ addressListener);
 					addressListener.addressListenerEnded((AddressEvent) event);
-					log.debug("returned from addressListenerEnded in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from addressListenerEnded in "
+									+ addressListener);
 					break;
 				case 350:
-					log.debug("calling addressDoNotDisturb in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling addressDoNotDisturb in "
+									+ addressListener);
 					((CallControlAddressListener) addressListener)
 							.addressDoNotDisturb((CallControlAddressEvent) event);
-					log.debug("returned from addressDoNotDisturb in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from addressDoNotDisturb in "
+									+ addressListener);
 					break;
 				case 351:
-					log.debug("calling addressForwarded in " + addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling addressForwarded in "
+									+ addressListener);
 					((CallControlAddressListener) addressListener)
 							.addressForwarded((CallControlAddressEvent) event);
-					log.debug("returned from addressForwarded in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from addressForwarded in "
+									+ addressListener);
 					break;
 				case 352:
-					log.debug("calling addressMessageWaiting in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling addressMessageWaiting in "
+									+ addressListener);
 					((CallControlAddressListener) addressListener)
 							.addressMessageWaiting((CallControlAddressEvent) event);
-					log.debug("returned from addressMessageWaiting in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from addressMessageWaiting in "
+									+ addressListener);
 					break;
 				case 300:
-					log.debug("calling acdAddressBusy in " + addressListener);
+					TsapiAddressMonitor.log.debug("calling acdAddressBusy in "
+							+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressBusy((ACDAddressEvent) event);
-					log.debug("returned from acdAddressBusy in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressBusy in "
+									+ addressListener);
 					break;
 				case 301:
-					log.debug("calling acdAddressLoggedOff in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling acdAddressLoggedOff in "
+									+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressLoggedOff((ACDAddressEvent) event);
-					log.debug("returned from acdAddressLoggedOff in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressLoggedOff in "
+									+ addressListener);
 					break;
 				case 302:
-					log.debug("calling acdAddressLoggedOn in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling acdAddressLoggedOn in "
+									+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressLoggedOn((ACDAddressEvent) event);
-					log.debug("returned from acdAddressLoggedOn in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressLoggedOn in "
+									+ addressListener);
 					break;
 				case 303:
-					log.debug("calling acdAddressNotReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling acdAddressNotReady in "
+									+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressNotReady((ACDAddressEvent) event);
-					log.debug("returned from acdAddressNotReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressNotReady in "
+									+ addressListener);
 					break;
 				case 304:
-					log.debug("calling acdAddressReady in " + addressListener);
+					TsapiAddressMonitor.log.debug("calling acdAddressReady in "
+							+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressReady((ACDAddressEvent) event);
-					log.debug("returned from acdAddressReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressReady in "
+									+ addressListener);
 					break;
 				case 305:
-					log
+					TsapiAddressMonitor.log
 							.debug("calling acdAddressUnknown in "
 									+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressUnknown((ACDAddressEvent) event);
-					log.debug("returned from acdAddressUnknown in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressUnknown in "
+									+ addressListener);
 					break;
 				case 306:
-					log.debug("calling acdAddressWorkNotReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling acdAddressWorkNotReady in "
+									+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressWorkNotReady((ACDAddressEvent) event);
-					log.debug("returned from acdAddressWorkNotReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressWorkNotReady in "
+									+ addressListener);
 					break;
 				case 307:
-					log.debug("calling acdAddressWorkReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling acdAddressWorkReady in "
+									+ addressListener);
 					((ACDAddressListener) addressListener)
 							.acdAddressWorkReady((ACDAddressEvent) event);
-					log.debug("returned from acdAddressWorkReady in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from acdAddressWorkReady in "
+									+ addressListener);
 					break;
 				case 600:
-					log.debug("calling addressPrivateData in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("calling addressPrivateData in "
+									+ addressListener);
 					((PrivateDataAddressListener) addressListener)
 							.addressPrivateData((PrivateDataEvent) event);
-					log.debug("returned from addressPrivateData in "
-							+ addressListener);
+					TsapiAddressMonitor.log
+							.debug("returned from addressPrivateData in "
+									+ addressListener);
 				}
-			}
-		} catch (Exception e) {
-			log.error("EXCEPTION thrown by addressChangedEvent in "
-					+ addressListener + " - " + e.getMessage(), e);
+		} catch (final Exception e) {
+			TsapiAddressMonitor.log.error(
+					"EXCEPTION thrown by addressChangedEvent in "
+							+ addressListener + " - " + e.getMessage(), e);
 		}
 	}
 
 	private void dispatchEventsForObservers() {
-		log.debug("Got syncObject for Addressobserver - " + observer);
+		TsapiAddressMonitor.log.debug("Got syncObject for Addressobserver - "
+				+ observer);
 		AddrEv[] eventArray = null;
 		synchronized (this) {
-			log.debug("Got this for Addressobserver - " + observer);
+			TsapiAddressMonitor.log.debug("Got this for Addressobserver - "
+					+ observer);
 			synchronized (eventList) {
 				if (eventList.size() == 0) {
-					log
+					TsapiAddressMonitor.log
 							.debug("TsapiAddressMonitor: events delivered by previous thread; no events to deliver in this thread");
 					TsapiTrace.traceExit("run[]", this);
 					return;
@@ -729,27 +748,35 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 				eventList.clear();
 			}
 		}
-		log.debug("calling addressChangedEvent in " + observer);
+		TsapiAddressMonitor.log.debug("calling addressChangedEvent in "
+				+ observer);
 		try {
 			observer.addressChangedEvent(eventArray);
-		} catch (Exception e) {
-			log.error("EXCEPTION thrown by addressChangedEvent in " + observer
-					+ " - " + e.getMessage(), e);
+		} catch (final Exception e) {
+			TsapiAddressMonitor.log.error(
+					"EXCEPTION thrown by addressChangedEvent in " + observer
+							+ " - " + e.getMessage(), e);
 		}
 
-		log.debug("returned from addressChangedEvent in " + observer);
+		TsapiAddressMonitor.log.debug("returned from addressChangedEvent in "
+				+ observer);
 	}
 
-	public void dump(String indent) {
-		log.trace(indent + "***** TsapiAddressMonitor DUMP *****");
+	public void dump(final String indent) {
+		TsapiAddressMonitor.log.trace(indent
+				+ "***** TsapiAddressMonitor DUMP *****");
 		if (observer != null) {
-			log.trace(indent + "TsapiAddressMonitor: " + this);
-			log.trace(indent + "observer: " + observer);
+			TsapiAddressMonitor.log.trace(indent + "TsapiAddressMonitor: "
+					+ this);
+			TsapiAddressMonitor.log.trace(indent + "observer: " + observer);
 		} else {
-			log.trace(indent + "TsapiAddressListener: " + this);
-			log.trace(indent + "listener: " + addressListener);
+			TsapiAddressMonitor.log.trace(indent + "TsapiAddressListener: "
+					+ this);
+			TsapiAddressMonitor.log.trace(indent + "listener: "
+					+ addressListener);
 		}
-		log.trace(indent + "***** TsapiAddressMonitor DUMP END *****");
+		TsapiAddressMonitor.log.trace(indent
+				+ "***** TsapiAddressMonitor DUMP END *****");
 	}
 
 	public AddressListener getAddressListener() {
@@ -763,13 +790,11 @@ public final class TsapiAddressMonitor implements TsapiMonitor {
 	public void run() {
 		TsapiTrace.traceEntry("run[]", this);
 		synchronized (syncObject) {
-			if (observer != null) {
+			if (observer != null)
 				dispatchEventsForObservers();
-			} else {
+			else
 				dispatchEventsForlisteners();
-			}
 		}
 		TsapiTrace.traceExit("run[]", this);
 	}
 }
-

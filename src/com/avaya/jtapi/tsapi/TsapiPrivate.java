@@ -5,20 +5,20 @@ public final class TsapiPrivate {
 	public byte[] data;
 	public int tsType;
 
-	public TsapiPrivate(byte[] _data) {
+	public TsapiPrivate(final byte[] _data) {
 		this(_data, false);
 	}
 
-	public TsapiPrivate(byte[] _data, boolean waitForResponse) {
+	public TsapiPrivate(final byte[] _data, final boolean waitForResponse) {
 		data = _data;
-		if (waitForResponse) {
+		if (waitForResponse)
 			tsType = 89;
-		} else {
+		else
 			tsType = 95;
-		}
 	}
 
-	public TsapiPrivate(String _vendor, byte[] _data, int _tsType) {
+	public TsapiPrivate(final String _vendor, final byte[] _data,
+			final int _tsType) {
 		vendor = _vendor;
 		data = _data;
 		tsType = _tsType;
@@ -28,4 +28,3 @@ public final class TsapiPrivate {
 		return data;
 	}
 }
-

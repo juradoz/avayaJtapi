@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class CSTAGroupPickupCallConfEvent extends CSTAConfirmation {
 	public static final int PDU = 20;
 
-	public static CSTAGroupPickupCallConfEvent decode(InputStream in) {
-		CSTAGroupPickupCallConfEvent _this = new CSTAGroupPickupCallConfEvent();
+	public static CSTAGroupPickupCallConfEvent decode(final InputStream in) {
+		final CSTAGroupPickupCallConfEvent _this = new CSTAGroupPickupCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,11 +28,11 @@ public final class CSTAGroupPickupCallConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGroupPickupCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

@@ -8,19 +8,20 @@ public final class TsapiProviderUnavailableException extends
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiProviderUnavailableException(int _errorType, int _errorCode) {
+	public TsapiProviderUnavailableException(final int _errorType,
+			final int _errorCode) {
 		errorCode = _errorCode;
 		errorType = _errorType;
 	}
 
-	public TsapiProviderUnavailableException(int _errorType, int _errorCode,
-			String s) {
+	public TsapiProviderUnavailableException(final int _errorType,
+			final int _errorCode, final String s) {
 		super(s);
 		errorCode = _errorCode;
 		errorType = _errorType;
 	}
 
-	public TsapiProviderUnavailableException(int cause, String s) {
+	public TsapiProviderUnavailableException(final int cause, final String s) {
 		super(cause, s);
 	}
 
@@ -32,4 +33,3 @@ public final class TsapiProviderUnavailableException extends
 		return errorType;
 	}
 }
-

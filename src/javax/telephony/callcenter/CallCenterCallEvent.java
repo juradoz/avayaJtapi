@@ -18,4 +18,3 @@ public abstract interface CallCenterCallEvent extends CallCenterEvent,
 
 	public abstract Address getLastRedirectedAddress();
 }
-

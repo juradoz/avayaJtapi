@@ -12,7 +12,8 @@ public final class UserEnteredCodeType extends ASNEnumerated {
 	public static final short UE_DATA_BASE_PROVIDED = 17;
 	public static final short UE_TONE_DETECTOR = 32;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -37,7 +38,6 @@ public final class UserEnteredCodeType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

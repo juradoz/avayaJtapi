@@ -11,20 +11,20 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 public class LucentV6DeliveredEvent extends LucentV5DeliveredEvent {
 	static final int PDU = 117;
 
-	public static LucentDeliveredEvent decode(InputStream in) {
-		LucentV6DeliveredEvent _this = new LucentV6DeliveredEvent();
+	public static LucentDeliveredEvent decode(final InputStream in) {
+		final LucentV6DeliveredEvent _this = new LucentV6DeliveredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
@@ -35,12 +35,12 @@ public class LucentV6DeliveredEvent extends LucentV5DeliveredEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6DeliveredEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentDeliveredType.print(deliveredType, "deliveredType",
 				indent));
@@ -66,4 +66,3 @@ public class LucentV6DeliveredEvent extends LucentV5DeliveredEvent {
 		return lines;
 	}
 }
-

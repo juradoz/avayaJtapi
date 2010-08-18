@@ -14,56 +14,56 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		CallControlTerminalCapabilities, AgentTerminalCapabilities {
 	private TSCapabilities tsCaps = null;
 
-	public TsapiTerminalCapabilities(TSCapabilities _tsCaps) {
+	public TsapiTerminalCapabilities(final TSCapabilities _tsCaps) {
 		tsCaps = _tsCaps;
 		TsapiTrace.traceConstruction(this, TsapiTerminalCapabilities.class);
 	}
 
 	public boolean canGetDoNotDisturb() {
 		TsapiTrace.traceEntry("canGetDoNotDisturb[]", this);
-		boolean can = (tsCaps.getDoNotDisturbEvent() == 1)
-				|| (tsCaps.getQueryDnd() == 1);
+		final boolean can = tsCaps.getDoNotDisturbEvent() == 1
+				|| tsCaps.getQueryDnd() == 1;
 		TsapiTrace.traceExit("canGetDoNotDisturb[]", this);
 		return can;
 	}
 
 	public boolean canHandleAgents() {
 		TsapiTrace.traceEntry("canHandleAgents[]", this);
-		boolean can = (tsCaps.getSetAgentState() == 1)
-				&& (tsCaps.getQueryAgentState() == 1);
+		final boolean can = tsCaps.getSetAgentState() == 1
+				&& tsCaps.getQueryAgentState() == 1;
 		TsapiTrace.traceExit("canHandleAgents[]", this);
 		return can;
 	}
 
 	public boolean canPickup() {
 		TsapiTrace.traceEntry("canPickup[]", this);
-		boolean can = tsCaps.getPickupCall() == 1;
+		final boolean can = tsCaps.getPickupCall() == 1;
 		TsapiTrace.traceExit("canPickup[]", this);
 		return can;
 	}
 
-	public boolean canPickup(Address address1, Address address2) {
+	public boolean canPickup(final Address address1, final Address address2) {
 		TsapiTrace.traceEntry("canPickup[Address address1, Address address2]",
 				this);
-		boolean can = tsCaps.getPickupCall() == 1;
+		final boolean can = tsCaps.getPickupCall() == 1;
 		TsapiTrace.traceExit("canPickup[Address address1, Address address2]",
 				this);
 		return can;
 	}
 
-	public boolean canPickup(Connection connection, Address address) {
+	public boolean canPickup(final Connection connection, final Address address) {
 		TsapiTrace.traceEntry(
 				"canPickup[Connection connection, Address address]", this);
-		boolean can = tsCaps.getPickupCall() == 1;
+		final boolean can = tsCaps.getPickupCall() == 1;
 		TsapiTrace.traceExit(
 				"canPickup[Connection connection, Address address]", this);
 		return can;
 	}
 
-	public boolean canPickup(TerminalConnection tc, Address address) {
+	public boolean canPickup(final TerminalConnection tc, final Address address) {
 		TsapiTrace.traceEntry(
 				"canPickup[TerminalConnection tc, Address address]", this);
-		boolean can = tsCaps.getPickupCall() == 1;
+		final boolean can = tsCaps.getPickupCall() == 1;
 		TsapiTrace.traceExit(
 				"canPickup[TerminalConnection tc, Address address]", this);
 		return can;
@@ -71,19 +71,19 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 
 	public boolean canPickupFromGroup() {
 		TsapiTrace.traceEntry("canPickupFromGroup[]", this);
-		boolean can = canPickupFromGroup((Address) null);
+		final boolean can = canPickupFromGroup((Address) null);
 		TsapiTrace.traceExit("canPickupFromGroup[]", this);
 		return can;
 	}
 
-	public boolean canPickupFromGroup(Address address) {
+	public boolean canPickupFromGroup(final Address address) {
 		TsapiTrace.traceEntry("canPickupFromGroup[Address address]", this);
-		boolean can = tsCaps.getGroupPickupCall() == 1;
+		final boolean can = tsCaps.getGroupPickupCall() == 1;
 		TsapiTrace.traceExit("canPickupFromGroup[Address address]", this);
 		return can;
 	}
 
-	public boolean canPickupFromGroup(String group, Address address) {
+	public boolean canPickupFromGroup(final String group, final Address address) {
 		TsapiTrace.traceEntry(
 				"canPickupFromGroup[String group, Address address]", this);
 		TsapiTrace.traceExit(
@@ -93,7 +93,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 
 	public boolean canSetDoNotDisturb() {
 		TsapiTrace.traceEntry("canSetDoNotDisturb[]", this);
-		boolean can = tsCaps.getSetDnd() == 1;
+		final boolean can = tsCaps.getSetDnd() == 1;
 		TsapiTrace.traceExit("canSetDoNotDisturb[]", this);
 		return can;
 	}
@@ -106,9 +106,8 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 
 	public boolean isObservable() {
 		TsapiTrace.traceEntry("isObservable[]", this);
-		boolean can = tsCaps.getMonitorDevice() == 1;
+		final boolean can = tsCaps.getMonitorDevice() == 1;
 		TsapiTrace.traceExit("isObservable[]", this);
 		return can;
 	}
 }
-

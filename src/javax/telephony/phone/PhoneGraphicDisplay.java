@@ -8,4 +8,3 @@ public abstract interface PhoneGraphicDisplay extends Component {
 
 	public abstract Dimension size();
 }
-

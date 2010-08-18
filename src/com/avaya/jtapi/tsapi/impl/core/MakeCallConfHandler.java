@@ -17,54 +17,49 @@ final class MakeCallConfHandler implements ConfHandler {
 	CSTAConnectionID newCall;
 	int pdu;
 
-	MakeCallConfHandler(TSCall _call, TSDevice _device, String _dialedDigits,
-			int _pdu) {
+	MakeCallConfHandler(final TSCall _call, final TSDevice _device,
+			final String _dialedDigits, final int _pdu) {
 		call = _call;
 		device = _device;
 		dialedDigits = _dialedDigits;
 		pdu = _pdu;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null) || (event.getEventHeader().getEventClass() != 5)
-				|| (event.getEventHeader().getEventType() != pdu)) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null || event.getEventHeader().getEventClass() != 5
+				|| event.getEventHeader().getEventType() != pdu)
 			return;
-		}
 
 		call.replyPriv = event.getPrivData();
 
 		switch (pdu) {
 		case 24:
 			newCall = ((CSTAMakeCallConfEvent) event.getEvent()).getNewCall();
-			if (call.replyPriv instanceof LucentMakeCallConfEvent) {
+			if (call.replyPriv instanceof LucentMakeCallConfEvent)
 				call.setUCID(((LucentMakeCallConfEvent) call.replyPriv)
 						.getUcid());
-			}
 			break;
 		case 26:
 			newCall = ((CSTAMakePredictiveCallConfEvent) event.getEvent())
 					.getNewCall();
-			if (call.replyPriv instanceof LucentMakePredictiveCallConfEvent) {
+			if (call.replyPriv instanceof LucentMakePredictiveCallConfEvent)
 				call
 						.setUCID(((LucentMakePredictiveCallConfEvent) call.replyPriv)
 								.getUcid());
-			}
 			break;
 		case 14:
 			newCall = ((CSTAConsultationCallConfEvent) event.getEvent())
 					.getNewCall();
-			if (call.replyPriv instanceof LucentConsultationCallConfEvent) {
+			if (call.replyPriv instanceof LucentConsultationCallConfEvent)
 				call.setUCID(((LucentConsultationCallConfEvent) call.replyPriv)
 						.getUcid());
-			}
 
 		}
 
 		call.setCallID(newCall.getCallID());
 		call.setCallingDevices(device);
-		TSDevice dialedDevice = call.getTSProviderImpl().createDevice(
+		final TSDevice dialedDevice = call.getTSProviderImpl().createDevice(
 				dialedDigits);
 		call.setCalledDevice(dialedDevice);
 	}
 }
-

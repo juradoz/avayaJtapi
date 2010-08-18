@@ -11,20 +11,20 @@ public class LucentQueryDeviceInfoConfEvent extends LucentPrivateData {
 	short extensionClass;
 	static final int PDU = 20;
 
-	public static LucentQueryDeviceInfoConfEvent decode(InputStream in) {
-		LucentQueryDeviceInfoConfEvent _this = new LucentQueryDeviceInfoConfEvent();
+	public static LucentQueryDeviceInfoConfEvent decode(final InputStream in) {
+		final LucentQueryDeviceInfoConfEvent _this = new LucentQueryDeviceInfoConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		extensionClass = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(extensionClass, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public class LucentQueryDeviceInfoConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryDeviceInfoConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentExtensionClass.print(extensionClass,
 				"extensionClass", indent));
@@ -53,7 +53,7 @@ public class LucentQueryDeviceInfoConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setExtensionClass(short extensionClass) {
+	public void setExtensionClass(final short extensionClass) {
 		this.extensionClass = extensionClass;
 	}
 }

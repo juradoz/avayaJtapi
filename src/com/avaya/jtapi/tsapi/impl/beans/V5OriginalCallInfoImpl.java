@@ -31,19 +31,19 @@ public class V5OriginalCallInfoImpl extends OriginalCallInfoImpl implements
 		return hasCallOriginatorType;
 	}
 
-	public void setCallOriginatorType(int callOriginatorType) {
+	public void setCallOriginatorType(final int callOriginatorType) {
 		this.callOriginatorType = callOriginatorType;
 	}
 
-	public void setFlexibleBilling(boolean _flexibleBilling) {
+	public void setFlexibleBilling(final boolean _flexibleBilling) {
 		flexibleBilling = _flexibleBilling;
 	}
 
-	public void setHasCallOriginatorType(boolean hasCallOriginatorType) {
+	public void setHasCallOriginatorType(final boolean hasCallOriginatorType) {
 		this.hasCallOriginatorType = hasCallOriginatorType;
 	}
 
-	public void setUCID(String ucid) {
+	public void setUCID(final String ucid) {
 		this.ucid = ucid;
 	}
 }

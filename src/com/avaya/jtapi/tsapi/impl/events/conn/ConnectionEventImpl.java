@@ -9,24 +9,22 @@ import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 
 public class ConnectionEventImpl extends CallEventImpl implements
 		ConnectionEvent {
-	public ConnectionEventImpl(CallEventParams params, MetaEvent event,
-			int eventId) {
+	public ConnectionEventImpl(final CallEventParams params,
+			final MetaEvent event, final int eventId) {
 		super(params, event, eventId);
 	}
 
 	public Connection getConnection() {
 		Connection connection = null;
-		if (callEventParams instanceof ConnEventParams) {
+		if (callEventParams instanceof ConnEventParams)
 			connection = ((ConnEventParams) callEventParams).getConnection();
-		}
 		return connection;
 	}
 
 	@Override
 	public Object getSource() {
-		if (callEventParams instanceof ConnEventParams) {
+		if (callEventParams instanceof ConnEventParams)
 			return ((ConnEventParams) callEventParams).getConnection();
-		}
 		return super.getSource();
 	}
 }

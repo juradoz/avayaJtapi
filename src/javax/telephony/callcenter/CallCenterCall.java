@@ -40,4 +40,3 @@ public abstract interface CallCenterCall extends Call {
 			throws ResourceUnavailableException, InvalidArgumentException,
 			InvalidStateException, MethodNotSupportedException;
 }
-

@@ -21,15 +21,15 @@ public final class CSTARouteRequestEv extends CSTARequest {
 	byte[] setupInformation;
 	public static final int PDU = 83;
 
-	public static CSTARouteRequestEv decode(InputStream in) {
-		CSTARouteRequestEv _this = new CSTARouteRequestEv();
+	public static CSTARouteRequestEv decode(final InputStream in) {
+		final CSTARouteRequestEv _this = new CSTARouteRequestEv();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		currentRoute = ASNIA5String.decode(memberStream);
@@ -79,12 +79,12 @@ public final class CSTARouteRequestEv extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRequestEv ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -105,32 +105,31 @@ public final class CSTARouteRequestEv extends CSTARequest {
 		return lines;
 	}
 
-	public void setCallingDevice(String callingDevice) {
+	public void setCallingDevice(final String callingDevice) {
 		this.callingDevice = callingDevice;
 	}
 
-	public void setCurrentRoute(String currentRoute) {
+	public void setCurrentRoute(final String currentRoute) {
 		this.currentRoute = currentRoute;
 	}
 
-	public void setPriority(boolean priority) {
+	public void setPriority(final boolean priority) {
 		this.priority = priority;
 	}
 
-	public void setRoutedCall(CSTAConnectionID routedCall) {
+	public void setRoutedCall(final CSTAConnectionID routedCall) {
 		this.routedCall = routedCall;
 	}
 
-	public void setRoutedSelAlgorithm(short routedSelAlgorithm) {
+	public void setRoutedSelAlgorithm(final short routedSelAlgorithm) {
 		this.routedSelAlgorithm = routedSelAlgorithm;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(int routingCrossRefID) {
+	public void setRoutingCrossRefID(final int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }
-

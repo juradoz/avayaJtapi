@@ -14,4 +14,3 @@ public abstract interface CallControlConnectionCapabilities extends
 
 	public abstract boolean canReject();
 }
-

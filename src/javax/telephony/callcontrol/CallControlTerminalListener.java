@@ -6,4 +6,3 @@ public abstract interface CallControlTerminalListener extends TerminalListener {
 	public abstract void terminalDoNotDisturb(
 			CallControlTerminalEvent paramCallControlTerminalEvent);
 }
-

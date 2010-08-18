@@ -62,4 +62,3 @@ public abstract interface TsapiProperties {
 	public static final int DEFAULT_REFRESH_INTERVAL_FOR_TSAPI_PRO = 100;
 	public static final int DEFAULT_PORT = 450;
 }
-

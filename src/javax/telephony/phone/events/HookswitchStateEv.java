@@ -7,4 +7,3 @@ public abstract interface HookswitchStateEv extends PhoneTermEv {
 
 	public abstract int getHookSwitchState();
 }
-

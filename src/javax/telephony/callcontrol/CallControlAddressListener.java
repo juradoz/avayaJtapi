@@ -12,4 +12,3 @@ public abstract interface CallControlAddressListener extends AddressListener {
 	public abstract void addressMessageWaiting(
 			CallControlAddressEvent paramCallControlAddressEvent);
 }
-

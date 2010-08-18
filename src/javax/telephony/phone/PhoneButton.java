@@ -13,4 +13,3 @@ public abstract interface PhoneButton extends Component {
 
 	public abstract void setInfo(String paramString);
 }
-

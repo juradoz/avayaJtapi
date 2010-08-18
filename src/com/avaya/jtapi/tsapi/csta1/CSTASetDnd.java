@@ -13,8 +13,8 @@ public final class CSTASetDnd extends CSTARequest {
 	boolean doNotDisturb;
 	public static final int PDU = 45;
 
-	public static CSTASetDnd decode(InputStream in) {
-		CSTASetDnd _this = new CSTASetDnd();
+	public static CSTASetDnd decode(final InputStream in) {
+		final CSTASetDnd _this = new CSTASetDnd();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,19 +23,19 @@ public final class CSTASetDnd extends CSTARequest {
 	public CSTASetDnd() {
 	}
 
-	public CSTASetDnd(String _device, boolean _doNotDisturb) {
+	public CSTASetDnd(final String _device, final boolean _doNotDisturb) {
 		device = _device;
 		doNotDisturb = _doNotDisturb;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 		doNotDisturb = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 		ASNBoolean.encode(doNotDisturb, memberStream);
 	}
@@ -55,12 +55,12 @@ public final class CSTASetDnd extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetDnd ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 		lines.addAll(ASNBoolean.print(doNotDisturb, "doNotDisturb", indent));
@@ -69,4 +69,3 @@ public final class CSTASetDnd extends CSTARequest {
 		return lines;
 	}
 }
-

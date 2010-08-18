@@ -8,4 +8,3 @@ public abstract interface CallControlTerminalEvent extends CallControlEvent,
 
 	public abstract boolean getDoNotDisturbState();
 }
-

@@ -7,4 +7,3 @@ import javax.telephony.callcontrol.CallControlTerminal;
 public abstract interface ITsapiTerminal extends Terminal, CallControlTerminal,
 		AgentTerminal {
 }
-

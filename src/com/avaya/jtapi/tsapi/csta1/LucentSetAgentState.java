@@ -8,8 +8,9 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public class LucentSetAgentState extends LucentPrivateData {
-	public static LucentSetAgentState decode(InputStream in, CSTATSProvider prov) {
-		LucentSetAgentState _this = new LucentSetAgentState();
+	public static LucentSetAgentState decode(final InputStream in,
+			final CSTATSProvider prov) {
+		final LucentSetAgentState _this = new LucentSetAgentState();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +23,17 @@ public class LucentSetAgentState extends LucentPrivateData {
 	public LucentSetAgentState() {
 	}
 
-	public LucentSetAgentState(short _workMode) {
+	public LucentSetAgentState(final short _workMode) {
 		workMode = _workMode;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		workMode = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(workMode, memberStream);
 	}
 
@@ -43,12 +44,12 @@ public class LucentSetAgentState extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetAgentState ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 
@@ -56,4 +57,3 @@ public class LucentSetAgentState extends LucentPrivateData {
 		return lines;
 	}
 }
-

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTARetrieveCall extends CSTARequest {
-	public static CSTARetrieveCall decode(InputStream in) {
-		CSTARetrieveCall _this = new CSTARetrieveCall();
+	public static CSTARetrieveCall decode(final InputStream in) {
+		final CSTARetrieveCall _this = new CSTARetrieveCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,17 +20,17 @@ public final class CSTARetrieveCall extends CSTARequest {
 	public CSTARetrieveCall() {
 	}
 
-	public CSTARetrieveCall(CSTAConnectionID _heldCall) {
+	public CSTARetrieveCall(final CSTAConnectionID _heldCall) {
 		heldCall = _heldCall;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		heldCall = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(heldCall, memberStream);
 	}
 
@@ -45,12 +45,12 @@ public final class CSTARetrieveCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARetrieveCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(heldCall, "heldCall", indent));
 
@@ -58,4 +58,3 @@ public final class CSTARetrieveCall extends CSTARequest {
 		return lines;
 	}
 }
-

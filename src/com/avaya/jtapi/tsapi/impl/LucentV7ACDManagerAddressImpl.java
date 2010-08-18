@@ -8,23 +8,22 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 final class LucentV7ACDManagerAddressImpl extends LucentACDManagerAddressImpl
 		implements LucentV7ACDManagerAddress {
-	LucentV7ACDManagerAddressImpl(TSDevice _tsDevice) {
+	LucentV7ACDManagerAddressImpl(final TSDevice _tsDevice) {
 		super(_tsDevice);
 		TsapiTrace.traceConstruction(this, LucentV7ACDManagerAddressImpl.class);
 	}
 
-	LucentV7ACDManagerAddressImpl(TSProviderImpl tsProvider, String number)
-			throws TsapiInvalidArgumentException {
+	LucentV7ACDManagerAddressImpl(final TSProviderImpl tsProvider,
+			final String number) throws TsapiInvalidArgumentException {
 		super(tsProvider, number);
 		TsapiTrace.traceConstruction(this, LucentV7ACDManagerAddressImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentV7ACDManagerAddressImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentV7ACDManagerAddressImpl)
 			return tsDevice
 					.equals(((LucentV7ACDManagerAddressImpl) obj).tsDevice);
-		}
 
 		return false;
 	}
@@ -35,4 +34,3 @@ final class LucentV7ACDManagerAddressImpl extends LucentACDManagerAddressImpl
 		TsapiTrace.traceDestruction(this, LucentV7ACDManagerAddressImpl.class);
 	}
 }
-

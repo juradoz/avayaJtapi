@@ -8,8 +8,8 @@ import java.util.Collection;
 public final class LucentV6ClearConnection extends LucentClearConnection {
 	static final int PDU = 108;
 
-	public static LucentClearConnection decode(InputStream in) {
-		LucentV6ClearConnection _this = new LucentV6ClearConnection();
+	public static LucentClearConnection decode(final InputStream in) {
+		final LucentV6ClearConnection _this = new LucentV6ClearConnection();
 		_this.doDecode(in);
 
 		return _this;
@@ -18,18 +18,18 @@ public final class LucentV6ClearConnection extends LucentClearConnection {
 	public LucentV6ClearConnection() {
 	}
 
-	public LucentV6ClearConnection(short _dropResource,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6ClearConnection(final short _dropResource,
+			final LucentUserToUserInfo _userInfo) {
 		super(_dropResource, _userInfo);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
@@ -40,12 +40,12 @@ public final class LucentV6ClearConnection extends LucentClearConnection {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6ClearConnection ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentDropResource.print(dropResource, "dropResource",
 				indent));
@@ -55,4 +55,3 @@ public final class LucentV6ClearConnection extends LucentClearConnection {
 		return lines;
 	}
 }
-

@@ -8,4 +8,3 @@ public abstract class ACSConfirmation extends TsapiRequest {
 		return 2;
 	}
 }
-

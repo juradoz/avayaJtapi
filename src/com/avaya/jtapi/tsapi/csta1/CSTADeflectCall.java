@@ -12,8 +12,8 @@ public final class CSTADeflectCall extends CSTARequest {
 	String calledDevice;
 	public static final int PDU = 15;
 
-	public static CSTADeflectCall decode(InputStream in) {
-		CSTADeflectCall _this = new CSTADeflectCall();
+	public static CSTADeflectCall decode(final InputStream in) {
+		final CSTADeflectCall _this = new CSTADeflectCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,19 +22,20 @@ public final class CSTADeflectCall extends CSTARequest {
 	public CSTADeflectCall() {
 	}
 
-	public CSTADeflectCall(CSTAConnectionID _deflectCall, String _calledDevice) {
+	public CSTADeflectCall(final CSTAConnectionID _deflectCall,
+			final String _calledDevice) {
 		deflectCall = _deflectCall;
 		calledDevice = _calledDevice;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deflectCall = CSTAConnectionID.decode(memberStream);
 		calledDevice = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(deflectCall, memberStream);
 		ASNIA5String.encode(calledDevice, memberStream);
 	}
@@ -54,11 +55,11 @@ public final class CSTADeflectCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTADeflectCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(CSTAConnectionID.print(deflectCall, "deflectCall",
@@ -69,12 +70,11 @@ public final class CSTADeflectCall extends CSTARequest {
 		return lines;
 	}
 
-	public void setCalledDevice(String _calledDevice) {
+	public void setCalledDevice(final String _calledDevice) {
 		calledDevice = _calledDevice;
 	}
 
-	public void setDeflectCall(CSTAConnectionID _deflectCall) {
+	public void setDeflectCall(final CSTAConnectionID _deflectCall) {
 		deflectCall = _deflectCall;
 	}
 }
-

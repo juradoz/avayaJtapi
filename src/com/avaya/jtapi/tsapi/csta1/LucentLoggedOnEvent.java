@@ -11,20 +11,20 @@ public final class LucentLoggedOnEvent extends LucentPrivateData {
 	short workMode;
 	static final int PDU = 48;
 
-	public static LucentLoggedOnEvent decode(InputStream in) {
-		LucentLoggedOnEvent _this = new LucentLoggedOnEvent();
+	public static LucentLoggedOnEvent decode(final InputStream in) {
+		final LucentLoggedOnEvent _this = new LucentLoggedOnEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		workMode = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(workMode, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class LucentLoggedOnEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentLoggedOnEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 
@@ -52,8 +52,7 @@ public final class LucentLoggedOnEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setWorkMode(short workMode) {
+	public void setWorkMode(final short workMode) {
 		this.workMode = workMode;
 	}
 }
-

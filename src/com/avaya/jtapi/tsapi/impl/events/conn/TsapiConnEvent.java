@@ -5,11 +5,11 @@ import javax.telephony.Connection;
 import com.avaya.jtapi.tsapi.impl.events.call.TsapiCallEvent;
 
 public abstract class TsapiConnEvent extends TsapiCallEvent {
-	public TsapiConnEvent(ConnEventParams params) {
+	public TsapiConnEvent(final ConnEventParams params) {
 		this(params, 0);
 	}
 
-	public TsapiConnEvent(ConnEventParams params, int eventPackage) {
+	public TsapiConnEvent(final ConnEventParams params, final int eventPackage) {
 		super(params, eventPackage);
 	}
 
@@ -17,4 +17,3 @@ public abstract class TsapiConnEvent extends TsapiCallEvent {
 		return ((ConnEventParams) params).getConnection();
 	}
 }
-

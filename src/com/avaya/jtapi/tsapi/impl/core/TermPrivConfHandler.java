@@ -7,18 +7,16 @@ final class TermPrivConfHandler implements ConfHandler {
 	TSDevice device;
 	int pdu;
 
-	TermPrivConfHandler(TSDevice _device, int _pdu) {
+	TermPrivConfHandler(final TSDevice _device, final int _pdu) {
 		device = _device;
 		pdu = _pdu;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null) || (event.getEventHeader().getEventClass() != 5)
-				|| (event.getEventHeader().getEventType() != pdu)) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null || event.getEventHeader().getEventClass() != 5
+				|| event.getEventHeader().getEventType() != pdu)
 			return;
-		}
 
 		device.replyTermPriv = event.getPrivData();
 	}
 }
-

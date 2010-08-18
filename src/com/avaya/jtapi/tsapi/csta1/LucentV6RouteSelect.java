@@ -9,11 +9,11 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 public class LucentV6RouteSelect extends LucentRouteSelect {
 	static final int PDU = 116;
 
-	public LucentV6RouteSelect(String _callingDevice,
-			String _directAgentCallSplit, boolean _priorityCalling,
-			String _destRoute, LucentUserCollectCode _collectCode,
-			LucentUserProvidedCode _userProvidedCode,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6RouteSelect(final String _callingDevice,
+			final String _directAgentCallSplit, final boolean _priorityCalling,
+			final String _destRoute, final LucentUserCollectCode _collectCode,
+			final LucentUserProvidedCode _userProvidedCode,
+			final LucentUserToUserInfo _userInfo) {
 		super(_callingDevice, _directAgentCallSplit, _priorityCalling,
 				_destRoute, _collectCode, _userProvidedCode, _userInfo);
 	}
@@ -25,12 +25,12 @@ public class LucentV6RouteSelect extends LucentRouteSelect {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6RouteSelect ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
@@ -50,4 +50,3 @@ public class LucentV6RouteSelect extends LucentRouteSelect {
 		return lines;
 	}
 }
-

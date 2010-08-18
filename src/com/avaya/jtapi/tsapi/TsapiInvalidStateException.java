@@ -8,15 +8,17 @@ public final class TsapiInvalidStateException extends InvalidStateException
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiInvalidStateException(int _errorType, int _errorCode,
-			Object object, int type, int state) {
+	public TsapiInvalidStateException(final int _errorType,
+			final int _errorCode, final Object object, final int type,
+			final int state) {
 		super(object, type, state);
 		errorType = _errorType;
 		errorCode = _errorCode;
 	}
 
-	public TsapiInvalidStateException(int _errorType, int _errorCode,
-			Object object, int type, int state, String s) {
+	public TsapiInvalidStateException(final int _errorType,
+			final int _errorCode, final Object object, final int type,
+			final int state, final String s) {
 		super(object, type, state, s);
 		errorType = _errorType;
 		errorCode = _errorCode;
@@ -30,4 +32,3 @@ public final class TsapiInvalidStateException extends InvalidStateException
 		return errorType;
 	}
 }
-

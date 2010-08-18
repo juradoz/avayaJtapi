@@ -15,4 +15,3 @@ public abstract interface AgentTerminalEvent extends CallCenterEvent,
 
 	public abstract Agent getAgent();
 }
-

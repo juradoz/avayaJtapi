@@ -24,4 +24,3 @@ public abstract interface LucentV5TerminalConnection extends
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException, TsapiInvalidArgumentException;
 }
-

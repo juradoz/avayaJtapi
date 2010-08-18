@@ -8,27 +8,26 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class LucentUserCollectCode extends LucentPrivateData {
-	public static void encode(LucentUserCollectCode _this, OutputStream out) {
-		if (_this == null) {
+	public static void encode(LucentUserCollectCode _this,
+			final OutputStream out) {
+		if (_this == null)
 			_this = new LucentUserCollectCode();
-		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(LucentUserCollectCode _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final LucentUserCollectCode _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(CollectCodeType.print(_this.type, "type", indent));
 		lines.addAll(ASNInteger.print(_this.digitsToBeCollected,
@@ -55,8 +54,9 @@ public final class LucentUserCollectCode extends LucentPrivateData {
 		type = 0;
 	}
 
-	public LucentUserCollectCode(short _type, int _digitsToBeCollected,
-			int _timeout, CSTAConnectionID _collectParty, short _specificEvent) {
+	public LucentUserCollectCode(final short _type,
+			final int _digitsToBeCollected, final int _timeout,
+			final CSTAConnectionID _collectParty, final short _specificEvent) {
 		type = _type;
 		digitsToBeCollected = _digitsToBeCollected;
 		timeout = _timeout;
@@ -65,7 +65,7 @@ public final class LucentUserCollectCode extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(type, memberStream);
 		ASNInteger.encode(digitsToBeCollected, memberStream);
 		ASNInteger.encode(timeout, memberStream);
@@ -73,4 +73,3 @@ public final class LucentUserCollectCode extends LucentPrivateData {
 		ASNEnumerated.encode(specificEvent, memberStream);
 	}
 }
-

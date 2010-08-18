@@ -17,4 +17,3 @@ public abstract interface CallCenterTrunk {
 
 	public abstract int getType();
 }
-

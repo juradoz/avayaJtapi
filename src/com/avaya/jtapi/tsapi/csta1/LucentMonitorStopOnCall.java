@@ -11,14 +11,14 @@ public class LucentMonitorStopOnCall extends LucentPrivateData {
 	CSTAConnectionID call;
 	static final int PDU = 31;
 
-	public LucentMonitorStopOnCall(int _monitorCrossRefID,
-			CSTAConnectionID _call) {
+	public LucentMonitorStopOnCall(final int _monitorCrossRefID,
+			final CSTAConnectionID _call) {
 		monitorCrossRefID = _monitorCrossRefID;
 		call = _call;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(monitorCrossRefID, memberStream);
 		CSTAConnectionID.encode(call, memberStream);
 	}
@@ -30,12 +30,12 @@ public class LucentMonitorStopOnCall extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorStopOnCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(monitorCrossRefID, "monitorCrossRefID",
 				indent));
@@ -45,4 +45,3 @@ public class LucentMonitorStopOnCall extends LucentPrivateData {
 		return lines;
 	}
 }
-

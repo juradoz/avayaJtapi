@@ -7,4 +7,3 @@ public abstract interface ComponentCapabilities {
 
 	public abstract boolean canSetButtonPressThreshold();
 }
-

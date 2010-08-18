@@ -9,20 +9,20 @@ public class LucentV6ConnectionClearedEvent extends
 		LucentConnectionClearedEvent {
 	static final int PDU = 115;
 
-	static LucentConnectionClearedEvent decode(InputStream in) {
-		LucentV6ConnectionClearedEvent _this = new LucentV6ConnectionClearedEvent();
+	static LucentConnectionClearedEvent decode(final InputStream in) {
+		final LucentV6ConnectionClearedEvent _this = new LucentV6ConnectionClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
@@ -33,12 +33,12 @@ public class LucentV6ConnectionClearedEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6ConnectionClearedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
 

@@ -4,7 +4,7 @@ import com.avaya.jtapi.tsapi.LucentCallInfo;
 
 public class LucentConnInProgressEventCCImpl extends TsapiConnInProgressEventCC
 		implements LucentCallInfo {
-	public LucentConnInProgressEventCCImpl(ConnEventParams params) {
+	public LucentConnInProgressEventCCImpl(final ConnEventParams params) {
 		super(params);
 	}
 }

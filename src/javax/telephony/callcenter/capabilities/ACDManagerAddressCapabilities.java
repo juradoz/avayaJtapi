@@ -6,4 +6,3 @@ public abstract interface ACDManagerAddressCapabilities extends
 		AddressCapabilities {
 	public abstract boolean canGetACDAddresses();
 }
-

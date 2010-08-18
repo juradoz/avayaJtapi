@@ -9,4 +9,3 @@ public abstract interface PrivateAddrEv extends AddrEv {
 
 	public abstract Object getPrivateData();
 }
-

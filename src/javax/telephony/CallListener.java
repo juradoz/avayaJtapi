@@ -25,4 +25,3 @@ public abstract interface CallListener extends EventListener {
 
 	public abstract void singleCallMetaSnapshotStarted(MetaEvent paramMetaEvent);
 }
-

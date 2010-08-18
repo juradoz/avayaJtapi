@@ -7,4 +7,3 @@ public abstract interface PrivateData {
 
 	public abstract void setPrivateData(Object paramObject);
 }
-

@@ -10,4 +10,3 @@ public abstract interface LucentV7ACDManagerAddress extends
 			throws TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException;
 }
-

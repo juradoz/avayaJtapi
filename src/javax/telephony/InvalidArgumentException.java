@@ -6,8 +6,7 @@ public class InvalidArgumentException extends Exception {
 	public InvalidArgumentException() {
 	}
 
-	public InvalidArgumentException(String s) {
+	public InvalidArgumentException(final String s) {
 		super(s);
 	}
 }
-

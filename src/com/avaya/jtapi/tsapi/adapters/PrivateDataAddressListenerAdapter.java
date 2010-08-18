@@ -5,7 +5,6 @@ import javax.telephony.privatedata.PrivateDataEvent;
 
 public abstract class PrivateDataAddressListenerAdapter extends
 		AddressListenerAdapter implements PrivateDataAddressListener {
-	public void addressPrivateData(PrivateDataEvent event) {
+	public void addressPrivateData(final PrivateDataEvent event) {
 	}
 }
-

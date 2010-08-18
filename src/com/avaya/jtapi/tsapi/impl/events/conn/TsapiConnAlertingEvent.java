@@ -4,7 +4,7 @@ import javax.telephony.events.ConnAlertingEv;
 
 public final class TsapiConnAlertingEvent extends TsapiConnEvent implements
 		ConnAlertingEv {
-	public TsapiConnAlertingEvent(ConnEventParams params) {
+	public TsapiConnAlertingEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiConnAlertingEvent extends TsapiConnEvent implements
 		return 104;
 	}
 }
-

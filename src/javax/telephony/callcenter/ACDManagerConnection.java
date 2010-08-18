@@ -7,4 +7,3 @@ public abstract interface ACDManagerConnection extends Connection {
 	public abstract ACDConnection[] getACDConnections()
 			throws MethodNotSupportedException;
 }
-

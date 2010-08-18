@@ -5,4 +5,3 @@ package javax.telephony.callcontrol.events;
 public abstract interface CallCtlTermConnBridgedEv extends CallCtlTermConnEv {
 	public static final int ID = 214;
 }
-

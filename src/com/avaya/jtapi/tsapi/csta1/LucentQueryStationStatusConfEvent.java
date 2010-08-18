@@ -10,15 +10,15 @@ public final class LucentQueryStationStatusConfEvent extends LucentPrivateData {
 	boolean stationStatus;
 	static final int PDU = 23;
 
-	static LucentQueryStationStatusConfEvent decode(InputStream in) {
-		LucentQueryStationStatusConfEvent _this = new LucentQueryStationStatusConfEvent();
+	static LucentQueryStationStatusConfEvent decode(final InputStream in) {
+		final LucentQueryStationStatusConfEvent _this = new LucentQueryStationStatusConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		stationStatus = ASNBoolean.decode(memberStream);
 	}
 
@@ -29,12 +29,12 @@ public final class LucentQueryStationStatusConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryStationStatusConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(stationStatus, "stationStatus", indent));
 

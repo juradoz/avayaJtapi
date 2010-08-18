@@ -8,13 +8,13 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public final class LucentACDAddressImpl extends TsapiACDAddress implements
 		LucentAddress {
-	LucentACDAddressImpl(TSDevice _tsDevice) {
+	LucentACDAddressImpl(final TSDevice _tsDevice) {
 		super(_tsDevice);
 		TsapiTrace.traceConstruction(this, LucentACDAddressImpl.class);
 	}
 
-	public LucentACDAddressImpl(TSProviderImpl tsProvider, String number)
-			throws TsapiInvalidArgumentException {
+	public LucentACDAddressImpl(final TSProviderImpl tsProvider,
+			final String number) throws TsapiInvalidArgumentException {
 		super(tsProvider, number);
 		TsapiTrace
 				.traceEntry(
@@ -27,10 +27,9 @@ public final class LucentACDAddressImpl extends TsapiACDAddress implements
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentACDAddressImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentACDAddressImpl)
 			return tsDevice.equals(((LucentACDAddressImpl) obj).tsDevice);
-		}
 
 		return false;
 	}
@@ -41,4 +40,3 @@ public final class LucentACDAddressImpl extends TsapiACDAddress implements
 		TsapiTrace.traceDestruction(this, LucentACDAddressImpl.class);
 	}
 }
-

@@ -12,21 +12,21 @@ public class LucentV6RouteRequestEvent extends LucentV5RouteRequestEvent {
 	String trunkMember;
 	static final int PDU = 105;
 
-	public static LucentRouteRequestEvent decode(InputStream in) {
-		LucentV6RouteRequestEvent _this = new LucentV6RouteRequestEvent();
+	public static LucentRouteRequestEvent decode(final InputStream in) {
+		final LucentV6RouteRequestEvent _this = new LucentV6RouteRequestEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		trunkMember = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(trunkMember, memberStream);
 	}
@@ -42,12 +42,12 @@ public class LucentV6RouteRequestEvent extends LucentV5RouteRequestEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6RouteRequestEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(LucentLookaheadInfo.print(lookaheadInfo, "lookaheadInfo",
@@ -66,8 +66,7 @@ public class LucentV6RouteRequestEvent extends LucentV5RouteRequestEvent {
 		return lines;
 	}
 
-	public void setTrunkMember(String trunkMember) {
+	public void setTrunkMember(final String trunkMember) {
 		this.trunkMember = trunkMember;
 	}
 }
-

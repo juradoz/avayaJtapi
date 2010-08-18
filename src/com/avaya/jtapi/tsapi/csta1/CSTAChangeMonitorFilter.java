@@ -9,8 +9,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class CSTAChangeMonitorFilter extends CSTARequest {
-	public static CSTAChangeMonitorFilter decode(InputStream in) {
-		CSTAChangeMonitorFilter _this = new CSTAChangeMonitorFilter();
+	public static CSTAChangeMonitorFilter decode(final InputStream in) {
+		final CSTAChangeMonitorFilter _this = new CSTAChangeMonitorFilter();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,20 +24,20 @@ public final class CSTAChangeMonitorFilter extends CSTARequest {
 	public CSTAChangeMonitorFilter() {
 	}
 
-	public CSTAChangeMonitorFilter(int _monitorCrossRefID,
-			CSTAMonitorFilter _monitorFilter) {
+	public CSTAChangeMonitorFilter(final int _monitorCrossRefID,
+			final CSTAMonitorFilter _monitorFilter) {
 		monitorCrossRefID = _monitorCrossRefID;
 		monitorFilter = _monitorFilter;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		monitorCrossRefID = ASNInteger.decode(memberStream);
 		monitorFilter = CSTAMonitorFilter.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(monitorCrossRefID, memberStream);
 		ASNSequence.encode(monitorFilter, memberStream);
 	}
@@ -57,11 +57,11 @@ public final class CSTAChangeMonitorFilter extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAChangeMonitorFilter ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(monitorCrossRefID, "monitorCrossRefID",
 				indent));
@@ -72,4 +72,3 @@ public final class CSTAChangeMonitorFilter extends CSTARequest {
 		return lines;
 	}
 }
-

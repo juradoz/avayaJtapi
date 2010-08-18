@@ -7,4 +7,3 @@ public abstract interface CallCtlAddrMessageWaitingEv extends CallCtlAddrEv {
 
 	public abstract boolean getMessageWaitingState();
 }
-

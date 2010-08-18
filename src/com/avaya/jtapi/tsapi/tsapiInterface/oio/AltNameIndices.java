@@ -11,4 +11,3 @@ class AltNameIndices {
 	public static final int ipAddress = 7;
 	public static final int registeredID = 8;
 }
-

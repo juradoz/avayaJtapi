@@ -6,31 +6,30 @@ public class TsapiFactory {
 	// private static final String OVERRIDE_IMPL = "tsapi_impl_class_name";
 
 	@SuppressWarnings("unchecked")
-	public static Tsapi getTsapi(String tlink, String login, String passwd,
-			Vector<TsapiVendor> vendors, TsapiUnsolicitedHandler handler) {
+	public static Tsapi getTsapi(final String tlink, final String login,
+			final String passwd, final Vector<TsapiVendor> vendors,
+			final TsapiUnsolicitedHandler handler) {
 		Tsapi tsapi = null;
 		String className = null;
 
-		if ((vendors != null) && (!vendors.isEmpty())
-				&& (vendors.get(0) instanceof TsapiVendor)) {
-			TsapiVendor vendor = vendors.get(0);
+		if (vendors != null && !vendors.isEmpty()
+				&& vendors.get(0) instanceof TsapiVendor) {
+			final TsapiVendor vendor = vendors.get(0);
 
-			if (vendor.name.equals("tsapi_impl_class_name")) {
+			if (vendor.name.equals("tsapi_impl_class_name"))
 				className = vendor.versions;
-			} else {
+			else
 				className = Tsapi.class.getName();
-			}
-		} else {
+		} else
 			className = Tsapi.class.getName();
-		}
 		try {
-			Class theClass = Class.forName(className);
+			final Class theClass = Class.forName(className);
 			tsapi = (Tsapi) theClass.newInstance();
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new RuntimeException("Class not found", e);
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			throw new RuntimeException("Could not instantiate", e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new RuntimeException("Could not access", e);
 		}
 
@@ -39,4 +38,3 @@ public class TsapiFactory {
 		return tsapi;
 	}
 }
-

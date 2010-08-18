@@ -11,8 +11,8 @@ public final class LucentV6SupervisorAssistCall extends
 		LucentSupervisorAssistCall {
 	public static final int PDU = 113;
 
-	public static LucentSupervisorAssistCall decode(InputStream in) {
-		LucentV6SupervisorAssistCall _this = new LucentV6SupervisorAssistCall();
+	public static LucentSupervisorAssistCall decode(final InputStream in) {
+		final LucentV6SupervisorAssistCall _this = new LucentV6SupervisorAssistCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,18 +21,18 @@ public final class LucentV6SupervisorAssistCall extends
 	public LucentV6SupervisorAssistCall() {
 	}
 
-	public LucentV6SupervisorAssistCall(String _split,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6SupervisorAssistCall(final String _split,
+			final LucentUserToUserInfo _userInfo) {
 		super(_split, _userInfo);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
@@ -43,11 +43,11 @@ public final class LucentV6SupervisorAssistCall extends
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentV6SupervisorAssistCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(split, "split", indent));
 		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));

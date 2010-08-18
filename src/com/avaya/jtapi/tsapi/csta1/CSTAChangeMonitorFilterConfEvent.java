@@ -11,20 +11,20 @@ public final class CSTAChangeMonitorFilterConfEvent extends CSTAConfirmation {
 	CSTAMonitorFilter monitorFilter;
 	public static final int PDU = 116;
 
-	public static CSTAChangeMonitorFilterConfEvent decode(InputStream in) {
-		CSTAChangeMonitorFilterConfEvent _this = new CSTAChangeMonitorFilterConfEvent();
+	public static CSTAChangeMonitorFilterConfEvent decode(final InputStream in) {
+		final CSTAChangeMonitorFilterConfEvent _this = new CSTAChangeMonitorFilterConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		monitorFilter = CSTAMonitorFilter.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(monitorFilter, memberStream);
 	}
 
@@ -39,11 +39,11 @@ public final class CSTAChangeMonitorFilterConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAChangeMonitorFilterConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAMonitorFilter.print(monitorFilter, "monitorFilter",
 				indent));

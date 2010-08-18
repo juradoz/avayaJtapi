@@ -26,4 +26,3 @@ public abstract interface MobileRadio {
 	public abstract void setRadioState(boolean paramBoolean)
 			throws MethodNotSupportedException, InvalidStateException;
 }
-

@@ -13,4 +13,3 @@ public abstract interface LucentCallEx2 extends LucentCallEx {
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException;
 }
-

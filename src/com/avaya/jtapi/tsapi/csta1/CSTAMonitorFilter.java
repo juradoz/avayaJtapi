@@ -10,26 +10,25 @@ import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public final class CSTAMonitorFilter extends ASNSequence {
-	public static CSTAMonitorFilter decode(InputStream in) {
-		CSTAMonitorFilter _this = new CSTAMonitorFilter();
+	public static CSTAMonitorFilter decode(final InputStream in) {
+		final CSTAMonitorFilter _this = new CSTAMonitorFilter();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static Collection<String> print(CSTAMonitorFilter _this,
-			String name, String _indent) {
-		Collection<String> lines = new ArrayList<String>();
+	public static Collection<String> print(final CSTAMonitorFilter _this,
+			final String name, final String _indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null) {
+		if (name != null)
 			lines.add(_indent + name);
-		}
 		lines.add(_indent + "{");
 
-		String indent = _indent + "  ";
+		final String indent = _indent + "  ";
 
 		lines.addAll(CSTACallFilter.print(_this.call, "call", indent));
 		lines.addAll(CSTAFeatureFilter.print(_this.feature, "feature", indent));
@@ -54,8 +53,8 @@ public final class CSTAMonitorFilter extends ASNSequence {
 	public CSTAMonitorFilter() {
 	}
 
-	public CSTAMonitorFilter(int _call, int _feature, int _agent,
-			int _maintenance, int _privateFilter) {
+	public CSTAMonitorFilter(final int _call, final int _feature,
+			final int _agent, final int _maintenance, final int _privateFilter) {
 		call = _call;
 		feature = _feature;
 		agent = _agent;
@@ -64,7 +63,7 @@ public final class CSTAMonitorFilter extends ASNSequence {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		call = ASNBitString.decode(memberStream);
 		feature = ASNBitString.decode(memberStream);
 		agent = ASNBitString.decode(memberStream);
@@ -73,7 +72,7 @@ public final class CSTAMonitorFilter extends ASNSequence {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTACallFilter.encode(call, memberStream);
 		CSTAFeatureFilter.encode(feature, memberStream);
 		CSTAAgentFilter.encode(agent, memberStream);
@@ -101,4 +100,3 @@ public final class CSTAMonitorFilter extends ASNSequence {
 		return privateFilter;
 	}
 }
-

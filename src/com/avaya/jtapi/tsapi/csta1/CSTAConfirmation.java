@@ -8,4 +8,3 @@ public abstract class CSTAConfirmation extends TsapiRequest {
 		return 5;
 	}
 }
-

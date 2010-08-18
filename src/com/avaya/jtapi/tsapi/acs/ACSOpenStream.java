@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 
 public final class ACSOpenStream extends ACSRequest {
-	public static ACSOpenStream decode(InputStream in) {
-		ACSOpenStream _this = new ACSOpenStream();
+	public static ACSOpenStream decode(final InputStream in) {
+		final ACSOpenStream _this = new ACSOpenStream();
 		_this.doDecode(in);
 
 		return _this;
@@ -32,9 +32,10 @@ public final class ACSOpenStream extends ACSRequest {
 	public ACSOpenStream() {
 	}
 
-	public ACSOpenStream(short _streamType, String _serverID, String _loginID,
-			byte[] _cryptPass, String _applicationName, short _level,
-			String _apiVer, String _libVer, String _tsrvVer) {
+	public ACSOpenStream(final short _streamType, final String _serverID,
+			final String _loginID, final byte[] _cryptPass,
+			final String _applicationName, final short _level,
+			final String _apiVer, final String _libVer, final String _tsrvVer) {
 		streamType = _streamType;
 		serverID = _serverID;
 		loginID = _loginID;
@@ -47,7 +48,7 @@ public final class ACSOpenStream extends ACSRequest {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		streamType = ASNEnumerated.decode(memberStream);
 		serverID = ASNIA5String.decode(memberStream);
 		loginID = ASNIA5String.decode(memberStream);
@@ -60,7 +61,7 @@ public final class ACSOpenStream extends ACSRequest {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(streamType, memberStream);
 		ASNIA5String.encode(serverID, memberStream);
 		ASNIA5String.encode(loginID, memberStream);
@@ -115,11 +116,11 @@ public final class ACSOpenStream extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSOpenStream ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(StreamType.print(streamType, "streamType", indent));
 		lines.addAll(ASNIA5String.print(serverID, "serverID", indent));
@@ -136,4 +137,3 @@ public final class ACSOpenStream extends ACSRequest {
 		return lines;
 	}
 }
-

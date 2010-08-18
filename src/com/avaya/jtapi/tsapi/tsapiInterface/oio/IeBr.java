@@ -21,11 +21,10 @@ final class IeBr extends GenericBrowser {
 	}
 
 	@Override
-	Socket trySocket(InetSocketAddress addr, SocketFactory sf)
+	Socket trySocket(final InetSocketAddress addr, final SocketFactory sf)
 			throws UnknownHostException, IOException {
 		// PolicyEngine.assertPermission(PermissionID.NETIO);
 
 		return super.trySocket(addr, sf);
 	}
 }
-

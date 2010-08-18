@@ -5,4 +5,3 @@ public abstract interface V7OriginalCallInfo extends V5OriginalCallInfo {
 
 	public abstract boolean hasDeviceHistory();
 }
-

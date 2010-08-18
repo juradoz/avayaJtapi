@@ -9,4 +9,3 @@ public abstract interface MobileProviderListener extends ProviderListener {
 	public abstract void serviceRestricted(
 			MobileProviderEvent paramMobileProviderEvent);
 }
-

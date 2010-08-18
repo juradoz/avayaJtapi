@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class ACSCloseStreamConfEvent extends ACSConfirmation {
 	public static final int PDU = 4;
 
-	public static ACSCloseStreamConfEvent decode(InputStream in) {
-		ACSCloseStreamConfEvent _this = new ACSCloseStreamConfEvent();
+	public static ACSCloseStreamConfEvent decode(final InputStream in) {
+		final ACSCloseStreamConfEvent _this = new ACSCloseStreamConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,11 +28,11 @@ public final class ACSCloseStreamConfEvent extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSCloseStreamConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -40,4 +40,3 @@ public final class ACSCloseStreamConfEvent extends ACSConfirmation {
 		return lines;
 	}
 }
-

@@ -19,4 +19,3 @@ public abstract interface TerminalConnectionListener extends ConnectionListener 
 	public abstract void terminalConnectionUnknown(
 			TerminalConnectionEvent paramTerminalConnectionEvent);
 }
-

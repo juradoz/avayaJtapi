@@ -30,4 +30,3 @@ public abstract interface RouteSession {
 	public abstract void selectRoute(String[] paramArrayOfString)
 			throws MethodNotSupportedException;
 }
-

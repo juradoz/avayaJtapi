@@ -15,8 +15,7 @@ public class TermConnEventParams extends CallEventParams {
 		return termConn;
 	}
 
-	public void setTermConn(TerminalConnection termConn) {
+	public void setTermConn(final TerminalConnection termConn) {
 		this.termConn = termConn;
 	}
 }
-

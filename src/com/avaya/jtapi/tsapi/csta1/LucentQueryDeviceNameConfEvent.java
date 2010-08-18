@@ -14,22 +14,22 @@ public class LucentQueryDeviceNameConfEvent extends LucentPrivateData {
 	String name;
 	static final int PDU = 50;
 
-	public static LucentQueryDeviceNameConfEvent decode(InputStream in) {
-		LucentQueryDeviceNameConfEvent _this = new LucentQueryDeviceNameConfEvent();
+	public static LucentQueryDeviceNameConfEvent decode(final InputStream in) {
+		final LucentQueryDeviceNameConfEvent _this = new LucentQueryDeviceNameConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		deviceType = ASNEnumerated.decode(memberStream);
 		device_asn = ASNIA5String.decode(memberStream);
 		name = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(deviceType, memberStream);
 		ASNIA5String.encode(device_asn, memberStream);
 		ASNIA5String.encode(name, memberStream);
@@ -54,12 +54,12 @@ public class LucentQueryDeviceNameConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryDeviceNameConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentDeviceType.print(deviceType, "deviceType", indent));
 		lines.addAll(ASNIA5String.print(device_asn, "device", indent));
@@ -69,15 +69,15 @@ public class LucentQueryDeviceNameConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDevice_asn(String device_asn) {
+	public void setDevice_asn(final String device_asn) {
 		this.device_asn = device_asn;
 	}
 
-	public void setDeviceType(short deviceType) {
+	public void setDeviceType(final short deviceType) {
 		this.deviceType = deviceType;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 }

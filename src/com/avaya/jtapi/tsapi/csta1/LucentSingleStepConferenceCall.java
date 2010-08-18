@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentSingleStepConferenceCall extends LucentPrivateData {
-	public static LucentSingleStepConferenceCall decode(InputStream in) {
-		LucentSingleStepConferenceCall _this = new LucentSingleStepConferenceCall();
+	public static LucentSingleStepConferenceCall decode(final InputStream in) {
+		final LucentSingleStepConferenceCall _this = new LucentSingleStepConferenceCall();
 
 		_this.doDecode(in);
 
@@ -28,9 +28,9 @@ public final class LucentSingleStepConferenceCall extends LucentPrivateData {
 	public LucentSingleStepConferenceCall() {
 	}
 
-	public LucentSingleStepConferenceCall(CSTAConnectionID _activeCall,
-			String _deviceToBeJoin, short _participationType,
-			boolean _alertDestination) {
+	public LucentSingleStepConferenceCall(final CSTAConnectionID _activeCall,
+			final String _deviceToBeJoin, final short _participationType,
+			final boolean _alertDestination) {
 		activeCall = _activeCall;
 		deviceToBeJoin = _deviceToBeJoin;
 		participationType = _participationType;
@@ -38,7 +38,7 @@ public final class LucentSingleStepConferenceCall extends LucentPrivateData {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		activeCall = CSTAConnectionID.decode(memberStream);
 		deviceToBeJoin = ASNIA5String.decode(memberStream);
 		participationType = ASNEnumerated.decode(memberStream);
@@ -46,7 +46,7 @@ public final class LucentSingleStepConferenceCall extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(activeCall, memberStream);
 		ASNIA5String.encode(deviceToBeJoin, memberStream);
 		ASNEnumerated.encode(participationType, memberStream);
@@ -76,12 +76,12 @@ public final class LucentSingleStepConferenceCall extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSingleStepConferenceCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
 		lines.addAll(ASNIA5String.print(deviceToBeJoin, "deviceToBeJoin",

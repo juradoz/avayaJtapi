@@ -7,4 +7,3 @@ abstract interface IDomainCall {
 
 	public abstract void notifyCallRemoved(IDomainDevice paramIDomainDevice);
 }
-

@@ -11,8 +11,8 @@ public final class LucentQueryDeviceName extends LucentPrivateData {
 	String device;
 	public static final int PDU = 49;
 
-	public static LucentQueryDeviceName decode(InputStream in) {
-		LucentQueryDeviceName _this = new LucentQueryDeviceName();
+	public static LucentQueryDeviceName decode(final InputStream in) {
+		final LucentQueryDeviceName _this = new LucentQueryDeviceName();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,17 +21,17 @@ public final class LucentQueryDeviceName extends LucentPrivateData {
 	public LucentQueryDeviceName() {
 	}
 
-	public LucentQueryDeviceName(String _device) {
+	public LucentQueryDeviceName(final String _device) {
 		device = _device;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 	}
 
@@ -46,12 +46,12 @@ public final class LucentQueryDeviceName extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryDeviceName ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 
@@ -59,4 +59,3 @@ public final class LucentQueryDeviceName extends LucentPrivateData {
 		return lines;
 	}
 }
-

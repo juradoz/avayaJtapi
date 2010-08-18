@@ -8,14 +8,15 @@ public final class TsapiInvalidPartyException extends InvalidPartyException
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiInvalidPartyException(int _errorType, int _errorCode, int type) {
+	public TsapiInvalidPartyException(final int _errorType,
+			final int _errorCode, final int type) {
 		super(type);
 		errorType = _errorType;
 		errorCode = _errorCode;
 	}
 
-	public TsapiInvalidPartyException(int _errorType, int _errorCode, int type,
-			String s) {
+	public TsapiInvalidPartyException(final int _errorType,
+			final int _errorCode, final int type, final String s) {
 		super(type, s);
 		errorType = _errorType;
 		errorCode = _errorCode;
@@ -29,4 +30,3 @@ public final class TsapiInvalidPartyException extends InvalidPartyException
 		return errorType;
 	}
 }
-

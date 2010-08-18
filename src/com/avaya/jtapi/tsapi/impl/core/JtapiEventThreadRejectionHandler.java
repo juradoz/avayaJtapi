@@ -10,8 +10,9 @@ public class JtapiEventThreadRejectionHandler implements
 	private static Logger log = Logger
 			.getLogger(JtapiEventThreadRejectionHandler.class);
 
-	public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-		log
+	public void rejectedExecution(final Runnable r,
+			final ThreadPoolExecutor executor) {
+		JtapiEventThreadRejectionHandler.log
 				.info("There are already "
 						+ executor.getActiveCount()
 						+ " active threads delivering events and . "

@@ -7,4 +7,3 @@ public abstract interface V7DeviceHistoryEntry {
 
 	public abstract String getOldDeviceID();
 }
-

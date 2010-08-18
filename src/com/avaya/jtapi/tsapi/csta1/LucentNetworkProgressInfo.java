@@ -21,21 +21,21 @@ public class LucentNetworkProgressInfo extends LucentPrivateData {
 	public short progressDescription;
 	static final int PDU = 40;
 
-	static LucentNetworkProgressInfo decode(InputStream in) {
-		LucentNetworkProgressInfo _this = new LucentNetworkProgressInfo();
+	static LucentNetworkProgressInfo decode(final InputStream in) {
+		final LucentNetworkProgressInfo _this = new LucentNetworkProgressInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		progressLocation = ASNEnumerated.decode(memberStream);
 		progressDescription = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(progressLocation, memberStream);
 		ASNEnumerated.encode(progressDescription, memberStream);
 	}
@@ -55,12 +55,12 @@ public class LucentNetworkProgressInfo extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("NetworkProgressInfo ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ProgressLocation.print(progressLocation,
 				"progressLocation", indent));
@@ -71,12 +71,11 @@ public class LucentNetworkProgressInfo extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setProgressDescription(short progressDescription) {
+	public void setProgressDescription(final short progressDescription) {
 		this.progressDescription = progressDescription;
 	}
 
-	public void setProgressLocation(short progressLocation) {
+	public void setProgressLocation(final short progressLocation) {
 		this.progressLocation = progressLocation;
 	}
 }
-

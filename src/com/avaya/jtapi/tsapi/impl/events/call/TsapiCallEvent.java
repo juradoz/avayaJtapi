@@ -20,11 +20,11 @@ public abstract class TsapiCallEvent extends TsapiObserverEvent implements
 		PrivateCallEv, ITsapiCallEvent {
 	protected CallEventParams params = null;
 
-	public TsapiCallEvent(CallEventParams params) {
+	public TsapiCallEvent(final CallEventParams params) {
 		this(params, 0);
 	}
 
-	public TsapiCallEvent(CallEventParams params, int _eventPackage) {
+	public TsapiCallEvent(final CallEventParams params, final int _eventPackage) {
 		super(params.getCause(), params.getMetaCode(), params.getPrivateData(),
 				_eventPackage);
 		this.params = params;
@@ -106,4 +106,3 @@ public abstract class TsapiCallEvent extends TsapiObserverEvent implements
 		return params.hasCallOriginatorType();
 	}
 }
-

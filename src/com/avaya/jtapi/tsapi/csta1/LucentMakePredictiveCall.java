@@ -11,8 +11,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public class LucentMakePredictiveCall extends LucentPrivateData {
-	public static LucentMakePredictiveCall decode(InputStream in) {
-		LucentMakePredictiveCall _this = new LucentMakePredictiveCall();
+	public static LucentMakePredictiveCall decode(final InputStream in) {
+		final LucentMakePredictiveCall _this = new LucentMakePredictiveCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -29,9 +29,9 @@ public class LucentMakePredictiveCall extends LucentPrivateData {
 	public LucentMakePredictiveCall() {
 	}
 
-	public LucentMakePredictiveCall(boolean _priorityCalling, int _maxRings,
-			short _answerTreat, String _destRoute,
-			LucentUserToUserInfo _userInfo) {
+	public LucentMakePredictiveCall(final boolean _priorityCalling,
+			final int _maxRings, final short _answerTreat,
+			final String _destRoute, final LucentUserToUserInfo _userInfo) {
 		priorityCalling = _priorityCalling;
 		maxRings = _maxRings;
 		answerTreat = _answerTreat;
@@ -40,7 +40,7 @@ public class LucentMakePredictiveCall extends LucentPrivateData {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		priorityCalling = ASNBoolean.decode(memberStream);
 		maxRings = ASNInteger.decode(memberStream);
 		answerTreat = ASNEnumerated.decode(memberStream);
@@ -49,7 +49,7 @@ public class LucentMakePredictiveCall extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNBoolean.encode(priorityCalling, memberStream);
 		ASNInteger.encode(maxRings, memberStream);
 		ASNEnumerated.encode(answerTreat, memberStream);
@@ -68,12 +68,12 @@ public class LucentMakePredictiveCall extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMakePredictiveCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",
 				indent));
@@ -87,4 +87,3 @@ public class LucentMakePredictiveCall extends LucentPrivateData {
 		return lines;
 	}
 }
-

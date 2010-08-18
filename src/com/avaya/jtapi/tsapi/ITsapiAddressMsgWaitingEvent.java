@@ -6,4 +6,3 @@ import javax.telephony.callcontrol.events.CallCtlAddrMessageWaitingEv;
 public abstract interface ITsapiAddressMsgWaitingEvent extends
 		CallCtlAddrMessageWaitingEv {
 }
-

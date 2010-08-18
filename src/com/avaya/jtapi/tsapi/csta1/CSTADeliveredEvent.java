@@ -18,15 +18,15 @@ public final class CSTADeliveredEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 57;
 
-	public static CSTADeliveredEvent decode(InputStream in) {
-		CSTADeliveredEvent _this = new CSTADeliveredEvent();
+	public static CSTADeliveredEvent decode(final InputStream in) {
+		final CSTADeliveredEvent _this = new CSTADeliveredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		connection = CSTAConnectionID.decode(memberStream);
 		alertingDevice = CSTAExtendedDeviceID.decode(memberStream);
 		callingDevice = CSTAExtendedDeviceID.decode(memberStream);
@@ -37,7 +37,7 @@ public final class CSTADeliveredEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(connection, memberStream);
 		ASNSequence.encode(alertingDevice, memberStream);
 		ASNSequence.encode(callingDevice, memberStream);
@@ -82,11 +82,11 @@ public final class CSTADeliveredEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTADeliveredEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(connection, "connection", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(alertingDevice,
@@ -105,33 +105,32 @@ public final class CSTADeliveredEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setAlertingDevice(CSTAExtendedDeviceID alertingDevice) {
+	public void setAlertingDevice(final CSTAExtendedDeviceID alertingDevice) {
 		this.alertingDevice = alertingDevice;
 	}
 
-	public void setCalledDevice(CSTAExtendedDeviceID calledDevice) {
+	public void setCalledDevice(final CSTAExtendedDeviceID calledDevice) {
 		this.calledDevice = calledDevice;
 	}
 
-	public void setCallingDevice(CSTAExtendedDeviceID callingDevice) {
+	public void setCallingDevice(final CSTAExtendedDeviceID callingDevice) {
 		this.callingDevice = callingDevice;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setConnection(CSTAConnectionID connection) {
+	public void setConnection(final CSTAConnectionID connection) {
 		this.connection = connection;
 	}
 
 	public void setLastRedirectionDevice(
-			CSTAExtendedDeviceID lastRedirectionDevice) {
+			final CSTAExtendedDeviceID lastRedirectionDevice) {
 		this.lastRedirectionDevice = lastRedirectionDevice;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }
-

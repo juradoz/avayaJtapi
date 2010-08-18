@@ -6,4 +6,3 @@ public abstract interface LucentCallControlAddressMsgWaitingEvent extends
 		CallControlAddressEvent {
 	public abstract int getMessageWaitingBits();
 }
-

@@ -11,20 +11,20 @@ public final class LucentPrivateRouteUsedEvent extends LucentPrivateData {
 	String destRoute_asn;
 	public static final int PDU = 44;
 
-	static LucentPrivateRouteUsedEvent decode(InputStream in) {
-		LucentPrivateRouteUsedEvent _this = new LucentPrivateRouteUsedEvent();
+	static LucentPrivateRouteUsedEvent decode(final InputStream in) {
+		final LucentPrivateRouteUsedEvent _this = new LucentPrivateRouteUsedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		destRoute_asn = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(destRoute_asn, memberStream);
 	}
 
@@ -39,11 +39,11 @@ public final class LucentPrivateRouteUsedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentPrivateRouteUsedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(destRoute_asn, "destRoute", indent));
 
@@ -51,7 +51,7 @@ public final class LucentPrivateRouteUsedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setDestRoute_asn(String destRoute_asn) {
+	public void setDestRoute_asn(final String destRoute_asn) {
 		this.destRoute_asn = destRoute_asn;
 	}
 }

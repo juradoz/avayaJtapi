@@ -6,4 +6,3 @@ import javax.telephony.callcontrol.CallControlConnection;
 public abstract interface ITsapiConnection extends Connection,
 		CallControlConnection {
 }
-

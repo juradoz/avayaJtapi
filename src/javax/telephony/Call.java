@@ -43,4 +43,3 @@ public abstract interface Call {
 
 	public abstract void removeObserver(CallObserver paramCallObserver);
 }
-

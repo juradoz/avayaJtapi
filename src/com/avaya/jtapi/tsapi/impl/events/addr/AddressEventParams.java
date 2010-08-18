@@ -50,35 +50,35 @@ public class AddressEventParams {
 	}
 
 	public void setCallControlForwarding(
-			CallControlForwarding[] callControlForwarding) {
+			final CallControlForwarding[] callControlForwarding) {
 		this.callControlForwarding = callControlForwarding;
 	}
 
-	public void setCause(int cause) {
+	public void setCause(final int cause) {
 		this.cause = cause;
 	}
 
-	public void setDoNotDisturbState(boolean doNotDisturbState) {
+	public void setDoNotDisturbState(final boolean doNotDisturbState) {
 		this.doNotDisturbState = doNotDisturbState;
 	}
 
-	public void setEventId(int eventId) {
+	public void setEventId(final int eventId) {
 		this.eventId = eventId;
 	}
 
-	public void setMetaEvent(MetaEvent metaEvent) {
+	public void setMetaEvent(final MetaEvent metaEvent) {
 		this.metaEvent = metaEvent;
 	}
 
-	public void setMwBits(int mwBits) {
+	public void setMwBits(final int mwBits) {
 		this.mwBits = mwBits;
 	}
 
-	public void setPrivateData(Object privateData) {
+	public void setPrivateData(final Object privateData) {
 		this.privateData = privateData;
 	}
 
-	public void setSource(Object source) {
+	public void setSource(final Object source) {
 		this.source = source;
 	}
 }

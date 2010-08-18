@@ -10,4 +10,3 @@ public abstract interface PhoneEv extends Ev {
 
 	public abstract int getPhoneCause();
 }
-

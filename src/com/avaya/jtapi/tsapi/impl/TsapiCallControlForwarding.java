@@ -7,28 +7,27 @@ public final class TsapiCallControlForwarding {
 	int type;
 	int whichCalls;
 
-	public TsapiCallControlForwarding(String _destAddress, int _type) {
+	public TsapiCallControlForwarding(final String _destAddress, final int _type) {
 		destAddress = _destAddress;
 		type = _type;
 		whichCalls = 1;
 		TsapiTrace.traceConstruction(this, TsapiCallControlForwarding.class);
 	}
 
-	public TsapiCallControlForwarding(String _destAddress, int _type,
-			boolean internalCalls) {
+	public TsapiCallControlForwarding(final String _destAddress,
+			final int _type, final boolean internalCalls) {
 		destAddress = _destAddress;
 		type = _type;
-		if (internalCalls) {
+		if (internalCalls)
 			whichCalls = 2;
-		} else {
+		else
 			whichCalls = 3;
-		}
 		TsapiTrace.traceConstruction(this, TsapiCallControlForwarding.class);
 	}
 
-	public boolean equals(TsapiCallControlForwarding other) {
-		return (destAddress == other.destAddress) && (type == other.type)
-				&& (whichCalls == other.whichCalls);
+	public boolean equals(final TsapiCallControlForwarding other) {
+		return destAddress == other.destAddress && type == other.type
+				&& whichCalls == other.whichCalls;
 	}
 
 	@Override
@@ -55,4 +54,3 @@ public final class TsapiCallControlForwarding {
 		return type;
 	}
 }
-

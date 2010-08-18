@@ -8,4 +8,3 @@ public abstract class ACSUnsolicited extends TsapiPDU {
 		return 1;
 	}
 }
-

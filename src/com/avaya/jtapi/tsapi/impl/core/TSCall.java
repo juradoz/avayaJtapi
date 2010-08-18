@@ -118,11 +118,11 @@ public final class TSCall implements IDomainCall {
 	int refCount = 0;
 	int connection_wait_limit;
 
-	private TSCallObjectAge my_age = new TSCallObjectAge();
+	private final TSCallObjectAge my_age = new TSCallObjectAge();
 
 	TsapiAddress refVDN = null;
 
-	TSCall(TSProviderImpl _provider, int _callID) {
+	TSCall(final TSProviderImpl _provider, final int _callID) {
 		provider = _provider;
 		state = 32;
 		connections = new Vector<TSConnection>();
@@ -135,31 +135,29 @@ public final class TSCall implements IDomainCall {
 		obsSync = new Object();
 		setCallID(_callID);
 		setConnection_wait_limit(2);
-		log.info("Constructing call " + this + " with ID " + _callID + " for "
-				+ provider);
+		TSCall.log.info("Constructing call " + this + " with ID " + _callID
+				+ " for " + provider);
 		if (JTAPILoggingAdapter.isPerformanceLoggingEnabled()) {
-			log.debug("Updating call count in the statistics collector.");
+			TSCall.log
+					.debug("Updating call count in the statistics collector.");
 			PerfStatisticsCollector.updateCallCount();
 		}
 	}
 
-	public void addCallMonitor(TsapiCallMonitor obs)
+	public void addCallMonitor(final TsapiCallMonitor obs)
 			throws TsapiResourceUnavailableException {
-		if (provider.getCapabilities().getMonitorCall() == 0) {
+		if (provider.getCapabilities().getMonitorCall() == 0)
 			throw new TsapiResourceUnavailableException(0, 0, 0,
 					"unsupported by driver");
-		}
 
-		if (!provider.allowCallMonitoring()) {
+		if (!provider.allowCallMonitoring())
 			throw new TsapiResourceUnavailableException(0, 0, 0,
 					"no permissions");
-		}
 
 		switch (state) {
 		case 32:
-			if (monitorThreads.contains(obs)) {
+			if (monitorThreads.contains(obs))
 				return;
-			}
 
 			synchronized (this) {
 				monitorPending = true;
@@ -168,24 +166,21 @@ public final class TSCall implements IDomainCall {
 			}
 			break;
 		case 34:
-			if (monitorThreads.contains(obs)) {
+			if (monitorThreads.contains(obs))
 				return;
-			}
 
 			obs.addReference();
 			obs.deleteReference(this, false, 100, null);
 			break;
 		default:
 			synchronized (obsSync) {
-				if (monitorThreads.contains(obs)) {
+				if (monitorThreads.contains(obs))
 					return;
-				}
 				int i = 0;
 				synchronized (deviceObsVector) {
 					for (i = 0; i < deviceObsVector.size(); ++i) {
-						if (((DeviceObs) deviceObsVector.elementAt(i)).callback != obs) {
+						if (((DeviceObs) deviceObsVector.elementAt(i)).callback != obs)
 							continue;
-						}
 						i = 1;
 
 						monitorThreads.addElement(((DeviceObs) deviceObsVector
@@ -221,66 +216,61 @@ public final class TSCall implements IDomainCall {
 		}
 	}
 
-	void addConnection(TSConnection tsConn, Vector<TSEvent> eventList) {
+	void addConnection(final TSConnection tsConn,
+			final Vector<TSEvent> eventList) {
 		synchronized (connections) {
-			if (connections.contains(tsConn)) {
+			if (connections.contains(tsConn))
 				return;
-			}
 
 			connections.addElement(tsConn);
 
-			if (connections.size() > 0) {
+			if (connections.size() > 0)
 				setState(33, eventList);
-			}
 
-			if (connections.size() >= getConnection_wait_limit()) {
+			if (connections.size() >= getConnection_wait_limit())
 				connections.notify();
-			}
 		}
 	}
 
-	void addDeviceObservers(TSDevice tsDevice,
-			Vector<TsapiCallMonitor> _terminalObservers,
-			Vector<TsapiCallMonitor> _addressObservers,
-			Vector<TsapiCallMonitor> _cvdObservers, boolean sendSnapshotEvents) {
+	void addDeviceObservers(final TSDevice tsDevice,
+			final Vector<TsapiCallMonitor> _terminalObservers,
+			final Vector<TsapiCallMonitor> _addressObservers,
+			final Vector<TsapiCallMonitor> _cvdObservers,
+			final boolean sendSnapshotEvents) {
 		TsapiCallMonitor callback = null;
 
 		boolean found = false;
 
 		CSTAConnectionID snapConnID = null;
 		synchronized (connections) {
-			if (connections.size() > 0) {
+			if (connections.size() > 0)
 				try {
 					snapConnID = ((TSConnection) connections.elementAt(0))
 							.getConnID();
-				} catch (TsapiPlatformException e) {
-					log.error("Ignoring exception: " + e);
-					if (callID != 0) {
+				} catch (final TsapiPlatformException e) {
+					TSCall.log.error("Ignoring exception: " + e);
+					if (callID != 0)
 						snapConnID = new CSTAConnectionID(callID, "", (short) 0);
-					}
 				}
-			} else if (callID != 0) {
+			else if (callID != 0)
 				snapConnID = new CSTAConnectionID(callID, "", (short) 0);
-			}
 		}
 
 		if (_cvdObservers != null) {
-			Vector<TsapiCallMonitor> cvdObservers = new Vector<TsapiCallMonitor>(
+			final Vector<TsapiCallMonitor> cvdObservers = new Vector<TsapiCallMonitor>(
 					_cvdObservers);
 			for (int i = 0; i < cvdObservers.size(); ++i) {
 				found = false;
 				callback = (TsapiCallMonitor) cvdObservers.elementAt(i);
 				synchronized (monitorThreads) {
-					if (monitorThreads.contains(callback)) {
+					if (monitorThreads.contains(callback))
 						found = true;
-					}
 
 					if (!found) {
 						synchronized (staleObsVector) {
 							for (int j = 0; j < staleObsVector.size(); ++j) {
-								if (staleObsVector.elementAt(j) != callback) {
+								if (staleObsVector.elementAt(j) != callback)
 									continue;
-								}
 								monitorThreads.addElement(callback);
 								staleObsVector.removeElementAt(j);
 
@@ -289,13 +279,12 @@ public final class TSCall implements IDomainCall {
 							}
 						}
 
-						if (!found) {
+						if (!found)
 							synchronized (deviceObsVector) {
 								for (int j = 0; j < deviceObsVector.size(); ++j) {
 									if (((DeviceObs) deviceObsVector
-											.elementAt(j)).callback != callback) {
+											.elementAt(j)).callback != callback)
 										continue;
-									}
 									monitorThreads.addElement(callback);
 									deviceObsVector.removeElementAt(j);
 
@@ -303,22 +292,18 @@ public final class TSCall implements IDomainCall {
 									break;
 								}
 							}
-						}
 
 					}
 
-					if ((!found)
-							&& (((snapConnID == null) || (!sendSnapshotEvents)))) {
+					if (!found && (snapConnID == null || !sendSnapshotEvents)) {
 						monitorThreads.addElement(callback);
 						callback.addReference();
-						if (sendSnapshotEvents) {
+						if (sendSnapshotEvents)
 							sendSnapshot(callback, null, false);
-						}
 					}
 				}
-				if ((found) || (snapConnID == null) || (!sendSnapshotEvents)) {
+				if (found || snapConnID == null || !sendSnapshotEvents)
 					continue;
-				}
 				callbackAndTypeVector.addElement(new CallbackAndType(callback,
 						null));
 			}
@@ -333,24 +318,22 @@ public final class TSCall implements IDomainCall {
 
 			devWithType = new DevWithType(tsDevice, false);
 
-			Vector<TsapiCallMonitor> addressObservers = new Vector<TsapiCallMonitor>(
+			final Vector<TsapiCallMonitor> addressObservers = new Vector<TsapiCallMonitor>(
 					_addressObservers);
 
 			for (int i = 0; i < addressObservers.size(); ++i) {
 				callback = (TsapiCallMonitor) addressObservers.elementAt(i);
 				found = false;
-				if (monitorThreads.contains(callback)) {
+				if (monitorThreads.contains(callback))
 					found = true;
-				}
 
-				if (!found) {
+				if (!found)
 					synchronized (deviceObsVector) {
 						synchronized (staleObsVector) {
 							int k;
 							for (k = 0; k < staleObsVector.size(); ++k) {
-								if (staleObsVector.elementAt(k) != callback) {
+								if (staleObsVector.elementAt(k) != callback)
 									continue;
-								}
 								found = true;
 								devObs = new DeviceObs(callback);
 								devObs.devWithTypeVector
@@ -366,66 +349,58 @@ public final class TSCall implements IDomainCall {
 							for (i = 0; i < deviceObsVector.size(); ++i) {
 								devObs = (DeviceObs) deviceObsVector
 										.elementAt(i);
-								if (devObs.callback != callback) {
+								if (devObs.callback != callback)
 									continue;
-								}
 								found = true;
 								synchronized (devObs.devWithTypeVector) {
 									if (!devObs.devWithTypeVector
-											.contains(devWithType)) {
+											.contains(devWithType))
 										devObs.devWithTypeVector
 												.addElement(devWithType);
-									}
 								}
 								break;
 							}
 
-							if ((!found)
-									&& (((snapConnID == null) || (!sendSnapshotEvents)))) {
+							if (!found
+									&& (snapConnID == null || !sendSnapshotEvents)) {
 								devObs = new DeviceObs(callback);
 								devObs.devWithTypeVector
 										.addElement(devWithType);
 								deviceObsVector.addElement(devObs);
 								callback.addReference();
-								if (sendSnapshotEvents) {
+								if (sendSnapshotEvents)
 									sendSnapshot(callback, null, false);
-								}
 							}
 						}
 					}
-				}
-				if ((found) || (snapConnID == null) || (!sendSnapshotEvents)) {
+				if (found || snapConnID == null || !sendSnapshotEvents)
 					continue;
-				}
 				callbackAndTypeVector.addElement(new CallbackAndType(callback,
 						devWithType));
 			}
 		}
 
-		if (_terminalObservers == null) {
+		if (_terminalObservers == null)
 			return;
-		}
 		found = false;
 
 		devWithType = new DevWithType(tsDevice, true);
 
-		Vector<TsapiCallMonitor> terminalObservers = new Vector<TsapiCallMonitor>(
+		final Vector<TsapiCallMonitor> terminalObservers = new Vector<TsapiCallMonitor>(
 				_terminalObservers);
 
 		for (int i = 0; i < terminalObservers.size(); ++i) {
 			callback = (TsapiCallMonitor) terminalObservers.elementAt(i);
 			found = false;
-			if (monitorThreads.contains(callback)) {
+			if (monitorThreads.contains(callback))
 				found = true;
-			}
-			if (!found) {
+			if (!found)
 				synchronized (deviceObsVector) {
 					synchronized (staleObsVector) {
 						int l;
 						for (l = 0; l < staleObsVector.size(); ++l) {
-							if (staleObsVector.elementAt(l) != callback) {
+							if (staleObsVector.elementAt(l) != callback)
 								continue;
-							}
 							found = true;
 							devObs = new DeviceObs(callback);
 							devObs.devWithTypeVector.addElement(devWithType);
@@ -440,84 +415,75 @@ public final class TSCall implements IDomainCall {
 						int j;
 						for (j = 0; j < deviceObsVector.size(); ++j) {
 							devObs = (DeviceObs) deviceObsVector.elementAt(j);
-							if (devObs.callback != callback) {
+							if (devObs.callback != callback)
 								continue;
-							}
 							found = true;
 							synchronized (devObs.devWithTypeVector) {
 								if (!devObs.devWithTypeVector
-										.contains(devWithType)) {
+										.contains(devWithType))
 									devObs.devWithTypeVector
 											.addElement(devWithType);
-								}
 							}
 							break;
 						}
 
-						if ((!found)
-								&& (((snapConnID == null) || (!sendSnapshotEvents)))) {
+						if (!found
+								&& (snapConnID == null || !sendSnapshotEvents)) {
 							devObs = new DeviceObs(callback);
 							devObs.devWithTypeVector.addElement(devWithType);
 							deviceObsVector.addElement(devObs);
 							callback.addReference();
-							if (sendSnapshotEvents) {
+							if (sendSnapshotEvents)
 								sendSnapshot(callback, null, false);
-							}
 						}
 					}
 				}
-			}
-			if ((found) || (snapConnID == null) || (!sendSnapshotEvents)) {
+			if (found || snapConnID == null || !sendSnapshotEvents)
 				continue;
-			}
 			callbackAndTypeVector.addElement(new CallbackAndType(callback,
 					devWithType));
 		}
 	}
 
-	public TSConnection addParty(String newParty, boolean active)
+	public TSConnection addParty(final String newParty, final boolean active)
 			throws TsapiInvalidStateException, TsapiInvalidPartyException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		if (!provider.isLucentV5()) {
+		if (!provider.isLucentV5())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		if ((updateObject()) && (state != 33)) {
+		if (updateObject() && state != 33)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state,
 					"call is not active");
-		}
 
-		CSTAConnectionID connID = selectConnectionIdForAddParty();
+		final CSTAConnectionID connID = selectConnectionIdForAddParty();
 
-		if (connID == null) {
+		if (connID == null)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state,
 					"call is not active (no connections)");
-		}
 
-		LucentSingleStepConferenceCall ssc = new LucentSingleStepConferenceCall(
-				connID, newParty, (short) ((active) ? 1 : 0), false);
+		final LucentSingleStepConferenceCall ssc = new LucentSingleStepConferenceCall(
+				connID, newParty, (short) (active ? 1 : 0), false);
 
-		ConfHandler handler = new ConfXferConfHandler(this, null, 90);
+		final ConfHandler handler = new ConfXferConfHandler(this, null, 90);
 		try {
 			provider.sendPrivateData(ssc.makeTsapiPrivate(), handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"addParty failure, exception: " + e);
-			}
 
 			throw new TsapiPlatformException(3, 0,
 					"addParty failure, exception: " + e);
@@ -526,19 +492,17 @@ public final class TSCall implements IDomainCall {
 		return ((ConfXferConfHandler) handler).newConn;
 	}
 
-	public void addTrunk(TSTrunk trunk, Vector<TSEvent> eventList) {
+	public void addTrunk(final TSTrunk trunk, final Vector<TSEvent> eventList) {
 		synchronized (trkVector) {
-			if (trkVector.contains(trunk)) {
+			if (trkVector.contains(trunk))
 				return;
-			}
 
-			if (trunk.setCall(this, eventList)) {
+			if (trunk.setCall(this, eventList))
 				trkVector.addElement(trunk);
-			}
 		}
 	}
 
-	public boolean callIsInVDNDomain(TSCall callToCheck) {
+	public boolean callIsInVDNDomain(final TSCall callToCheck) {
 		return callToCheck.refVDN != null;
 	}
 
@@ -547,27 +511,24 @@ public final class TSCall implements IDomainCall {
 	}
 
 	public boolean checkForMonitors() {
-		if (isMonitorSet() == true) {
+		if (isMonitorSet() == true)
 			return true;
-		}
 
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
-				TSConnection conn = (TSConnection) connections.elementAt(i);
-				if (conn.getTSDevice().isMonitorSet()) {
+				final TSConnection conn = (TSConnection) connections
+						.elementAt(i);
+				if (conn.getTSDevice().isMonitorSet())
 					return true;
-				}
-				Vector<TSConnection> termConns = conn.getTermConns();
-				if (termConns == null) {
+				final Vector<TSConnection> termConns = conn.getTermConns();
+				if (termConns == null)
 					continue;
-				}
 				synchronized (termConns) {
 					for (int j = 0; j < termConns.size(); ++j) {
-						TSConnection termconn = (TSConnection) termConns
+						final TSConnection termconn = (TSConnection) termConns
 								.elementAt(j);
-						if (!termconn.getTSDevice().isMonitorSet()) {
+						if (!termconn.getTSDevice().isMonitorSet())
 							continue;
-						}
 						return true;
 					}
 
@@ -583,34 +544,33 @@ public final class TSCall implements IDomainCall {
 	boolean cleanUCIDInCall() {
 		CallUCIDStatus callsttype = CallUCIDStatus.OK;
 		try {
-			Object ucidConf = getQueryUCIDConf();
-			log.debug("UCID obtained from the switch is "
+			final Object ucidConf = getQueryUCIDConf();
+			TSCall.log.debug("UCID obtained from the switch is "
 					+ ((HasUCID) ucidConf).getUcid());
 
-			if ((getUCID() != null)
-					&& (!getUCID()
-							.contentEquals(((HasUCID) ucidConf).getUcid()))) {
+			if (getUCID() != null
+					&& !getUCID().contentEquals(((HasUCID) ucidConf).getUcid())) {
 				callsttype = CallUCIDStatus.UCIDMISMATCH;
-				log.info("ERROR: mismatched ucid, for call: " + this
+				TSCall.log.info("ERROR: mismatched ucid, for call: " + this
 						+ " - setting call state to INVALID.");
 			}
-		} catch (TsapiPlatformException e) {
-			if ((e.getErrorType() == 2) && (e.getErrorCode() == 24)) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2 && e.getErrorCode() == 24) {
 				callsttype = CallUCIDStatus.NONEXISTING;
-				log
+				TSCall.log
 						.info("ERROR: Attempted cleanUCIDInCall() but no active call: "
 								+ this + " - setting call state to INVALID.");
 			} else {
 				callsttype = CallUCIDStatus.OK;
-				log
+				TSCall.log
 						.info("ERROR: Saw & ignored exception (TsapiPlatformException)  for cleanUCIDsInCallsInConnections(), for call "
 								+ this
 								+ " - Perhaps UCID queries are disabled on the switch. "
 								+ e);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			callsttype = CallUCIDStatus.OK;
-			log
+			TSCall.log
 					.info("ERROR: Saw & ignored unexpected exception  for cleanUCIDsInCallsInConnections(), for call "
 							+ this
 							+ " - Perhaps UCID queries are disabled on the switch. "
@@ -628,29 +588,26 @@ public final class TSCall implements IDomainCall {
 		return callsttype == CallUCIDStatus.OK;
 	}
 
-	public void conference(TSCall otherCall, CSTAPrivate reqPriv)
+	public void conference(final TSCall otherCall, final CSTAPrivate reqPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiResourceUnavailableException, TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getConferenceCall() == 0) {
+		if (provider.getCapabilities().getConferenceCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		boolean thisCallUpdate = updateObject();
-		boolean otherCallUpdate = otherCall.updateObject();
+		final boolean thisCallUpdate = updateObject();
+		final boolean otherCallUpdate = otherCall.updateObject();
 
-		if ((thisCallUpdate) && (state != 33)) {
+		if (thisCallUpdate && state != 33)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state,
 					"call is not active");
-		}
 
-		if ((!confEnable) || (!otherCall.confEnable)) {
+		if (!confEnable || !otherCall.confEnable)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state,
 					"conferencing disabled");
-		}
 
 		TSConnection activeTermConn = confController;
 		TSConnection heldTermConn = otherCall.confController;
@@ -662,87 +619,78 @@ public final class TSCall implements IDomainCall {
 				synchronized (connections) {
 					for (int i = 0; i < connections.size(); ++i) {
 						conn = (TSConnection) connections.elementAt(i);
-						Vector<TSConnection> termConns = conn.getTermConns();
-						if (termConns == null) {
+						final Vector<TSConnection> termConns = conn
+								.getTermConns();
+						if (termConns == null)
 							continue;
-						}
-						Vector<TSConnection> tcs = new Vector<TSConnection>(
+						final Vector<TSConnection> tcs = new Vector<TSConnection>(
 								termConns);
 						for (int j = 0; j < tcs.size(); ++j) {
 							termConn = (TSConnection) tcs.elementAt(j);
-							if ((termConn.getCallControlTermConnState() != 98)
-									&& (termConn.getCallControlTermConnState() != 103)) {
+							if (termConn.getCallControlTermConnState() != 98
+									&& termConn.getCallControlTermConnState() != 103)
 								continue;
-							}
 							activeTermConn = termConn;
 
 							heldTermConn = otherCall
 									.findHeldTermConnection(activeTermConn
 											.getTSDevice());
-							if (heldTermConn == null) {
+							if (heldTermConn == null)
 								continue;
-							}
 							found = true;
 							break;
 						}
 
-						if (found) {
+						if (found)
 							break;
-						}
 					}
 				}
-				if (activeTermConn == null) {
+				if (activeTermConn == null)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "no active terminal connection found");
-				}
 
-				if (heldTermConn == null) {
+				if (heldTermConn == null)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "no held terminal connection found");
-				}
 
 			} else {
-				if ((otherCallUpdate)
-						&& (heldTermConn.getCallControlTermConnState() != 99)
-						&& (heldTermConn.getCallControlTermConnState() != 103)) {
+				if (otherCallUpdate
+						&& heldTermConn.getCallControlTermConnState() != 99
+						&& heldTermConn.getCallControlTermConnState() != 103)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "terminal connection not held");
-				}
 
 				activeTermConn = findActiveTermConnection(heldTermConn
 						.getTSDevice());
-				if (activeTermConn == null) {
+				if (activeTermConn == null)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "no active terminal connection found");
-				}
 
 			}
 
 		} else if (heldTermConn == null) {
-			if ((thisCallUpdate)
-					&& (activeTermConn.getCallControlTermConnState() != 98)
-					&& (activeTermConn.getCallControlTermConnState() != 103)) {
+			if (thisCallUpdate
+					&& activeTermConn.getCallControlTermConnState() != 98
+					&& activeTermConn.getCallControlTermConnState() != 103)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"Terminal connection not active. It's state is "
 								+ activeTermConn.getCallControlTermConnState());
-			}
 
 			heldTermConn = otherCall.findHeldTermConnection(activeTermConn
 					.getTSDevice());
-			if (heldTermConn == null) {
+			if (heldTermConn == null)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"no held terminal connection found");
-			}
 
-		} else if ((thisCallUpdate) && (otherCallUpdate)) {
-			if ((activeTermConn.getCallControlTermConnState() != 98)
-					&& (activeTermConn.getCallControlTermConnState() != 103)) {
+		} else if (thisCallUpdate && otherCallUpdate) {
+			if (activeTermConn.getCallControlTermConnState() != 98
+					&& activeTermConn.getCallControlTermConnState() != 103)
 				throw new TsapiInvalidStateException(
 						3,
 						0,
@@ -751,10 +699,9 @@ public final class TSCall implements IDomainCall {
 						state,
 						"the state of the active terminal connection is not TALKING or UNKNOWN; its state is "
 								+ activeTermConn.getCallControlTermConnState());
-			}
 
-			if ((heldTermConn.getCallControlTermConnState() != 99)
-					&& (heldTermConn.getCallControlTermConnState() != 103)) {
+			if (heldTermConn.getCallControlTermConnState() != 99
+					&& heldTermConn.getCallControlTermConnState() != 103)
 				throw new TsapiInvalidStateException(
 						3,
 						0,
@@ -763,132 +710,128 @@ public final class TSCall implements IDomainCall {
 						state,
 						"the state of the held terminal connection is not HELD or UNKNOWN; its state is "
 								+ heldTermConn.getCallControlTermConnState());
-			}
 
 			if (!activeTermConn.getTSDevice().getTermConns().contains(
-					heldTermConn)) {
+					heldTermConn))
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"the held terminal connection is not associated with the device ("
 								+ activeTermConn.getTSDevice()
 								+ ") of the active terminal connection");
-			}
 
 		}
 
-		ConfHandler handler = new ConfXferConfHandler(this, otherCall, 12);
+		final ConfHandler handler = new ConfXferConfHandler(this, otherCall, 12);
 		try {
 			provider.tsapi.conferenceCall(heldTermConn.getConnID(),
 					activeTermConn.getConnID(), reqPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"conferenceCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "conferenceCall failure");
 		}
 	}
 
-	public Vector<TSConnection> connect(TSDevice device, String destAddress,
-			CSTAPrivate reqPriv) throws TsapiPrivilegeViolationException,
+	public Vector<TSConnection> connect(final TSDevice device,
+			final String destAddress, final CSTAPrivate reqPriv)
+			throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidPartyException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getMakeCall() == 0) {
+		if (provider.getCapabilities().getMakeCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		if (state != 32) {
+		if (state != 32)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "call not idle");
-		}
 
-		String devName = device.getName();
+		final String devName = device.getName();
 
-		if ((((provider.getCapabilities().getSnapshotCallReq() == 0) || (monitorPending)))
-				&& (internalDeviceMonitor == null)) {
+		if ((provider.getCapabilities().getSnapshotCallReq() == 0 || monitorPending)
+				&& internalDeviceMonitor == null)
 			try {
 				internalDeviceMonitor = device.setInternalMonitor(this);
-			} catch (TsapiUnableToSendException tue) {
+			} catch (final TsapiUnableToSendException tue) {
 				throw tue;
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+			} catch (final Exception e) {
+				TSCall.log.error(e.getMessage(), e);
 			}
-		}
 
-		MakeCallConfHandler handler = new MakeCallConfHandler(this, device,
-				destAddress, 24);
+		final MakeCallConfHandler handler = new MakeCallConfHandler(this,
+				device, destAddress, 24);
 		try {
 			if (provider.getDeviceExt(destAddress) == 1) {
 				recordVDNDomainEntry(destAddress);
 
-				TSDevice tsDevice = provider.createDevice(destAddress);
+				final TSDevice tsDevice = provider.createDevice(destAddress);
 				tsDevice.setMonitor(false, true);
 			}
 			provider.tsapi.makeCall(devName, destAddress, reqPriv, handler);
-			log.info("TSCall.connect: finished makeCall for Call ID " + callID);
-		} catch (TsapiInvalidStateException e) {
+			TSCall.log.info("TSCall.connect: finished makeCall for Call ID "
+					+ callID);
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"makeCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "makeCall failure");
 		}
 
-		log.info("TSCall.connect: about to call connectFinish() for callID "
-				+ callID);
-		if (handOffCall != null) {
+		TSCall.log
+				.info("TSCall.connect: about to call connectFinish() for callID "
+						+ callID);
+		if (handOffCall != null)
 			return handOffCall.connectFinish(device, destAddress,
 					handler.newCall);
-		}
 
 		return connectFinish(device, destAddress, handler.newCall);
 	}
 
-	Vector<TSConnection> connectFinish(TSDevice device, String destAddress,
-			CSTAConnectionID newCall) {
-		if (device.isMonitorSet()) {
+	Vector<TSConnection> connectFinish(final TSDevice device,
+			final String destAddress, final CSTAConnectionID newCall) {
+		if (device.isMonitorSet())
 			needSnapshot = false;
-		} else {
-			log.info("TSCall.connect: calling doSnapshot() for callID "
+		else {
+			TSCall.log.info("TSCall.connect: calling doSnapshot() for callID "
 					+ callID);
 
 			doSnapshot(newCall, null, false);
 		}
 
-		log.info("TSCall.connect: about to wait for 2 connections for callID "
-				+ callID);
+		TSCall.log
+				.info("TSCall.connect: about to wait for 2 connections for callID "
+						+ callID);
 
 		synchronized (connections) {
 			if (connections.size() < 2) {
 				setConnection_wait_limit(2);
-				if ((!waitForConnections("connect", 2)) && (state != 34)) {
-					log.info("failed to get 2 connections for call ID "
+				if (!waitForConnections("connect", 2) && state != 34) {
+					TSCall.log.info("failed to get 2 connections for call ID "
 							+ callID);
 
 					throw new TsapiPlatformException(4, 0,
@@ -900,25 +843,24 @@ public final class TSCall implements IDomainCall {
 		return connections;
 	}
 
-	public Vector<TSConnection> connectPredictive(TSDevice device,
-			String dialedDigits, int connectionState, int maxRings,
-			int answeringTreatment, int answeringEndpointType,
-			String destRoute, boolean priorityCall, UserToUserInfo userInfo,
+	public Vector<TSConnection> connectPredictive(final TSDevice device,
+			final String dialedDigits, final int connectionState,
+			final int maxRings, final int answeringTreatment,
+			final int answeringEndpointType, final String destRoute,
+			final boolean priorityCall, final UserToUserInfo userInfo,
 			CSTAPrivate reqPriv) throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidPartyException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getMakePredictiveCall() == 0) {
+		if (provider.getCapabilities().getMakePredictiveCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		if (state != 32) {
+		if (state != 32)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "call not idle");
-		}
 
-		String devName = device.getName();
+		final String devName = device.getName();
 		short allocState;
 		switch (connectionState) {
 		case 50:
@@ -950,68 +892,65 @@ public final class TSCall implements IDomainCall {
 				throw new TsapiInvalidArgumentException(0, 0,
 						"invalid answeringTreatment");
 			}
-			LucentMakePredictiveCall lmc = createLucentMakePredictiveCall(
+			final LucentMakePredictiveCall lmc = createLucentMakePredictiveCall(
 					priorityCall, maxRings, answerTreat, destRoute, userInfo);
 
 			reqPriv = lmc.makeTsapiPrivate();
 		}
 
-		MakeCallConfHandler handler = new MakeCallConfHandler(this, device,
-				dialedDigits, 26);
+		final MakeCallConfHandler handler = new MakeCallConfHandler(this,
+				device, dialedDigits, 26);
 		try {
 			provider.tsapi.makePredictiveCall(devName, dialedDigits,
 					allocState, reqPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"makePredictiveCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "makePredictiveCall failure");
 		}
 
-		boolean hasPredictiveCallMonitor = device
+		final boolean hasPredictiveCallMonitor = device
 				.isPredictiveCallsViaDeviceMonitorSet();
 
-		if (handOffCall != null) {
+		if (handOffCall != null)
 			return handOffCall.connectPredictiveFinish(handler.newCall,
 					hasPredictiveCallMonitor);
-		}
 
 		return connectPredictiveFinish(handler.newCall,
 				hasPredictiveCallMonitor);
 	}
 
-	Vector<TSConnection> connectPredictiveFinish(CSTAConnectionID connID,
-			boolean hasPredictiveCallMonitor) {
-		if (!hasPredictiveCallMonitor) {
+	Vector<TSConnection> connectPredictiveFinish(final CSTAConnectionID connID,
+			final boolean hasPredictiveCallMonitor) {
+		if (!hasPredictiveCallMonitor)
 			try {
 				monitorCall(connID, true);
-			} catch (TsapiUnableToSendException tue) {
+			} catch (final TsapiUnableToSendException tue) {
 				throw tue;
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+			} catch (final Exception e) {
+				TSCall.log.error(e.getMessage(), e);
 			}
 
-		}
-
 		synchronized (connections) {
-			if ((connections.size() < 2)
-					&& (!waitForConnections("connectPredictive", 2))
-					&& (state != 34)) {
-				log.error("failed to get 2 connections for call ID " + callID);
+			if (connections.size() < 2
+					&& !waitForConnections("connectPredictive", 2)
+					&& state != 34) {
+				TSCall.log.error("failed to get 2 connections for call ID "
+						+ callID);
 
 				throw new TsapiPlatformException(4, 0,
 						"Could not meet post-conditions of connectPredictive()");
@@ -1021,119 +960,109 @@ public final class TSCall implements IDomainCall {
 		return connections;
 	}
 
-	void considerAddingVDNMonitorCallObservers(Object monitored) {
-		if (!(monitored instanceof TSDevice)) {
+	void considerAddingVDNMonitorCallObservers(final Object monitored) {
+		if (!(monitored instanceof TSDevice))
 			return;
-		}
-		TSDevice monitoredTSDevice = (TSDevice) monitored;
-		if (!monitoredTSDevice.isPredictiveCallsViaDeviceMonitorSet()) {
+		final TSDevice monitoredTSDevice = (TSDevice) monitored;
+		if (!monitoredTSDevice.isPredictiveCallsViaDeviceMonitorSet())
 			return;
-		}
 		addDeviceObservers(monitoredTSDevice, null, null,
 				monitoredTSDevice.callsViaAddressMonitorThreads, true);
 	}
 
-	public Vector<TSConnection> consult(TSConnection termconn, String address,
-			CSTAPrivate reqPriv) throws TsapiPrivilegeViolationException,
+	public Vector<TSConnection> consult(final TSConnection termconn,
+			final String address, final CSTAPrivate reqPriv)
+			throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiResourceUnavailableException, TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getConsultationCall() == 0) {
+		if (provider.getCapabilities().getConsultationCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
-		if (state != 32) {
+		if (state != 32)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "call not idle");
-		}
 
-		boolean otherCallUpdate = termconn.getTSCall().updateObject();
-		if ((otherCallUpdate) && (termconn.getTSCall().state != 33)) {
+		final boolean otherCallUpdate = termconn.getTSCall().updateObject();
+		if (otherCallUpdate && termconn.getTSCall().state != 33)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(termconn.getTSCall(), false), 1, state,
 					"other call not active");
-		}
 
-		if ((otherCallUpdate) && (termconn.getCallControlTermConnState() != 98)
-				&& (termconn.getCallControlTermConnState() != 103)) {
+		if (otherCallUpdate && termconn.getCallControlTermConnState() != 98
+				&& termconn.getCallControlTermConnState() != 103)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(termconn, false), 5, state,
 					"terminal connection not talking");
-		}
 
-		if ((((provider.getCapabilities().getSnapshotCallReq() == 0) || (monitorPending)))
-				&& (internalDeviceMonitor == null)) {
+		if ((provider.getCapabilities().getSnapshotCallReq() == 0 || monitorPending)
+				&& internalDeviceMonitor == null)
 			try {
 				internalDeviceMonitor = termconn.getTSDevice()
 						.setInternalMonitor(this);
-			} catch (TsapiUnableToSendException tue) {
+			} catch (final TsapiUnableToSendException tue) {
 				throw tue;
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+			} catch (final Exception e) {
+				TSCall.log.error(e.getMessage(), e);
 			}
 
-		}
-
-		MakeCallConfHandler handler = new MakeCallConfHandler(this, termconn
-				.getTSDevice(), address, 14);
+		final MakeCallConfHandler handler = new MakeCallConfHandler(this,
+				termconn.getTSDevice(), address, 14);
 		try {
 			provider.tsapi.consultationCall(termconn.getConnID(), address,
 					reqPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"consultationCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "consultationCall failure");
 		}
 
-		if (handOffCall != null) {
+		if (handOffCall != null)
 			return handOffCall
 					.consultFinish(termconn, address, handler.newCall);
-		}
 
 		return consultFinish(termconn, address, handler.newCall);
 	}
 
-	Vector<TSConnection> consultFinish(TSConnection termconn, String address,
-			CSTAConnectionID newCall) {
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
+	Vector<TSConnection> consultFinish(final TSConnection termconn,
+			final String address, final CSTAConnectionID newCall) {
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
 		termconn.setTermConnState(99, eventList);
 		if (eventList.size() > 0) {
-			Vector<TsapiCallMonitor> observers = termconn.getTSCall()
+			final Vector<TsapiCallMonitor> observers = termconn.getTSCall()
 					.getObservers();
 			for (int j = 0; j < observers.size(); ++j) {
-				TsapiCallMonitor callback = (TsapiCallMonitor) observers
+				final TsapiCallMonitor callback = (TsapiCallMonitor) observers
 						.elementAt(j);
 				callback.deliverEvents(eventList, 100, false);
 			}
 
 		}
 
-		if (termconn.getTSDevice().isMonitorSet()) {
+		if (termconn.getTSDevice().isMonitorSet())
 			needSnapshot = false;
-		} else {
+		else
 			doSnapshot(newCall, null, false);
-		}
 
 		synchronized (connections) {
 			if (connections.size() < 2) {
 				try {
 					connections.wait(Tsapi.getCallCompletionTimeout());
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 				}
-				if ((connections.size() < 2) && (state != 34)) {
-					log.error("failed to get 2 connections for call ID "
+				if (connections.size() < 2 && state != 34) {
+					TSCall.log.error("failed to get 2 connections for call ID "
 							+ callID);
 
 					throw new TsapiPlatformException(4, 0,
@@ -1144,77 +1073,69 @@ public final class TSCall implements IDomainCall {
 		return connections;
 	}
 
-	void copyStuff(TSCall otherCall) {
-		if (!callIsInVDNDomain(otherCall)) {
+	void copyStuff(final TSCall otherCall) {
+		if (!callIsInVDNDomain(otherCall))
 			return;
-		}
-		Vector<TsapiCallMonitor> observers = otherCall.getCallObservers();
+		final Vector<TsapiCallMonitor> observers = otherCall.getCallObservers();
 
-		for (int i = 0; i < observers.size(); ++i) {
-			if ((((TsapiCallMonitor) observers.elementAt(i)).isVDN())
-					&& (!monitorThreads.contains(observers.elementAt(i)))) {
+		for (int i = 0; i < observers.size(); ++i)
+			if (((TsapiCallMonitor) observers.elementAt(i)).isVDN()
+					&& !monitorThreads.contains(observers.elementAt(i))) {
 				monitorThreads.addElement((TsapiCallMonitor) observers
 						.elementAt(i));
 				((TsapiCallMonitor) observers.elementAt(i)).addReference();
-			} else {
+			} else
 				otherCall.removeCallMonitor((TsapiCallMonitor) observers
 						.elementAt(i));
-			}
-		}
 	}
 
 	private LucentMakePredictiveCall createLucentMakePredictiveCall(
-			boolean priorityCall, int maxRings, short answerTreat,
-			String destRoute, UserToUserInfo userInfo) {
-		LucentUserToUserInfo asn_uui = TsapiPromoter
+			final boolean priorityCall, final int maxRings,
+			final short answerTreat, final String destRoute,
+			final UserToUserInfo userInfo) {
+		final LucentUserToUserInfo asn_uui = TsapiPromoter
 				.demoteUserToUserInfo(userInfo);
 
-		if (provider.isLucentV6()) {
+		if (provider.isLucentV6())
 			return new LucentV6MakePredictiveCall(priorityCall, maxRings,
 					answerTreat, destRoute, asn_uui);
-		}
 		return new LucentMakePredictiveCall(priorityCall, maxRings,
 				answerTreat, destRoute, asn_uui);
 	}
 
 	synchronized void delete() {
-		log
-				.info("Call object= " + this + " being deleted" + " for "
-						+ provider);
+		TSCall.log.info("Call object= " + this + " being deleted" + " for "
+				+ provider);
 
-		if (!delayVDNremoveCallFromDomain) {
+		if (!delayVDNremoveCallFromDomain)
 			provider.removeCallFromDomain(this);
-		}
 
 		if (internalDeviceMonitor != null) {
 			internalDeviceMonitor.removeInternalMonitor(this);
 			internalDeviceMonitor = null;
 		}
 
-		if (nonCallID != -1) {
+		if (nonCallID != -1)
 			provider.deleteNonCallFromHash(nonCallID);
-		}
 
-		if (callID == 0) {
+		if (callID == 0)
 			return;
-		}
 		provider.deleteCallFromHash(callID);
 		provider.addCallToSaveHash(this);
 		synchronized (staleConnections) {
-			for (int i = 0; i < staleConnections.size(); ++i) {
+			for (int i = 0; i < staleConnections.size(); ++i)
 				((TSConnection) staleConnections.elementAt(i)).delete();
-			}
 		}
 	}
 
-	void doCallbackSnapshots(Vector<TSEvent> eventList, int cause) {
+	void doCallbackSnapshots(final Vector<TSEvent> eventList, final int cause) {
 		CallbackAndType cbAndType = null;
 		synchronized (callbackAndTypeVector) {
 			try {
 				for (int i = 0; i < callbackAndTypeVector.size(); ++i) {
 					cbAndType = (CallbackAndType) callbackAndTypeVector
 							.elementAt(i);
-					if (cbAndType.devWithType == null) {
+					if (cbAndType.devWithType == null)
 						synchronized (monitorThreads) {
 							if (!monitorThreads.contains(cbAndType.callback)) {
 								monitorThreads.addElement(cbAndType.callback);
@@ -1223,16 +1144,15 @@ public final class TSCall implements IDomainCall {
 										false, cause);
 							}
 						}
-					} else {
+					else {
 						boolean found = false;
 						DeviceObs devObs = null;
 						synchronized (deviceObsVector) {
 							for (int j = 0; j < deviceObsVector.size(); ++j) {
 								devObs = (DeviceObs) deviceObsVector
 										.elementAt(j);
-								if (devObs.callback != cbAndType.callback) {
+								if (devObs.callback != cbAndType.callback)
 									continue;
-								}
 								found = true;
 								break;
 							}
@@ -1256,30 +1176,27 @@ public final class TSCall implements IDomainCall {
 				callbackAndTypeVector.removeAllElements();
 			}
 		}
-		if (!checkForMonitors()) {
+		if (!checkForMonitors())
 			return;
-		}
 		needSnapshot = false;
 	}
 
-	boolean doHeldTalkingMatch(TSCall otherCall) {
+	boolean doHeldTalkingMatch(final TSCall otherCall) {
 		TSConnection conn = null;
 		TSConnection termConn = null;
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
 				conn = (TSConnection) connections.elementAt(i);
-				Vector<TSConnection> termConns = conn.getTermConns();
-				if (termConns == null) {
+				final Vector<TSConnection> termConns = conn.getTermConns();
+				if (termConns == null)
 					continue;
-				}
 				synchronized (termConns) {
 					for (int j = 0; j < termConns.size(); ++j) {
 						termConn = (TSConnection) termConns.elementAt(j);
-						if ((termConn.getCallControlTermConnState() != 99)
-								|| (otherCall.findActiveTermConnection(termConn
-										.getTSDevice()) == null)) {
+						if (termConn.getCallControlTermConnState() != 99
+								|| otherCall.findActiveTermConnection(termConn
+										.getTSDevice()) == null)
 							continue;
-						}
 						return true;
 					}
 				}
@@ -1291,20 +1208,19 @@ public final class TSCall implements IDomainCall {
 		return false;
 	}
 
-	boolean doSnapshot(CSTAConnectionID connID,
-			SnapshotCallExtraConfHandler extraHandler,
-			boolean waitForSnapshotConf) {
+	boolean doSnapshot(final CSTAConnectionID connID,
+			final SnapshotCallExtraConfHandler extraHandler,
+			final boolean waitForSnapshotConf) {
 		return doSnapshot(connID, extraHandler, waitForSnapshotConf, 110);
 	}
 
-	boolean doSnapshot(CSTAConnectionID connID,
-			SnapshotCallExtraConfHandler extraHandler,
-			boolean waitForSnapshotConf, int cause) {
+	boolean doSnapshot(final CSTAConnectionID connID,
+			final SnapshotCallExtraConfHandler extraHandler,
+			final boolean waitForSnapshotConf, final int cause) {
 		if (!needSnapshot) {
 			try {
-				if (extraHandler != null) {
+				if (extraHandler != null)
 					extraHandler.handleConf(true, null, null);
-				}
 			} finally {
 				doCallbackSnapshots(null, cause);
 			}
@@ -1313,16 +1229,15 @@ public final class TSCall implements IDomainCall {
 
 		if (provider.getCapabilities().getSnapshotCallReq() == 0) {
 			try {
-				if (extraHandler != null) {
+				if (extraHandler != null)
 					extraHandler.handleConf(false, null, null);
-				}
 			} finally {
 				doCallbackSnapshots(null, cause);
 			}
 			return false;
 		}
 
-		if (!waitForSnapshotConf) {
+		if (!waitForSnapshotConf)
 			synchronized (callbackAndTypeVector) {
 				if (futureAsynchronousSnapshotHandler != null) {
 					futureAsynchronousSnapshotHandler
@@ -1331,10 +1246,8 @@ public final class TSCall implements IDomainCall {
 				}
 			}
 
-		}
-
-		SnapshotCallConfHandler handler = new SnapshotCallConfHandler(this,
-				extraHandler, waitForSnapshotConf);
+		final SnapshotCallConfHandler handler = new SnapshotCallConfHandler(
+				this, extraHandler, waitForSnapshotConf);
 
 		synchronized (handler) {
 			snapshotCallConfPending = true;
@@ -1343,13 +1256,12 @@ public final class TSCall implements IDomainCall {
 			if (waitForSnapshotConf) {
 				try {
 					handler.wait(TSProviderImpl.TSAPI_RESPONSE_TIME);
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 				}
 				if (!handler.handled) {
 					try {
-						if (extraHandler != null) {
+						if (extraHandler != null)
 							extraHandler.handleConf(false, null, null);
-						}
 					} finally {
 						doCallbackSnapshots(null, cause);
 					}
@@ -1362,148 +1274,143 @@ public final class TSCall implements IDomainCall {
 		return true;
 	}
 
-	public void drop(CSTAPrivate reqPriv)
+	public void drop(final CSTAPrivate reqPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getClearCall() == 0) {
+		if (provider.getCapabilities().getClearCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
-		if ((updateObject()) && (state != 33)) {
+		if (updateObject() && state != 33)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state,
 					"call is not active");
-		}
 
 		CSTAConnectionID clearConnID = null;
 		synchronized (connections) {
-			if (connections.size() > 0) {
+			if (connections.size() > 0)
 				clearConnID = ((TSConnection) connections.elementAt(0))
 						.getConnID();
-			}
 		}
-		if (clearConnID == null) {
+		if (clearConnID == null)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state,
 					"call is not active (no connections)");
-		}
 
-		ConfHandler handler = new ClearCallConfHandler(this);
+		final ConfHandler handler = new ClearCallConfHandler(this);
 		try {
 			provider.tsapi.clearCall(clearConnID, reqPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			setState(34, null);
 			endCVDObservers(100, null);
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"clearCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "clearCall failure");
 		}
 	}
 
-	void dump(String indent) {
-		log.trace(indent + "***** CALL DUMP *****");
-		log.trace(indent + "TSCall: " + this);
-		log.trace(indent + "TSCall ID: " + callID);
-		log.trace(indent + "TSCall UCID: " + ucid);
-		log.trace(indent + "TSCall non-Call ID: " + nonCallID);
-		log.trace(indent + "TSCall state: " + state);
-		log.trace(indent + "TSCall needSnapshot: " + needSnapshot);
-		log.trace(indent + "TSCall age: " + my_age);
-		log.trace(indent + "TSCall connections: ");
+	void dump(final String indent) {
+		TSCall.log.trace(indent + "***** CALL DUMP *****");
+		TSCall.log.trace(indent + "TSCall: " + this);
+		TSCall.log.trace(indent + "TSCall ID: " + callID);
+		TSCall.log.trace(indent + "TSCall UCID: " + ucid);
+		TSCall.log.trace(indent + "TSCall non-Call ID: " + nonCallID);
+		TSCall.log.trace(indent + "TSCall state: " + state);
+		TSCall.log.trace(indent + "TSCall needSnapshot: " + needSnapshot);
+		TSCall.log.trace(indent + "TSCall age: " + my_age);
+		TSCall.log.trace(indent + "TSCall connections: ");
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
-				TSConnection conn = (TSConnection) connections.elementAt(i);
-				conn.dump(indent + " ");
-			}
-		}
-		log.trace(indent + "TSCall trunks: ");
-		synchronized (trkVector) {
-			for (int i = 0; i < trkVector.size(); ++i) {
-				TSTrunk trk = (TSTrunk) trkVector.elementAt(i);
-				trk.dump(indent + " ");
-			}
-		}
-		log.trace(indent + "TSCall handOffCall: " + handOffCall);
-		log.trace(indent + "TSCall stale connections: ");
-		synchronized (staleConnections) {
-			for (int i = 0; i < staleConnections.size(); ++i) {
-				TSConnection conn = (TSConnection) staleConnections
+				final TSConnection conn = (TSConnection) connections
 						.elementAt(i);
 				conn.dump(indent + " ");
 			}
 		}
-		log.trace(indent + "TSCall trunks: ");
-		log.trace(indent + "TSCall Monitor Threads: ");
+		TSCall.log.trace(indent + "TSCall trunks: ");
+		synchronized (trkVector) {
+			for (int i = 0; i < trkVector.size(); ++i) {
+				final TSTrunk trk = (TSTrunk) trkVector.elementAt(i);
+				trk.dump(indent + " ");
+			}
+		}
+		TSCall.log.trace(indent + "TSCall handOffCall: " + handOffCall);
+		TSCall.log.trace(indent + "TSCall stale connections: ");
+		synchronized (staleConnections) {
+			for (int i = 0; i < staleConnections.size(); ++i) {
+				final TSConnection conn = (TSConnection) staleConnections
+						.elementAt(i);
+				conn.dump(indent + " ");
+			}
+		}
+		TSCall.log.trace(indent + "TSCall trunks: ");
+		TSCall.log.trace(indent + "TSCall Monitor Threads: ");
 		synchronized (monitorThreads) {
 			for (int i = 0; i < monitorThreads.size(); ++i) {
-				TsapiCallMonitor oThreads = (TsapiCallMonitor) monitorThreads
+				final TsapiCallMonitor oThreads = (TsapiCallMonitor) monitorThreads
 						.elementAt(i);
 				oThreads.dump(indent + " ");
 			}
 		}
-		log.trace(indent + "TSCall Device Monitor Threads: ");
+		TSCall.log.trace(indent + "TSCall Device Monitor Threads: ");
 		synchronized (deviceObsVector) {
 			for (int i = 0; i < deviceObsVector.size(); ++i) {
-				TsapiCallMonitor oThreads = ((DeviceObs) deviceObsVector
+				final TsapiCallMonitor oThreads = ((DeviceObs) deviceObsVector
 						.elementAt(i)).callback;
 				oThreads.dump(indent + " ");
 			}
 		}
-		log.trace(indent + "TSCall Stale Monitor Threads: ");
+		TSCall.log.trace(indent + "TSCall Stale Monitor Threads: ");
 		synchronized (staleObsVector) {
 			for (int i = 0; i < staleObsVector.size(); ++i) {
-				TsapiCallMonitor oThreads = (TsapiCallMonitor) staleObsVector
+				final TsapiCallMonitor oThreads = (TsapiCallMonitor) staleObsVector
 						.elementAt(i);
 				oThreads.dump(indent + " ");
 			}
 		}
-		log.trace(indent + "TSCall CallbackAndType Monitor Threads: ");
+		TSCall.log.trace(indent + "TSCall CallbackAndType Monitor Threads: ");
 		synchronized (callbackAndTypeVector) {
 			CallbackAndType cbAndType = null;
 			int i;
 			for (i = 0; i < callbackAndTypeVector.size(); ++i) {
 				cbAndType = (CallbackAndType) callbackAndTypeVector
 						.elementAt(i);
-				TsapiCallMonitor oThreads = cbAndType.callback;
+				final TsapiCallMonitor oThreads = cbAndType.callback;
 				oThreads.dump(indent + " ");
 			}
 
 		}
 
 		int i = 0;
-		for (String str : LucentUserToUserInfo.print(TsapiPromoter
+		for (final String str : LucentUserToUserInfo.print(TsapiPromoter
 				.demoteUserToUserInfo(getUUI()), "CallUUI", indent + " ")) {
-			if (i == 0) {
-				log.trace(indent + "TSCALL UUI" + str);
-			} else {
-				log.trace(str);
-			}
+			if (i == 0)
+				TSCall.log.trace(indent + "TSCALL UUI" + str);
+			else
+				TSCall.log.trace(str);
 			++i;
 		}
-		log.trace(indent + "***** CALL DUMP END *****");
+		TSCall.log.trace(indent + "***** CALL DUMP END *****");
 	}
 
-	void endCVDObservers(int cause, Object privateData) {
+	void endCVDObservers(final int cause, final Object privateData) {
 		for (int i = 0; i < staleConnections.size(); ++i) {
-			TSDevice dev = ((TSConnection) staleConnections.elementAt(i))
+			final TSDevice dev = ((TSConnection) staleConnections.elementAt(i))
 					.getTSDevice();
-			if (dev == null) {
+			if (dev == null)
 				continue;
-			}
-			Vector<TsapiCallMonitor> cvd = dev.getCVDObservers();
+			final Vector<TsapiCallMonitor> cvd = dev.getCVDObservers();
 			for (int j = 0; j < cvd.size(); ++j) {
-				TsapiCallMonitor obs = (TsapiCallMonitor) cvd.elementAt(j);
+				final TsapiCallMonitor obs = (TsapiCallMonitor) cvd
+						.elementAt(j);
 				removeCallMonitor(obs, cause, privateData);
 			}
 
@@ -1511,96 +1418,87 @@ public final class TSCall implements IDomainCall {
 		}
 	}
 
-	void endNonCVDObservers(int cause) {
-		if ((monitorCrossRefID != 0)
-				&& (wasEverMonitoredByCallsViaDevice != true)) {
+	void endNonCVDObservers(final int cause) {
+		if (monitorCrossRefID != 0 && wasEverMonitoredByCallsViaDevice != true)
 			return;
-		}
 		removeObservers(cause, null, 0);
 	}
 
-	public Vector<TSConnection> fastConnect(TSDevice device,
-			String destAddress, CSTAPrivate reqPriv)
+	public Vector<TSConnection> fastConnect(final TSDevice device,
+			final String destAddress, final CSTAPrivate reqPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidPartyException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getMakeCall() == 0) {
+		if (provider.getCapabilities().getMakeCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		if (state != 32) {
+		if (state != 32)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "call not idle");
-		}
 
-		String devName = device.getName();
+		final String devName = device.getName();
 
-		if ((((provider.getCapabilities().getSnapshotCallReq() == 0) || (monitorPending)))
-				&& (internalDeviceMonitor == null)) {
+		if ((provider.getCapabilities().getSnapshotCallReq() == 0 || monitorPending)
+				&& internalDeviceMonitor == null)
 			try {
 				internalDeviceMonitor = device.setInternalMonitor(this);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
-
-		}
 
 		setConnection_wait_limit(1);
 
-		MakeCallConfHandler handler = new MakeCallConfHandler(this, device,
-				destAddress, 24);
+		final MakeCallConfHandler handler = new MakeCallConfHandler(this,
+				device, destAddress, 24);
 		try {
 			provider.tsapi.makeCall(devName, destAddress, reqPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"makeCall failure");
-			}
 
 			throw new TsapiPlatformException(4, 0, "makeCall failure");
 		}
 
 		synchronized (connections) {
-			if (handOffCall != null) {
+			if (handOffCall != null)
 				return handOffCall.fastConnectFinish(device, destAddress,
 						handler.newCall);
-			}
 
 			return fastConnectFinish(device, destAddress, handler.newCall);
 		}
 	}
 
-	Vector<TSConnection> fastConnectFinish(TSDevice device, String destAddress,
-			CSTAConnectionID newCall) {
-		if (device.isMonitorSet()) {
+	Vector<TSConnection> fastConnectFinish(final TSDevice device,
+			final String destAddress, final CSTAConnectionID newCall) {
+		if (device.isMonitorSet())
 			needSnapshot = false;
-		} else {
+		else
 			doSnapshot(newCall, null, false);
-		}
 
 		synchronized (connections) {
 			if (connections.size() < 1) {
 				try {
 					connections.wait(Tsapi.getCallCompletionTimeout());
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 				}
 
-				if ((connections.size() < 1) && (state != 34)) {
-					log
+				if (connections.size() < 1 && state != 34) {
+					TSCall.log
 							.info("after succesfully initiating, fastConnect returns null since found a DISCONNECTED originating Connection for call ID "
 									+ callID);
 					return null;
@@ -1611,25 +1509,23 @@ public final class TSCall implements IDomainCall {
 		return connections;
 	}
 
-	TSConnection findActiveTermConnection(TSDevice matchDevice) {
+	TSConnection findActiveTermConnection(final TSDevice matchDevice) {
 		TSConnection conn = null;
 		TSConnection termConn = null;
 
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
 				conn = (TSConnection) connections.elementAt(i);
-				Vector<TSConnection> termConns = conn.getTermConns();
-				if (termConns == null) {
+				final Vector<TSConnection> termConns = conn.getTermConns();
+				if (termConns == null)
 					continue;
-				}
 				synchronized (termConns) {
 					for (int j = 0; j < termConns.size(); ++j) {
 						termConn = (TSConnection) termConns.elementAt(j);
-						if (((termConn.getCallControlTermConnState() != 98) && (termConn
-								.getCallControlTermConnState() != 103))
-								|| (termConn.getTSDevice() != matchDevice)) {
+						if (termConn.getCallControlTermConnState() != 98
+								&& termConn.getCallControlTermConnState() != 103
+								|| termConn.getTSDevice() != matchDevice)
 							continue;
-						}
 
 						return termConn;
 					}
@@ -1641,25 +1537,23 @@ public final class TSCall implements IDomainCall {
 		return null;
 	}
 
-	TSConnection findHeldTermConnection(TSDevice matchDevice) {
+	TSConnection findHeldTermConnection(final TSDevice matchDevice) {
 		TSConnection conn = null;
 		TSConnection termConn = null;
 
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
 				conn = (TSConnection) connections.elementAt(i);
-				Vector<TSConnection> termConns = conn.getTermConns();
-				if (termConns == null) {
+				final Vector<TSConnection> termConns = conn.getTermConns();
+				if (termConns == null)
 					continue;
-				}
 				synchronized (termConns) {
 					for (int j = 0; j < termConns.size(); ++j) {
 						termConn = (TSConnection) termConns.elementAt(j);
-						if (((termConn.getCallControlTermConnState() != 99) && (termConn
-								.getCallControlTermConnState() != 103))
-								|| (termConn.getTSDevice() != matchDevice)) {
+						if (termConn.getCallControlTermConnState() != 99
+								&& termConn.getCallControlTermConnState() != 103
+								|| termConn.getTSDevice() != matchDevice)
 							continue;
-						}
 
 						return termConn;
 					}
@@ -1672,43 +1566,42 @@ public final class TSCall implements IDomainCall {
 		return null;
 	}
 
-	TSConnection findOtherConnection(TSConnection conn) {
+	TSConnection findOtherConnection(final TSConnection conn) {
 		synchronized (connections) {
-			int size = connections.size();
-			if (size != 2) {
+			final int size = connections.size();
+			if (size != 2)
 				return null;
-			}
 			TSConnection otherConn = null;
 			for (int i = 0; i < size; ++i) {
 				otherConn = (TSConnection) connections.elementAt(i);
-				if (conn != otherConn) {
+				if (conn != otherConn)
 					return otherConn;
-				}
 			}
 			return null;
 		}
 	}
 
-	TSConnection findTSConnectionForDevice(TSDevice device) {
-		Vector<TSConnection> clonedConnsToCheck = new Vector<TSConnection>(
+	TSConnection findTSConnectionForDevice(final TSDevice device) {
+		final Vector<TSConnection> clonedConnsToCheck = new Vector<TSConnection>(
 				connections);
 
 		for (int j = 0; j < clonedConnsToCheck.size(); ++j) {
-			TSConnection conn = (TSConnection) clonedConnsToCheck.elementAt(j);
-			Vector<TSConnection> cv = conn.getTermConns();
-			if ((cv != null) && (cv.size() > 0)) {
-				Vector<TSConnection> termConns = new Vector<TSConnection>(cv);
+			final TSConnection conn = (TSConnection) clonedConnsToCheck
+					.elementAt(j);
+			final Vector<TSConnection> cv = conn.getTermConns();
+			if (cv != null && cv.size() > 0) {
+				final Vector<TSConnection> termConns = new Vector<TSConnection>(
+						cv);
 				for (int k = 0; k < termConns.size(); ++k) {
-					TSConnection tc = (TSConnection) termConns.elementAt(k);
-					if (tc.getTSDevice() == device) {
+					final TSConnection tc = (TSConnection) termConns
+							.elementAt(k);
+					if (tc.getTSDevice() == device)
 						return tc;
-					}
 
 				}
 
-			} else if (conn.getTSDevice() == device) {
+			} else if (conn.getTSDevice() == device)
 				return conn;
-			}
 
 		}
 
@@ -1736,16 +1629,15 @@ public final class TSCall implements IDomainCall {
 	}
 
 	public Vector<TsapiCallMonitor> getCallObservers() {
-		Vector<TsapiCallMonitor> allObservers = getObservers();
+		final Vector<TsapiCallMonitor> allObservers = getObservers();
 		synchronized (callbackAndTypeVector) {
 			CallbackAndType cbAndType = null;
 			for (int i = 0; i < callbackAndTypeVector.size(); ++i) {
 				cbAndType = (CallbackAndType) callbackAndTypeVector
 						.elementAt(i);
-				TsapiCallMonitor obs = cbAndType.callback;
-				if (allObservers.contains(obs)) {
+				final TsapiCallMonitor obs = cbAndType.callback;
+				if (allObservers.contains(obs))
 					continue;
-				}
 				allObservers.addElement(obs);
 			}
 		}
@@ -1754,9 +1646,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	public int getCallOriginatorType() {
-		if (hasCallOriginatorType()) {
+		if (hasCallOriginatorType())
 			return callOriginatorInfo.getCallOriginatorType();
-		}
 		return -1;
 	}
 
@@ -1768,14 +1659,13 @@ public final class TSCall implements IDomainCall {
 		return confEnable;
 	}
 
-	TSConnection getConnAtDevice(TSDevice matchDevice) {
+	TSConnection getConnAtDevice(final TSDevice matchDevice) {
 		synchronized (connections) {
 			TSConnection conn = null;
 			for (int i = 0; i < connections.size(); ++i) {
 				conn = (TSConnection) connections.elementAt(i);
-				if (conn.getTSDevice() == matchDevice) {
+				if (conn.getTSDevice() == matchDevice)
 					return conn;
-				}
 			}
 			return null;
 		}
@@ -1818,9 +1708,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	public TSCall getHandOff() {
-		if (handOffCall != null) {
+		if (handOffCall != null)
 			return handOffCall;
-		}
 
 		return this;
 	}
@@ -1834,9 +1723,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	private String getMyCustomString() {
-		if (callID == 0) {
+		if (callID == 0)
 			return "[0(nonCallID=" + nonCallID + ")]";
-		}
 
 		return "[" + callID + "]";
 	}
@@ -1850,23 +1738,19 @@ public final class TSCall implements IDomainCall {
 	}
 
 	Vector<TsapiCallMonitor> getObservers() {
-		Vector<TsapiCallMonitor> allObservers = new Vector<TsapiCallMonitor>(
+		final Vector<TsapiCallMonitor> allObservers = new Vector<TsapiCallMonitor>(
 				monitorThreads);
 		synchronized (deviceObsVector) {
-			for (int i = 0; i < deviceObsVector.size(); ++i) {
+			for (int i = 0; i < deviceObsVector.size(); ++i)
 				if (!allObservers.contains(((DeviceObs) deviceObsVector
-						.elementAt(i)).callback)) {
+						.elementAt(i)).callback))
 					allObservers.addElement(((DeviceObs) deviceObsVector
 							.elementAt(i)).callback);
-				}
-			}
 		}
 		synchronized (staleObsVector) {
-			for (int i = 0; i < staleObsVector.size(); ++i) {
-				if (!allObservers.contains(staleObsVector.elementAt(i))) {
+			for (int i = 0; i < staleObsVector.size(); ++i)
+				if (!allObservers.contains(staleObsVector.elementAt(i)))
 					allObservers.addElement(staleObsVector.elementAt(i));
-				}
-			}
 		}
 		return allObservers;
 	}
@@ -1876,26 +1760,24 @@ public final class TSCall implements IDomainCall {
 	}
 
 	public Object getPrivateData() {
-		if (replyPriv instanceof CSTAPrivate) {
+		if (replyPriv instanceof CSTAPrivate)
 			return replyPriv;
-		}
 		return null;
 	}
 
 	public LucentQueryUcidConfEvent getQueryUCIDConf() {
 		Object lquConf = null;
 		try {
-			LucentQueryUcid lqu = new LucentQueryUcid(new CSTAConnectionID(
-					callID, "", (short) 0));
+			final LucentQueryUcid lqu = new LucentQueryUcid(
+					new CSTAConnectionID(callID, "", (short) 0));
 			lquConf = provider.sendPrivateData(lqu.makeTsapiPrivate());
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"getUCIDConf failure, exception: " + e);
-			}
 
 			throw new TsapiPlatformException(4, 0,
 					"getUCIDConf failure, exception: " + e);
@@ -1908,10 +1790,9 @@ public final class TSCall implements IDomainCall {
 		return reason;
 	}
 
-	void getSnapshot(Vector<TSEvent> eventList) {
-		if (eventList == null) {
+	void getSnapshot(final Vector<TSEvent> eventList) {
+		if (eventList == null)
 			return;
-		}
 
 		switch (state) {
 		case 33:
@@ -1922,10 +1803,9 @@ public final class TSCall implements IDomainCall {
 		}
 
 		synchronized (connections) {
-			for (int i = 0; i < connections.size(); ++i) {
+			for (int i = 0; i < connections.size(); ++i)
 				((TSConnection) connections.elementAt(i))
 						.getSnapshot(eventList);
-			}
 		}
 	}
 
@@ -1940,11 +1820,10 @@ public final class TSCall implements IDomainCall {
 	}
 
 	int getStateFromServer() {
-		if (!updateSuspiciousObject()) {
+		if (!updateSuspiciousObject())
 			throw new TsapiPlatformException(4, 0,
 					"Could not get state from the telephony server. [CallId="
 							+ getCallID() + "]");
-		}
 		return state;
 	}
 
@@ -1955,15 +1834,15 @@ public final class TSCall implements IDomainCall {
 	public Vector<TSConnection> getTSConnections() {
 		updateObject();
 
-		Vector<TSConnection> tsConnections = new Vector<TSConnection>();
+		final Vector<TSConnection> tsConnections = new Vector<TSConnection>();
 
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
-				TSConnection tsConn = (TSConnection) connections.elementAt(i);
-				if ((tsConn.getTSDevice().getDeviceType() == 2)
-						&& (tsConn.getACDManagerConn() != null)) {
+				final TSConnection tsConn = (TSConnection) connections
+						.elementAt(i);
+				if (tsConn.getTSDevice().getDeviceType() == 2
+						&& tsConn.getACDManagerConn() != null)
 					continue;
-				}
 				tsConnections.addElement(tsConn);
 			}
 
@@ -1985,9 +1864,8 @@ public final class TSCall implements IDomainCall {
 	}
 
 	public String getUCID() {
-		if (ucid == null) {
+		if (ucid == null)
 			setUCID(queryUCID());
-		}
 
 		return ucid;
 	}
@@ -2017,52 +1895,49 @@ public final class TSCall implements IDomainCall {
 	}
 
 	boolean isMonitorSet() {
-		return (monitorCrossRefID != 0) || (provider.isCallInAnyDomain(this));
+		return monitorCrossRefID != 0 || provider.isCallInAnyDomain(this);
 	}
 
-	void monitorCall(CSTAConnectionID connID, boolean waitForSnapshotConf)
+	void monitorCall(final CSTAConnectionID connID,
+			final boolean waitForSnapshotConf)
 			throws TsapiResourceUnavailableException {
-		if ((provider.getCapabilities().getMonitorCall() == 0)
-				|| (connID == null)) {
+		if (provider.getCapabilities().getMonitorCall() == 0 || connID == null)
 			throw new TsapiResourceUnavailableException(0, 0, 0,
 					"no capability to monitor call");
-		}
 
-		if (monitorCrossRefID != 0) {
+		if (monitorCrossRefID != 0)
 			return;
-		}
 		CSTAEvent event;
 		try {
 			event = provider.tsapi.monitorCall(connID, new CSTAMonitorFilter(),
 					null);
-		} catch (TsapiUnableToSendException tue) {
+		} catch (final TsapiUnableToSendException tue) {
 			throw tue;
-		} catch (Exception e) {
-			log.error("MonitorCall request failed - retrying");
+		} catch (final Exception e) {
+			TSCall.log.error("MonitorCall request failed - retrying");
 			try {
 				event = provider.tsapi.monitorCall(connID,
 						new CSTAMonitorFilter(), null);
-			} catch (TsapiResourceUnavailableException e1) {
+			} catch (final TsapiResourceUnavailableException e1) {
 				throw e1;
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 				throw new TsapiResourceUnavailableException(0, 0, 0,
 						"monitor call failure");
 			}
 		}
 
-		CSTAMonitorConfEvent monitorConf = (CSTAMonitorConfEvent) event
+		final CSTAMonitorConfEvent monitorConf = (CSTAMonitorConfEvent) event
 				.getEvent();
 
-		SnapshotCallExtraConfHandler handler = new AddCallMonitorHandler(this,
-				monitorConf.getMonitorCrossRefID());
-		if (needSnapshot) {
+		final SnapshotCallExtraConfHandler handler = new AddCallMonitorHandler(
+				this, monitorConf.getMonitorCrossRefID());
+		if (needSnapshot)
 			doSnapshot(connID, handler, waitForSnapshotConf);
-		} else {
+		else
 			handler.handleConf(true, null, null);
-		}
 	}
 
-	protected void moveInternalStuff(TSCall otherCall) {
+	protected void moveInternalStuff(final TSCall otherCall) {
 		TsapiCallMonitor callback = null;
 
 		synchronized (otherCall.monitorThreads) {
@@ -2070,9 +1945,8 @@ public final class TSCall implements IDomainCall {
 				callback = (TsapiCallMonitor) otherCall.monitorThreads
 						.elementAt(i);
 				synchronized (monitorThreads) {
-					if (!monitorThreads.contains(callback)) {
+					if (!monitorThreads.contains(callback))
 						monitorThreads.addElement(callback);
-					}
 				}
 			}
 		}
@@ -2088,9 +1962,8 @@ public final class TSCall implements IDomainCall {
 				synchronized (deviceObsVector) {
 					for (int j = 0; j < deviceObsVector.size(); ++j) {
 						devObs = (DeviceObs) deviceObsVector.elementAt(j);
-						if (otherDevObs.callback != devObs.callback) {
+						if (otherDevObs.callback != devObs.callback)
 							continue;
-						}
 						i = 1;
 						synchronized (otherDevObs.devWithTypeVector) {
 							for (int k = 0; k < otherDevObs.devWithTypeVector
@@ -2099,19 +1972,17 @@ public final class TSCall implements IDomainCall {
 										.elementAt(k);
 								synchronized (devObs.devWithTypeVector) {
 									if (!devObs.devWithTypeVector
-											.contains(devWithType)) {
+											.contains(devWithType))
 										devObs.devWithTypeVector
 												.addElement(devWithType);
-									}
 								}
 							}
 						}
 						break;
 					}
 
-					if (i == 0) {
+					if (i == 0)
 						deviceObsVector.addElement(otherDevObs);
-					}
 				}
 			}
 		}
@@ -2127,93 +1998,74 @@ public final class TSCall implements IDomainCall {
 					for (j = 0; j < callbackAndTypeVector.size(); ++j) {
 						cbAndType = (CallbackAndType) callbackAndTypeVector
 								.elementAt(j);
-						if ((!otherCbAndType.callback
-								.equals(cbAndType.callback))
-								|| (!otherCbAndType.devWithType
-										.equals(cbAndType.devWithType))) {
+						if (!otherCbAndType.callback.equals(cbAndType.callback)
+								|| !otherCbAndType.devWithType
+										.equals(cbAndType.devWithType))
 							continue;
-						}
 						j = 1;
 						break;
 					}
 
-					if (j == 0) {
+					if (j == 0)
 						callbackAndTypeVector.addElement(otherCbAndType);
-					}
 				}
 			}
 		}
 
 		synchronized (otherCall) {
 			synchronized (this) {
-				if (!monitorPending) {
+				if (!monitorPending)
 					monitorPending = otherCall.monitorPending;
-				}
-				if (internalDeviceMonitor == null) {
+				if (internalDeviceMonitor == null)
 					internalDeviceMonitor = otherCall.internalDeviceMonitor;
-				}
 			}
 		}
 
 		moveStuff(otherCall);
 	}
 
-	void moveStuff(TSCall otherCall) {
-		if (otherCall == null) {
+	void moveStuff(final TSCall otherCall) {
+		if (otherCall == null)
 			return;
-		}
 
 		if (callIsInVDNDomain(otherCall)) {
-			Vector<TsapiCallMonitor> observers = otherCall.getCallObservers();
+			final Vector<TsapiCallMonitor> observers = otherCall
+					.getCallObservers();
 
-			for (int i = 0; i < observers.size(); ++i) {
-				if ((((TsapiCallMonitor) observers.elementAt(i)).isVDN())
-						&& (!monitorThreads.contains(observers.elementAt(i)))) {
+			for (int i = 0; i < observers.size(); ++i)
+				if (((TsapiCallMonitor) observers.elementAt(i)).isVDN()
+						&& !monitorThreads.contains(observers.elementAt(i))) {
 					monitorThreads.addElement((TsapiCallMonitor) observers
 							.elementAt(i));
 					((TsapiCallMonitor) observers.elementAt(i)).addReference();
-				} else {
+				} else
 					otherCall.removeCallMonitor((TsapiCallMonitor) observers
 							.elementAt(i));
-				}
-			}
-		} else {
+		} else
 			otherCall.removeObservers(100, null, 0);
-		}
 
-		if (callingAddress == null) {
+		if (callingAddress == null)
 			callingAddress = otherCall.callingAddress;
-		}
-		if (callingTerminal == null) {
+		if (callingTerminal == null)
 			callingTerminal = otherCall.callingTerminal;
-		}
-		if (calledDevice == null) {
+		if (calledDevice == null)
 			calledDevice = otherCall.calledDevice;
-		}
-		if (lastRedirectionDevice == null) {
+		if (lastRedirectionDevice == null)
 			lastRedirectionDevice = otherCall.lastRedirectionDevice;
-		}
-		if (confController == null) {
+		if (confController == null)
 			confController = otherCall.confController;
-		}
-		if (xferController == null) {
+		if (xferController == null)
 			xferController = otherCall.xferController;
-		}
-		if (uui == null) {
+		if (uui == null)
 			uui = otherCall.uui;
-		}
-		if (lai == null) {
+		if (lai == null)
 			lai = otherCall.lai;
-		}
-		if (uec == null) {
+		if (uec == null)
 			uec = otherCall.uec;
-		}
-		if (oci == null) {
+		if (oci == null)
 			oci = otherCall.oci;
-		}
-		if (getDeviceHistory() == null) {
+		if (getDeviceHistory() == null)
 			setDeviceHistory(otherCall.getDeviceHistory());
-		}
 
 		replyPriv = otherCall.replyPriv;
 		confEnable = otherCall.confEnable;
@@ -2225,16 +2077,14 @@ public final class TSCall implements IDomainCall {
 				trk = (TSTrunk) otherCall.trkVector.elementAt(i);
 				trk.setCall(this, null);
 				synchronized (trkVector) {
-					if (!trkVector.contains(trk)) {
+					if (!trkVector.contains(trk))
 						trkVector.addElement(trk);
-					}
 				}
 			}
 		}
 
-		if (checkForMonitors()) {
+		if (checkForMonitors())
 			return;
-		}
 		setNeedSnapshot(true);
 	}
 
@@ -2242,63 +2092,59 @@ public final class TSCall implements IDomainCall {
 		return needSnapshot;
 	}
 
-	public void notifyCallAdded(IDomainDevice d) {
+	public void notifyCallAdded(final IDomainDevice d) {
 		recordVDNDomainEntry(d.getDomainName());
 	}
 
-	public void notifyCallRemoved(IDomainDevice d) {
+	public void notifyCallRemoved(final IDomainDevice d) {
 		recordVDNDomainExit();
 	}
 
-	void processCallbackSnapshots(int cause) {
+	void processCallbackSnapshots(final int cause) {
 		boolean doDoSnapshot = false;
 		synchronized (callbackAndTypeVector) {
-			if ((callbackAndTypeVector.size() > 0)
-					&& (currentSnapshotHandler == null)) {
+			if (callbackAndTypeVector.size() > 0
+					&& currentSnapshotHandler == null)
 				doDoSnapshot = true;
-			}
 		}
-		if (!doDoSnapshot) {
+		if (!doDoSnapshot)
 			return;
-		}
 		CSTAConnectionID snapConnID = null;
 		synchronized (connections) {
-			if (connections.size() > 0) {
+			if (connections.size() > 0)
 				try {
 					snapConnID = ((TSConnection) connections.elementAt(0))
 							.getConnID();
-				} catch (TsapiPlatformException e) {
-					log.error("Ignoring exception: " + e);
-					if (callID != 0) {
+				} catch (final TsapiPlatformException e) {
+					TSCall.log.error("Ignoring exception: " + e);
+					if (callID != 0)
 						snapConnID = new CSTAConnectionID(callID, "", (short) 0);
-					}
 				}
-			} else if (callID != 0) {
+			else if (callID != 0)
 				snapConnID = new CSTAConnectionID(callID, "", (short) 0);
-			}
 		}
-		if (snapConnID != null) {
+		if (snapConnID != null)
 			doSnapshot(snapConnID, null, false, cause);
-		}
 	}
 
 	String queryUCID() {
-		if (!provider.isLucentV5()) {
+		if (!provider.isLucentV5())
 			return null;
-		}
-		LucentQueryUcidConfEvent lquConf = getQueryUCIDConf();
+		final LucentQueryUcidConfEvent lquConf = getQueryUCIDConf();
 
-		if (lquConf != null) {
+		if (lquConf != null)
 			return lquConf.getUcid();
-		}
 		return null;
 	}
 
-	void recordVDNDomainEntry(String vdn_domain_we_are_entering) {
-		log.info("recordVDNDomainEntry: -- entering VDN domain for Address "
-				+ vdn_domain_we_are_entering
-				+ " - wasEverMonitoredByCallsViaDevice="
-				+ wasEverMonitoredByCallsViaDevice + " refVDN=" + refVDN);
+	void recordVDNDomainEntry(final String vdn_domain_we_are_entering) {
+		TSCall.log
+				.info("recordVDNDomainEntry: -- entering VDN domain for Address "
+						+ vdn_domain_we_are_entering
+						+ " - wasEverMonitoredByCallsViaDevice="
+						+ wasEverMonitoredByCallsViaDevice
+						+ " refVDN="
+						+ refVDN);
 
 		String found_name = null;
 
@@ -2306,24 +2152,24 @@ public final class TSCall implements IDomainCall {
 
 		if (refVDN != null) {
 			found_name = refVDN.getName();
-			if (!found_name.equals(vdn_domain_we_are_entering)) {
+			if (!found_name.equals(vdn_domain_we_are_entering))
 				recordVDNDomainExit();
-			}
 
 		}
 
-		if (refVDN != null) {
+		if (refVDN != null)
 			return;
-		}
 
-		TSDevice tsDevice = provider.createDevice(vdn_domain_we_are_entering);
-		refVDN = ((TsapiAddress) TsapiCreateObject.getTsapiObject(tsDevice,
-				true));
+		final TSDevice tsDevice = provider
+				.createDevice(vdn_domain_we_are_entering);
+		refVDN = (TsapiAddress) TsapiCreateObject
+				.getTsapiObject(tsDevice, true);
 	}
 
 	void recordVDNDomainExit() {
-		log.info("recordVDNDomainExit: -- leaving VDN domain for Address "
-				+ refVDN);
+		TSCall.log
+				.info("recordVDNDomainExit: -- leaving VDN domain for Address "
+						+ refVDN);
 
 		refVDN = null;
 	}
@@ -2332,36 +2178,34 @@ public final class TSCall implements IDomainCall {
 		refCount += 1;
 	}
 
-	public void removeCallMonitor(TsapiCallMonitor obs) {
+	public void removeCallMonitor(final TsapiCallMonitor obs) {
 		removeCallMonitor(obs, 100, null);
 	}
 
-	protected void removeCallMonitor(TsapiCallMonitor obs, int cause,
-			Object privateData) {
+	protected void removeCallMonitor(final TsapiCallMonitor obs,
+			final int cause, final Object privateData) {
 		CallbackAndType cbAndType = null;
 		synchronized (callbackAndTypeVector) {
 			for (int i = 0; i < callbackAndTypeVector.size(); ++i) {
 				cbAndType = (CallbackAndType) callbackAndTypeVector
 						.elementAt(i);
-				if (cbAndType.callback != obs) {
+				if (cbAndType.callback != obs)
 					continue;
-				}
-				if (cbAndType.devWithType == null) {
+				if (cbAndType.devWithType == null)
 					synchronized (monitorThreads) {
 						if (!monitorThreads.contains(cbAndType.callback)) {
 							monitorThreads.addElement(cbAndType.callback);
 							cbAndType.callback.addReference();
 						}
 					}
-				} else {
+				else {
 					boolean found = false;
 					DeviceObs devObs = null;
 					synchronized (deviceObsVector) {
 						for (int j = 0; j < deviceObsVector.size(); ++j) {
 							devObs = (DeviceObs) deviceObsVector.elementAt(j);
-							if (devObs.callback != cbAndType.callback) {
+							if (devObs.callback != cbAndType.callback)
 								continue;
-							}
 							found = true;
 							break;
 						}
@@ -2383,33 +2227,29 @@ public final class TSCall implements IDomainCall {
 		synchronized (monitorThreads) {
 			if (monitorThreads.removeElement(obs)) {
 				obs.deleteReference(this, false, cause, privateData);
-				if ((monitorThreads.isEmpty()) && (monitorCrossRefID != 0)) {
+				if (monitorThreads.isEmpty() && monitorCrossRefID != 0) {
 					provider.deleteMonitor(monitorCrossRefID);
-					if (provider.getCapabilities().getMonitorStop() != 0) {
+					if (provider.getCapabilities().getMonitorStop() != 0)
 						try {
 							provider.tsapi.monitorStop(monitorCrossRefID, null,
 									null);
-						} catch (TsapiUnableToSendException tue) {
+						} catch (final TsapiUnableToSendException tue) {
 							throw tue;
-						} catch (Exception e) {
-							log.error(e.getMessage(), e);
+						} catch (final Exception e) {
+							TSCall.log.error(e.getMessage(), e);
 						}
-
-					}
 
 					monitorCrossRefID = 0;
 
-					if (!checkForMonitors()) {
+					if (!checkForMonitors())
 						setNeedSnapshot(true);
-					}
 				}
 
 			} else {
 				synchronized (deviceObsVector) {
 					for (int i = 0; i < deviceObsVector.size(); ++i) {
-						if (((DeviceObs) deviceObsVector.elementAt(i)).callback != obs) {
+						if (((DeviceObs) deviceObsVector.elementAt(i)).callback != obs)
 							continue;
-						}
 						deviceObsVector.removeElementAt(i);
 						obs.deleteReference(this, false, cause, privateData);
 						return;
@@ -2425,69 +2265,63 @@ public final class TSCall implements IDomainCall {
 		}
 	}
 
-	void removeConnection(TSConnection tsConn, Vector<TSEvent> eventList) {
-		if (!connections.removeElement(tsConn)) {
+	void removeConnection(final TSConnection tsConn,
+			final Vector<TSEvent> eventList) {
+		if (!connections.removeElement(tsConn))
 			return;
-		}
 
-		if (confController == tsConn) {
+		if (confController == tsConn)
 			confController = null;
-		}
-		if (xferController == tsConn) {
+		if (xferController == tsConn)
 			xferController = null;
-		}
 
 		synchronized (staleConnections) {
-			if (!staleConnections.contains(tsConn)) {
+			if (!staleConnections.contains(tsConn))
 				staleConnections.addElement(tsConn);
-			}
 		}
-		if (checkForMonitors()) {
+		if (checkForMonitors())
 			return;
-		}
 		setNeedSnapshot(true);
 	}
 
-	void removeDefaultDeviceObservers(TSDevice tsDevice, boolean isTerminal) {
-		Vector<DeviceObs> cbKeepVector = new Vector<DeviceObs>();
+	void removeDefaultDeviceObservers(final TSDevice tsDevice,
+			final boolean isTerminal) {
+		final Vector<DeviceObs> cbKeepVector = new Vector<DeviceObs>();
 		DeviceObs devObs = null;
-		DevWithType devWithType = new DevWithType(tsDevice, isTerminal);
+		final DevWithType devWithType = new DevWithType(tsDevice, isTerminal);
 
 		synchronized (deviceObsVector) {
 			for (int j = 0; j < deviceObsVector.size(); ++j) {
 				devObs = (DeviceObs) deviceObsVector.elementAt(j);
 				synchronized (devObs.devWithTypeVector) {
 					if (devObs.devWithTypeVector.removeElement(devWithType)) {
-						if ((devObs.devWithTypeVector.isEmpty())
-								&& (!devObs.callback.isVDN())) {
+						if (devObs.devWithTypeVector.isEmpty()
+								&& !devObs.callback.isVDN())
 							staleObsVector.addElement(devObs.callback);
-						} else {
+						else
 							cbKeepVector.addElement(devObs);
-						}
 
-					} else {
+					} else
 						cbKeepVector.addElement(devObs);
-					}
 				}
 			}
 			deviceObsVector.clear();
 			deviceObsVector.addAll(cbKeepVector);
 		}
 
-		if ((internalDeviceMonitor == null)
-				|| (!internalDeviceMonitor.equals(tsDevice))) {
+		if (internalDeviceMonitor == null
+				|| !internalDeviceMonitor.equals(tsDevice))
 			return;
-		}
 		internalDeviceMonitor.removeInternalMonitor(this);
 		internalDeviceMonitor = null;
-		if (checkForMonitors()) {
+		if (checkForMonitors())
 			return;
-		}
 		setNeedSnapshot(true);
 	}
 
-	void removeObservers(int cause, Object privateData, int xrefID) {
-		if ((xrefID != 0) && (monitorCrossRefID == xrefID)) {
+	void removeObservers(final int cause, final Object privateData,
+			final int xrefID) {
+		if (xrefID != 0 && monitorCrossRefID == xrefID) {
 			provider.deleteMonitor(monitorCrossRefID);
 			monitorCrossRefID = 0;
 		}
@@ -2498,23 +2332,22 @@ public final class TSCall implements IDomainCall {
 				for (int i = 0; i < callbackAndTypeVector.size(); ++i) {
 					cbAndType = (CallbackAndType) callbackAndTypeVector
 							.elementAt(i);
-					if (cbAndType.devWithType == null) {
+					if (cbAndType.devWithType == null)
 						synchronized (monitorThreads) {
 							if (!monitorThreads.contains(cbAndType.callback)) {
 								monitorThreads.addElement(cbAndType.callback);
 								cbAndType.callback.addReference();
 							}
 						}
-					} else {
+					else {
 						boolean found = false;
 						DeviceObs devObs = null;
 						synchronized (deviceObsVector) {
 							for (int j = 0; j < deviceObsVector.size(); ++j) {
 								devObs = (DeviceObs) deviceObsVector
 										.elementAt(j);
-								if (devObs.callback != cbAndType.callback) {
+								if (devObs.callback != cbAndType.callback)
 									continue;
-								}
 								found = true;
 								break;
 							}
@@ -2537,44 +2370,38 @@ public final class TSCall implements IDomainCall {
 			}
 		}
 
-		Vector<TsapiCallMonitor> observers = getCallObservers();
-		for (int i = 0; i < observers.size(); ++i) {
+		final Vector<TsapiCallMonitor> observers = getCallObservers();
+		for (int i = 0; i < observers.size(); ++i)
 			removeCallMonitor((TsapiCallMonitor) observers.elementAt(i), cause,
 					privateData);
-		}
 
-		if (monitorCrossRefID == 0) {
+		if (monitorCrossRefID == 0)
 			return;
-		}
 		provider.deleteMonitor(monitorCrossRefID);
-		if (provider.getCapabilities().getMonitorStop() != 0) {
+		if (provider.getCapabilities().getMonitorStop() != 0)
 			try {
 				provider.tsapi.monitorStop(monitorCrossRefID, null, null);
-			} catch (TsapiUnableToSendException tue) {
+			} catch (final TsapiUnableToSendException tue) {
 				throw tue;
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+			} catch (final Exception e) {
+				TSCall.log.error(e.getMessage(), e);
 			}
-
-		}
 
 		monitorCrossRefID = 0;
 
-		if (checkForMonitors()) {
+		if (checkForMonitors())
 			return;
-		}
 		setNeedSnapshot(true);
 	}
 
-	void removeTrunk(TSTrunk trunk, Vector<TSEvent> eventList) {
-		if (!trkVector.removeElement(trunk)) {
+	void removeTrunk(final TSTrunk trunk, final Vector<TSEvent> eventList) {
+		if (!trkVector.removeElement(trunk))
 			return;
-		}
 		trunk.unsetCall(eventList);
 	}
 
-	void replaceConnections(Vector<TSConnection> newConnections,
-			Vector<TSEvent> eventList) {
+	void replaceConnections(final Vector<TSConnection> newConnections,
+			final Vector<TSEvent> eventList) {
 		for (int i = 0; i < newConnections.size(); ++i) {
 			TSConnection conn = (TSConnection) newConnections.elementAt(i);
 			if (conn.isTerminalConnection()) {
@@ -2585,12 +2412,11 @@ public final class TSCall implements IDomainCall {
 			addConnection(conn, null);
 		}
 
-		Vector<TSConnection> conns = new Vector<TSConnection>(connections);
+		final Vector<TSConnection> conns = new Vector<TSConnection>(connections);
 		for (int i = 0; i < conns.size(); ++i) {
-			TSConnection conn = (TSConnection) conns.elementAt(i);
-			if (newConnections.contains(conn)) {
+			final TSConnection conn = (TSConnection) conns.elementAt(i);
+			if (newConnections.contains(conn))
 				continue;
-			}
 			conn.setConnectionState(89, eventList);
 		}
 	}
@@ -2598,79 +2424,71 @@ public final class TSCall implements IDomainCall {
 	private CSTAConnectionID selectConnectionIdForAddParty() {
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
-				CSTAConnectionID connID = ((TSConnection) connections
+				final CSTAConnectionID connID = ((TSConnection) connections
 						.elementAt(i)).getConnID();
 
-				if (connID == null) {
+				if (connID == null)
 					continue;
-				}
 
-				if (connID.getDevIDType() == 0) {
+				if (connID.getDevIDType() == 0)
 					return connID;
-				}
 
-				if (connID.getDevIDType() != 1) {
+				if (connID.getDevIDType() != 1)
 					continue;
-				}
 
-				String deviceID = connID.getDeviceID();
-				if (deviceID.regionMatches(true, 0, "T", 0, 1)) {
+				final String deviceID = connID.getDeviceID();
+				if (deviceID.regionMatches(true, 0, "T", 0, 1))
 					return connID;
-				}
 
 			}
 
-			if (connections.size() > 0) {
+			if (connections.size() > 0)
 				return ((TSConnection) connections.elementAt(0)).getConnID();
-			}
 
 			return null;
 		}
 	}
 
-	public Object sendPrivateData(CSTAPrivate data) {
+	public Object sendPrivateData(final CSTAPrivate data) {
 		try {
 			return provider.sendPrivateData(data);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(3, 0, "sendPrivateData failure");
 		}
 	}
 
-	void sendSnapshot(TsapiCallMonitor callback, Vector<TSEvent> _eventList,
-			boolean snapMetaCode) {
+	void sendSnapshot(final TsapiCallMonitor callback,
+			final Vector<TSEvent> _eventList, final boolean snapMetaCode) {
 		sendSnapshot(callback, _eventList, snapMetaCode, 110);
 	}
 
-	void sendSnapshot(TsapiCallMonitor callback, Vector<TSEvent> _eventList,
-			boolean snapMetaCode, int cause) {
-		if (callback == null) {
+	void sendSnapshot(final TsapiCallMonitor callback,
+			final Vector<TSEvent> _eventList, final boolean snapMetaCode,
+			final int cause) {
+		if (callback == null)
 			return;
-		}
 
 		Vector<TSEvent> eventList = null;
 
 		if (_eventList == null) {
 			eventList = new Vector<TSEvent>();
 			getSnapshot(eventList);
-		} else {
+		} else
 			eventList = _eventList;
-		}
 
 		setCSTACause((short) -1);
 
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
 		callback.deliverEvents(eventList, cause, snapMetaCode);
 	}
 
-	public void setBillRate(short billType, float billRate)
+	public void setBillRate(final short billType, final float billRate)
 			throws TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiResourceUnavailableException {
-		if (!provider.isLucentV5()) {
+		if (!provider.isLucentV5())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		switch (billType) {
 		case 16:
 		case 17:
@@ -2686,38 +2504,36 @@ public final class TSCall implements IDomainCall {
 			throw new TsapiInvalidArgumentException(0, 0, "invalid billType");
 		}
 		try {
-			CSTAConnectionID connID = new CSTAConnectionID(callID, "",
+			final CSTAConnectionID connID = new CSTAConnectionID(callID, "",
 					(short) 0);
 
-			LucentSetBillRate sbr = new LucentSetBillRate(connID, billType,
-					billRate);
+			final LucentSetBillRate sbr = new LucentSetBillRate(connID,
+					billType, billRate);
 			provider.sendPrivateData(sbr.makeTsapiPrivate());
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"setBillRate failure, exception: " + e);
-			}
 
 			throw new TsapiPlatformException(4, 0,
 					"setBillRate failure, exception: " + e);
 		}
 	}
 
-	void setCalledDevice(TSDevice _calledDevice) {
-		if (_calledDevice == null) {
+	void setCalledDevice(final TSDevice _calledDevice) {
+		if (_calledDevice == null)
 			return;
-		}
 		calledDevice = _calledDevice;
 	}
 
-	synchronized void setCallID(int newCallID) {
+	synchronized void setCallID(final int newCallID) {
 		if (newCallID == 0) {
-			int rc = provider.getNonCallID();
+			final int rc = provider.getNonCallID();
 			if (rc != -1) {
 				nonCallID = rc;
 				provider.addNonCallToHash(this);
@@ -2730,17 +2546,17 @@ public final class TSCall implements IDomainCall {
 				nonCallID = -1;
 			}
 
-			TSCall tmpCall = provider.addCallToHash(this);
-			if (tmpCall != null) {
-				if ((ucid != null) && (tmpCall.ucid != null)
-						&& (ucid.compareTo(tmpCall.ucid) == 0)) {
+			final TSCall tmpCall = provider.addCallToHash(this);
+			if (tmpCall != null)
+				if (ucid != null && tmpCall.ucid != null
+						&& ucid.compareTo(tmpCall.ucid) == 0) {
 					handOffCall = tmpCall;
 
 					provider.addCallToHash(handOffCall);
 
 					synchronized (connections) {
 						for (int i = 0; i < connections.size(); ++i) {
-							TSConnection conn = (TSConnection) connections
+							final TSConnection conn = (TSConnection) connections
 									.elementAt(i);
 							conn.setCall(handOffCall);
 							handOffCall.addConnection(conn, null);
@@ -2753,49 +2569,48 @@ public final class TSCall implements IDomainCall {
 					provider.dumpCall(tmpCall.getCallID());
 					handOffCall = null;
 
-					log
+					TSCall.log
 							.info("Mismatched UCID for setCallID removing stale call obj "
 									+ tmpCall);
-					log.info("UCID for setCallID for the new call is " + ucid);
+					TSCall.log.info("UCID for setCallID for the new call is "
+							+ ucid);
 
 					provider.addCallToHash(this);
 				}
-			}
 		} else {
-			if (newCallID == callID) {
+			if (newCallID == callID)
 				return;
-			}
 			provider.changeCallIDInDomain(callID, newCallID);
 
 			provider.deleteCallFromHash(callID);
 
-			int saveCallID = callID;
+			final int saveCallID = callID;
 			callID = newCallID;
 
-			TSCall saveCall = provider.addCallToHash(this);
+			final TSCall saveCall = provider.addCallToHash(this);
 
-			if (saveCall == null) {
+			if (saveCall == null)
 				return;
-			}
 			saveCall.callID = saveCallID;
 			provider.addCallToHash(saveCall);
 
-			Vector<TSConnection> conns = new Vector<TSConnection>(
+			final Vector<TSConnection> conns = new Vector<TSConnection>(
 					saveCall.connections);
 			for (int i = 0; i < conns.size(); ++i) {
-				TSConnection conn = (TSConnection) conns.elementAt(i);
-				Vector<TSConnection> cv = conn.getTermConns();
-				if ((cv != null) && (cv.size() > 0)) {
-					Vector<TSConnection> termConns = new Vector<TSConnection>(
+				final TSConnection conn = (TSConnection) conns.elementAt(i);
+				final Vector<TSConnection> cv = conn.getTermConns();
+				if (cv != null && cv.size() > 0) {
+					final Vector<TSConnection> termConns = new Vector<TSConnection>(
 							cv);
 					for (int j = 0; j < termConns.size(); ++j) {
-						TSConnection tc = (TSConnection) termConns.elementAt(j);
-						CSTAConnectionID connID = tc.getConnID();
+						final TSConnection tc = (TSConnection) termConns
+								.elementAt(j);
+						final CSTAConnectionID connID = tc.getConnID();
 						connID.setCallID(saveCallID);
 						tc.setConnID(connID);
 					}
 				} else {
-					CSTAConnectionID connID = conn.getConnID();
+					final CSTAConnectionID connID = conn.getConnID();
 					connID.setCallID(saveCallID);
 					conn.setConnID(connID);
 				}
@@ -2804,209 +2619,190 @@ public final class TSCall implements IDomainCall {
 		}
 	}
 
-	void setCallingDevices(TSDevice _callingDevice) {
-		if (_callingDevice == null) {
+	void setCallingDevices(final TSDevice _callingDevice) {
+		if (_callingDevice == null)
 			return;
-		}
-		if (_callingDevice.isTerminal()) {
+		if (_callingDevice.isTerminal())
 			callingTerminal = _callingDevice;
-		} else {
+		else
 			callingTerminal = null;
-		}
 		callingAddress = _callingDevice;
 	}
 
-	void setCallOriginatorInfo(CSTACallOriginatorInfo _callOriginatorInfo) {
+	void setCallOriginatorInfo(final CSTACallOriginatorInfo _callOriginatorInfo) {
 		callOriginatorInfo = _callOriginatorInfo;
 	}
 
-	public void setConfController(TSConnection termconn)
+	public void setConfController(final TSConnection termconn)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		if (updateObject()) {
-			if (state != 33) {
+			if (state != 33)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"call is not active");
-			}
 
-			if (termconn.getCallControlTermConnState() == 102) {
+			if (termconn.getCallControlTermConnState() == 102)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(termconn, false), 5, state,
 						"terminal connection is dropped");
-			}
 
 			boolean contains = false;
 
 			synchronized (connections) {
 				for (int i = 0; i < connections.size(); ++i) {
-					TSConnection conn = (TSConnection) connections.elementAt(i);
-					Vector<TSConnection> termConns = conn.getTermConns();
-					if ((termConns == null) || (!termConns.contains(termconn))) {
+					final TSConnection conn = (TSConnection) connections
+							.elementAt(i);
+					final Vector<TSConnection> termConns = conn.getTermConns();
+					if (termConns == null || !termConns.contains(termconn))
 						continue;
-					}
 					contains = true;
 					break;
 				}
 			}
 
-			if (!contains) {
+			if (!contains)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"terminal connection is not in this call");
-			}
 
 		}
 
 		confController = termconn;
 	}
 
-	public void setConfEnable(boolean enable) {
+	public void setConfEnable(final boolean enable) {
 		confEnable = enable;
 	}
 
-	private void setConnection_wait_limit(int connection_wait_limit) {
+	private void setConnection_wait_limit(final int connection_wait_limit) {
 		this.connection_wait_limit = connection_wait_limit;
 	}
 
-	void setCSTACause(short cause) {
+	void setCSTACause(final short cause) {
 		cstaCause = cause;
 	}
 
-	void setDeliveringACDDevice(TSDevice _deliveringACDDevice) {
-		if (_deliveringACDDevice == null) {
+	void setDeliveringACDDevice(final TSDevice _deliveringACDDevice) {
+		if (_deliveringACDDevice == null)
 			return;
-		}
 		deliveringACDDevice = _deliveringACDDevice;
 	}
 
-	void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
+	void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = TsapiPromoter.promoteDeviceHistory(deviceHistory);
 	}
 
-	void setDeviceHistory(V7DeviceHistoryEntry[] deviceHistory) {
+	void setDeviceHistory(final V7DeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 
-	void setDigits(String _digits) {
+	void setDigits(final String _digits) {
 		digits = _digits;
 	}
 
-	void setDistributingDevice(TSDevice _distributingDevice) {
-		if (_distributingDevice == null) {
+	void setDistributingDevice(final TSDevice _distributingDevice) {
+		if (_distributingDevice == null)
 			return;
-		}
 		distributingDevice = _distributingDevice;
 	}
 
-	void setDistributingVDN(TSDevice _distributingVDN) {
-		if (_distributingVDN == null) {
+	void setDistributingVDN(final TSDevice _distributingVDN) {
+		if (_distributingVDN == null)
 			return;
-		}
 		distributingVDN = _distributingVDN;
 	}
 
-	void setFlexibleBilling(boolean _flexibleBilling) {
+	void setFlexibleBilling(final boolean _flexibleBilling) {
 		flexibleBilling = _flexibleBilling;
 	}
 
-	void setLAI(LookaheadInfo _lai) {
-		if (_lai == null) {
+	void setLAI(final LookaheadInfo _lai) {
+		if (_lai == null)
 			return;
-		}
 		lai = _lai;
 	}
 
-	void setLAI(LucentLookaheadInfo _lai) {
-		if (_lai == null) {
+	void setLAI(final LucentLookaheadInfo _lai) {
+		if (_lai == null)
 			return;
-		}
 		lai = TsapiPromoter.promoteLookaheadInfo(_lai);
 	}
 
-	void setLastRedirectionDevice(TSDevice _lastRedirectionDevice) {
-		if (_lastRedirectionDevice == null) {
+	void setLastRedirectionDevice(final TSDevice _lastRedirectionDevice) {
+		if (_lastRedirectionDevice == null)
 			return;
-		}
 		lastRedirectionDevice = _lastRedirectionDevice;
 	}
 
-	void setMonitor(boolean waitForSnapshotConf)
+	void setMonitor(final boolean waitForSnapshotConf)
 			throws TsapiResourceUnavailableException {
 		CSTAConnectionID monConnID = null;
-		if (!isMonitorSet()) {
+		if (!isMonitorSet())
 			synchronized (connections) {
-				if (connections.size() > 0) {
+				if (connections.size() > 0)
 					try {
 						monConnID = ((TSConnection) connections.elementAt(0))
 								.getConnID();
-					} catch (TsapiPlatformException e) {
-						log.error("Ignoring exception: " + e);
-						if (callID != 0) {
+					} catch (final TsapiPlatformException e) {
+						TSCall.log.error("Ignoring exception: " + e);
+						if (callID != 0)
 							monConnID = new CSTAConnectionID(callID, "",
 									(short) 0);
-						}
 					}
-				} else if (callID != 0) {
+				else if (callID != 0)
 					monConnID = new CSTAConnectionID(callID, "", (short) 0);
-				}
 			}
-		}
-		if (monConnID != null) {
+		if (monConnID != null)
 			monitorCall(monConnID, waitForSnapshotConf);
-		}
 	}
 
-	void setNeedRedoSnapshotCall(boolean flag) {
+	void setNeedRedoSnapshotCall(final boolean flag) {
 		needRedoSnapshotCall = flag;
 	}
 
-	public synchronized void setNeedSnapshot(boolean flag) {
+	public synchronized void setNeedSnapshot(final boolean flag) {
 		needSnapshot = flag;
 	}
 
-	void setOCI(LucentOriginalCallInfo _oci) {
-		if (_oci == null) {
+	void setOCI(final LucentOriginalCallInfo _oci) {
+		if (_oci == null)
 			return;
-		}
 		oci = TsapiPromoter.promoteOriginalCallInfo(provider, _oci);
 	}
 
-	void setOCI(OriginalCallInfo _oci) {
-		if (_oci == null) {
+	void setOCI(final OriginalCallInfo _oci) {
+		if (_oci == null)
 			return;
-		}
 		oci = _oci;
 	}
 
-	void setReason(short _reason) {
+	void setReason(final short _reason) {
 		reason = _reason;
 	}
 
 	public void setReceivedCallClearedTransfer(
-			boolean receivedCallClearedTransfer) {
+			final boolean receivedCallClearedTransfer) {
 		this.receivedCallClearedTransfer = receivedCallClearedTransfer;
 		callClearedTransferReceiptTime = System.currentTimeMillis();
 	}
 
-	void setSnapshotCallConfPending(boolean flag) {
+	void setSnapshotCallConfPending(final boolean flag) {
 		snapshotCallConfPending = flag;
 	}
 
 	@SuppressWarnings("unchecked")
-	void setState(int _state, Vector<TSEvent> eventList) {
+	void setState(final int _state, final Vector<TSEvent> eventList) {
 		synchronized (this) {
-			if ((state == _state) || (state == 34)) {
+			if (state == _state || state == 34)
 				return;
-			}
 
 			state = _state;
 		}
 
 		switch (state) {
 		case 33:
-			if (eventList != null) {
+			if (eventList != null)
 				eventList.addElement(new TSEvent(4, this));
-			}
 
 			boolean tryMonitor = false;
 			synchronized (this) {
@@ -3015,15 +2811,14 @@ public final class TSCall implements IDomainCall {
 					monitorPending = false;
 				}
 			}
-			if (!tryMonitor) {
+			if (!tryMonitor)
 				return;
-			}
 			try {
 				setMonitor(false);
-			} catch (TsapiUnableToSendException tue) {
+			} catch (final TsapiUnableToSendException tue) {
 				throw tue;
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+			} catch (final Exception e) {
+				TSCall.log.error(e.getMessage(), e);
 				removeObservers(107, null, 0);
 			}
 			break;
@@ -3034,23 +2829,21 @@ public final class TSCall implements IDomainCall {
 				TSTrunk tmpTrunk = (TSTrunk) trkVectorClone.elementAt(i);
 
 				synchronized (tmpTrunk) {
-					if (trkVector.removeElement(tmpTrunk)) {
+					if (trkVector.removeElement(tmpTrunk))
 						tmpTrunk.setState(1, eventList);
-					}
 				}
 				tmpTrunk = null;
 			}
 			trkVectorClone.removeAllElements();
 			trkVectorClone = null;
 
-			Vector<TSConnection> conn = new Vector<TSConnection>(connections);
-			for (i = 0; i < conn.size(); ++i) {
+			final Vector<TSConnection> conn = new Vector<TSConnection>(
+					connections);
+			for (i = 0; i < conn.size(); ++i)
 				((TSConnection) conn.elementAt(i)).setConnectionState(89,
 						eventList);
-			}
-			if (eventList != null) {
+			if (eventList != null)
 				eventList.addElement(new TSEvent(5, this));
-			}
 
 			needSnapshot = false;
 
@@ -3066,91 +2859,82 @@ public final class TSCall implements IDomainCall {
 		provider.removeCallFromDomain(this);
 	}
 
-	void setUCID(String _ucid) {
-		if (_ucid == null) {
+	void setUCID(final String _ucid) {
+		if (_ucid == null)
 			return;
-		}
 		ucid = _ucid;
 	}
 
-	void setUEC(LucentUserEnteredCode _uec) {
-		if (_uec == null) {
+	void setUEC(final LucentUserEnteredCode _uec) {
+		if (_uec == null)
 			return;
-		}
 		uec = TsapiPromoter.promoteUserEnteredCode(provider, _uec);
 	}
 
-	void setUEC(UserEnteredCode _uec) {
-		if (_uec == null) {
+	void setUEC(final UserEnteredCode _uec) {
+		if (_uec == null)
 			return;
-		}
 		uec = _uec;
 	}
 
-	void setUUI(LucentUserToUserInfo _uui) {
-		if (_uui == null) {
+	void setUUI(final LucentUserToUserInfo _uui) {
+		if (_uui == null)
 			return;
-		}
 		uui = TsapiPromoter.promoteUserToUserInfo(_uui);
 	}
 
-	void setUUI(UserToUserInfo _uui) {
-		if (_uui == null) {
+	void setUUI(final UserToUserInfo _uui) {
+		if (_uui == null)
 			return;
-		}
 		uui = _uui;
 	}
 
-	public void setXferController(TSConnection termconn)
+	public void setXferController(final TSConnection termconn)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		if (updateObject()) {
-			if (state != 33) {
+			if (state != 33)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"call is not active");
-			}
 
-			if (termconn.getCallControlTermConnState() == 102) {
+			if (termconn.getCallControlTermConnState() == 102)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(termconn, false), 5, 102,
 						"terminal connection is dropped");
-			}
 
 			boolean contains = false;
 
 			synchronized (connections) {
 				for (int i = 0; i < connections.size(); ++i) {
-					TSConnection conn = (TSConnection) connections.elementAt(i);
-					Vector<TSConnection> termConns = conn.getTermConns();
-					if ((termConns == null) || (!termConns.contains(termconn))) {
+					final TSConnection conn = (TSConnection) connections
+							.elementAt(i);
+					final Vector<TSConnection> termConns = conn.getTermConns();
+					if (termConns == null || !termConns.contains(termconn))
 						continue;
-					}
 					contains = true;
 					break;
 				}
 			}
 
-			if (!contains) {
+			if (!contains)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"terminal connection is not in this call");
-			}
 
 		}
 
 		xferController = termconn;
 	}
 
-	public void setXferEnable(boolean enable) {
+	public void setXferEnable(final boolean enable) {
 		xferEnable = enable;
 	}
 
-	void staleObsCleanup(int cause) {
+	void staleObsCleanup(final int cause) {
 		synchronized (staleObsVector) {
-			for (int i = 0; i < staleObsVector.size(); ++i) {
+			for (int i = 0; i < staleObsVector.size(); ++i)
 				((TsapiCallMonitor) staleObsVector.elementAt(i))
 						.deleteReference(this, false, cause, null);
-			}
 
 			staleObsVector.removeAllElements();
 		}
@@ -3161,43 +2945,38 @@ public final class TSCall implements IDomainCall {
 				+ Integer.toHexString(super.hashCode());
 	}
 
-	public TSConnection transfer(String xferDestAddress, CSTAPrivate reqPriv)
-			throws TsapiPrivilegeViolationException,
+	public TSConnection transfer(final String xferDestAddress,
+			final CSTAPrivate reqPriv) throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidPartyException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getTransferCall() == 0) {
+		if (provider.getCapabilities().getTransferCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"transfer unsupported by driver");
-		}
 
-		if (!provider.getTsapiCallCapabilities().canTransfer((String) null)) {
+		if (!provider.getTsapiCallCapabilities().canTransfer((String) null))
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"transfer(String) unsupported by driver");
-		}
 
-		boolean thisCallUpdate = updateObject();
+		final boolean thisCallUpdate = updateObject();
 
-		if ((thisCallUpdate) && (state != 33)) {
+		if (thisCallUpdate && state != 33)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "call not active");
-		}
 
-		if (!xferEnable) {
+		if (!xferEnable)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "transfer disabled");
-		}
 
-		TSConnection activeTermConn = xferController;
+		final TSConnection activeTermConn = xferController;
 
-		if (activeTermConn == null) {
+		if (activeTermConn == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"transfer(String) with null TransferController not supported");
-		}
 
-		if ((thisCallUpdate)
-				&& (activeTermConn.getCallControlTermConnState() != 98)
-				&& (activeTermConn.getCallControlTermConnState() != 103)) {
+		if (thisCallUpdate
+				&& activeTermConn.getCallControlTermConnState() != 98
+				&& activeTermConn.getCallControlTermConnState() != 103)
 			throw new TsapiInvalidStateException(
 					3,
 					0,
@@ -3205,34 +2984,33 @@ public final class TSCall implements IDomainCall {
 					2,
 					state,
 					"transfer controller terminal connection not in valid state (TALKING or UNKNOWN)");
-		}
 
 		setConnection_wait_limit(1);
 
-		LucentSingleStepTransferCall sst = new LucentSingleStepTransferCall(
+		final LucentSingleStepTransferCall sst = new LucentSingleStepTransferCall(
 				activeTermConn.getConnID(), xferDestAddress);
 
-		ConfXferConfHandler handler = new ConfXferConfHandler(this, null, 90);
+		final ConfXferConfHandler handler = new ConfXferConfHandler(this, null,
+				90);
 		try {
 			provider.sendPrivateData(sst.makeTsapiPrivate(), handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"transfer(String) failure");
-			}
 			throw new TsapiPlatformException(4, 0, "transfer(String) failure: "
 					+ e);
 		}
@@ -3240,28 +3018,25 @@ public final class TSCall implements IDomainCall {
 		return provider.getConnection(handler.newCall);
 	}
 
-	public void transfer(TSCall otherCall, CSTAPrivate reqPriv)
+	public void transfer(final TSCall otherCall, final CSTAPrivate reqPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidArgumentException, TsapiInvalidPartyException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getTransferCall() == 0) {
+		if (provider.getCapabilities().getTransferCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 
-		boolean thisCallUpdate = updateObject();
-		boolean otherCallUpdate = otherCall.updateObject();
+		final boolean thisCallUpdate = updateObject();
+		final boolean otherCallUpdate = otherCall.updateObject();
 
-		if ((thisCallUpdate) && (state != 33)) {
+		if (thisCallUpdate && state != 33)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "call not active");
-		}
 
-		if ((!xferEnable) || (!otherCall.xferEnable)) {
+		if (!xferEnable || !otherCall.xferEnable)
 			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 					.getTsapiObject(this, false), 1, state, "transfer disabled");
-		}
 
 		TSConnection activeTermConn = xferController;
 		TSConnection heldTermConn = otherCall.xferController;
@@ -3273,87 +3048,78 @@ public final class TSCall implements IDomainCall {
 				synchronized (connections) {
 					for (int i = 0; i < connections.size(); ++i) {
 						conn = (TSConnection) connections.elementAt(i);
-						Vector<TSConnection> termConns = conn.getTermConns();
-						if (termConns == null) {
+						final Vector<TSConnection> termConns = conn
+								.getTermConns();
+						if (termConns == null)
 							continue;
-						}
-						Vector<TSConnection> tcs = new Vector<TSConnection>(
+						final Vector<TSConnection> tcs = new Vector<TSConnection>(
 								termConns);
 						for (int j = 0; j < tcs.size(); ++j) {
 							termConn = (TSConnection) tcs.elementAt(j);
-							if ((termConn.getCallControlTermConnState() != 98)
-									&& (termConn.getCallControlTermConnState() != 103)) {
+							if (termConn.getCallControlTermConnState() != 98
+									&& termConn.getCallControlTermConnState() != 103)
 								continue;
-							}
 							activeTermConn = termConn;
 
 							heldTermConn = otherCall
 									.findHeldTermConnection(activeTermConn
 											.getTSDevice());
-							if (heldTermConn == null) {
+							if (heldTermConn == null)
 								continue;
-							}
 							found = true;
 							break;
 						}
 
-						if (found) {
+						if (found)
 							break;
-						}
 					}
 				}
-				if (activeTermConn == null) {
+				if (activeTermConn == null)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "no active terminal connection found");
-				}
 
-				if (heldTermConn == null) {
+				if (heldTermConn == null)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "no held terminal connection found");
-				}
 
 			} else {
-				if ((otherCallUpdate)
-						&& (heldTermConn.getCallControlTermConnState() != 99)
-						&& (heldTermConn.getCallControlTermConnState() != 103)) {
+				if (otherCallUpdate
+						&& heldTermConn.getCallControlTermConnState() != 99
+						&& heldTermConn.getCallControlTermConnState() != 103)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "terminal connection not held");
-				}
 
 				activeTermConn = findActiveTermConnection(heldTermConn
 						.getTSDevice());
-				if (activeTermConn == null) {
+				if (activeTermConn == null)
 					throw new TsapiInvalidStateException(3, 0,
 							TsapiCreateObject.getTsapiObject(this, false), 1,
 							state, "no active terminal connection found");
-				}
 
 			}
 
 		} else if (heldTermConn == null) {
-			if ((thisCallUpdate)
-					&& (activeTermConn.getCallControlTermConnState() != 98)
-					&& (activeTermConn.getCallControlTermConnState() != 103)) {
+			if (thisCallUpdate
+					&& activeTermConn.getCallControlTermConnState() != 98
+					&& activeTermConn.getCallControlTermConnState() != 103)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"terminal connection not active. It's state is "
 								+ activeTermConn.getCallControlTermConnState());
-			}
 
 			heldTermConn = otherCall.findHeldTermConnection(activeTermConn
 					.getTSDevice());
-			if (heldTermConn == null) {
+			if (heldTermConn == null)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"no held terminal connection found");
-			}
 
-		} else if ((thisCallUpdate) && (otherCallUpdate)) {
-			if ((activeTermConn.getCallControlTermConnState() != 98)
-					&& (activeTermConn.getCallControlTermConnState() != 103)) {
+		} else if (thisCallUpdate && otherCallUpdate) {
+			if (activeTermConn.getCallControlTermConnState() != 98
+					&& activeTermConn.getCallControlTermConnState() != 103)
 				throw new TsapiInvalidStateException(
 						3,
 						0,
@@ -3362,10 +3128,9 @@ public final class TSCall implements IDomainCall {
 						state,
 						"the state of the active terminal connection is not TALKING or UNKNOWN; its state is "
 								+ activeTermConn.getCallControlTermConnState());
-			}
 
-			if ((heldTermConn.getCallControlTermConnState() != 99)
-					&& (heldTermConn.getCallControlTermConnState() != 103)) {
+			if (heldTermConn.getCallControlTermConnState() != 99
+					&& heldTermConn.getCallControlTermConnState() != 103)
 				throw new TsapiInvalidStateException(
 						3,
 						0,
@@ -3374,99 +3139,92 @@ public final class TSCall implements IDomainCall {
 						state,
 						"the state of the held terminal connection is not HELD or UNKNOWN; its state is "
 								+ heldTermConn.getCallControlTermConnState());
-			}
 
 			if (!activeTermConn.getTSDevice().getTermConns().contains(
-					heldTermConn)) {
+					heldTermConn))
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 1, state,
 						"the held terminal connection is not associated with the device ("
 								+ activeTermConn.getTSDevice()
 								+ ") of the active terminal connection");
-			}
 
 		}
 
-		ConfHandler handler = new ConfXferConfHandler(this, otherCall, 52);
+		final ConfHandler handler = new ConfXferConfHandler(this, otherCall, 52);
 		try {
 			provider.tsapi.transferCall(heldTermConn.getConnID(),
 					activeTermConn.getConnID(), reqPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiInvalidArgumentException e) {
+		} catch (final TsapiInvalidArgumentException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"transferCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "transferCall failure");
 		}
 	}
 
 	public void unreferenced() {
 		refCount -= 1;
-		if ((refCount > 0) || (callID != 0)) {
+		if (refCount > 0 || callID != 0)
 			return;
-		}
 		setState(34, null);
 		removeObservers(100, null, 0);
 	}
 
-	void updateConnectionCallIDs(int newCallID) {
-		Vector<TSConnection> clonedConnectionsToUpdate = new Vector<TSConnection>(
+	void updateConnectionCallIDs(final int newCallID) {
+		final Vector<TSConnection> clonedConnectionsToUpdate = new Vector<TSConnection>(
 				connections);
 
 		for (int j = 0; j < clonedConnectionsToUpdate.size(); ++j) {
-			TSConnection conn = (TSConnection) clonedConnectionsToUpdate
+			final TSConnection conn = (TSConnection) clonedConnectionsToUpdate
 					.elementAt(j);
-			Vector<TSConnection> cv = conn.getTermConns();
-			if ((cv != null) && (cv.size() > 0)) {
-				Vector<TSConnection> termConns = new Vector<TSConnection>(cv);
+			final Vector<TSConnection> cv = conn.getTermConns();
+			if (cv != null && cv.size() > 0) {
+				final Vector<TSConnection> termConns = new Vector<TSConnection>(
+						cv);
 				for (int k = 0; k < termConns.size(); ++k) {
-					TSConnection tsc = (TSConnection) termConns.elementAt(k);
+					final TSConnection tsc = (TSConnection) termConns
+							.elementAt(k);
 					tsc.updateConnIDCallID(newCallID);
 				}
 
-			} else {
+			} else
 				conn.updateConnIDCallID(newCallID);
-			}
 		}
 	}
 
 	boolean updateObject() {
-		if ((isMonitorSet() == true) || ((state == 32) && (callID == 0))
-				|| (state == 34)) {
+		if (isMonitorSet() == true || state == 32 && callID == 0 || state == 34)
 			return true;
-		}
 
 		CSTAConnectionID snapConnID = null;
 		synchronized (connections) {
 			for (int i = 0; i < connections.size(); ++i) {
-				TSConnection conn = (TSConnection) connections.elementAt(i);
-				if (conn.getTSDevice().isMonitorSet()) {
+				final TSConnection conn = (TSConnection) connections
+						.elementAt(i);
+				if (conn.getTSDevice().isMonitorSet())
 					return true;
-				}
-				Vector<TSConnection> termConns = conn.getTermConns();
-				if (termConns == null) {
+				final Vector<TSConnection> termConns = conn.getTermConns();
+				if (termConns == null)
 					continue;
-				}
 				synchronized (termConns) {
 					for (int j = 0; j < termConns.size(); ++j) {
-						TSConnection termconn = (TSConnection) termConns
+						final TSConnection termconn = (TSConnection) termConns
 								.elementAt(j);
-						if (!termconn.getTSDevice().isMonitorSet()) {
+						if (!termconn.getTSDevice().isMonitorSet())
 							continue;
-						}
 						return true;
 					}
 
@@ -3474,21 +3232,18 @@ public final class TSCall implements IDomainCall {
 
 			}
 
-			if (connections.size() > 0) {
+			if (connections.size() > 0)
 				try {
 					snapConnID = ((TSConnection) connections.elementAt(0))
 							.getConnID();
-				} catch (TsapiPlatformException e) {
-					log.error("Ignoring exception: " + e);
-					if (callID != 0) {
+				} catch (final TsapiPlatformException e) {
+					TSCall.log.error("Ignoring exception: " + e);
+					if (callID != 0)
 						snapConnID = new CSTAConnectionID(callID, "", (short) 0);
-					}
 				}
-			}
 		}
-		if (snapConnID != null) {
+		if (snapConnID != null)
 			return doSnapshot(snapConnID, null, true);
-		}
 		if (callID != 0) {
 			snapConnID = new CSTAConnectionID(callID, "", (short) 0);
 			return doSnapshot(snapConnID, null, true);
@@ -3499,23 +3254,23 @@ public final class TSCall implements IDomainCall {
 
 	boolean updateSuspiciousObject() {
 		if (callID != 0) {
-			log.info("Mark " + this + " (callID " + callID
+			TSCall.log.info("Mark " + this + " (callID " + callID
 					+ ") for immediate and future snapshots for " + provider);
 
 			needSnapshot = true;
 
-			CSTAConnectionID snapConnID = new CSTAConnectionID(callID, "",
-					(short) 0);
+			final CSTAConnectionID snapConnID = new CSTAConnectionID(callID,
+					"", (short) 0);
 			return doSnapshot(snapConnID, null, true);
 		}
 
 		return false;
 	}
 
-	boolean waitForConnections(String forWhom,
-			int requiredMinNumberOfConnections) {
+	boolean waitForConnections(final String forWhom,
+			final int requiredMinNumberOfConnections) {
 		if (connections.size() >= requiredMinNumberOfConnections) {
-			log.info("waitForConnections: called for " + forWhom
+			TSCall.log.info("waitForConnections: called for " + forWhom
 					+ ": had right# of connections on entry, for call ID "
 					+ callID);
 
@@ -3523,25 +3278,25 @@ public final class TSCall implements IDomainCall {
 		}
 
 		if (state == 34) {
-			log.info("waitForConnections: called for " + forWhom
+			TSCall.log.info("waitForConnections: called for " + forWhom
 					+ ": call was INVALID on entry, for call ID " + callID);
 
 			return false;
 		}
 
-		long startTime = System.currentTimeMillis();
+		final long startTime = System.currentTimeMillis();
 		long currentTime = startTime;
 
-		long endTime = currentTime + Tsapi.getCallCompletionTimeout();
+		final long endTime = currentTime + Tsapi.getCallCompletionTimeout();
 		while (true) {
 			try {
 				connections.wait(endTime - currentTime);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 			}
 			currentTime = System.currentTimeMillis();
 
 			if (connections.size() >= requiredMinNumberOfConnections) {
-				log.info("waitForConnections: waiting for " + forWhom
+				TSCall.log.info("waitForConnections: waiting for " + forWhom
 						+ ": succeeded after waiting a total of "
 						+ (currentTime - startTime) / 1000L
 						+ " seconds, to get " + requiredMinNumberOfConnections
@@ -3551,7 +3306,7 @@ public final class TSCall implements IDomainCall {
 			}
 
 			if (currentTime >= endTime) {
-				log.info("waitForConnections: waited for " + forWhom
+				TSCall.log.info("waitForConnections: waited for " + forWhom
 						+ ": Failed.  After waiting a total of "
 						+ (currentTime - startTime) / 1000L
 						+ " seconds, did not get "
@@ -3562,7 +3317,7 @@ public final class TSCall implements IDomainCall {
 			}
 
 			if (state == 34) {
-				log.info("waitForConnections: waited for " + forWhom
+				TSCall.log.info("waitForConnections: waited for " + forWhom
 						+ ": Failed.  After waiting a total of "
 						+ (currentTime - startTime) / 1000L
 						+ " seconds, the call went INVALID (ended) - call ID "
@@ -3571,7 +3326,7 @@ public final class TSCall implements IDomainCall {
 				return false;
 			}
 
-			log.info("waitForConnections: waiting for " + forWhom
+			TSCall.log.info("waitForConnections: waiting for " + forWhom
 					+ ": woke up after waiting a total of "
 					+ (currentTime - startTime) / 1000L
 					+ " seconds, and failed to see "
@@ -3581,4 +3336,3 @@ public final class TSCall implements IDomainCall {
 		}
 	}
 }
-

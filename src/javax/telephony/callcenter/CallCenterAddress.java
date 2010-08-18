@@ -13,4 +13,3 @@ public abstract interface CallCenterAddress extends Address {
 			boolean paramBoolean) throws ResourceUnavailableException,
 			PrivilegeViolationException, MethodNotSupportedException;
 }
-

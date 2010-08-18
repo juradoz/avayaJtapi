@@ -13,4 +13,3 @@ public abstract interface LucentV5Call extends ITsapiCall, LucentCallEx2,
 			throws TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiResourceUnavailableException;
 }
-

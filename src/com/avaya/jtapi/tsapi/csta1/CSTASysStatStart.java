@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNBitString;
 
 public class CSTASysStatStart extends CSTARequest {
-	public static CSTASysStatStart decode(InputStream in) {
-		CSTASysStatStart _this = new CSTASysStatStart();
+	public static CSTASysStatStart decode(final InputStream in) {
+		final CSTASysStatStart _this = new CSTASysStatStart();
 		_this.doDecode(in);
 		return _this;
 	}
@@ -22,17 +22,17 @@ public class CSTASysStatStart extends CSTARequest {
 		statusFilter = 0;
 	}
 
-	public CSTASysStatStart(int filter) {
+	public CSTASysStatStart(final int filter) {
 		statusFilter = filter;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		statusFilter = ASNBitString.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		SystemStatusFilter.encode(statusFilter, memberStream);
 	}
 
@@ -43,11 +43,11 @@ public class CSTASysStatStart extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatStart ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(SystemStatusFilter.print(statusFilter, "statusFilter",
 				indent));
@@ -56,4 +56,3 @@ public class CSTASysStatStart extends CSTARequest {
 		return lines;
 	}
 }
-

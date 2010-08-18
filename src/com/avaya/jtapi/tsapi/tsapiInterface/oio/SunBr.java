@@ -21,7 +21,7 @@ final class SunBr extends GenericBrowser {
 	}
 
 	@Override
-	Socket trySocket(InetSocketAddress addr, SocketFactory sf)
+	Socket trySocket(final InetSocketAddress addr, final SocketFactory sf)
 			throws UnknownHostException, IOException {
 		System.out.println("in SunBr  checkPermission\n");
 		AccessController.checkPermission(new SocketPermission(addr.getAddress()
@@ -32,4 +32,3 @@ final class SunBr extends GenericBrowser {
 		return super.trySocket(addr, sf);
 	}
 }
-

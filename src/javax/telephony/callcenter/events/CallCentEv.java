@@ -9,4 +9,3 @@ public abstract interface CallCentEv extends Ev {
 
 	public abstract int getCallCenterCause();
 }
-

@@ -30,8 +30,8 @@ public final class ExtendedDeviceID {
 	ExtendedDeviceID() {
 	}
 
-	public ExtendedDeviceID(String _deviceID, short _deviceIDType,
-			short _deviceIDStatus) {
+	public ExtendedDeviceID(final String _deviceID, final short _deviceIDType,
+			final short _deviceIDStatus) {
 		deviceID = _deviceID;
 		deviceIDType = _deviceIDType;
 		deviceIDStatus = _deviceIDStatus;
@@ -55,4 +55,3 @@ public final class ExtendedDeviceID {
 				+ deviceIDStatus + ")";
 	}
 }
-

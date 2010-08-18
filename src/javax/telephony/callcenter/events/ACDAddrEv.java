@@ -27,4 +27,3 @@ public abstract interface ACDAddrEv extends CallCentEv, AddrEv {
 	@Deprecated
 	public abstract CallCenterTrunk[] getTrunks();
 }
-

@@ -12,20 +12,20 @@ public final class LucentMakePredictiveCallConfEvent extends LucentPrivateData
 	String ucid;
 	static final int PDU = 86;
 
-	public static LucentMakePredictiveCallConfEvent decode(InputStream in) {
-		LucentMakePredictiveCallConfEvent _this = new LucentMakePredictiveCallConfEvent();
+	public static LucentMakePredictiveCallConfEvent decode(final InputStream in) {
+		final LucentMakePredictiveCallConfEvent _this = new LucentMakePredictiveCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ucid = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(ucid, memberStream);
 	}
 
@@ -40,12 +40,12 @@ public final class LucentMakePredictiveCallConfEvent extends LucentPrivateData
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMakePredictiveCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(ucid, "ucid", indent));
 
@@ -53,7 +53,7 @@ public final class LucentMakePredictiveCallConfEvent extends LucentPrivateData
 		return lines;
 	}
 
-	public void setUcid(String ucid) {
+	public void setUcid(final String ucid) {
 		this.ucid = ucid;
 	}
 }

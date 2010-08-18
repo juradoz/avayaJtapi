@@ -11,4 +11,3 @@ public abstract interface LucentTerminal extends ITsapiTerminal {
 
 	public abstract String getDirectoryName();
 }
-

@@ -16,8 +16,8 @@ class LucentPFeature extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
-		Random r = new Random();
+	public void encodeMembers(final OutputStream memberStream) {
+		final Random r = new Random();
 		r.nextBytes(value);
 		ASNOctetString.encode(value, memberStream);
 	}
@@ -33,4 +33,3 @@ class LucentPFeature extends LucentPrivateData {
 	}
 
 }
-

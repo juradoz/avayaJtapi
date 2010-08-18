@@ -22,4 +22,3 @@ public abstract interface LucentCallEx extends LucentCall {
 			TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException;
 }
-

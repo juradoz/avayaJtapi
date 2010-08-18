@@ -7,4 +7,3 @@ public abstract interface LucentBillType {
 	public static final short BT_PREMIUM_CREDIT = 19;
 	public static final short BT_FREE_CALL = 24;
 }
-

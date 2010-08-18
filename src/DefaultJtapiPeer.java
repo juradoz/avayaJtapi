@@ -6,4 +6,3 @@ public class DefaultJtapiPeer extends TsapiPeer {
 		return super.getClass().getSuperclass().getName();
 	}
 }
-

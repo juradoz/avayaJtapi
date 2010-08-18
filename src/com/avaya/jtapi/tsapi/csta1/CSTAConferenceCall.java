@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTAConferenceCall extends CSTARequest {
-	public static CSTAConferenceCall decode(InputStream in) {
-		CSTAConferenceCall _this = new CSTAConferenceCall();
+	public static CSTAConferenceCall decode(final InputStream in) {
+		final CSTAConferenceCall _this = new CSTAConferenceCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,20 +21,20 @@ public final class CSTAConferenceCall extends CSTARequest {
 	public CSTAConferenceCall() {
 	}
 
-	public CSTAConferenceCall(CSTAConnectionID _heldCall,
-			CSTAConnectionID _activeCall) {
+	public CSTAConferenceCall(final CSTAConnectionID _heldCall,
+			final CSTAConnectionID _activeCall) {
 		heldCall = _heldCall;
 		activeCall = _activeCall;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		heldCall = CSTAConnectionID.decode(memberStream);
 		activeCall = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(heldCall, memberStream);
 		CSTAConnectionID.encode(activeCall, memberStream);
 	}
@@ -54,11 +54,11 @@ public final class CSTAConferenceCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAConferenceCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(heldCall, "heldCall", indent));
 		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
@@ -67,4 +67,3 @@ public final class CSTAConferenceCall extends CSTARequest {
 		return lines;
 	}
 }
-

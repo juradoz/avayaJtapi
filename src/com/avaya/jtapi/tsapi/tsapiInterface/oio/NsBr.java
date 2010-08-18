@@ -22,7 +22,7 @@ final class NsBr extends GenericBrowser {
 			return super.findProperties();
 		}
 		// catch (AppletSecurityException e)
-		catch (Exception e) {
+		catch (final Exception e) {
 			// PrivilegeManager.enablePrivilege("UniversalPropertyRead");
 			// PrivilegeManager.enablePrivilege("UniversalFileRead");
 		}
@@ -30,7 +30,7 @@ final class NsBr extends GenericBrowser {
 	}
 
 	@Override
-	Socket trySocket(InetSocketAddress addr, SocketFactory sf)
+	Socket trySocket(final InetSocketAddress addr, final SocketFactory sf)
 			throws UnknownHostException, IOException {
 		try {
 			// if (grantedUniversalConnect)
@@ -38,7 +38,7 @@ final class NsBr extends GenericBrowser {
 			return super.trySocket(addr, sf);
 		}
 		// catch (AppletSecurityException e)
-		catch (Exception e) {
+		catch (final Exception e) {
 			// if (!askedForUniversalConnect)
 			{
 				// askedForUniversalConnect = true;
@@ -50,4 +50,3 @@ final class NsBr extends GenericBrowser {
 		}
 	}
 }
-

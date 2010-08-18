@@ -3,24 +3,21 @@ package com.avaya.jtapi.tsapi.impl.events.termConn;
 import com.avaya.jtapi.tsapi.PrivateDtmfEvent;
 
 public class PrivateDtmfEventImpl implements PrivateDtmfEvent {
-	private char dtmfDigit;
+	private final char dtmfDigit;
 
-	public PrivateDtmfEventImpl(char digit) {
+	public PrivateDtmfEventImpl(final char digit) {
 		dtmfDigit = digit;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(final Object obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (!(obj instanceof PrivateDtmfEventImpl)) {
+		if (!(obj instanceof PrivateDtmfEventImpl))
 			return false;
-		}
-		PrivateDtmfEventImpl other = (PrivateDtmfEventImpl) obj;
+		final PrivateDtmfEventImpl other = (PrivateDtmfEventImpl) obj;
 
 		return dtmfDigit == other.dtmfDigit;
 	}
@@ -31,10 +28,9 @@ public class PrivateDtmfEventImpl implements PrivateDtmfEvent {
 
 	@Override
 	public int hashCode() {
-		int prime = 31;
+		final int prime = 31;
 		int result = 1;
 		result = prime * result + dtmfDigit;
 		return result;
 	}
 }
-

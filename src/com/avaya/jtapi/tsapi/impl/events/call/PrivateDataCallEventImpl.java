@@ -4,13 +4,13 @@ import javax.telephony.MetaEvent;
 import javax.telephony.privatedata.PrivateDataEvent;
 
 public class PrivateDataCallEventImpl implements PrivateDataEvent {
-	private MetaEvent metaEvent;
-	private Object privateData;
-	private Object source;
-	private int cause;
+	private final MetaEvent metaEvent;
+	private final Object privateData;
+	private final Object source;
+	private final int cause;
 
-	public PrivateDataCallEventImpl(Object privateData, Object source,
-			int cause, MetaEvent metaEvent) {
+	public PrivateDataCallEventImpl(final Object privateData,
+			final Object source, final int cause, final MetaEvent metaEvent) {
 		this.privateData = privateData;
 		this.source = source;
 		this.cause = cause;

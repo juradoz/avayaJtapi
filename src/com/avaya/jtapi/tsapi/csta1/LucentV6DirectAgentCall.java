@@ -11,8 +11,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 public final class LucentV6DirectAgentCall extends LucentDirectAgentCall {
 	public static final int PDU = 111;
 
-	public static LucentDirectAgentCall decode(InputStream in) {
-		LucentV6DirectAgentCall _this = new LucentV6DirectAgentCall();
+	public static LucentDirectAgentCall decode(final InputStream in) {
+		final LucentV6DirectAgentCall _this = new LucentV6DirectAgentCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,18 +21,18 @@ public final class LucentV6DirectAgentCall extends LucentDirectAgentCall {
 	public LucentV6DirectAgentCall() {
 	}
 
-	public LucentV6DirectAgentCall(String _split, boolean _priorityCalling,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6DirectAgentCall(final String _split,
+			final boolean _priorityCalling, final LucentUserToUserInfo _userInfo) {
 		super(_split, _priorityCalling, _userInfo);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
@@ -43,12 +43,12 @@ public final class LucentV6DirectAgentCall extends LucentDirectAgentCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6DirectAgentCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(split, "split", indent));
 		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",
@@ -59,4 +59,3 @@ public final class LucentV6DirectAgentCall extends LucentDirectAgentCall {
 		return lines;
 	}
 }
-

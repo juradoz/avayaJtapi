@@ -41,4 +41,3 @@ public abstract interface PhoneTerminalEvent extends Event, TerminalEvent {
 
 	public abstract int getVolume();
 }
-

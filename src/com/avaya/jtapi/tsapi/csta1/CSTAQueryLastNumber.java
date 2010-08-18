@@ -10,12 +10,12 @@ public class CSTAQueryLastNumber extends CSTARequest {
 	String device;
 	static final int PDU = 35;
 
-	CSTAQueryLastNumber(String _device) {
+	CSTAQueryLastNumber(final String _device) {
 		device = _device;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 	}
 
@@ -30,12 +30,12 @@ public class CSTAQueryLastNumber extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryLastNumber ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 
@@ -43,4 +43,3 @@ public class CSTAQueryLastNumber extends CSTARequest {
 		return lines;
 	}
 }
-

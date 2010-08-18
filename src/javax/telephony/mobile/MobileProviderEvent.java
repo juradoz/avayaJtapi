@@ -21,4 +21,3 @@ public abstract interface MobileProviderEvent extends ProviderEvent {
 
 	public abstract int getMobileStateCause();
 }
-

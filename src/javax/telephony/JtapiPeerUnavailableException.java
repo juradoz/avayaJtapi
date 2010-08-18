@@ -6,8 +6,7 @@ public class JtapiPeerUnavailableException extends Exception {
 	public JtapiPeerUnavailableException() {
 	}
 
-	public JtapiPeerUnavailableException(String s) {
+	public JtapiPeerUnavailableException(final String s) {
 		super(s);
 	}
 }
-

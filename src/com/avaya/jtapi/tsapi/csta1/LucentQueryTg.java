@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentQueryTg extends LucentPrivateData {
-	public static LucentQueryTg decode(InputStream in) {
-		LucentQueryTg _this = new LucentQueryTg();
+	public static LucentQueryTg decode(final InputStream in) {
+		final LucentQueryTg _this = new LucentQueryTg();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,12 +22,12 @@ public final class LucentQueryTg extends LucentPrivateData {
 	public LucentQueryTg() {
 	}
 
-	public LucentQueryTg(String _device) {
+	public LucentQueryTg(final String _device) {
 		device = _device;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 	}
 
@@ -38,12 +38,12 @@ public final class LucentQueryTg extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryTg ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 
@@ -51,4 +51,3 @@ public final class LucentQueryTg extends LucentPrivateData {
 		return lines;
 	}
 }
-

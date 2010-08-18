@@ -7,4 +7,3 @@ public abstract interface LucentConnectionID {
 
 	public abstract int getDevIDType();
 }
-

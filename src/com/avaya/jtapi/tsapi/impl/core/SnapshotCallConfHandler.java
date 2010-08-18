@@ -24,71 +24,64 @@ final class SnapshotCallConfHandler implements ConfHandler {
 	boolean handled = false;
 	boolean rc = false;
 
-	SnapshotCallConfHandler(TSCall _call,
-			SnapshotCallExtraConfHandler _extraHandler, boolean _synchronous) {
+	SnapshotCallConfHandler(final TSCall _call,
+			final SnapshotCallExtraConfHandler _extraHandler,
+			final boolean _synchronous) {
 		call = _call;
 		synchronous = _synchronous;
-		if (!synchronous) {
+		if (!synchronous)
 			synchronized (call.callbackAndTypeVector) {
 				call.futureAsynchronousSnapshotHandler = this;
 			}
-		}
 		addExtraHandler(_extraHandler);
 	}
 
-	void addExtraHandler(SnapshotCallExtraConfHandler _extraHandler) {
-		if (_extraHandler == null) {
+	void addExtraHandler(final SnapshotCallExtraConfHandler _extraHandler) {
+		if (_extraHandler == null)
 			return;
-		}
 
-		if (extraHandlerVector == null) {
+		if (extraHandlerVector == null)
 			extraHandlerVector = new Vector<SnapshotCallExtraConfHandler>();
-		}
 
 		extraHandlerVector.addElement(_extraHandler);
 	}
 
-	public void handleConf(CSTAEvent event) {
+	public void handleConf(final CSTAEvent event) {
 		try {
 			synchronized (call.callbackAndTypeVector) {
-				if (!synchronous) {
+				if (!synchronous)
 					call.futureAsynchronousSnapshotHandler = null;
-				}
 				call.currentSnapshotHandler = this;
 			}
 			handled = true;
 			try {
-				if (event == null) {
+				if (event == null)
 					throw new TsapiPlatformException(4, 0, "no conf event");
-				}
 
-				if (event.getEvent() instanceof CSTAUniversalFailureConfEvent) {
+				if (event.getEvent() instanceof CSTAUniversalFailureConfEvent)
 					TSErrorMap
 							.throwCSTAException(((CSTAUniversalFailureConfEvent) event
 									.getEvent()).getError());
-				}
-				if (event.getEvent() instanceof ACSUniversalFailureConfEvent) {
+				if (event.getEvent() instanceof ACSUniversalFailureConfEvent)
 					TSErrorMap
 							.throwACSException(((ACSUniversalFailureConfEvent) event
 									.getEvent()).getError());
-				}
-				if (!(event.getEvent() instanceof CSTASnapshotCallConfEvent)) {
+				if (!(event.getEvent() instanceof CSTASnapshotCallConfEvent))
 					throw new TsapiPlatformException(4, 1,
 							"expected CSTASnapshotCallConfEvent");
-				}
-			} catch (TsapiInvalidStateException e) {
+			} catch (final TsapiInvalidStateException e) {
 				call.setState(34, null);
 				call.endCVDObservers(100, null);
 				rc = true;
 				return;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				rc = false;
 				return;
 			}
 
-			Vector<TSConnection> newConns = new Vector<TSConnection>();
+			final Vector<TSConnection> newConns = new Vector<TSConnection>();
 
-			CSTASnapshotCallResponseInfo[] info = ((CSTASnapshotCallConfEvent) event
+			final CSTASnapshotCallResponseInfo[] info = ((CSTASnapshotCallConfEvent) event
 					.getEvent()).getSnapshotData();
 
 			if (info == null) {
@@ -108,28 +101,27 @@ final class SnapshotCallConfHandler implements ConfHandler {
 							info[i].getDeviceOnCall(),
 							info[i].getCallIdentifier());
 
-					if (device == null) {
+					if (device == null)
 						break;
-					}
 
 					if (device
 							.isForExternalDeviceMatchingLocalExtensionNumber(extDevID)) {
 						connection = call.getTSProviderImpl().createConnection(
 								info[i].getCallIdentifier(), device, null);
 						connection.setDoNotExpectConnectionClearedEvent(true);
-					} else {
+					} else
 						connection = call.getTSProviderImpl()
 								.createTerminalConnection(
 										info[i].getCallIdentifier(), device,
 										null, device);
-					}
 
-					int oldConnState = connection.getCallControlConnState();
-					int oldTermConnState = connection
+					final int oldConnState = connection
+							.getCallControlConnState();
+					final int oldTermConnState = connection
 							.getCallControlTermConnState();
 
-					if ((oldConnState == 89) || (oldTermConnState == 102)) {
-						log
+					if (oldConnState == 89 || oldTermConnState == 102) {
+						SnapshotCallConfHandler.log
 								.info("SnapshotCallConfHandler.handleConf(): recreating connection "
 										+ connection
 										+ "; oldConnState="
@@ -146,68 +138,65 @@ final class SnapshotCallConfHandler implements ConfHandler {
 										info[i].getCallIdentifier(), device,
 										null, device);
 					}
-				} catch (TsapiPlatformException e) {
+				} catch (final TsapiPlatformException e) {
 					rc = false;
 					return;
 				}
 				connection.setStateFromLocalConnState(info[i]
 						.getLocalConnectionState());
 
-				if (!newConns.contains(connection)) {
+				if (!newConns.contains(connection))
 					newConns.addElement(connection);
-				}
 
 				device.addConnection(connection);
 			}
 
 			call.replaceConnections(newConns, null);
 
-			Vector<TSConnection> connections = call.getConnections();
+			final Vector<TSConnection> connections = call.getConnections();
 
 			boolean found = false;
 			if (call.confController != null) {
 				synchronized (connections) {
 					for (int i = 0; i < connections.size(); ++i) {
-						TSConnection conn = connections.elementAt(i);
-						Vector<TSConnection> termConns = conn.getTermConns();
-						if ((termConns == null)
-								|| (!termConns.contains(call.confController))) {
+						final TSConnection conn = connections.elementAt(i);
+						final Vector<TSConnection> termConns = conn
+								.getTermConns();
+						if (termConns == null
+								|| !termConns.contains(call.confController))
 							continue;
-						}
 						found = true;
 						break;
 					}
 				}
 
-				if (!found) {
+				if (!found)
 					call.confController = null;
-				}
 			}
 			found = false;
 			if (call.xferController != null) {
 				synchronized (connections) {
 					for (int i = 0; i < connections.size(); ++i) {
-						TSConnection conn = connections.elementAt(i);
-						Vector<TSConnection> termConns = conn.getTermConns();
-						if ((termConns == null)
-								|| (!termConns.contains(call.xferController))) {
+						final TSConnection conn = connections.elementAt(i);
+						final Vector<TSConnection> termConns = conn
+								.getTermConns();
+						if (termConns == null
+								|| !termConns.contains(call.xferController))
 							continue;
-						}
 						found = true;
 						break;
 					}
 				}
 
-				if (!found) {
+				if (!found)
 					call.xferController = null;
-				}
 			}
 			rc = true;
 
-			Object privateData = event.getPrivData();
+			final Object privateData = event.getPrivData();
 
 			if (privateData instanceof LucentSnapshotCallInfoConfEvent) {
-				LucentSnapshotCallInfoConfEvent luV7PrivData = (LucentSnapshotCallInfoConfEvent) privateData;
+				final LucentSnapshotCallInfoConfEvent luV7PrivData = (LucentSnapshotCallInfoConfEvent) privateData;
 				call.setDeviceHistory(luV7PrivData.getDeviceHistory());
 			}
 		} finally {
@@ -216,27 +205,24 @@ final class SnapshotCallConfHandler implements ConfHandler {
 				if (extraHandlerVector != null) {
 					eventList = new Vector<TSEvent>();
 					Object privateData = null;
-					for (int i = 0; i < extraHandlerVector.size(); ++i) {
+					for (int i = 0; i < extraHandlerVector.size(); ++i)
 						try {
-							SnapshotCallExtraConfHandler extraHandler = extraHandlerVector
+							final SnapshotCallExtraConfHandler extraHandler = extraHandlerVector
 									.elementAt(i);
 
-							Object pd = extraHandler.handleConf(rc, eventList,
-									privateData);
-							if (pd != null) {
+							final Object pd = extraHandler.handleConf(rc,
+									eventList, privateData);
+							if (pd != null)
 								privateData = pd;
-							}
-						} catch (Exception e) {
+						} catch (final Exception e) {
 						}
-					}
 				}
 			} finally {
 				synchronized (call.callbackAndTypeVector) {
 					call.currentSnapshotHandler = null;
 				}
-				if ((eventList != null) && (eventList.size() == 0)) {
+				if (eventList != null && eventList.size() == 0)
 					eventList = null;
-				}
 				call.doCallbackSnapshots(eventList, 110);
 				synchronized (this) {
 					super.notify();

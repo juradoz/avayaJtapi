@@ -19,4 +19,3 @@ public abstract interface CallControlEvent extends Event {
 
 	public abstract int getCallControlCause();
 }
-

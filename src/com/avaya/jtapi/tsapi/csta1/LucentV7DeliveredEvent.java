@@ -14,35 +14,35 @@ public class LucentV7DeliveredEvent extends LucentV6DeliveredEvent {
 	CSTAExtendedDeviceID distributingVDN_asn;
 	static final int PDU = 128;
 
-	public static LucentDeliveredEvent decode(InputStream in) {
-		LucentV7DeliveredEvent _this = new LucentV7DeliveredEvent();
+	public static LucentDeliveredEvent decode(final InputStream in) {
+		final LucentV7DeliveredEvent _this = new LucentV7DeliveredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 		distributingVDN_asn = CSTAExtendedDeviceID.decode(memberStream);
 	}
 
 	@Override
-	public LucentOriginalCallInfo decodeOCI(InputStream memberStream) {
+	public LucentOriginalCallInfo decodeOCI(final InputStream memberStream) {
 		return LucentV7OriginalCallInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
 		ASNSequence.encode(distributingVDN_asn, memberStream);
 	}
 
 	@Override
-	public void encodeOCI(LucentOriginalCallInfo callInfo,
-			OutputStream memberStream) {
+	public void encodeOCI(final LucentOriginalCallInfo callInfo,
+			final OutputStream memberStream) {
 		ASNSequence.encode(callInfo, memberStream);
 	}
 
@@ -61,12 +61,12 @@ public class LucentV7DeliveredEvent extends LucentV6DeliveredEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7DeliveredEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentDeliveredType.print(deliveredType, "deliveredType",
 				indent));
@@ -97,12 +97,12 @@ public class LucentV7DeliveredEvent extends LucentV6DeliveredEvent {
 		return lines;
 	}
 
-	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
+	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 
-	public void setDistributingVDN_asn(CSTAExtendedDeviceID distributingVDN_asn) {
+	public void setDistributingVDN_asn(
+			final CSTAExtendedDeviceID distributingVDN_asn) {
 		this.distributingVDN_asn = distributingVDN_asn;
 	}
 }
-

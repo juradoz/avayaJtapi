@@ -2,7 +2,7 @@ package javax.telephony;
 
 public class ResourceUnavailableException extends Exception {
 	private static final long serialVersionUID = 1L;
-	private int _type;
+	private final int _type;
 	public static final int UNKNOWN = 0;
 	public static final int ORIGINATOR_UNAVAILABLE = 1;
 	public static final int OBSERVER_LIMIT_EXCEEDED = 2;
@@ -12,11 +12,11 @@ public class ResourceUnavailableException extends Exception {
 	public static final int NO_DIALTONE = 6;
 	public static final int USER_RESPONSE = 7;
 
-	public ResourceUnavailableException(int type) {
+	public ResourceUnavailableException(final int type) {
 		_type = type;
 	}
 
-	public ResourceUnavailableException(int type, String s) {
+	public ResourceUnavailableException(final int type, final String s) {
 		super(s);
 		_type = type;
 	}
@@ -25,4 +25,3 @@ public class ResourceUnavailableException extends Exception {
 		return _type;
 	}
 }
-

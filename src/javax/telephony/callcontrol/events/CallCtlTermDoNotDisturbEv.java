@@ -7,4 +7,3 @@ public abstract interface CallCtlTermDoNotDisturbEv extends CallCtlTermEv {
 
 	public abstract boolean getDoNotDisturbState();
 }
-

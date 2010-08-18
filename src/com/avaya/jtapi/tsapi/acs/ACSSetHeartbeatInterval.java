@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class ACSSetHeartbeatInterval extends ACSRequest {
-	public static ACSSetHeartbeatInterval decode(InputStream in) {
-		ACSSetHeartbeatInterval _this = new ACSSetHeartbeatInterval();
+	public static ACSSetHeartbeatInterval decode(final InputStream in) {
+		final ACSSetHeartbeatInterval _this = new ACSSetHeartbeatInterval();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class ACSSetHeartbeatInterval extends ACSRequest {
 	public ACSSetHeartbeatInterval() {
 	}
 
-	public ACSSetHeartbeatInterval(short heartbeatInterval) {
+	public ACSSetHeartbeatInterval(final short heartbeatInterval) {
 		this.heartbeatInterval = heartbeatInterval;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		heartbeatInterval = (short) ASNInteger.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(heartbeatInterval, memberStream);
 	}
 
@@ -47,11 +47,11 @@ public final class ACSSetHeartbeatInterval extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSSetHeartbeatInterval ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(heartbeatInterval, "heartbeatInterval",
 				indent));
@@ -60,4 +60,3 @@ public final class ACSSetHeartbeatInterval extends ACSRequest {
 		return lines;
 	}
 }
-

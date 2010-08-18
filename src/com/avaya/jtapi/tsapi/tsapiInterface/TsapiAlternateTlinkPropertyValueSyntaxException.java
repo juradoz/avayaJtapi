@@ -9,8 +9,7 @@ public class TsapiAlternateTlinkPropertyValueSyntaxException extends
 				"Syntax error.  Alternate Tlink property value is not properly formatted.");
 	}
 
-	public TsapiAlternateTlinkPropertyValueSyntaxException(String s) {
+	public TsapiAlternateTlinkPropertyValueSyntaxException(final String s) {
 		super("Alternate Tlink property value is not properly formatted; " + s);
 	}
 }
-

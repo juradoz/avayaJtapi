@@ -10,8 +10,9 @@ public class V5NetworkProgressInfo extends NetworkProgressInfo {
 	public V5NetworkProgressInfo() {
 	}
 
-	V5NetworkProgressInfo(String _trunkGroup, String _trunkMember,
-			TsapiTrunk _trunk, short progressLocation, short progressDescription) {
+	V5NetworkProgressInfo(final String _trunkGroup, final String _trunkMember,
+			final TsapiTrunk _trunk, final short progressLocation,
+			final short progressDescription) {
 		super(progressLocation, progressDescription);
 		trunkGroup = _trunkGroup;
 		trunkMember = _trunkMember;
@@ -26,16 +27,15 @@ public class V5NetworkProgressInfo extends NetworkProgressInfo {
 		return trunkMember;
 	}
 
-	public void setTrunkGroup(String trunkGroup) {
+	public void setTrunkGroup(final String trunkGroup) {
 		this.trunkGroup = trunkGroup;
 	}
 
-	public void setTrunkMember(String trunkMember) {
+	public void setTrunkMember(final String trunkMember) {
 		this.trunkMember = trunkMember;
 	}
 
-	public void setTsapiTrunk(TsapiTrunk trunk) {
+	public void setTsapiTrunk(final TsapiTrunk trunk) {
 		this.trunk = trunk;
 	}
 }
-

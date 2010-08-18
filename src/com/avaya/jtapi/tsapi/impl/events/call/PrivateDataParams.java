@@ -86,51 +86,51 @@ public class PrivateDataParams {
 		return flexibleBilling;
 	}
 
-	public void setCallOriginatorType(int callOriginatorType) {
+	public void setCallOriginatorType(final int callOriginatorType) {
 		this.callOriginatorType = callOriginatorType;
 	}
 
-	public void setDistributingDevice(ITsapiAddress distributingDevice) {
+	public void setDistributingDevice(final ITsapiAddress distributingDevice) {
 		this.distributingDevice = distributingDevice;
 	}
 
-	public void setFlexibleBilling(boolean flexibleBilling) {
+	public void setFlexibleBilling(final boolean flexibleBilling) {
 		this.flexibleBilling = flexibleBilling;
 	}
 
-	public void setHasCallOriginatorType(boolean hasCallOriginatorType) {
+	public void setHasCallOriginatorType(final boolean hasCallOriginatorType) {
 		this.hasCallOriginatorType = hasCallOriginatorType;
 	}
 
-	public void setLookaheadInfo(LookaheadInfo lookaheadInfo) {
+	public void setLookaheadInfo(final LookaheadInfo lookaheadInfo) {
 		this.lookaheadInfo = lookaheadInfo;
 	}
 
-	public void setOriginalCallInfo(OriginalCallInfo originalCallInfo) {
+	public void setOriginalCallInfo(final OriginalCallInfo originalCallInfo) {
 		this.originalCallInfo = originalCallInfo;
 	}
 
-	public void setReason(short reason) {
+	public void setReason(final short reason) {
 		this.reason = reason;
 	}
 
-	public void setSplit(ACDAddress split) {
+	public void setSplit(final ACDAddress split) {
 		this.split = split;
 	}
 
-	public void setTrunk(CallCenterTrunk trunk) {
+	public void setTrunk(final CallCenterTrunk trunk) {
 		this.trunk = trunk;
 	}
 
-	public void setUcid(String ucid) {
+	public void setUcid(final String ucid) {
 		this.ucid = ucid;
 	}
 
-	public void setUserEnteredCode(UserEnteredCode userEnteredCode) {
+	public void setUserEnteredCode(final UserEnteredCode userEnteredCode) {
 		this.userEnteredCode = userEnteredCode;
 	}
 
-	public void setUserToUserInfo(UserToUserInfo userToUserInfo) {
+	public void setUserToUserInfo(final UserToUserInfo userToUserInfo) {
 		this.userToUserInfo = userToUserInfo;
 	}
 }

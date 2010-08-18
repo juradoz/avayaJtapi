@@ -16,19 +16,20 @@ public abstract class LucentPrivateData extends ASNSequence {
 	public static final int ENC_DIS_HI = 0;
 	public static final int ENC_DIS_LO = 2;
 
-	public static LucentPrivateData create(CSTAPrivate priv, int tsType) {
+	public static LucentPrivateData create(final CSTAPrivate priv,
+			final int tsType) {
 		LucentPrivateData lpriv = null;
 
 		if (priv != null) {
-			ByteArrayInputStream decodeStream = new ByteArrayInputStream(
+			final ByteArrayInputStream decodeStream = new ByteArrayInputStream(
 					priv.data);
 
-			if ((decodeStream.read() != ENC_DIS_LO) || (decodeStream.read() != ENC_DIS_HI)) {
+			if (decodeStream.read() != LucentPrivateData.ENC_DIS_LO
+					|| decodeStream.read() != LucentPrivateData.ENC_DIS_HI)
 				return null;
-			}
 
 			int pdunum = decodeStream.read() << 0;
-			pdunum += (decodeStream.read() << 8);
+			pdunum += decodeStream.read() << 8;
 
 			switch (pdunum) {
 			case 26:
@@ -357,67 +358,62 @@ public abstract class LucentPrivateData extends ASNSequence {
 			case 123:
 			case 126:
 			default:
-				log.info(" data PDU " + pdunum + " not decoded");
+				LucentPrivateData.log.info(" data PDU " + pdunum
+						+ " not decoded");
 				return null;
 			}
 
 			lpriv.tsType = tsType;
 
-			if (log.isDebugEnabled()) {
-				for (String str : lpriv.print()) {
-					log.debug(str);
-				}
-			}
+			if (LucentPrivateData.log.isDebugEnabled())
+				for (final String str : lpriv.print())
+					LucentPrivateData.log.debug(str);
 		}
 		return lpriv;
 	}
 
-	public static boolean isAvayaVendor(String vendor_name) {
-		if (AVAYA_VENDOR_STRING.equals(vendor_name)) {
+	public static boolean isAvayaVendor(final String vendor_name) {
+		if (LucentPrivateData.AVAYA_VENDOR_STRING.equals(vendor_name))
 			return true;
-		}
-		return LUCENT_VENDOR_STRING.equals(vendor_name);
+		return LucentPrivateData.LUCENT_VENDOR_STRING.equals(vendor_name);
 	}
 
 	int tsType;
 
-	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
+	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
 		return LucentLookaheadInfo.decode(memberStream);
 	}
 
-	public LucentOriginalCallInfo decodeOCI(InputStream memberStream) {
+	public LucentOriginalCallInfo decodeOCI(final InputStream memberStream) {
 		return LucentOriginalCallInfo.decode(memberStream);
 	}
 
-	public void encodeLookahead(LucentLookaheadInfo lookInfo,
-			OutputStream memberStream) {
+	public void encodeLookahead(final LucentLookaheadInfo lookInfo,
+			final OutputStream memberStream) {
 		ASNSequence.encode(lookInfo, memberStream);
 	}
 
-	public void encodeOCI(LucentOriginalCallInfo callInfo,
-			OutputStream memberStream) {
+	public void encodeOCI(final LucentOriginalCallInfo callInfo,
+			final OutputStream memberStream) {
 		ASNSequence.encode(callInfo, memberStream);
 	}
 
 	public CSTAPrivate makeTsapiPrivate() {
-		if (log.isDebugEnabled()) {
-			for (String str : print()) {
-				log.debug(str);
-			}
-		}
-		ByteArrayOutputStream encodeStream = new ByteArrayOutputStream();
-		int pdunum = getPDU();
+		if (LucentPrivateData.log.isDebugEnabled())
+			for (final String str : print())
+				LucentPrivateData.log.debug(str);
+		final ByteArrayOutputStream encodeStream = new ByteArrayOutputStream();
+		final int pdunum = getPDU();
 
-		encodeStream.write(ENC_DIS_LO);
-		encodeStream.write(ENC_DIS_HI);
+		encodeStream.write(LucentPrivateData.ENC_DIS_LO);
+		encodeStream.write(LucentPrivateData.ENC_DIS_HI);
 
 		encodeStream.write(pdunum >> 0 & 0xFF);
 		encodeStream.write(pdunum >> 8 & 0xFF);
 		try {
 			encode(encodeStream);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		}
 		return new CSTAPrivate(encodeStream.toByteArray(), true);
 	}
 }
-

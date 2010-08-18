@@ -7,4 +7,3 @@ abstract interface IDomainContainer {
 
 	public abstract void logln(String paramString);
 }
-

@@ -7,4 +7,3 @@ import javax.telephony.events.TermEv;
 public abstract interface TerminalObserver {
 	public abstract void terminalChangedEvent(TermEv[] paramArrayOfTermEv);
 }
-

@@ -5,4 +5,3 @@ package javax.telephony.callcenter.events;
 public abstract interface ACDAddrWorkNotReadyEv extends ACDAddrEv {
 	public static final int ID = 306;
 }
-

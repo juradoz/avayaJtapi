@@ -5,8 +5,7 @@ import javax.telephony.callcenter.events.RouteEndEvent;
 
 public final class TsapiRouteEndEvent extends TsapiRouteSessionEvent implements
 		RouteEndEvent {
-	public TsapiRouteEndEvent(RouteSession routeSession) {
+	public TsapiRouteEndEvent(final RouteSession routeSession) {
 		super(routeSession);
 	}
 }
-

@@ -8,4 +8,3 @@ public abstract interface SingleCallMetaEvent extends MetaEvent {
 
 	public abstract Call getCall();
 }
-

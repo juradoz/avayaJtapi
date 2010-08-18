@@ -4,7 +4,7 @@ import javax.telephony.events.ConnFailedEv;
 
 public final class TsapiConnFailedEvent extends TsapiConnEvent implements
 		ConnFailedEv {
-	public TsapiConnFailedEvent(ConnEventParams params) {
+	public TsapiConnFailedEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiConnFailedEvent extends TsapiConnEvent implements
 		return 108;
 	}
 }
-

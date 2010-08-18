@@ -16,7 +16,8 @@ public final class LucentExtensionClass extends ASNEnumerated {
 	public static final short EC_LOGICAL_AGENT = 9;
 	public static final short EC_OTHER = 10;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -54,7 +55,6 @@ public final class LucentExtensionClass extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

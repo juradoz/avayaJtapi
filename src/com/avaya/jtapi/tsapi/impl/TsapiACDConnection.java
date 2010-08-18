@@ -8,16 +8,15 @@ import com.avaya.jtapi.tsapi.impl.core.TSConnection;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class TsapiACDConnection extends TsapiConnection implements ACDConnection {
-	TsapiACDConnection(TSConnection _tsConnection) {
+	TsapiACDConnection(final TSConnection _tsConnection) {
 		super(_tsConnection);
 		TsapiTrace.traceConstruction(this, TsapiACDConnection.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TsapiACDConnection) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof TsapiACDConnection)
 			return tsConnection.equals(((TsapiACDConnection) obj).tsConnection);
-		}
 
 		return false;
 	}
@@ -32,13 +31,13 @@ class TsapiACDConnection extends TsapiConnection implements ACDConnection {
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getACDManagerConnection[]", this);
 		try {
-			TSConnection tsConn = tsConnection.getACDManagerConn();
+			final TSConnection tsConn = tsConnection.getACDManagerConn();
 			if (tsConn == null) {
 				TsapiTrace.traceExit("getACDManagerConnection[]", this);
 				return null;
 			}
 
-			ACDManagerConnection conn = (ACDManagerConnection) TsapiCreateObject
+			final ACDManagerConnection conn = (ACDManagerConnection) TsapiCreateObject
 					.getTsapiObject(tsConn, true);
 			TsapiTrace.traceExit("getACDManagerConnection[]", this);
 			return conn;
@@ -47,4 +46,3 @@ class TsapiACDConnection extends TsapiConnection implements ACDConnection {
 		}
 	}
 }
-

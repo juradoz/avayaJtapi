@@ -4,7 +4,7 @@ import javax.telephony.events.ConnConnectedEv;
 
 public final class TsapiConnConnectedEvent extends TsapiConnEvent implements
 		ConnConnectedEv {
-	public TsapiConnConnectedEvent(ConnEventParams params) {
+	public TsapiConnConnectedEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiConnConnectedEvent extends TsapiConnEvent implements
 		return 105;
 	}
 }
-

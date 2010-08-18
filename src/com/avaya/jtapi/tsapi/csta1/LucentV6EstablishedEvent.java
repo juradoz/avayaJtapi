@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 public final class LucentV6EstablishedEvent extends LucentV5EstablishedEvent {
 	static final int PDU = 118;
 
-	public static LucentEstablishedEvent decode(InputStream in) {
-		LucentV6EstablishedEvent _this = new LucentV6EstablishedEvent();
+	public static LucentEstablishedEvent decode(final InputStream in) {
+		final LucentV6EstablishedEvent _this = new LucentV6EstablishedEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,12 +24,12 @@ public final class LucentV6EstablishedEvent extends LucentV5EstablishedEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6EstablishedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(ASNIA5String.print(trunkMember, "trunkMember", indent));
@@ -53,4 +53,3 @@ public final class LucentV6EstablishedEvent extends LucentV5EstablishedEvent {
 		return lines;
 	}
 }
-

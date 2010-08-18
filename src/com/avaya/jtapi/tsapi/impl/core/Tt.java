@@ -13,54 +13,51 @@ public class Tt {
 	private static final String m_TRIGGER_DEFAULT_FILE_NAME = "/tmp/enable_jtapi_tracing.txt";
 
 	static {
-		setTriggerFileName(m_trigger_file_name);
+		Tt.setTriggerFileName(Tt.m_trigger_file_name);
 
-		isTriggered();
+		Tt.isTriggered();
 
-		m_enabled = false;
+		Tt.m_enabled = false;
 
-		m_trigger_file = null;
+		Tt.m_trigger_file = null;
 
-		m_trigger_file_name = m_TRIGGER_DEFAULT_FILE_NAME;
+		Tt.m_trigger_file_name = Tt.m_TRIGGER_DEFAULT_FILE_NAME;
 	}
 
 	public static boolean isEnabled() {
-		return m_enabled;
+		return Tt.m_enabled;
 	}
 
 	public static boolean isTriggered() {
-		if (m_trigger_file == null) {
-			m_enabled = false;
-		} else if (m_trigger_file.exists() == true) {
-			m_enabled = true;
-		}
+		if (Tt.m_trigger_file == null)
+			Tt.m_enabled = false;
+		else if (Tt.m_trigger_file.exists() == true)
+			Tt.m_enabled = true;
 
-		return m_enabled;
+		return Tt.m_enabled;
 	}
 
-	public static void println(String s) {
-		if (!isTriggered()) {
+	public static void println(final String s) {
+		if (!Tt.isTriggered())
 			return;
-		}
-		log.info(s);
+		Tt.log.info(s);
 	}
 
-	public static void printlnStatus(PrintStream p) {
+	public static void printlnStatus(final PrintStream p) {
 		p.println("Avaya JTAPI triggered tracing: "
-				+ ((isTriggered()) ? "on" : "off")
+				+ (Tt.isTriggered() ? "on" : "off")
 				+ " - trigger file: "
-				+ ((m_trigger_file_name == null) ? "<null>"
-						: m_trigger_file_name));
+				+ (Tt.m_trigger_file_name == null ? "<null>"
+						: Tt.m_trigger_file_name));
 	}
 
-	public static void setTriggerFileName(String trigger_path) {
+	public static void setTriggerFileName(final String trigger_path) {
 		if (trigger_path == null) {
-			m_trigger_file_name = null;
-			m_trigger_file = null;
+			Tt.m_trigger_file_name = null;
+			Tt.m_trigger_file = null;
 		} else {
-			m_trigger_file_name = trigger_path;
-			m_trigger_file = new File(m_trigger_file_name);
+			Tt.m_trigger_file_name = trigger_path;
+			Tt.m_trigger_file = new File(Tt.m_trigger_file_name);
 		}
 	}
 }
-

@@ -7,34 +7,33 @@ import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public class LucentTerminalImpl extends TsapiTerminal implements LucentTerminal {
-	LucentTerminalImpl(LucentProviderImpl _provider, String _name)
+	LucentTerminalImpl(final LucentProviderImpl _provider, final String _name)
 			throws TsapiInvalidArgumentException {
 		super(_provider, _name, false);
 		TsapiTrace.traceConstruction(this, LucentTerminalImpl.class);
 	}
 
-	LucentTerminalImpl(LucentProviderImpl _provider, String _name,
-			boolean checkValidity) throws TsapiInvalidArgumentException {
+	LucentTerminalImpl(final LucentProviderImpl _provider, final String _name,
+			final boolean checkValidity) throws TsapiInvalidArgumentException {
 		super(_provider, _name, checkValidity);
 		TsapiTrace.traceConstruction(this, LucentTerminalImpl.class);
 	}
 
-	LucentTerminalImpl(TSDevice _tsDevice) {
+	LucentTerminalImpl(final TSDevice _tsDevice) {
 		super(_tsDevice);
 		TsapiTrace.traceConstruction(this, LucentTerminalImpl.class);
 	}
 
-	public LucentTerminalImpl(TSProviderImpl _provider, String _name)
+	public LucentTerminalImpl(final TSProviderImpl _provider, final String _name)
 			throws TsapiInvalidArgumentException {
 		super(_provider, _name);
 		TsapiTrace.traceConstruction(this, LucentTerminalImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentTerminalImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentTerminalImpl)
 			return tsDevice.equals(((LucentTerminalImpl) obj).tsDevice);
-		}
 
 		return false;
 	}
@@ -45,4 +44,3 @@ public class LucentTerminalImpl extends TsapiTerminal implements LucentTerminal 
 		TsapiTrace.traceDestruction(this, LucentTerminalImpl.class);
 	}
 }
-

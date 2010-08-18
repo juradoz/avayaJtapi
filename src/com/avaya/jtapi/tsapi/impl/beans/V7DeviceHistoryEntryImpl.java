@@ -8,7 +8,8 @@ public final class V7DeviceHistoryEntryImpl implements V7DeviceHistoryEntry {
 	private short eventCause;
 	private ConnectionID oldConnectionID;
 
-	public V7DeviceHistoryEntryImpl(String _dev, short _ec, ConnectionID _cid) {
+	public V7DeviceHistoryEntryImpl(final String _dev, final short _ec,
+			final ConnectionID _cid) {
 		oldDeviceID = _dev;
 		eventCause = _ec;
 		oldConnectionID = _cid;
@@ -26,15 +27,15 @@ public final class V7DeviceHistoryEntryImpl implements V7DeviceHistoryEntry {
 		return oldDeviceID;
 	}
 
-	public void setEventCause(short eventCause) {
+	public void setEventCause(final short eventCause) {
 		this.eventCause = eventCause;
 	}
 
-	public void setOldConnectionID(ConnectionID oldConnectionID) {
+	public void setOldConnectionID(final ConnectionID oldConnectionID) {
 		this.oldConnectionID = oldConnectionID;
 	}
 
-	public void setOldDeviceID(String oldDeviceID) {
+	public void setOldDeviceID(final String oldDeviceID) {
 		this.oldDeviceID = oldDeviceID;
 	}
 }

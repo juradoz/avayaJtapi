@@ -16,15 +16,15 @@ public final class CSTAFailedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 60;
 
-	public static CSTAFailedEvent decode(InputStream in) {
-		CSTAFailedEvent _this = new CSTAFailedEvent();
+	public static CSTAFailedEvent decode(final InputStream in) {
+		final CSTAFailedEvent _this = new CSTAFailedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		failedConnection = CSTAConnectionID.decode(memberStream);
 		failingDevice = CSTAExtendedDeviceID.decode(memberStream);
 		calledDevice = CSTAExtendedDeviceID.decode(memberStream);
@@ -33,7 +33,7 @@ public final class CSTAFailedEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(failedConnection, memberStream);
 		ASNSequence.encode(failingDevice, memberStream);
 		ASNSequence.encode(calledDevice, memberStream);
@@ -68,11 +68,11 @@ public final class CSTAFailedEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAFailedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(failedConnection,
 				"failedConnection", indent));
@@ -88,24 +88,23 @@ public final class CSTAFailedEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCalledDevice(CSTAExtendedDeviceID calledDevice) {
+	public void setCalledDevice(final CSTAExtendedDeviceID calledDevice) {
 		this.calledDevice = calledDevice;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setFailedConnection(CSTAConnectionID connection) {
+	public void setFailedConnection(final CSTAConnectionID connection) {
 		failedConnection = connection;
 	}
 
-	public void setFailingDevice(CSTAExtendedDeviceID alertingDevice) {
+	public void setFailingDevice(final CSTAExtendedDeviceID alertingDevice) {
 		failingDevice = alertingDevice;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }
-

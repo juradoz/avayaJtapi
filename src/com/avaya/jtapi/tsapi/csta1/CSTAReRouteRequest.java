@@ -11,15 +11,15 @@ public final class CSTAReRouteRequest extends CSTARequest {
 	int routingCrossRefID;
 	public static final int PDU = 85;
 
-	public static CSTAReRouteRequest decode(InputStream in) {
-		CSTAReRouteRequest _this = new CSTAReRouteRequest();
+	public static CSTAReRouteRequest decode(final InputStream in) {
+		final CSTAReRouteRequest _this = new CSTAReRouteRequest();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 	}
@@ -39,12 +39,12 @@ public final class CSTAReRouteRequest extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAReRouteRequest ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -55,12 +55,11 @@ public final class CSTAReRouteRequest extends CSTARequest {
 		return lines;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(int routingCrossRefID) {
+	public void setRoutingCrossRefID(final int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }
-

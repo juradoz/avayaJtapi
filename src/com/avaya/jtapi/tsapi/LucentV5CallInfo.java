@@ -9,4 +9,3 @@ public abstract interface LucentV5CallInfo extends LucentCallInfo {
 
 	public abstract boolean hasCallOriginatorType();
 }
-

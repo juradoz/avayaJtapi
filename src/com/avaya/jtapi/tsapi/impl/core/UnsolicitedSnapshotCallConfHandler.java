@@ -26,13 +26,16 @@ final class UnsolicitedSnapshotCallConfHandler implements
 	int termConnState;
 	TSDevice connectionDevice;
 
-	UnsolicitedSnapshotCallConfHandler(TSEventHandler _eventHandler,
-			int _eventType, int _cause, CSTAExtendedDeviceID _subjectDeviceID,
-			TSDevice _subjectDevice, CSTAConnectionID _connID, TSCall _call,
-			Object _privateData, CSTAExtendedDeviceID _callingDeviceID,
-			CSTAExtendedDeviceID _calledDeviceID,
-			CSTAExtendedDeviceID _lastRedirectionDeviceID, int _connState,
-			int _termConnState, TSDevice _connectionDevice) {
+	UnsolicitedSnapshotCallConfHandler(final TSEventHandler _eventHandler,
+			final int _eventType, final int _cause,
+			final CSTAExtendedDeviceID _subjectDeviceID,
+			final TSDevice _subjectDevice, final CSTAConnectionID _connID,
+			final TSCall _call, final Object _privateData,
+			final CSTAExtendedDeviceID _callingDeviceID,
+			final CSTAExtendedDeviceID _calledDeviceID,
+			final CSTAExtendedDeviceID _lastRedirectionDeviceID,
+			final int _connState, final int _termConnState,
+			final TSDevice _connectionDevice) {
 		eventHandler = _eventHandler;
 		eventType = _eventType;
 		cause = _cause;
@@ -49,57 +52,54 @@ final class UnsolicitedSnapshotCallConfHandler implements
 		connectionDevice = _connectionDevice;
 	}
 
-	public Object handleConf(boolean rc, Vector<TSEvent> eventList,
-			Object _privateData) {
-		if (call.getTSState() == 34) {
+	public Object handleConf(final boolean rc, Vector<TSEvent> eventList,
+			final Object _privateData) {
+		if (call.getTSState() == 34)
 			return null;
-		}
 
 		if (call.getNeedRedoSnapshotCall()) {
 			call.setNeedRedoSnapshotCall(false);
-			log.info("redo snapshot call");
+			UnsolicitedSnapshotCallConfHandler.log.info("redo snapshot call");
 			call.doSnapshot(connID, this, false);
 			return null;
 		}
 
 		call.setSnapshotCallConfPending(false);
 
-		log.debug("UnsolicitedSnapshotCallConfHandler " + this
-				+ " handling conf for call " + call + ", eventType "
-				+ eventType + ", subjectDevice " + subjectDevice + ", connID "
-				+ connID + ", rc " + rc + ", cause " + cause + ", privateData "
-				+ privateData + ", provider " + call.getTSProviderImpl());
+		UnsolicitedSnapshotCallConfHandler.log
+				.debug("UnsolicitedSnapshotCallConfHandler " + this
+						+ " handling conf for call " + call + ", eventType "
+						+ eventType + ", subjectDevice " + subjectDevice
+						+ ", connID " + connID + ", rc " + rc + ", cause "
+						+ cause + ", privateData " + privateData
+						+ ", provider " + call.getTSProviderImpl());
 
-		if (privateData == null) {
+		if (privateData == null)
 			privateData = _privateData;
-		}
 
-		if (eventList == null) {
+		if (eventList == null)
 			eventList = new Vector<TSEvent>();
-		}
 		TSConnection connection;
 		int oldConnState;
 		int oldTermConnState;
 		if (rc) {
-			if (eventList.size() == 0) {
+			if (eventList.size() == 0)
 				call.getSnapshot(eventList);
-			}
 
 			connection = eventHandler.provider.createTerminalConnection(connID,
 					subjectDevice, null, connectionDevice);
 			oldConnState = connection.getCallControlConnState();
 			oldTermConnState = connection.getCallControlTermConnState();
 
-			boolean isTermConn = connection.isTerminalConnection();
+			final boolean isTermConn = connection.isTerminalConnection();
 			TSConnection connToCheck = null;
 			TSConnection tcToCheck = null;
 
 			if (isTermConn) {
 				connToCheck = connection.getTSConn();
 				tcToCheck = connection;
-			} else {
+			} else
 				connToCheck = connection;
-			}
 
 			TSEvent nEv = null;
 
@@ -109,17 +109,15 @@ final class UnsolicitedSnapshotCallConfHandler implements
 			for (int j = 0; j < eventList.size(); ++j) {
 				nEv = eventList.elementAt(j);
 
-				if ((connToCheck != nEv.getEventTarget())
-						|| (nEv.getEventType() != 6)) {
+				if (connToCheck != nEv.getEventTarget()
+						|| nEv.getEventType() != 6)
 					continue;
-				}
 				foundConn = true;
-				if ((connState != 83) || (oldConnState == 83)
-						|| (connToCheck.getCallControlConnState() == 83)) {
+				if (connState != 83 || oldConnState == 83
+						|| connToCheck.getCallControlConnState() == 83)
 					break;
-				}
 
-				log
+				UnsolicitedSnapshotCallConfHandler.log
 						.debug("adding ConnAlertingEv to events derived from SnapshotCallConf for call "
 								+ call);
 
@@ -134,19 +132,17 @@ final class UnsolicitedSnapshotCallConfHandler implements
 				break;
 			}
 
-			if (isTermConn) {
+			if (isTermConn)
 				for (int j = 0; j < eventList.size(); ++j) {
 					nEv = eventList.elementAt(j);
 
-					if ((tcToCheck != nEv.getEventTarget())
-							|| (nEv.getEventType() != 13)) {
+					if (tcToCheck != nEv.getEventTarget()
+							|| nEv.getEventType() != 13)
 						continue;
-					}
 					foundTC = true;
-					if ((termConnState != 97) || (oldTermConnState == 97)
-							|| (tcToCheck.getCallControlTermConnState() == 97)) {
+					if (termConnState != 97 || oldTermConnState == 97
+							|| tcToCheck.getCallControlTermConnState() == 97)
 						break;
-					}
 
 					if (j + 1 >= eventList.size()) {
 						eventList.addElement(new TSEvent(15, tcToCheck));
@@ -161,23 +157,19 @@ final class UnsolicitedSnapshotCallConfHandler implements
 					break;
 				}
 
-			}
-
 			if (isTermConn) {
 				if (!foundConn) {
 					connToCheck.setConnectionState(connState, null);
-					if (!foundTC) {
+					if (!foundTC)
 						tcToCheck.setTermConnState(termConnState, null);
-					}
-					Vector<TSEvent> snapEventList = new Vector<TSEvent>();
+					final Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 					connToCheck.getSnapshot(snapEventList);
 					int index = 0;
-					if (eventList.size() == 0) {
+					if (eventList.size() == 0)
 						eventList = snapEventList;
-					} else {
-						if ((eventList.elementAt(0)).getEventType() == 4) {
+					else {
+						if (eventList.elementAt(0).getEventType() == 4)
 							++index;
-						}
 						for (int i = 0; i < snapEventList.size(); ++i) {
 							eventList.insertElementAt(snapEventList
 									.elementAt(i), index);
@@ -186,15 +178,14 @@ final class UnsolicitedSnapshotCallConfHandler implements
 					}
 				} else if (!foundTC) {
 					tcToCheck.setTermConnState(termConnState, null);
-					Vector<TSEvent> snapEventList = new Vector<TSEvent>();
+					final Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 					tcToCheck.getSnapshot(snapEventList);
 					int index = 0;
-					if (eventList.size() == 0) {
+					if (eventList.size() == 0)
 						eventList = snapEventList;
-					} else {
-						if ((eventList.elementAt(0)).getEventType() == 4) {
+					else {
+						if (eventList.elementAt(0).getEventType() == 4)
 							++index;
-						}
 						for (int i = 0; i < snapEventList.size(); ++i) {
 							eventList.insertElementAt(snapEventList
 									.elementAt(i), index);
@@ -204,15 +195,14 @@ final class UnsolicitedSnapshotCallConfHandler implements
 				}
 			} else if (!foundConn) {
 				connToCheck.setConnectionState(connState, null);
-				Vector<TSEvent> snapEventList = new Vector<TSEvent>();
+				final Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 				connToCheck.getSnapshot(snapEventList);
 				int index = 0;
-				if (eventList.size() == 0) {
+				if (eventList.size() == 0)
 					eventList = snapEventList;
-				} else {
-					if ((eventList.elementAt(0)).getEventType() == 4) {
+				else {
+					if (eventList.elementAt(0).getEventType() == 4)
 						++index;
-					}
 					for (int i = 0; i < snapEventList.size(); ++i) {
 						eventList.insertElementAt(snapEventList.elementAt(i),
 								index);
@@ -226,15 +216,15 @@ final class UnsolicitedSnapshotCallConfHandler implements
 			for (int j = 0; j < eventList.size(); ++j) {
 				nEv = eventList.elementAt(j);
 
-				if ((connToCheck != nEv.getEventTarget())
-						|| (!shouldOverrideConnEventCSTACauseValue(nEv))) {
+				if (connToCheck != nEv.getEventTarget()
+						|| !shouldOverrideConnEventCSTACauseValue(nEv))
 					continue;
-				}
 
-				log.debug("overriding cause for TSEvent " + nEv + " ("
-						+ nEv.getEventType() + "," + nEv.getEventTarget()
-						+ " from eventType " + eventType + " with new cause "
-						+ cause);
+				UnsolicitedSnapshotCallConfHandler.log
+						.debug("overriding cause for TSEvent " + nEv + " ("
+								+ nEv.getEventType() + ","
+								+ nEv.getEventTarget() + " from eventType "
+								+ eventType + " with new cause " + cause);
 
 				nEv.setSnapshotCstaCause((short) cause);
 			}
@@ -255,7 +245,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 		return privateData;
 	}
 
-	boolean shouldOverrideConnEventCSTACauseValue(TSEvent eventToModify) {
+	boolean shouldOverrideConnEventCSTACauseValue(final TSEvent eventToModify) {
 		boolean result = false;
 
 		switch (eventToModify.getEventType()) {

@@ -7,4 +7,3 @@ public abstract interface ComponentGroupCapabilities {
 
 	public abstract boolean canActivate(Address paramAddress);
 }
-

@@ -4,9 +4,8 @@ final class SavedAgent {
 	TSAgent agent;
 	long saveTime;
 
-	SavedAgent(TSAgent _agent) {
+	SavedAgent(final TSAgent _agent) {
 		agent = _agent;
 		saveTime = System.currentTimeMillis();
 	}
 }
-

@@ -10,15 +10,15 @@ public final class CSTAQueryCallMonitorConfEvent extends CSTAConfirmation {
 	boolean callMonitor;
 	public static final int PDU = 129;
 
-	public static CSTAQueryCallMonitorConfEvent decode(InputStream in) {
-		CSTAQueryCallMonitorConfEvent _this = new CSTAQueryCallMonitorConfEvent();
+	public static CSTAQueryCallMonitorConfEvent decode(final InputStream in) {
+		final CSTAQueryCallMonitorConfEvent _this = new CSTAQueryCallMonitorConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		callMonitor = ASNBoolean.decode(memberStream);
 	}
 
@@ -33,11 +33,11 @@ public final class CSTAQueryCallMonitorConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAQueryCallMonitorConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(callMonitor, "callMonitor", indent));
 
@@ -45,7 +45,7 @@ public final class CSTAQueryCallMonitorConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setCallMonitor(boolean callMonitor) {
+	public void setCallMonitor(final boolean callMonitor) {
 		this.callMonitor = callMonitor;
 	}
 }

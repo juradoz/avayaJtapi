@@ -15,15 +15,15 @@ public final class LucentEnteredDigitsEvent extends LucentPrivateData {
 	short cause;
 	static final int PDU = 38;
 
-	public static LucentEnteredDigitsEvent decode(InputStream in) {
-		LucentEnteredDigitsEvent _this = new LucentEnteredDigitsEvent();
+	public static LucentEnteredDigitsEvent decode(final InputStream in) {
+		final LucentEnteredDigitsEvent _this = new LucentEnteredDigitsEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		connection_asn = CSTAConnectionID.decode(memberStream);
 		digits = ASNIA5String.decode(memberStream);
 		localConnectionInfo = ASNEnumerated.decode(memberStream);
@@ -31,7 +31,7 @@ public final class LucentEnteredDigitsEvent extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(connection_asn, memberStream);
 		ASNIA5String.encode(digits, memberStream);
 		ASNEnumerated.encode(localConnectionInfo, memberStream);
@@ -61,12 +61,12 @@ public final class LucentEnteredDigitsEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentEnteredDigitsEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(connection_asn, "connection",
 				indent));
@@ -79,20 +79,19 @@ public final class LucentEnteredDigitsEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setConnection_asn(CSTAConnectionID connection_asn) {
+	public void setConnection_asn(final CSTAConnectionID connection_asn) {
 		this.connection_asn = connection_asn;
 	}
 
-	public void setDigits(String digits) {
+	public void setDigits(final String digits) {
 		this.digits = digits;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }
-

@@ -11,20 +11,20 @@ public final class LucentSetAgentStateConfEvent extends LucentPrivateData {
 	boolean isPending;
 	public static final int PDU = 103;
 
-	public static LucentSetAgentStateConfEvent decode(InputStream in) {
-		LucentSetAgentStateConfEvent _this = new LucentSetAgentStateConfEvent();
+	public static LucentSetAgentStateConfEvent decode(final InputStream in) {
+		final LucentSetAgentStateConfEvent _this = new LucentSetAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		isPending = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNBoolean.encode(isPending, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class LucentSetAgentStateConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetAgentStateConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(isPending, "isPending", indent));
 
@@ -52,7 +52,7 @@ public final class LucentSetAgentStateConfEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setPending(boolean isPending) {
+	public void setPending(final boolean isPending) {
 		this.isPending = isPending;
 	}
 }

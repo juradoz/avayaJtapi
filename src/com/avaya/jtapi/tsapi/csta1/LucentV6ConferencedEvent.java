@@ -12,21 +12,21 @@ public class LucentV6ConferencedEvent extends LucentV5ConferencedEvent
 	CSTATrunkInfo[] lucentTrunkInfo;
 	static final int PDU = 107;
 
-	public static LucentConferencedEvent decode(InputStream in) {
-		LucentV6ConferencedEvent _this = new LucentV6ConferencedEvent();
+	public static LucentConferencedEvent decode(final InputStream in) {
+		final LucentV6ConferencedEvent _this = new LucentV6ConferencedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		lucentTrunkInfo = LucentTrunkInfoList.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		LucentTrunkInfoList.encode(lucentTrunkInfo, memberStream);
 	}
@@ -42,11 +42,11 @@ public class LucentV6ConferencedEvent extends LucentV5ConferencedEvent
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentV6ConferencedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentOriginalCallInfo.print(originalCallInfo,
 				"originalCallInfo", indent));
@@ -62,8 +62,7 @@ public class LucentV6ConferencedEvent extends LucentV5ConferencedEvent
 		return lines;
 	}
 
-	public void setLucentTrunkInfo(CSTATrunkInfo[] _trunkList) {
+	public void setLucentTrunkInfo(final CSTATrunkInfo[] _trunkList) {
 		lucentTrunkInfo = _trunkList;
 	}
 }
-

@@ -11,4 +11,3 @@ public abstract interface ConnectionEvent extends CallEvent {
 
 	public abstract Connection getConnection();
 }
-

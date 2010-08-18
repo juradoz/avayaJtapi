@@ -4,7 +4,7 @@ import javax.telephony.events.ConnInProgressEv;
 
 public final class TsapiConnInProgressEvent extends TsapiConnEvent implements
 		ConnInProgressEv {
-	public TsapiConnInProgressEvent(ConnEventParams params) {
+	public TsapiConnInProgressEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiConnInProgressEvent extends TsapiConnEvent implements
 		return 109;
 	}
 }
-

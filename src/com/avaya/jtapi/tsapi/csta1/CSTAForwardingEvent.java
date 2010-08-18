@@ -12,21 +12,21 @@ public final class CSTAForwardingEvent extends CSTAUnsolicited {
 	CSTAForwardingInfo forwardingInformation;
 	public static final int PDU = 70;
 
-	public static CSTAForwardingEvent decode(InputStream in) {
-		CSTAForwardingEvent _this = new CSTAForwardingEvent();
+	public static CSTAForwardingEvent decode(final InputStream in) {
+		final CSTAForwardingEvent _this = new CSTAForwardingEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = CSTAExtendedDeviceID.decode(memberStream);
 		forwardingInformation = CSTAForwardingInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNSequence.encode(device, memberStream);
 		ASNSequence.encode(forwardingInformation, memberStream);
 	}
@@ -46,11 +46,11 @@ public final class CSTAForwardingEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAForwardingEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(device, "device", indent));
 		lines.addAll(CSTAForwardingInfo.print(forwardingInformation,
@@ -60,12 +60,11 @@ public final class CSTAForwardingEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setDevice(CSTAExtendedDeviceID device) {
+	public void setDevice(final CSTAExtendedDeviceID device) {
 		this.device = device;
 	}
 
-	public void setForwardingInformation(CSTAForwardingInfo fwdInfo) {
+	public void setForwardingInformation(final CSTAForwardingInfo fwdInfo) {
 		forwardingInformation = fwdInfo;
 	}
 }
-

@@ -12,8 +12,9 @@ public final class ACSAuthType extends ASNEnumerated {
 	static final short NEED_LOGIN_ID_AND_PASSWD = 2;
 	static final short ANY_LOGIN_ID = 3;
 
-	static Collection<String> print(short value, String name, String indent) {
-		Collection<String> lines = new ArrayList<String>();
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
+		final Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case -1:
@@ -35,8 +36,7 @@ public final class ACSAuthType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		lines.addAll(print(value, str, name, indent));
+		lines.addAll(ASNEnumerated.print(value, str, name, indent));
 		return lines;
 	}
 }
-

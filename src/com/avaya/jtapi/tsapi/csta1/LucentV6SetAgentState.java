@@ -9,8 +9,9 @@ import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class LucentV6SetAgentState extends LucentV5SetAgentState {
-	public static LucentSetAgentState decode(InputStream in, CSTATSProvider prov) {
-		LucentV6SetAgentState _this = new LucentV6SetAgentState();
+	public static LucentSetAgentState decode(final InputStream in,
+			final CSTATSProvider prov) {
+		final LucentV6SetAgentState _this = new LucentV6SetAgentState();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,20 +24,20 @@ public final class LucentV6SetAgentState extends LucentV5SetAgentState {
 	public LucentV6SetAgentState() {
 	}
 
-	public LucentV6SetAgentState(short _workMode, int _reasonCode,
-			boolean _enablePending) {
+	public LucentV6SetAgentState(final short _workMode, final int _reasonCode,
+			final boolean _enablePending) {
 		super(_workMode, _reasonCode);
 		enablePending = _enablePending;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		enablePending = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNBoolean.encode(enablePending, memberStream);
 	}
@@ -48,12 +49,12 @@ public final class LucentV6SetAgentState extends LucentV5SetAgentState {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6SetAgentState ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
 		lines.addAll(ASNInteger.print(reasonCode, "reasonCode", indent));
@@ -63,4 +64,3 @@ public final class LucentV6SetAgentState extends LucentV5SetAgentState {
 		return lines;
 	}
 }
-

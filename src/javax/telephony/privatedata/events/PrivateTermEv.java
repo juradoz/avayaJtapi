@@ -9,4 +9,3 @@ public abstract interface PrivateTermEv extends TermEv {
 
 	public abstract Object getPrivateData();
 }
-

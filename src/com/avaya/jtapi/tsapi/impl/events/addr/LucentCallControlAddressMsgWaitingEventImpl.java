@@ -8,7 +8,7 @@ public class LucentCallControlAddressMsgWaitingEventImpl extends
 		CallControlAddressEventImpl implements
 		LucentCallControlAddressMsgWaitingEvent {
 	public LucentCallControlAddressMsgWaitingEventImpl(
-			AddressEventParams addressEventParams, Address address) {
+			final AddressEventParams addressEventParams, final Address address) {
 		super(addressEventParams, address);
 	}
 

@@ -9,7 +9,8 @@ class EscapeConfHandler implements ConfHandler {
 	ConfHandler extraHandler;
 	protected Object privateData;
 
-	EscapeConfHandler(TSProviderImpl _prov, ConfHandler _extraHandler) {
+	EscapeConfHandler(final TSProviderImpl _prov,
+			final ConfHandler _extraHandler) {
 		prov = _prov;
 		extraHandler = _extraHandler;
 	}
@@ -18,22 +19,19 @@ class EscapeConfHandler implements ConfHandler {
 		return privateData;
 	}
 
-	public void handleConf(CSTAEvent event) {
+	public void handleConf(final CSTAEvent event) {
 		Object privData = null;
 		try {
-			if ((event == null)
-					|| (!(event.getEvent() instanceof CSTAEscapeSvcConfEvent))) {
+			if (event == null
+					|| !(event.getEvent() instanceof CSTAEscapeSvcConfEvent))
 				return;
-			}
 
 			privData = event.getPrivData();
 			prov.replyPriv = privData;
 			privateData = privData;
 		} finally {
-			if (extraHandler != null) {
+			if (extraHandler != null)
 				extraHandler.handleConf(event);
-			}
 		}
 	}
 }
-

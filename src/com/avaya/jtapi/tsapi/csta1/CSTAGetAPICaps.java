@@ -10,7 +10,7 @@ public final class CSTAGetAPICaps extends CSTARequest {
 	static final int PDU = 124;
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -21,11 +21,11 @@ public final class CSTAGetAPICaps extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGetAPICaps ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 
@@ -33,4 +33,3 @@ public final class CSTAGetAPICaps extends CSTARequest {
 		return lines;
 	}
 }
-

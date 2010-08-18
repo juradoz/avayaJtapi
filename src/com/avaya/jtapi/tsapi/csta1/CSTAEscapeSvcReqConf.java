@@ -10,12 +10,12 @@ public class CSTAEscapeSvcReqConf extends CSTARequest {
 	short errorValue;
 	static final int PDU = 92;
 
-	public CSTAEscapeSvcReqConf(short _errorValue) {
+	public CSTAEscapeSvcReqConf(final short _errorValue) {
 		errorValue = _errorValue;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(errorValue, memberStream);
 	}
 
@@ -30,11 +30,11 @@ public class CSTAEscapeSvcReqConf extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAEscapeSvcReqConf ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAUniversalFailure.print(errorValue, "errorValue",
 				indent));
@@ -43,4 +43,3 @@ public class CSTAEscapeSvcReqConf extends CSTARequest {
 		return lines;
 	}
 }
-

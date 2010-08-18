@@ -6,4 +6,3 @@ import javax.telephony.AddressObserver;
 @Deprecated
 public abstract interface CallControlAddressObserver extends AddressObserver {
 }
-

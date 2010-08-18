@@ -16,8 +16,8 @@ public final class CSTASetAgentState extends CSTARequest {
 	String agentPassword;
 	public static final int PDU = 49;
 
-	public static CSTASetAgentState decode(InputStream in) {
-		CSTASetAgentState _this = new CSTASetAgentState();
+	public static CSTASetAgentState decode(final InputStream in) {
+		final CSTASetAgentState _this = new CSTASetAgentState();
 		_this.doDecode(in);
 
 		return _this;
@@ -26,8 +26,9 @@ public final class CSTASetAgentState extends CSTARequest {
 	public CSTASetAgentState() {
 	}
 
-	public CSTASetAgentState(String _device, short _agentMode, String _agentID,
-			String _agentGroup, String _agentPassword) {
+	public CSTASetAgentState(final String _device, final short _agentMode,
+			final String _agentID, final String _agentGroup,
+			final String _agentPassword) {
 		device = _device;
 		agentMode = _agentMode;
 		agentID = _agentID;
@@ -36,7 +37,7 @@ public final class CSTASetAgentState extends CSTARequest {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 		agentMode = ASNEnumerated.decode(memberStream);
 		agentID = ASNIA5String.decode(memberStream);
@@ -45,7 +46,7 @@ public final class CSTASetAgentState extends CSTARequest {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 		ASNEnumerated.encode(agentMode, memberStream);
 		ASNIA5String.encode(agentID, memberStream);
@@ -80,12 +81,12 @@ public final class CSTASetAgentState extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetAgentState ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 		lines.addAll(AgentMode.print(agentMode, "agentMode", indent));
@@ -99,4 +100,3 @@ public final class CSTASetAgentState extends CSTARequest {
 		return lines;
 	}
 }
-

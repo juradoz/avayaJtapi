@@ -7,7 +7,7 @@ public abstract class TsapiRequest extends TsapiPDU {
 		return invokeID;
 	}
 
-	public void setInvokeID(int invokeID) {
+	public void setInvokeID(final int invokeID) {
 		this.invokeID = invokeID;
 	}
 }

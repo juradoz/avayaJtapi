@@ -9,4 +9,3 @@ public abstract interface CallCtlAddrForwardEv extends CallCtlAddrEv {
 
 	public abstract CallControlForwarding[] getForwarding();
 }
-

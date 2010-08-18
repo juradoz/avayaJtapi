@@ -4,12 +4,11 @@ public final class CSTATSProvider {
 	private static long handleCSTAEventTimeThreshold = Integer.parseInt("250");
 
 	public static long getHandleCSTAEventTimeThreshold() {
-		return handleCSTAEventTimeThreshold;
+		return CSTATSProvider.handleCSTAEventTimeThreshold;
 	}
 
 	public static void setHandleCSTAEventTimeThreshold(
-			long handleCSTAEventTimeThreshold) {
+			final long handleCSTAEventTimeThreshold) {
 		CSTATSProvider.handleCSTAEventTimeThreshold = handleCSTAEventTimeThreshold;
 	}
 }
-

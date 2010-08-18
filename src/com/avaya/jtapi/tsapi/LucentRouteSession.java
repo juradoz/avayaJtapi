@@ -20,4 +20,3 @@ public abstract interface LucentRouteSession extends ITsapiRouteSession {
 			UserToUserInfo paramUserToUserInfo)
 			throws TsapiMethodNotSupportedException;
 }
-

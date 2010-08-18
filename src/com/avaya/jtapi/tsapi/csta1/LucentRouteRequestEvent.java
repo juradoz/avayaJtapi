@@ -14,15 +14,15 @@ public class LucentRouteRequestEvent extends LucentPrivateData {
 	LucentUserToUserInfo userInfo;
 	static final int PDU = 42;
 
-	public static LucentRouteRequestEvent decode(InputStream in) {
-		LucentRouteRequestEvent _this = new LucentRouteRequestEvent();
+	public static LucentRouteRequestEvent decode(final InputStream in) {
+		final LucentRouteRequestEvent _this = new LucentRouteRequestEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		trunkGroup = ASNIA5String.decode(memberStream);
 		lookaheadInfo = decodeLookahead(memberStream);
 		userEnteredCode = LucentUserEnteredCode.decode(memberStream);
@@ -30,7 +30,7 @@ public class LucentRouteRequestEvent extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(trunkGroup, memberStream);
 		encodeLookahead(lookaheadInfo, memberStream);
@@ -61,12 +61,12 @@ public class LucentRouteRequestEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentRouteRequestEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(LucentLookaheadInfo.print(lookaheadInfo, "lookaheadInfo",
@@ -79,20 +79,19 @@ public class LucentRouteRequestEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setLookaheadInfo(LucentLookaheadInfo lookaheadInfo) {
+	public void setLookaheadInfo(final LucentLookaheadInfo lookaheadInfo) {
 		this.lookaheadInfo = lookaheadInfo;
 	}
 
-	public void setTrunkGroup(String trunkGroup) {
+	public void setTrunkGroup(final String trunkGroup) {
 		this.trunkGroup = trunkGroup;
 	}
 
-	public void setUserEnteredCode(LucentUserEnteredCode userEnteredCode) {
+	public void setUserEnteredCode(final LucentUserEnteredCode userEnteredCode) {
 		this.userEnteredCode = userEnteredCode;
 	}
 
-	public void setUserInfo(LucentUserToUserInfo userInfo) {
+	public void setUserInfo(final LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }
-

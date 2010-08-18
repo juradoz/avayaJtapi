@@ -22,15 +22,15 @@ public final class CSTARouteRequestExtEv extends CSTARequest {
 	byte[] setupInformation;
 	public static final int PDU = 130;
 
-	public static CSTARouteRequestExtEv decode(InputStream in) {
-		CSTARouteRequestExtEv _this = new CSTARouteRequestExtEv();
+	public static CSTARouteRequestExtEv decode(final InputStream in) {
+		final CSTARouteRequestExtEv _this = new CSTARouteRequestExtEv();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		routeRegisterReqID = ASNInteger.decode(memberStream);
 		routingCrossRefID = ASNInteger.decode(memberStream);
 		currentRoute = CSTAExtendedDeviceID.decode(memberStream);
@@ -42,7 +42,7 @@ public final class CSTARouteRequestExtEv extends CSTARequest {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNInteger.encode(routeRegisterReqID, memberStream);
 		ASNInteger.encode(routingCrossRefID, memberStream);
 		ASNSequence.encode(currentRoute, memberStream);
@@ -92,12 +92,12 @@ public final class CSTARouteRequestExtEv extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRequestExtEv ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
 				indent));
@@ -118,36 +118,35 @@ public final class CSTARouteRequestExtEv extends CSTARequest {
 		return lines;
 	}
 
-	public void setCallingDevice(CSTAExtendedDeviceID callingDevice) {
+	public void setCallingDevice(final CSTAExtendedDeviceID callingDevice) {
 		this.callingDevice = callingDevice;
 	}
 
-	public void setCurrentRoute(CSTAExtendedDeviceID currentRoute) {
+	public void setCurrentRoute(final CSTAExtendedDeviceID currentRoute) {
 		this.currentRoute = currentRoute;
 	}
 
-	public void setPriority(boolean priority) {
+	public void setPriority(final boolean priority) {
 		this.priority = priority;
 	}
 
-	public void setRoutedCall(CSTAConnectionID routedCall) {
+	public void setRoutedCall(final CSTAConnectionID routedCall) {
 		this.routedCall = routedCall;
 	}
 
-	public void setRoutedSelAlgorithm(short routedSelAlgorithm) {
+	public void setRoutedSelAlgorithm(final short routedSelAlgorithm) {
 		this.routedSelAlgorithm = routedSelAlgorithm;
 	}
 
-	public void setRouteRegisterReqID(int routeRegisterReqID) {
+	public void setRouteRegisterReqID(final int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(int routingCrossRefID) {
+	public void setRoutingCrossRefID(final int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 
-	public void setSetupInformation(byte[] setupInformation) {
+	public void setSetupInformation(final byte[] setupInformation) {
 		this.setupInformation = setupInformation;
 	}
 }
-

@@ -5,4 +5,3 @@ public abstract interface TerminalEvent extends Event {
 
 	public abstract Terminal getTerminal();
 }
-

@@ -4,7 +4,7 @@ import javax.telephony.events.TermConnDroppedEv;
 
 public final class TsapiTermConnDroppedEvent extends TsapiTermConnEvent
 		implements TermConnDroppedEv {
-	public TsapiTermConnDroppedEvent(TermConnEventParams params) {
+	public TsapiTermConnDroppedEvent(final TermConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiTermConnDroppedEvent extends TsapiTermConnEvent
 		return 117;
 	}
 }
-

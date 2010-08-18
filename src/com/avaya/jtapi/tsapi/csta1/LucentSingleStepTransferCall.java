@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class LucentSingleStepTransferCall extends LucentPrivateData {
-	public static LucentSingleStepTransferCall decode(InputStream in) {
-		LucentSingleStepTransferCall _this = new LucentSingleStepTransferCall();
+	public static LucentSingleStepTransferCall decode(final InputStream in) {
+		final LucentSingleStepTransferCall _this = new LucentSingleStepTransferCall();
 
 		_this.doDecode(in);
 
@@ -24,20 +24,20 @@ public final class LucentSingleStepTransferCall extends LucentPrivateData {
 	public LucentSingleStepTransferCall() {
 	}
 
-	public LucentSingleStepTransferCall(CSTAConnectionID _activeCall,
-			String _transferredTo) {
+	public LucentSingleStepTransferCall(final CSTAConnectionID _activeCall,
+			final String _transferredTo) {
 		activeCall = _activeCall;
 		transferredTo = _transferredTo;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		activeCall = CSTAConnectionID.decode(memberStream);
 		transferredTo = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(activeCall, memberStream);
 		ASNIA5String.encode(transferredTo, memberStream);
 	}
@@ -57,12 +57,12 @@ public final class LucentSingleStepTransferCall extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSingleStepTransferCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
 		lines

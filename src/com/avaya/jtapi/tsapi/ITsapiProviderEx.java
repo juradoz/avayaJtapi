@@ -6,4 +6,3 @@ public abstract interface ITsapiProviderEx extends ITsapiProvider {
 	public abstract void setHeartbeatInterval(short paramShort)
 			throws TsapiInvalidArgumentException;
 }
-

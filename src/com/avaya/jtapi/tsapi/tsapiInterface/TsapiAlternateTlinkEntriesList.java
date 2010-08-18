@@ -9,11 +9,10 @@ public final class TsapiAlternateTlinkEntriesList {
 	private static TsapiAlternateTlinkEntriesList _instance = null;
 
 	public static synchronized TsapiAlternateTlinkEntriesList Instance() {
-		if (_instance == null) {
-			_instance = new TsapiAlternateTlinkEntriesList();
-		}
+		if (TsapiAlternateTlinkEntriesList._instance == null)
+			TsapiAlternateTlinkEntriesList._instance = new TsapiAlternateTlinkEntriesList();
 
-		return _instance;
+		return TsapiAlternateTlinkEntriesList._instance;
 	}
 
 	private final List<TsapiAlternateTlinkEntry> entries;
@@ -22,51 +21,48 @@ public final class TsapiAlternateTlinkEntriesList {
 		entries = new ArrayList<TsapiAlternateTlinkEntry>();
 	}
 
-	public synchronized void addAlternateTlinkEntry(String propertyName,
-			String valueString) throws TsapiPropertiesException {
+	public synchronized void addAlternateTlinkEntry(final String propertyName,
+			final String valueString) throws TsapiPropertiesException {
 		try {
-			if (entries.size() >= 16) {
+			if (entries.size() >= 16)
 				throw new TsapiPropertiesException("Ignoring property \""
 						+ propertyName
 						+ "\": the maximum number of Alternate Tlink entries ("
 						+ 16 + ") has already been processed.");
-			}
 
 			entries
 					.add(new TsapiAlternateTlinkEntry(propertyName, valueString));
-		} catch (TsapiPropertySyntaxException e) {
+		} catch (final TsapiPropertySyntaxException e) {
 			throw new TsapiPropertiesException("Error processing property \""
 					+ propertyName + "\": " + e.getMessage());
 		}
 	}
 
-	public synchronized int getAlternateTlinkIndex(String preferredTlinkName,
-			String tlinkName) {
+	public synchronized int getAlternateTlinkIndex(
+			final String preferredTlinkName, final String tlinkName) {
 		try {
-			Iterator<TsapiAlternateTlinkEntry> entryIterator = entries
+			final Iterator<TsapiAlternateTlinkEntry> entryIterator = entries
 					.iterator();
 
 			while (entryIterator.hasNext()) {
-				TsapiAlternateTlinkEntry entry = entryIterator.next();
+				final TsapiAlternateTlinkEntry entry = entryIterator.next();
 				if (entry.getPreferredTlinkName().compareToIgnoreCase(
 						preferredTlinkName) == 0) {
-					Iterator<String> alternatesIterator = entry
+					final Iterator<String> alternatesIterator = entry
 							.getAlternateTlinkNames().iterator();
 
 					for (int index = 0; alternatesIterator.hasNext(); ++index) {
-						String alternate = alternatesIterator.next();
-						if (alternate.compareToIgnoreCase(tlinkName) == 0) {
+						final String alternate = alternatesIterator.next();
+						if (alternate.compareToIgnoreCase(tlinkName) == 0)
 							return index;
-						}
 					}
 				}
 
 			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		}
 
 		return -1;
 	}
 }
-

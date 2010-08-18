@@ -12,27 +12,23 @@ public final class CSTAFeatureFilter extends ASNBitString {
 	static final int FF_MESSAGE_WAITING = 268435456;
 	static final int numBits = 4;
 
-	static void encode(int bits, OutputStream out) {
-		encode(bits, 4, out);
+	static void encode(final int bits, final OutputStream out) {
+		ASNBitString.encode(bits, 4, out);
 	}
 
-	static Collection<String> print(int bits, String name, String indent) {
+	static Collection<String> print(final int bits, final String name,
+			final String indent) {
 		String str = " ";
 
-		if ((bits & 0x80000000) != 0) {
+		if ((bits & 0x80000000) != 0)
 			str = str + "FF_CALL_INFORMATION ";
-		}
-		if ((bits & 0x40000000) != 0) {
+		if ((bits & 0x40000000) != 0)
 			str = str + "FF_DO_NOT_DISTURB ";
-		}
-		if ((bits & 0x20000000) != 0) {
+		if ((bits & 0x20000000) != 0)
 			str = str + "FF_FORWARDING ";
-		}
-		if ((bits & 0x10000000) != 0) {
+		if ((bits & 0x10000000) != 0)
 			str = str + "FF_MESSAGE_WAITING ";
-		}
 
-		return print(bits, str, name, indent);
+		return ASNBitString.print(bits, str, name, indent);
 	}
 }
-

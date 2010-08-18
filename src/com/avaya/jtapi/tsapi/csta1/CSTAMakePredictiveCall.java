@@ -14,8 +14,8 @@ public final class CSTAMakePredictiveCall extends CSTARequest {
 	short allocationState;
 	public static final int PDU = 25;
 
-	public static CSTAMakePredictiveCall decode(InputStream in) {
-		CSTAMakePredictiveCall _this = new CSTAMakePredictiveCall();
+	public static CSTAMakePredictiveCall decode(final InputStream in) {
+		final CSTAMakePredictiveCall _this = new CSTAMakePredictiveCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -24,22 +24,22 @@ public final class CSTAMakePredictiveCall extends CSTARequest {
 	public CSTAMakePredictiveCall() {
 	}
 
-	public CSTAMakePredictiveCall(String _callingDevice, String _calledDevice,
-			short _allocationState) {
+	public CSTAMakePredictiveCall(final String _callingDevice,
+			final String _calledDevice, final short _allocationState) {
 		callingDevice = _callingDevice;
 		calledDevice = _calledDevice;
 		allocationState = _allocationState;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		callingDevice = ASNIA5String.decode(memberStream);
 		calledDevice = ASNIA5String.decode(memberStream);
 		allocationState = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(callingDevice, memberStream);
 		ASNIA5String.encode(calledDevice, memberStream);
 		ASNEnumerated.encode(allocationState, memberStream);
@@ -64,11 +64,11 @@ public final class CSTAMakePredictiveCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAMakePredictiveCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines
 				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
@@ -81,4 +81,3 @@ public final class CSTAMakePredictiveCall extends CSTARequest {
 		return lines;
 	}
 }
-

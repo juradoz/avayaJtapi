@@ -17,30 +17,28 @@ public class PerfStatisticsCollector {
 		private long windowCount;
 		private long historySum;
 		private int historyCount;
-		private String name;
+		private final String name;
 		private boolean historyInitialized = false;
 
-		public PerfHistoryBean(String name) {
+		public PerfHistoryBean(final String name) {
 			historySum = 0L;
 			historyCount = 0;
 			this.name = name;
 		}
 
-		public void copyToHistory(Vector<Long> windowDetails, int count) {
-			if (windowDetails.size() == 0) {
+		public void copyToHistory(final Vector<Long> windowDetails,
+				final int count) {
+			if (windowDetails.size() == 0)
 				return;
-			}
 			long sum = 0L;
-			windowMax = (windowMin = (windowDetails.firstElement()).longValue());
+			windowMax = windowMin = windowDetails.firstElement().longValue();
 
-			for (Long value : windowDetails) {
+			for (final Long value : windowDetails) {
 				sum += value.longValue();
-				if (value.longValue() < windowMin) {
+				if (value.longValue() < windowMin)
 					windowMin = value.longValue();
-				}
-				if (value.longValue() > windowMax) {
+				if (value.longValue() > windowMax)
 					windowMax = value.longValue();
-				}
 			}
 			windowSum = sum;
 			windowCount = count;
@@ -50,35 +48,31 @@ public class PerfStatisticsCollector {
 				if (!historyInitialized) {
 					historyMin = windowMin;
 					historyInitialized = true;
-				} else if (windowMin < historyMin) {
+				} else if (windowMin < historyMin)
 					historyMin = windowMin;
-				}
-				if (windowMax > historyMax) {
+				if (windowMax > historyMax)
 					historyMax = windowMax;
-				}
 			}
 		}
 
-		public void printHistoryStats(Logger logger) {
-			if (historyCount != 0) {
+		public void printHistoryStats(final Logger logger) {
+			if (historyCount != 0)
 				logger.info(name + ": Min = " + historyMin + "\tMax = "
 						+ historyMax + "\tAverage = " + (float) historySum
 						/ historyCount);
-			} else {
+			else
 				logger.info(name + ": Min = " + historyMin + "\tMax = "
 						+ historyMax + "\tAverage = " + 0);
-			}
 		}
 
-		public void printWindowStats(Logger logger) {
-			if (windowSum != 0L) {
+		public void printWindowStats(final Logger logger) {
+			if (windowSum != 0L)
 				logger.info(name + ": Min = " + windowMin + "\tMax = "
 						+ windowMax + "\tAverage = " + (float) windowSum
 						/ (float) windowCount);
-			} else {
+			else
 				logger.info(name + ": Min = " + windowMin + "\tMax = "
 						+ windowMax + "\tAverage = " + 0);
-			}
 		}
 	}
 
@@ -86,42 +80,41 @@ public class PerfStatisticsCollector {
 		private static Logger logger = Logger
 				.getLogger("jtapi.performanceLogger");
 
-		public static void printMaxAverage(String name, Vector<Long> data) {
+		public static void printMaxAverage(final String name,
+				final Vector<Long> data) {
 			long max = 0L;
 			float average = 0.0F;
 			if (data.size() > 0) {
-				for (Long dataValue : data) {
-					if (dataValue.longValue() > max) {
+				for (final Long dataValue : data) {
+					if (dataValue.longValue() > max)
 						max = dataValue.longValue();
-					}
 					average += dataValue.longValue();
 				}
 				average /= data.size();
 			}
-			logger.info(name + ": Max = " + max + "\tAverage = " + average);
+			PerfStatisticsCalculator.logger.info(name + ": Max = " + max
+					+ "\tAverage = " + average);
 		}
 
-		public static void printMinMaxAverageData(Vector<Float> data,
-				String name) {
-			if (data.size() == 0) {
+		public static void printMinMaxAverageData(final Vector<Float> data,
+				final String name) {
+			if (data.size() == 0)
 				return;
-			}
-			float min = (data.get(0)).floatValue();
+			float min = data.get(0).floatValue();
 			float max = 0.0F;
 			float average = 0.0F;
 			if (data.size() > 0) {
-				for (Float dataValue : data) {
-					if (dataValue.floatValue() < min) {
+				for (final Float dataValue : data) {
+					if (dataValue.floatValue() < min)
 						min = dataValue.floatValue();
-					} else if (dataValue.floatValue() > max) {
+					else if (dataValue.floatValue() > max)
 						max = dataValue.floatValue();
-					}
 					average += dataValue.floatValue();
 				}
 				average /= data.size();
 			}
-			logger.info(name + " Min = " + min + "\tMax = " + max
-					+ "\tAverage = " + average);
+			PerfStatisticsCalculator.logger.info(name + " Min = " + min
+					+ "\tMax = " + max + "\tAverage = " + average);
 		}
 
 		private Vector<Long> data;
@@ -138,27 +131,25 @@ public class PerfStatisticsCollector {
 		public PerfStatisticsCalculator() {
 		}
 
-		public PerfStatisticsCalculator(Vector<Long> theData, long window) {
+		public PerfStatisticsCalculator(final Vector<Long> theData,
+				final long window) {
 			data = theData;
 			this.window = window;
 		}
 
 		private void computeHistoryMinMaxAvg() {
-			if (data.size() == 0) {
+			if (data.size() == 0)
 				return;
-			}
-			historyMin = (data.get(0)).longValue();
+			historyMin = data.get(0).longValue();
 			historMax = 0L;
 			historyAverage = 0.0F;
 			if (data.size() > 0) {
-				for (Long tempData : data) {
-					long dataValue = tempData.longValue();
-					if (dataValue < historyMin) {
+				for (final Long tempData : data) {
+					final long dataValue = tempData.longValue();
+					if (dataValue < historyMin)
 						historyMin = dataValue;
-					}
-					if (dataValue > historMax) {
+					if (dataValue > historMax)
 						historMax = dataValue;
-					}
 					historyAverage += dataValue;
 				}
 				historyAverage /= data.size();
@@ -171,21 +162,18 @@ public class PerfStatisticsCollector {
 		}
 
 		private void computeMinMaxAvgWindow() {
-			if (data.size() == 0) {
+			if (data.size() == 0)
 				return;
-			}
-			min = (data.get(0)).longValue();
+			min = data.get(0).longValue();
 			max = 0L;
 			average = 0.0F;
 			if (window > 0L) {
 				for (int i = (int) (data.size() - window); i < data.size(); ++i) {
-					long dataValue = (data.get(i)).longValue();
-					if (dataValue < min) {
+					final long dataValue = data.get(i).longValue();
+					if (dataValue < min)
 						min = dataValue;
-					}
-					if (dataValue > max) {
+					if (dataValue > max)
 						max = dataValue;
-					}
 					average += dataValue;
 				}
 				average /= window;
@@ -225,24 +213,24 @@ public class PerfStatisticsCollector {
 		}
 
 		public void reset() {
-			min = (max = historMax = historyMin = window = 0L);
-			average = (historyAverage = 0.0F);
+			min = max = historMax = historyMin = window = 0L;
+			average = historyAverage = 0.0F;
 			data.clear();
 			data = null;
 		}
 
-		public void setData(Vector<Long> data) {
+		public void setData(final Vector<Long> data) {
 			this.data = data;
 		}
 
-		public void setWindow(long window) {
+		public void setWindow(final long window) {
 			this.window = window;
 		}
 	}
 
 	private static class PerfTimerTask extends TimerTask {
-		private void compute(Vector<Long> statData, int counter,
-				PerfStatisticsCollector.PerfStatisticsCalculator perfBean) {
+		private void compute(final Vector<Long> statData, final int counter,
+				final PerfStatisticsCollector.PerfStatisticsCalculator perfBean) {
 			perfBean.setData(statData);
 			perfBean.setWindow(counter);
 			perfBean.computeMinMaxAverage();
@@ -257,17 +245,17 @@ public class PerfStatisticsCollector {
 			int callCountClone;
 			int eventCountClone;
 			synchronized (PerfStatisticsCollector.class) {
-				Vector<Long> unsolCloneVector = (Vector<Long>) PerfStatisticsCollector.unsolicitedHandlingTime
+				final Vector<Long> unsolCloneVector = (Vector<Long>) PerfStatisticsCollector.unsolicitedHandlingTime
 						.clone();
-				int unsolCloneCounter = PerfStatisticsCollector.unsolicitedHandlingTimeCounter
+				final int unsolCloneCounter = PerfStatisticsCollector.unsolicitedHandlingTimeCounter
 						.getAndSet(0);
 				PerfStatisticsCollector.unsolicitedHandlingTime.clear();
 				PerfStatisticsCollector.unsolHandlingTimeHistory.copyToHistory(
 						unsolCloneVector, unsolCloneCounter);
 
-				Vector<Long> serviceTurnaroundCloneVector = (Vector) PerfStatisticsCollector.serviceRequestTurnaroundTime
+				final Vector<Long> serviceTurnaroundCloneVector = (Vector) PerfStatisticsCollector.serviceRequestTurnaroundTime
 						.clone();
-				int serviceTurnaroundCloneCounter = PerfStatisticsCollector.serviceRequestTurnaroundTimeCounter
+				final int serviceTurnaroundCloneCounter = PerfStatisticsCollector.serviceRequestTurnaroundTimeCounter
 						.getAndSet(0);
 				PerfStatisticsCollector.serviceRequestTurnaroundTime.clear();
 				PerfStatisticsCollector.serviceRequestTurnaroundTimeHistory
@@ -280,9 +268,9 @@ public class PerfStatisticsCollector {
 				queueLengthCloneCounter = PerfStatisticsCollector.queueLengthCounter
 						.getAndSet(0);
 
-				Vector<Long> messageLatencyCloneVector = (Vector) PerfStatisticsCollector.messageLatency
+				final Vector<Long> messageLatencyCloneVector = (Vector) PerfStatisticsCollector.messageLatency
 						.clone();
-				int messageLatencyCloneCounter = PerfStatisticsCollector.messageLatencyCounter
+				final int messageLatencyCloneCounter = PerfStatisticsCollector.messageLatencyCounter
 						.getAndSet(0);
 				PerfStatisticsCollector.messageLatency.clear();
 				PerfStatisticsCollector.messageLatencyHistory.copyToHistory(
@@ -293,7 +281,7 @@ public class PerfStatisticsCollector {
 				eventCountClone = PerfStatisticsCollector.eventCount
 						.getAndSet(0);
 			}
-			PerfStatisticsCollector.PerfStatisticsCalculator qPerfCalc = new PerfStatisticsCollector.PerfStatisticsCalculator();
+			final PerfStatisticsCollector.PerfStatisticsCalculator qPerfCalc = new PerfStatisticsCollector.PerfStatisticsCalculator();
 			compute(queueLengthCloneVector, queueLengthCloneCounter, qPerfCalc);
 
 			PerfStatisticsCollector.logger
@@ -305,13 +293,12 @@ public class PerfStatisticsCollector {
 			PerfStatisticsCollector.messageLatencyHistory
 					.printWindowStats(PerfStatisticsCollector.logger);
 
-			if (queueLengthCloneVector.size() > 0) {
+			if (queueLengthCloneVector.size() > 0)
 				PerfStatisticsCollector.logger.info("QUEUE LENGTH: Current = "
 						+ queueLengthCloneVector.lastElement() + "\tMax = "
 						+ qPerfCalc.getMax());
-			}
 			if (callCountClone != 0) {
-				float currentCallsPerSecond = callCountClone
+				final float currentCallsPerSecond = callCountClone
 						/ PerfStatisticsCollector.performanceWindow;
 				PerfStatisticsCollector.logger.info("CALLS PER SECOND: "
 						+ currentCallsPerSecond);
@@ -320,15 +307,14 @@ public class PerfStatisticsCollector {
 					// PerfStatisticsCollector.access$1802(true);
 					// PerfStatisticsCollector.access$1902(PerfStatisticsCollector.access$2002(currentCallsPerSecond));
 				}
-				if (currentCallsPerSecond < PerfStatisticsCollector.minCallHistory) {
+				if (currentCallsPerSecond < PerfStatisticsCollector.minCallHistory)
 					// PerfStatisticsCollector.access$1902(currentCallsPerSecond);
 					if (currentCallsPerSecond > PerfStatisticsCollector.maxCallHistory) {
 						// PerfStatisticsCollector.access$2002(currentCallsPerSecond);
 					}
-				}
 			}
 			if (eventCountClone != 0) {
-				float currentEventsPerSecond = eventCountClone
+				final float currentEventsPerSecond = eventCountClone
 						/ PerfStatisticsCollector.performanceWindow;
 				PerfStatisticsCollector.logger.info("EVENTS PER SECOND:"
 						+ currentEventsPerSecond);
@@ -337,12 +323,11 @@ public class PerfStatisticsCollector {
 					// PerfStatisticsCollector.access$2202(true);
 					// PerfStatisticsCollector.access$2302(PerfStatisticsCollector.access$2402(currentEventsPerSecond));
 				}
-				if (currentEventsPerSecond < PerfStatisticsCollector.minEventHistory) {
+				if (currentEventsPerSecond < PerfStatisticsCollector.minEventHistory)
 					// PerfStatisticsCollector.access$2302(currentEventsPerSecond);
 					if (currentEventsPerSecond > PerfStatisticsCollector.maxEventHistory) {
 						// PerfStatisticsCollector.access$2402(currentEventsPerSecond);
 					}
-				}
 			}
 
 			PerfStatisticsCollector.logger
@@ -353,7 +338,7 @@ public class PerfStatisticsCollector {
 					.printHistoryStats(PerfStatisticsCollector.logger);
 			PerfStatisticsCollector.messageLatencyHistory
 					.printHistoryStats(PerfStatisticsCollector.logger);
-			long currentQMax = qPerfCalc.getMax();
+			final long currentQMax = qPerfCalc.getMax();
 			// PerfStatisticsCollector.access$2514(qPerfCalc.getMax());
 			if (currentQMax > PerfStatisticsCollector.queueOverallMax) {
 				// PerfStatisticsCollector.access$2602(currentQMax);
@@ -362,22 +347,20 @@ public class PerfStatisticsCollector {
 					+ PerfStatisticsCollector.queueOverallMax + "\tAverage = "
 					+ (float) PerfStatisticsCollector.queueMaxWindowSum
 					/ (float) PerfStatisticsCollector.numWindowsRun);
-			if (callCountClone != 0) {
+			if (callCountClone != 0)
 				PerfStatisticsCollector.logger.info("CALLS PER SECOND: Min = "
 						+ PerfStatisticsCollector.minCallHistory + "\tMax = "
 						+ PerfStatisticsCollector.maxCallHistory
 						+ "\tAverage = "
 						+ PerfStatisticsCollector.callCountHistorySum
 						/ PerfStatisticsCollector.numWindowsRun);
-			}
-			if (eventCountClone != 0) {
+			if (eventCountClone != 0)
 				PerfStatisticsCollector.logger.info("EVENTS PER SECOND: Min = "
 						+ PerfStatisticsCollector.minEventHistory + "\tMax = "
 						+ PerfStatisticsCollector.maxEventHistory
 						+ "\tAverage = "
 						+ PerfStatisticsCollector.eventCountHistorySum
 						/ PerfStatisticsCollector.numWindowsRun);
-			}
 		}
 	}
 
@@ -423,191 +406,191 @@ public class PerfStatisticsCollector {
 	private static boolean isInitialized = false;
 
 	public static int getPerformanceWindow() {
-		return performanceWindow;
+		return PerfStatisticsCollector.performanceWindow;
 	}
 
 	private static void initializeDataStructures() {
-		callCount = new AtomicInteger();
-		callCountHistorySum = 0.0F;
+		PerfStatisticsCollector.callCount = new AtomicInteger();
+		PerfStatisticsCollector.callCountHistorySum = 0.0F;
 
-		eventCount = new AtomicInteger();
-		eventCountHistorySum = 0.0F;
+		PerfStatisticsCollector.eventCount = new AtomicInteger();
+		PerfStatisticsCollector.eventCountHistorySum = 0.0F;
 
-		unsolHandlingTimeHistory = new PerfHistoryBean(
+		PerfStatisticsCollector.unsolHandlingTimeHistory = new PerfHistoryBean(
 				"UNSOLICITED HANDLING TIME");
-		unsolicitedHandlingTime = new Vector<Long>();
-		unsolicitedHandlingTimeCounter = new AtomicInteger();
+		PerfStatisticsCollector.unsolicitedHandlingTime = new Vector<Long>();
+		PerfStatisticsCollector.unsolicitedHandlingTimeCounter = new AtomicInteger();
 
-		serviceRequestTurnaroundTimeHistory = new PerfHistoryBean(
+		PerfStatisticsCollector.serviceRequestTurnaroundTimeHistory = new PerfHistoryBean(
 				"SERVICE REQUEST TURNAROUND TIME");
-		serviceRequestTurnaroundTime = new Vector<Long>();
-		serviceRequestTurnaroundTimeCounter = new AtomicInteger();
+		PerfStatisticsCollector.serviceRequestTurnaroundTime = new Vector<Long>();
+		PerfStatisticsCollector.serviceRequestTurnaroundTimeCounter = new AtomicInteger();
 
-		queueLength = new Vector<Long>();
-		queueMaxWindowSum = 0L;
-		queueOverallMax = 0L;
-		queueLengthCounter = new AtomicInteger();
+		PerfStatisticsCollector.queueLength = new Vector<Long>();
+		PerfStatisticsCollector.queueMaxWindowSum = 0L;
+		PerfStatisticsCollector.queueOverallMax = 0L;
+		PerfStatisticsCollector.queueLengthCounter = new AtomicInteger();
 
-		messageLatencyHistory = new PerfHistoryBean("MESSAGE LATENCY");
-		messageLatency = new Vector<Long>();
-		messageLatencyCounter = new AtomicInteger();
+		PerfStatisticsCollector.messageLatencyHistory = new PerfHistoryBean(
+				"MESSAGE LATENCY");
+		PerfStatisticsCollector.messageLatency = new Vector<Long>();
+		PerfStatisticsCollector.messageLatencyCounter = new AtomicInteger();
 	}
 
 	public static void initPerfStatisticsCollector() {
-		if (!isInitialized) {
-			initializeDataStructures();
-			if (perfTimer != null) {
-				perfTimer.cancel();
-				perfTimer = null;
+		if (!PerfStatisticsCollector.isInitialized) {
+			PerfStatisticsCollector.initializeDataStructures();
+			if (PerfStatisticsCollector.perfTimer != null) {
+				PerfStatisticsCollector.perfTimer.cancel();
+				PerfStatisticsCollector.perfTimer = null;
 			}
-			perfTimer = new Timer(true);
-			perfTimer.schedule(new PerfTimerTask(), performanceWindow * 1000,
-					performanceWindow * 1000);
-			logger
+			PerfStatisticsCollector.perfTimer = new Timer(true);
+			PerfStatisticsCollector.perfTimer.schedule(new PerfTimerTask(),
+					PerfStatisticsCollector.performanceWindow * 1000,
+					PerfStatisticsCollector.performanceWindow * 1000);
+			PerfStatisticsCollector.logger
 					.info("##########Performance statistics monitoring start##########");
-			isInitialized = true;
-			perfWindowChanged = false;
+			PerfStatisticsCollector.isInitialized = true;
+			PerfStatisticsCollector.perfWindowChanged = false;
 		}
 	}
 
 	private static void resetDataStructures() {
-		unsolicitedHandlingTime.clear();
-		unsolicitedHandlingTime = null;
-		unsolicitedHandlingTimeCounter = null;
-		unsolHandlingTimeHistory = null;
-		numWindowsRun = 0L;
+		PerfStatisticsCollector.unsolicitedHandlingTime.clear();
+		PerfStatisticsCollector.unsolicitedHandlingTime = null;
+		PerfStatisticsCollector.unsolicitedHandlingTimeCounter = null;
+		PerfStatisticsCollector.unsolHandlingTimeHistory = null;
+		PerfStatisticsCollector.numWindowsRun = 0L;
 
-		serviceRequestTurnaroundTime.clear();
-		serviceRequestTurnaroundTime = null;
-		serviceRequestTurnaroundTimeCounter = null;
-		serviceRequestTurnaroundTimeHistory = null;
+		PerfStatisticsCollector.serviceRequestTurnaroundTime.clear();
+		PerfStatisticsCollector.serviceRequestTurnaroundTime = null;
+		PerfStatisticsCollector.serviceRequestTurnaroundTimeCounter = null;
+		PerfStatisticsCollector.serviceRequestTurnaroundTimeHistory = null;
 
-		queueLength.clear();
-		queueOverallMax = 0L;
-		queueLength = null;
-		queueLengthCounter = null;
+		PerfStatisticsCollector.queueLength.clear();
+		PerfStatisticsCollector.queueOverallMax = 0L;
+		PerfStatisticsCollector.queueLength = null;
+		PerfStatisticsCollector.queueLengthCounter = null;
 
-		messageLatency.clear();
-		messageLatency = null;
-		messageLatencyCounter = null;
-		messageLatencyHistory = null;
+		PerfStatisticsCollector.messageLatency.clear();
+		PerfStatisticsCollector.messageLatency = null;
+		PerfStatisticsCollector.messageLatencyCounter = null;
+		PerfStatisticsCollector.messageLatencyHistory = null;
 
-		callCount = null;
-		minCallHistory = PerfStatisticsCollector.maxCallHistory = PerfStatisticsCollector.callCountHistorySum = 0.0F;
-		callHistoryInitialized = false;
+		PerfStatisticsCollector.callCount = null;
+		PerfStatisticsCollector.minCallHistory = PerfStatisticsCollector.maxCallHistory = PerfStatisticsCollector.callCountHistorySum = 0.0F;
+		PerfStatisticsCollector.callHistoryInitialized = false;
 
-		eventCount = null;
-		eventCountHistorySum = PerfStatisticsCollector.minEventHistory = PerfStatisticsCollector.maxEventHistory = 0.0F;
-		eventHistoryInitialized = false;
+		PerfStatisticsCollector.eventCount = null;
+		PerfStatisticsCollector.eventCountHistorySum = PerfStatisticsCollector.minEventHistory = PerfStatisticsCollector.maxEventHistory = 0.0F;
+		PerfStatisticsCollector.eventHistoryInitialized = false;
 
-		perfTimer.cancel();
-		perfTimer = null;
+		PerfStatisticsCollector.perfTimer.cancel();
+		PerfStatisticsCollector.perfTimer = null;
 
-		isInitialized = false;
+		PerfStatisticsCollector.isInitialized = false;
 	}
 
-	public static void setMessageLatencyThreshold(long messageLatencyThreshold) {
+	public static void setMessageLatencyThreshold(
+			final long messageLatencyThreshold) {
 		PerfStatisticsCollector.messageLatencyThreshold = messageLatencyThreshold;
 	}
 
-	public static void setPerformanceWindow(int performanceWindow) {
-		if (PerfStatisticsCollector.performanceWindow != performanceWindow) {
-			perfWindowChanged = true;
-		}
+	public static void setPerformanceWindow(final int performanceWindow) {
+		if (PerfStatisticsCollector.performanceWindow != performanceWindow)
+			PerfStatisticsCollector.perfWindowChanged = true;
 		PerfStatisticsCollector.performanceWindow = performanceWindow;
 	}
 
-	public static void setQueueLengthThreshold(long queueLengthThreshold) {
+	public static void setQueueLengthThreshold(final long queueLengthThreshold) {
 		PerfStatisticsCollector.queueLengthThreshold = queueLengthThreshold;
 	}
 
 	public static void setServiceRequestTurnaroundTimeThreshold(
-			long serviceRequestTurnaroundTimeThreshold) {
+			final long serviceRequestTurnaroundTimeThreshold) {
 		PerfStatisticsCollector.serviceRequestTurnaroundTimeThreshold = serviceRequestTurnaroundTimeThreshold;
 	}
 
 	public static void setUnsolicitedHandlingTimeThreshold(
-			long unsolicitedHandlingTimeThreshold) {
+			final long unsolicitedHandlingTimeThreshold) {
 		PerfStatisticsCollector.unsolicitedHandlingTimeThreshold = unsolicitedHandlingTimeThreshold;
 	}
 
 	public static void shutdown() {
-		if (isInitialized) {
-			resetDataStructures();
-			logger
+		if (PerfStatisticsCollector.isInitialized) {
+			PerfStatisticsCollector.resetDataStructures();
+			PerfStatisticsCollector.logger
 					.info("##########Performance statistics monitoring stop##########");
 		}
 	}
 
 	public static void updateCallCount() {
-		if (isInitialized) {
-			callCount.incrementAndGet();
-		}
+		if (PerfStatisticsCollector.isInitialized)
+			PerfStatisticsCollector.callCount.incrementAndGet();
 	}
 
 	public static void updateEventCount() {
-		if (isInitialized) {
-			eventCount.incrementAndGet();
-		}
+		if (PerfStatisticsCollector.isInitialized)
+			PerfStatisticsCollector.eventCount.incrementAndGet();
 	}
 
-	public static void updateMessageLatency(long newValue) {
-		if (isInitialized) {
-			messageLatency.add(Long.valueOf(newValue));
-			messageLatencyCounter.incrementAndGet();
-			if (newValue > messageLatencyThreshold) {
-				logger
+	public static void updateMessageLatency(final long newValue) {
+		if (PerfStatisticsCollector.isInitialized) {
+			PerfStatisticsCollector.messageLatency.add(Long.valueOf(newValue));
+			PerfStatisticsCollector.messageLatencyCounter.incrementAndGet();
+			if (newValue > PerfStatisticsCollector.messageLatencyThreshold)
+				PerfStatisticsCollector.logger
 						.info("Message latency threshold value crossed. New value is : "
 								+ newValue);
-			}
 		}
 	}
 
 	public static void updatePerfStatisticsCollectorConfig() {
-		if (perfWindowChanged) {
-			resetDataStructures();
-			initializeDataStructures();
-			perfTimer = new Timer(true);
-			perfTimer.schedule(new PerfTimerTask(), performanceWindow * 1000,
-					performanceWindow * 1000);
-			perfWindowChanged = false;
+		if (PerfStatisticsCollector.perfWindowChanged) {
+			PerfStatisticsCollector.resetDataStructures();
+			PerfStatisticsCollector.initializeDataStructures();
+			PerfStatisticsCollector.perfTimer = new Timer(true);
+			PerfStatisticsCollector.perfTimer.schedule(new PerfTimerTask(),
+					PerfStatisticsCollector.performanceWindow * 1000,
+					PerfStatisticsCollector.performanceWindow * 1000);
+			PerfStatisticsCollector.perfWindowChanged = false;
 		}
 	}
 
-	public static void updateQueueLength(long newValue) {
-		if (isInitialized) {
-			queueLength.add(new Long(newValue));
-			queueLengthCounter.incrementAndGet();
-			if (newValue > queueLengthThreshold) {
-				logger
+	public static void updateQueueLength(final long newValue) {
+		if (PerfStatisticsCollector.isInitialized) {
+			PerfStatisticsCollector.queueLength.add(new Long(newValue));
+			PerfStatisticsCollector.queueLengthCounter.incrementAndGet();
+			if (newValue > PerfStatisticsCollector.queueLengthThreshold)
+				PerfStatisticsCollector.logger
 						.info("Queue length threshold value crossed. New value is : "
 								+ newValue);
-			}
 		}
 	}
 
-	public static void updateServiceRequestTurnaroundTime(long newValue) {
-		if (isInitialized) {
-			serviceRequestTurnaroundTime.add(new Long(newValue));
-			serviceRequestTurnaroundTimeCounter.incrementAndGet();
-			if (newValue > serviceRequestTurnaroundTimeThreshold) {
-				logger
+	public static void updateServiceRequestTurnaroundTime(final long newValue) {
+		if (PerfStatisticsCollector.isInitialized) {
+			PerfStatisticsCollector.serviceRequestTurnaroundTime.add(new Long(
+					newValue));
+			PerfStatisticsCollector.serviceRequestTurnaroundTimeCounter
+					.incrementAndGet();
+			if (newValue > PerfStatisticsCollector.serviceRequestTurnaroundTimeThreshold)
+				PerfStatisticsCollector.logger
 						.info("Service request turnaround time threshold value crossed. New value is : "
 								+ newValue);
-			}
 		}
 	}
 
-	public static void updateUnsolicitedHandlingTime(long newValue) {
-		if (isInitialized) {
-			unsolicitedHandlingTime.add(new Long(newValue));
-			unsolicitedHandlingTimeCounter.incrementAndGet();
-			if (newValue > unsolicitedHandlingTimeThreshold) {
-				logger
+	public static void updateUnsolicitedHandlingTime(final long newValue) {
+		if (PerfStatisticsCollector.isInitialized) {
+			PerfStatisticsCollector.unsolicitedHandlingTime.add(new Long(
+					newValue));
+			PerfStatisticsCollector.unsolicitedHandlingTimeCounter
+					.incrementAndGet();
+			if (newValue > PerfStatisticsCollector.unsolicitedHandlingTimeThreshold)
+				PerfStatisticsCollector.logger
 						.info("Unsolicited handling time threshold value crossed. New value is : "
 								+ newValue);
-			}
 		}
 	}
 }
-

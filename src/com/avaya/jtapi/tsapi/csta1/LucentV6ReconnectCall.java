@@ -7,8 +7,8 @@ import java.util.Collection;
 public final class LucentV6ReconnectCall extends LucentReconnectCall {
 	public static final int PDU = 114;
 
-	public static LucentReconnectCall decode(InputStream in) {
-		LucentV6ReconnectCall _this = new LucentV6ReconnectCall();
+	public static LucentReconnectCall decode(final InputStream in) {
+		final LucentV6ReconnectCall _this = new LucentV6ReconnectCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -17,8 +17,8 @@ public final class LucentV6ReconnectCall extends LucentReconnectCall {
 	LucentV6ReconnectCall() {
 	}
 
-	public LucentV6ReconnectCall(short _dropResource,
-			LucentUserToUserInfo _userInfo) {
+	public LucentV6ReconnectCall(final short _dropResource,
+			final LucentUserToUserInfo _userInfo) {
 		super(_dropResource, _userInfo);
 	}
 
@@ -29,12 +29,12 @@ public final class LucentV6ReconnectCall extends LucentReconnectCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6ReconnectCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentDropResource.print(dropResource, "dropResource",
 				indent));
@@ -44,4 +44,3 @@ public final class LucentV6ReconnectCall extends LucentReconnectCall {
 		return lines;
 	}
 }
-

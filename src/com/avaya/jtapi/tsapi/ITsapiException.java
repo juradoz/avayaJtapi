@@ -14,4 +14,3 @@ public abstract interface ITsapiException {
 
 	public abstract int getErrorType();
 }
-

@@ -10,8 +10,10 @@ final class ConnectStringData {
 	public final Collection<InetSocketAddress> telephonyServers;
 	public final String url;
 
-	ConnectStringData(String serverId, String loginId, String password,
-			Collection<InetSocketAddress> telephonyServers, String url) {
+	ConnectStringData(final String serverId, final String loginId,
+			final String password,
+			final Collection<InetSocketAddress> telephonyServers,
+			final String url) {
 		this.serverId = serverId;
 		this.loginId = loginId;
 		this.password = password;
@@ -25,4 +27,3 @@ final class ConnectStringData {
 				+ ";servers=" + telephonyServers;
 	}
 }
-

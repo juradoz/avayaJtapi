@@ -18,4 +18,3 @@ public abstract interface CallControlAddressCapabilities extends
 
 	public abstract boolean canSetMessageWaiting();
 }
-

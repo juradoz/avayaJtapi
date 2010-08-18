@@ -9,20 +9,20 @@ public final class CSTAMakePredictiveCallConfEvent extends CSTAConfirmation {
 	CSTAConnectionID newCall;
 	public static final int PDU = 26;
 
-	public static CSTAMakePredictiveCallConfEvent decode(InputStream in) {
-		CSTAMakePredictiveCallConfEvent _this = new CSTAMakePredictiveCallConfEvent();
+	public static CSTAMakePredictiveCallConfEvent decode(final InputStream in) {
+		final CSTAMakePredictiveCallConfEvent _this = new CSTAMakePredictiveCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		newCall = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(newCall, memberStream);
 	}
 
@@ -37,11 +37,11 @@ public final class CSTAMakePredictiveCallConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAMakePredictiveCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
 
@@ -49,7 +49,7 @@ public final class CSTAMakePredictiveCallConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setNewCall(CSTAConnectionID newCall) {
+	public void setNewCall(final CSTAConnectionID newCall) {
 		this.newCall = newCall;
 	}
 }

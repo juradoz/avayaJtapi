@@ -10,4 +10,3 @@ public abstract interface PrivateDataEvent extends Event {
 
 	public abstract Object getPrivateData();
 }
-

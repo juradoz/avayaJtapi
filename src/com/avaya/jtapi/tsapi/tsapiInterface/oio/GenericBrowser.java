@@ -30,28 +30,25 @@ public class GenericBrowser {
 	private static Logger log = Logger.getLogger(GenericBrowser.class);
 
 	static URL getCodeBaseURL() {
-		SecurityManager sm = System.getSecurityManager();
-		if (sm == null) {
+		final SecurityManager sm = System.getSecurityManager();
+		if (sm == null)
 			return null;
-		}
 
-		Object context = sm.getSecurityContext();
-		if (context instanceof URL) {
+		final Object context = sm.getSecurityContext();
+		if (context instanceof URL)
 			return (URL) context;
-		}
 
 		return null;
 	}
 
-	private static void info(String msg) {
-		if (JtapiUtils.isLog4jConfigured()) {
-			log.info(msg);
-		} else {
+	private static void info(final String msg) {
+		if (JtapiUtils.isLog4jConfigured())
+			GenericBrowser.log.info(msg);
+		else
 			System.out.println(msg);
-		}
 	}
 
-	private String name;
+	private final String name;
 	private static int SSL_HANDSHAKE_TIMEOUT = 5;
 	public static final String SYSTEM_PROPERTIES_PREFIX = "com.avaya.jtapi.tsapi.";
 	public static final String TELEPHONY_SERVERS_SYSTEM_PROPERTY = "com.avaya.jtapi.tsapi.servers";
@@ -65,27 +62,27 @@ public class GenericBrowser {
 		name = "GENERIC";
 	}
 
-	GenericBrowser(String _name) {
+	GenericBrowser(final String _name) {
 		name = _name;
 	}
 
-	private boolean checkIfTsapiProFileChanged(String location) {
+	private boolean checkIfTsapiProFileChanged(final String location) {
 		if (location != null) {
-			File file = new File(location);
-			long timeWhenLastChecked = System.currentTimeMillis()
+			final File file = new File(location);
+			final long timeWhenLastChecked = System.currentTimeMillis()
 					- Tsapi.getRefreshIntervalForTsapiPro() * 1000;
-			if (file.lastModified() >= timeWhenLastChecked) {
+			if (file.lastModified() >= timeWhenLastChecked)
 				return true;
-			}
 		}
 		return false;
 	}
 
-	private void closeSocket(Socket socket) {
+	private void closeSocket(final Socket socket) {
 		try {
 			socket.close();
-		} catch (IOException ioe) {
-			log.error("Couldn't close socket; " + ioe.getMessage(), ioe);
+		} catch (final IOException ioe) {
+			GenericBrowser.log.error("Couldn't close socket; "
+					+ ioe.getMessage(), ioe);
 		}
 	}
 
@@ -105,24 +102,20 @@ public class GenericBrowser {
 				resource = "TSAPI.PRO";
 			}
 
-			if (in != null) {
+			if (in != null)
 				break;
-			}
 			in = searchClasspath(resource);
 
-			if (in != null) {
+			if (in != null)
 				break;
-			}
 			in = searchResources(resource);
 
-			if (in != null) {
+			if (in != null)
 				break;
-			}
 			in = searchCodeBaseURL(resource);
 
-			if (in != null) {
+			if (in != null)
 				break;
-			}
 			in = searchUserDir(resource);
 		}
 
@@ -131,57 +124,55 @@ public class GenericBrowser {
 
 	InputStream findProperties() {
 		try {
-			InputStream is = findFileSystemProperties();
-			if ((!startUp) && (!checkIfTsapiProFileChanged(tsapiProLocation))
-					&& (!systemPropertiesChanged())) {
+			final InputStream is = findFileSystemProperties();
+			if (!startUp && !checkIfTsapiProFileChanged(tsapiProLocation)
+					&& !systemPropertiesChanged())
 				return null;
-			}
-			Properties fsProps = new Properties();
+			final Properties fsProps = new Properties();
 			if (is != null) {
 				fsProps.load(is);
 				is.close();
 			}
 
-			Properties sysProps = findSystemProperties();
+			final Properties sysProps = findSystemProperties();
 			sysSnapshot = sysProps;
-			Properties merged = merge(fsProps, sysProps);
+			final Properties merged = merge(fsProps, sysProps);
 			return wrapInStream(merged);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TsapiPlatformException(4, 0, "can't find properties");
 		}
 	}
 
 	private Properties findSystemProperties() {
-		Properties jtapiProps = new Properties();
+		final Properties jtapiProps = new Properties();
 
-		for (Object o : System.getProperties().keySet()) {
-			String key = (String) o;
+		for (final Object o : System.getProperties().keySet()) {
+			final String key = (String) o;
 
-			if ((key.toLowerCase().startsWith("com.avaya.jtapi.tsapi."))
-					&& (!key.equalsIgnoreCase("com.avaya.jtapi.tsapi.servers"))) {
+			if (key.toLowerCase().startsWith("com.avaya.jtapi.tsapi.")
+					&& !key.equalsIgnoreCase("com.avaya.jtapi.tsapi.servers"))
 				jtapiProps.put(
 						key.substring("com.avaya.jtapi.tsapi.".length()),
 						System.getProperty(key));
-			}
 		}
 
 		return jtapiProps;
 	}
 
 	public String getCodeBaseServer() {
-		URL myURL = getCodeBaseURL();
+		URL myURL = GenericBrowser.getCodeBaseURL();
 
 		if (myURL != null) {
-			info("get codebase URL succeeded");
+			GenericBrowser.info("get codebase URL succeeded");
 			return myURL.getHost();
 		}
 
 		try {
 			myURL = super.getClass().getResource(super.getClass().getName());
-		} catch (NoSuchMethodError e) {
+		} catch (final NoSuchMethodError e) {
 		}
 		if (myURL != null) {
-			info("get URL from class succeeded");
+			GenericBrowser.info("get URL from class succeeded");
 			return myURL.getHost();
 		}
 
@@ -192,56 +183,51 @@ public class GenericBrowser {
 		return name;
 	}
 
-	private Properties merge(Properties fsProps, Properties sysProps) {
-		Properties defaults = new Properties();
+	private Properties merge(final Properties fsProps, final Properties sysProps) {
+		final Properties defaults = new Properties();
 		defaults.putAll(fsProps);
-		for (Map.Entry<Object, Object> entry : sysProps.entrySet()) {
-			if (!defaults.containsKey(entry.getKey())) {
+		for (final Map.Entry<Object, Object> entry : sysProps.entrySet())
+			if (!defaults.containsKey(entry.getKey()))
 				defaults.put(entry.getKey(), entry.getValue());
-			}
-		}
 		return defaults;
 	}
 
-	private InputStream searchClasspath(String resource) {
+	private InputStream searchClasspath(final String resource) {
 		InputStream in = null;
 		try {
 			in = ClassLoader.getSystemResourceAsStream("/" + resource);
 			if (in != null) {
 				tsapiProLocation = ClassLoader
 						.getSystemResource("/" + resource).getFile();
-				if (startUp) {
-					info("Found '/" + resource
+				if (startUp)
+					GenericBrowser.info("Found '/" + resource
 							+ "' as a system resource at location '"
 							+ tsapiProLocation + "'");
-				}
 				return in;
 			}
 
-		} catch (NoSuchMethodError e) {
+		} catch (final NoSuchMethodError e) {
 			File propfile = null;
 			try {
-				StringTokenizer classpath = new StringTokenizer(System
+				final StringTokenizer classpath = new StringTokenizer(System
 						.getProperty("java.class.path"), System
 						.getProperty("path.separator"));
 				do {
-					if (!classpath.hasMoreTokens()) {
+					if (!classpath.hasMoreTokens())
 						// break label176;
 						return in;
-					}
 					propfile = new File(classpath.nextToken(), resource);
 				} while (!propfile.canRead());
 
 				in = new FileInputStream(propfile);
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 			}
 
 			if (in != null) {
 				tsapiProLocation = "<unknown>";
-				if (propfile != null) {
+				if (propfile != null)
 					tsapiProLocation = propfile.getAbsolutePath();
-				}
-				info("Found '" + resource
+				GenericBrowser.info("Found '" + resource
 						+ "' by manual classpath search at location '"
 						+ tsapiProLocation + "'");
 				return in;
@@ -250,86 +236,82 @@ public class GenericBrowser {
 		return in;
 	}
 
-	private InputStream searchCodeBaseURL(String resource) {
+	private InputStream searchCodeBaseURL(final String resource) {
 		InputStream in = null;
-		URL myURL = getCodeBaseURL();
-		if (myURL != null) {
+		final URL myURL = GenericBrowser.getCodeBaseURL();
+		if (myURL != null)
 			try {
 				in = new URL(myURL, resource).openStream();
 				if (in != null) {
 					tsapiProLocation = myURL.toString();
-					if (startUp) {
-						info("Found '" + resource + "' at codeBaseURL '"
-								+ tsapiProLocation + "'");
-					}
+					if (startUp)
+						GenericBrowser
+								.info("Found '" + resource
+										+ "' at codeBaseURL '"
+										+ tsapiProLocation + "'");
 					return in;
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
-		}
 		return in;
 	}
 
-	private InputStream searchResources(String resource) {
+	private InputStream searchResources(final String resource) {
 		InputStream in = null;
 		try {
 			in = super.getClass().getResourceAsStream("/" + resource);
 			if (in != null) {
 				tsapiProLocation = "<unknown>";
-				if (super.getClass().getResource("/" + resource) != null) {
+				if (super.getClass().getResource("/" + resource) != null)
 					tsapiProLocation = super.getClass().getResource(
 							"/" + resource).getFile();
-				}
-				if (startUp) {
-					info("Found '" + resource + "' as a resource at location '"
+				if (startUp)
+					GenericBrowser.info("Found '" + resource
+							+ "' as a resource at location '"
 							+ tsapiProLocation + "'");
-				}
 				return in;
 			}
-		} catch (NoSuchMethodError e) {
-			File propfile = new File(resource);
+		} catch (final NoSuchMethodError e) {
+			final File propfile = new File(resource);
 			try {
-				if (propfile.canRead()) {
+				if (propfile.canRead())
 					in = new FileInputStream(propfile);
-				}
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 			}
 			if (in != null) {
 				tsapiProLocation = propfile.getAbsolutePath();
-				info("Found '" + resource + "' as a file at location '"
-						+ tsapiProLocation + "'");
+				GenericBrowser.info("Found '" + resource
+						+ "' as a file at location '" + tsapiProLocation + "'");
 				return in;
 			}
 		}
 		return in;
 	}
 
-	private InputStream searchUserDir(String resource) {
+	private InputStream searchUserDir(final String resource) {
 		InputStream in = null;
-		File f = new File(System.getProperty("user.dir")
+		final File f = new File(System.getProperty("user.dir")
 				+ System.getProperty("file.separator") + resource);
-		if ((f.exists()) && (f.canRead())) {
+		if (f.exists() && f.canRead())
 			try {
 				in = new BufferedInputStream(new FileInputStream(f));
-			} catch (FileNotFoundException e) {
-				log.error(e.getMessage(), e);
+			} catch (final FileNotFoundException e) {
+				GenericBrowser.log.error(e.getMessage(), e);
 			}
-		}
 		if (in != null) {
 			tsapiProLocation = f.getAbsolutePath();
-			if (startUp) {
-				info("Found '" + resource + "' at location '"
+			if (startUp)
+				GenericBrowser.info("Found '" + resource + "' at location '"
 						+ tsapiProLocation + "'");
-			}
 			return in;
 		}
 		return in;
 	}
 
-	private void setSslSocketProperties(SSLSocket sslSocket) {
+	private void setSslSocketProperties(final SSLSocket sslSocket) {
 		try {
 			sslSocket.setUseClientMode(true);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(
 					4,
 					0,
@@ -338,10 +320,10 @@ public class GenericBrowser {
 		}
 
 		try {
-			String[] protocols = { "TLSv1" };
+			final String[] protocols = { "TLSv1" };
 
 			sslSocket.setEnabledProtocols(protocols);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(
 					4,
 					0,
@@ -350,11 +332,11 @@ public class GenericBrowser {
 		}
 
 		try {
-			String[] cipherSuites = { "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+			final String[] cipherSuites = { "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
 					"TLS_RSA_WITH_AES_128_CBC_SHA" };
 
 			sslSocket.setEnabledCipherSuites(cipherSuites);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(
 					4,
 					0,
@@ -363,43 +345,40 @@ public class GenericBrowser {
 		}
 	}
 
-	public void setStartUp(boolean startUp) {
+	public void setStartUp(final boolean startUp) {
 		this.startUp = startUp;
 	}
 
 	private boolean systemPropertiesChanged() {
-		for (Map.Entry<Object, Object> entry : sysSnapshot.entrySet()) {
-			String lhs = System.getProperty((String) entry.getKey());
-			String rhs = (String) entry.getValue();
-			if (((lhs != null) && (rhs == null))
-					|| ((lhs == null) && (rhs != null))) {
+		for (final Map.Entry<Object, Object> entry : sysSnapshot.entrySet()) {
+			final String lhs = System.getProperty((String) entry.getKey());
+			final String rhs = (String) entry.getValue();
+			if (lhs != null && rhs == null || lhs == null && rhs != null)
 				return true;
-			}
-			if ((lhs != null) && (!lhs.equals(rhs))) {
+			if (lhs != null && !lhs.equals(rhs))
 				return true;
-			}
 		}
 		return false;
 	}
 
-	Socket trySocket(InetSocketAddress addr, SocketFactory sf)
+	Socket trySocket(final InetSocketAddress addr, final SocketFactory sf)
 			throws UnknownHostException, IOException {
-		Socket socket = sf.createSocket();
+		final Socket socket = sf.createSocket();
 
 		TsapiHandshakeCompletedListener tsapiHandshakeCompletedListener = null;
 
 		if (socket instanceof SSLSocket) {
-			SSLSocket sslSocket = (SSLSocket) socket;
+			final SSLSocket sslSocket = (SSLSocket) socket;
 
 			setSslSocketProperties(sslSocket);
 
-			if (TsapiSSLContext.getVerifyServerCertificate()) {
+			if (TsapiSSLContext.getVerifyServerCertificate())
 				try {
 					tsapiHandshakeCompletedListener = new TsapiHandshakeCompletedListener();
 
 					sslSocket
 							.addHandshakeCompletedListener(tsapiHandshakeCompletedListener);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throw new TsapiPlatformException(
 							4,
 							0,
@@ -407,40 +386,36 @@ public class GenericBrowser {
 									+ e);
 				}
 
-			}
-
 		}
 
 		int timeout = Tsapi.getMaxTcpSocketWait();
 
-		if ((timeout <= 0) || (timeout > 120)) {
+		if (timeout <= 0 || timeout > 120)
 			timeout = 20;
-		}
 
 		try {
 			socket.connect(addr, timeout * 1000);
-		} catch (SocketTimeoutException e) {
+		} catch (final SocketTimeoutException e) {
 			throw new TsapiPlatformException(4, 0,
 					"Couldn't connect to server " + addr
 							+ ". Socket.connect() timed out after " + timeout
 							+ " seconds.");
 		}
 
-		if ((socket instanceof SSLSocket)
-				&& (tsapiHandshakeCompletedListener != null)) {
+		if (socket instanceof SSLSocket
+				&& tsapiHandshakeCompletedListener != null)
 			trySslHandshake((SSLSocket) socket, tsapiHandshakeCompletedListener);
-		}
 
 		return socket;
 	}
 
-	private void trySslHandshake(SSLSocket sslSocket,
-			TsapiHandshakeCompletedListener listener) {
+	private void trySslHandshake(final SSLSocket sslSocket,
+			final TsapiHandshakeCompletedListener listener) {
 		synchronized (this) {
 			try {
 				sslSocket.startHandshake();
-				listener.wait(SSL_HANDSHAKE_TIMEOUT * 1000);
-			} catch (IOException ioe) {
+				listener.wait(GenericBrowser.SSL_HANDSHAKE_TIMEOUT * 1000);
+			} catch (final IOException ioe) {
 				closeSocket(sslSocket);
 
 				throw new TsapiPlatformException(
@@ -448,23 +423,24 @@ public class GenericBrowser {
 						0,
 						"The TLS connection was closed because a network-level error occured during the SSL handshake; "
 								+ ioe);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				closeSocket(sslSocket);
 
 				throw new TsapiPlatformException(
 						4,
 						0,
 						"The TLS connection was closed because the SSL handshake did not complete within "
-								+ SSL_HANDSHAKE_TIMEOUT + " seconds.");
+								+ GenericBrowser.SSL_HANDSHAKE_TIMEOUT
+								+ " seconds.");
 			}
 		}
 		try {
-			TLSServerCertificateValidator validator = new TLSServerCertificateValidator(
+			final TLSServerCertificateValidator validator = new TLSServerCertificateValidator(
 					sslSocket, listener.getSslSession(), TsapiSSLContext
 							.getTrustManagers());
 
 			validator.validateAll();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			closeSocket(sslSocket);
 
 			throw new TsapiPlatformException(4, 0,
@@ -473,13 +449,13 @@ public class GenericBrowser {
 		}
 	}
 
-	private InputStream wrapInStream(Properties props) throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
+	private InputStream wrapInStream(final Properties props) throws IOException {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		props.store(out, "");
 		out.flush();
-		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		final ByteArrayInputStream in = new ByteArrayInputStream(out
+				.toByteArray());
 		out.close();
 		return in;
 	}
 }
-

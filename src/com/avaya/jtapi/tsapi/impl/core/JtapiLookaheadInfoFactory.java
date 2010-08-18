@@ -6,42 +6,37 @@ import com.avaya.jtapi.tsapi.csta1.LucentLookaheadInfo;
 import com.avaya.jtapi.tsapi.csta1.LucentV5LookaheadInfo;
 
 class JtapiLookaheadInfoFactory {
-	static LookaheadInfo createLookaheadInfo(LucentLookaheadInfo csta_obj) {
-		if (csta_obj == null) {
+	static LookaheadInfo createLookaheadInfo(final LucentLookaheadInfo csta_obj) {
+		if (csta_obj == null)
 			return null;
-		}
-		if (csta_obj instanceof LucentV5LookaheadInfo) {
-			return promoteV5LookaheadInfo((LucentV5LookaheadInfo) csta_obj,
-					null);
-		}
+		if (csta_obj instanceof LucentV5LookaheadInfo)
+			return JtapiLookaheadInfoFactory.promoteV5LookaheadInfo(
+					(LucentV5LookaheadInfo) csta_obj, null);
 
-		return promoteLookaheadInfo(csta_obj, null);
+		return JtapiLookaheadInfoFactory.promoteLookaheadInfo(csta_obj, null);
 	}
 
-	static LookaheadInfo promoteLookaheadInfo(LucentLookaheadInfo csta_obj,
-			LookaheadInfo obj) {
-		if (csta_obj == null) {
+	static LookaheadInfo promoteLookaheadInfo(
+			final LucentLookaheadInfo csta_obj, final LookaheadInfo obj) {
+		if (csta_obj == null)
 			return null;
-		}
 
 		LookaheadInfo jtapi_obj = null;
 
-		short type = csta_obj.getType();
-		short priority = csta_obj.getPriority();
-		int hours = csta_obj.getHours();
-		int minutes = csta_obj.getMinutes();
-		int seconds = csta_obj.getSeconds();
-		String sourceVDN = csta_obj.getSourceVDN();
+		final short type = csta_obj.getType();
+		final short priority = csta_obj.getPriority();
+		final int hours = csta_obj.getHours();
+		final int minutes = csta_obj.getMinutes();
+		final int seconds = csta_obj.getSeconds();
+		final String sourceVDN = csta_obj.getSourceVDN();
 
-		if (type == -1) {
+		if (type == -1)
 			return null;
-		}
 
-		if (obj == null) {
+		if (obj == null)
 			jtapi_obj = new LookaheadInfo();
-		} else {
+		else
 			jtapi_obj = obj;
-		}
 
 		jtapi_obj.setType(type);
 		jtapi_obj.setPriority(priority);
@@ -53,18 +48,17 @@ class JtapiLookaheadInfoFactory {
 		return jtapi_obj;
 	}
 
-	static LookaheadInfo promoteV5LookaheadInfo(LucentV5LookaheadInfo csta_obj,
-			V5LookaheadInfo obj) {
-		if (csta_obj == null) {
+	static LookaheadInfo promoteV5LookaheadInfo(
+			final LucentV5LookaheadInfo csta_obj, final V5LookaheadInfo obj) {
+		if (csta_obj == null)
 			return null;
-		}
 		V5LookaheadInfo jtapi_obj;
-		if (obj == null) {
+		if (obj == null)
 			jtapi_obj = new V5LookaheadInfo();
-		} else {
+		else
 			jtapi_obj = obj;
-		}
 
-		return promoteLookaheadInfo(csta_obj, jtapi_obj);
+		return JtapiLookaheadInfoFactory.promoteLookaheadInfo(csta_obj,
+				jtapi_obj);
 	}
 }

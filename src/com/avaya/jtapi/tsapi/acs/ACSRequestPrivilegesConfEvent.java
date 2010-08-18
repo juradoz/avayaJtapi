@@ -11,8 +11,8 @@ public final class ACSRequestPrivilegesConfEvent extends ACSConfirmation {
 	String nonce;
 	public static final int PDU = 18;
 
-	public static ACSRequestPrivilegesConfEvent decode(InputStream in) {
-		ACSRequestPrivilegesConfEvent _this = new ACSRequestPrivilegesConfEvent();
+	public static ACSRequestPrivilegesConfEvent decode(final InputStream in) {
+		final ACSRequestPrivilegesConfEvent _this = new ACSRequestPrivilegesConfEvent();
 
 		_this.doDecode(in);
 
@@ -22,17 +22,17 @@ public final class ACSRequestPrivilegesConfEvent extends ACSConfirmation {
 	public ACSRequestPrivilegesConfEvent() {
 	}
 
-	public ACSRequestPrivilegesConfEvent(String nonce) {
+	public ACSRequestPrivilegesConfEvent(final String nonce) {
 		this.nonce = nonce;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		nonce = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(nonce, memberStream);
 	}
 
@@ -47,11 +47,11 @@ public final class ACSRequestPrivilegesConfEvent extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSRequestPrivilegesConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(nonce, "nonce", indent));
 
@@ -59,4 +59,3 @@ public final class ACSRequestPrivilegesConfEvent extends ACSConfirmation {
 		return lines;
 	}
 }
-

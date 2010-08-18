@@ -410,10 +410,10 @@ public final class TSCapabilities {
 	}
 
 	public boolean isLucentV8() {
-		return (isLucentVar) && (lucentPDV >= 8);
+		return isLucentVar && lucentPDV >= 8;
 	}
 
-	void setAddParty(int _addParty) {
+	void setAddParty(final int _addParty) {
 		addParty = _addParty;
 	}
 
@@ -500,325 +500,324 @@ public final class TSCapabilities {
 		sysStatEvent = 1;
 	}
 
-	void setAlternateCall(int _alternateCall) {
+	void setAlternateCall(final int _alternateCall) {
 		alternateCall = _alternateCall;
 	}
 
-	void setAnswerCall(int _answerCall) {
+	void setAnswerCall(final int _answerCall) {
 		answerCall = _answerCall;
 	}
 
-	void setBackInServiceEvent(int _backInServiceEvent) {
+	void setBackInServiceEvent(final int _backInServiceEvent) {
 		backInServiceEvent = _backInServiceEvent;
 	}
 
-	void setCallClearedEvent(int _callClearedEvent) {
+	void setCallClearedEvent(final int _callClearedEvent) {
 		callClearedEvent = _callClearedEvent;
 	}
 
-	void setCallCompletion(int _callCompletion) {
+	void setCallCompletion(final int _callCompletion) {
 		callCompletion = _callCompletion;
 	}
 
-	void setCallInformationEvent(int _callInformationEvent) {
+	void setCallInformationEvent(final int _callInformationEvent) {
 		callInformationEvent = _callInformationEvent;
 	}
 
-	void setChangeMonitorFilter(int _changeMonitorFilter) {
+	void setChangeMonitorFilter(final int _changeMonitorFilter) {
 		changeMonitorFilter = _changeMonitorFilter;
 	}
 
-	void setChangeSysStatFilter(int _changeSysStatFilter) {
+	void setChangeSysStatFilter(final int _changeSysStatFilter) {
 		changeSysStatFilter = _changeSysStatFilter;
 	}
 
-	void setClearCall(int _clearCall) {
+	void setClearCall(final int _clearCall) {
 		clearCall = _clearCall;
 	}
 
-	void setClearConnection(int _clearConnection) {
+	void setClearConnection(final int _clearConnection) {
 		clearConnection = _clearConnection;
 	}
 
-	void setConferenceCall(int _conferenceCall) {
+	void setConferenceCall(final int _conferenceCall) {
 		conferenceCall = _conferenceCall;
 	}
 
-	void setConferencedEvent(int _conferencedEvent) {
+	void setConferencedEvent(final int _conferencedEvent) {
 		conferencedEvent = _conferencedEvent;
 	}
 
-	void setConnectionClearedEvent(int _connectionClearedEvent) {
+	void setConnectionClearedEvent(final int _connectionClearedEvent) {
 		connectionClearedEvent = _connectionClearedEvent;
 	}
 
-	void setConsultationCall(int _consultationCall) {
+	void setConsultationCall(final int _consultationCall) {
 		consultationCall = _consultationCall;
 	}
 
-	void setDeflectCall(int _deflectCall) {
+	void setDeflectCall(final int _deflectCall) {
 		deflectCall = _deflectCall;
 	}
 
-	void setDeliveredEvent(int _deliveredEvent) {
+	void setDeliveredEvent(final int _deliveredEvent) {
 		deliveredEvent = _deliveredEvent;
 	}
 
-	void setDivertedEvent(int _divertedEvent) {
+	void setDivertedEvent(final int _divertedEvent) {
 		divertedEvent = _divertedEvent;
 	}
 
-	void setDoNotDisturbEvent(int _doNotDisturbEvent) {
+	void setDoNotDisturbEvent(final int _doNotDisturbEvent) {
 		doNotDisturbEvent = _doNotDisturbEvent;
 	}
 
-	void setEscapeService(int _escapeService) {
+	void setEscapeService(final int _escapeService) {
 		escapeService = _escapeService;
 	}
 
-	void setEscapeServiceConf(int _escapeServiceConf) {
+	void setEscapeServiceConf(final int _escapeServiceConf) {
 		escapeServiceConf = _escapeServiceConf;
 	}
 
-	void setEscapeServiceEvent(int _escapeServiceEvent) {
+	void setEscapeServiceEvent(final int _escapeServiceEvent) {
 		escapeServiceEvent = _escapeServiceEvent;
 	}
 
-	void setEstablishedEvent(int _establishedEvent) {
+	void setEstablishedEvent(final int _establishedEvent) {
 		establishedEvent = _establishedEvent;
 	}
 
-	void setEventReport(int _eventReport) {
+	void setEventReport(final int _eventReport) {
 		eventReport = _eventReport;
 	}
 
-	void setFailedEvent(int _failedEvent) {
+	void setFailedEvent(final int _failedEvent) {
 		failedEvent = _failedEvent;
 	}
 
-	void setForwardingEvent(int _forwardingEvent) {
+	void setForwardingEvent(final int _forwardingEvent) {
 		forwardingEvent = _forwardingEvent;
 	}
 
-	void setGroupPickupCall(int _groupPickupCall) {
+	void setGroupPickupCall(final int _groupPickupCall) {
 		groupPickupCall = _groupPickupCall;
 	}
 
-	void setHeldEvent(int _heldEvent) {
+	void setHeldEvent(final int _heldEvent) {
 		heldEvent = _heldEvent;
 	}
 
-	void setHoldCall(int _holdCall) {
+	void setHoldCall(final int _holdCall) {
 		holdCall = _holdCall;
 	}
 
-	void setLoggedOffEvent(int _loggedOffEvent) {
+	void setLoggedOffEvent(final int _loggedOffEvent) {
 		loggedOffEvent = _loggedOffEvent;
 	}
 
-	void setLoggedOnEvent(int _loggedOnEvent) {
+	void setLoggedOnEvent(final int _loggedOnEvent) {
 		loggedOnEvent = _loggedOnEvent;
 	}
 
-	void setLucent(int pdv) {
+	void setLucent(final int pdv) {
 		isLucentVar = true;
 		lucentPDV = pdv;
 	}
 
-	void setMakeCall(int _makeCall) {
+	void setMakeCall(final int _makeCall) {
 		makeCall = _makeCall;
 	}
 
-	void setMakePredictiveCall(int _makePredictiveCall) {
+	void setMakePredictiveCall(final int _makePredictiveCall) {
 		makePredictiveCall = _makePredictiveCall;
 	}
 
-	void setMessageWaitingEvent(int _messageWaitingEvent) {
+	void setMessageWaitingEvent(final int _messageWaitingEvent) {
 		messageWaitingEvent = _messageWaitingEvent;
 	}
 
-	void setMonitorCall(int _monitorCall) {
+	void setMonitorCall(final int _monitorCall) {
 		monitorCall = _monitorCall;
 	}
 
-	void setMonitorCallsViaDevice(int _monitorCallsViaDevice) {
+	void setMonitorCallsViaDevice(final int _monitorCallsViaDevice) {
 		monitorCallsViaDevice = _monitorCallsViaDevice;
 	}
 
-	void setMonitorDevice(int _monitorDevice) {
+	void setMonitorDevice(final int _monitorDevice) {
 		monitorDevice = _monitorDevice;
 	}
 
-	void setMonitorEnded(int _monitorEnded) {
+	void setMonitorEnded(final int _monitorEnded) {
 		monitorEnded = _monitorEnded;
 	}
 
-	void setMonitorStop(int _monitorStop) {
+	void setMonitorStop(final int _monitorStop) {
 		monitorStop = _monitorStop;
 	}
 
-	void setNetworkReachedEvent(int _networkReachedEvent) {
+	void setNetworkReachedEvent(final int _networkReachedEvent) {
 		networkReachedEvent = _networkReachedEvent;
 	}
 
-	void setNotReadyEvent(int _notReadyEvent) {
+	void setNotReadyEvent(final int _notReadyEvent) {
 		notReadyEvent = _notReadyEvent;
 	}
 
-	void setOriginatedEvent(int _originatedEvent) {
+	void setOriginatedEvent(final int _originatedEvent) {
 		originatedEvent = _originatedEvent;
 	}
 
-	void setOutOfServiceEvent(int _outOfServiceEvent) {
+	void setOutOfServiceEvent(final int _outOfServiceEvent) {
 		outOfServiceEvent = _outOfServiceEvent;
 	}
 
-	void setPickupCall(int _pickupCall) {
+	void setPickupCall(final int _pickupCall) {
 		pickupCall = _pickupCall;
 	}
 
-	void setPrivateEvent(int _privateEvent) {
+	void setPrivateEvent(final int _privateEvent) {
 		privateEvent = _privateEvent;
 	}
 
-	void setPrivateStatusEvent(int _privateStatusEvent) {
+	void setPrivateStatusEvent(final int _privateStatusEvent) {
 		privateStatusEvent = _privateStatusEvent;
 	}
 
-	void setQueryAgentState(int _queryAgentState) {
+	void setQueryAgentState(final int _queryAgentState) {
 		queryAgentState = _queryAgentState;
 	}
 
-	void setQueryDeviceInfo(int _queryDeviceInfo) {
+	void setQueryDeviceInfo(final int _queryDeviceInfo) {
 		queryDeviceInfo = _queryDeviceInfo;
 	}
 
-	void setQueryDnd(int _queryDnd) {
+	void setQueryDnd(final int _queryDnd) {
 		queryDnd = _queryDnd;
 	}
 
-	void setQueryFwd(int _queryFwd) {
+	void setQueryFwd(final int _queryFwd) {
 		queryFwd = _queryFwd;
 	}
 
-	void setQueryLastNumber(int _queryLastNumber) {
+	void setQueryLastNumber(final int _queryLastNumber) {
 		queryLastNumber = _queryLastNumber;
 	}
 
-	void setQueryMwi(int _queryMwi) {
+	void setQueryMwi(final int _queryMwi) {
 		queryMwi = _queryMwi;
 	}
 
-	void setQueuedEvent(int _queuedEvent) {
+	void setQueuedEvent(final int _queuedEvent) {
 		queuedEvent = _queuedEvent;
 	}
 
-	void setReadyEvent(int _readyEvent) {
+	void setReadyEvent(final int _readyEvent) {
 		readyEvent = _readyEvent;
 	}
 
-	void setReconnectCall(int _reconnectCall) {
+	void setReconnectCall(final int _reconnectCall) {
 		reconnectCall = _reconnectCall;
 	}
 
-	void setReRoute(int _reRoute) {
+	void setReRoute(final int _reRoute) {
 		reRoute = _reRoute;
 	}
 
-	void setRetrieveCall(int _retrieveCall) {
+	void setRetrieveCall(final int _retrieveCall) {
 		retrieveCall = _retrieveCall;
 	}
 
-	void setRetrievedEvent(int _retrievedEvent) {
+	void setRetrievedEvent(final int _retrievedEvent) {
 		retrievedEvent = _retrievedEvent;
 	}
 
-	void setRouteEndEvent(int _routeEndEvent) {
+	void setRouteEndEvent(final int _routeEndEvent) {
 		routeEndEvent = _routeEndEvent;
 	}
 
-	void setRouteRequestEvent(int _routeRequestEvent) {
+	void setRouteRequestEvent(final int _routeRequestEvent) {
 		routeRequestEvent = _routeRequestEvent;
 	}
 
-	void setRouteSelect(int _routeSelect) {
+	void setRouteSelect(final int _routeSelect) {
 		routeSelect = _routeSelect;
 	}
 
-	void setRouteUsedEvent(int _routeUsedEvent) {
+	void setRouteUsedEvent(final int _routeUsedEvent) {
 		routeUsedEvent = _routeUsedEvent;
 	}
 
-	void setSendPrivateEvent(int _sendPrivateEvent) {
+	void setSendPrivateEvent(final int _sendPrivateEvent) {
 		sendPrivateEvent = _sendPrivateEvent;
 	}
 
-	void setServiceInitiatedEvent(int _serviceInitiatedEvent) {
+	void setServiceInitiatedEvent(final int _serviceInitiatedEvent) {
 		serviceInitiatedEvent = _serviceInitiatedEvent;
 	}
 
-	void setSetAgentState(int _setAgentState) {
+	void setSetAgentState(final int _setAgentState) {
 		setAgentState = _setAgentState;
 	}
 
-	void setSetDnd(int _setDnd) {
+	void setSetDnd(final int _setDnd) {
 		setDnd = _setDnd;
 	}
 
-	void setSetFwd(int _setFwd) {
+	void setSetFwd(final int _setFwd) {
 		setFwd = _setFwd;
 	}
 
-	void setSetMwi(int _setMwi) {
+	void setSetMwi(final int _setMwi) {
 		setMwi = _setMwi;
 	}
 
-	void setSnapshotCallReq(int _snapshotCallReq) {
+	void setSnapshotCallReq(final int _snapshotCallReq) {
 		snapshotCallReq = _snapshotCallReq;
 	}
 
-	void setSnapshotDeviceReq(int _snapshotDeviceReq) {
+	void setSnapshotDeviceReq(final int _snapshotDeviceReq) {
 		snapshotDeviceReq = _snapshotDeviceReq;
 	}
 
-	void setSysStatEvent(int _sysStatEvent) {
+	void setSysStatEvent(final int _sysStatEvent) {
 		sysStatEvent = _sysStatEvent;
 	}
 
-	void setSysStatReq(int _sysStatReq) {
+	void setSysStatReq(final int _sysStatReq) {
 		sysStatReq = _sysStatReq;
 	}
 
-	void setSysStatReqConf(int _sysStatReqConf) {
+	void setSysStatReqConf(final int _sysStatReqConf) {
 		sysStatReqConf = _sysStatReqConf;
 	}
 
-	void setSysStatReqEvent(int _sysStatReqEvent) {
+	void setSysStatReqEvent(final int _sysStatReqEvent) {
 		sysStatReqEvent = _sysStatReqEvent;
 	}
 
-	void setSysStatStart(int _sysStatStart) {
+	void setSysStatStart(final int _sysStatStart) {
 		sysStatStart = _sysStatStart;
 	}
 
-	void setSysStatStop(int _sysStatStop) {
+	void setSysStatStop(final int _sysStatStop) {
 		sysStatStop = _sysStatStop;
 	}
 
-	void setTransferCall(int _transferCall) {
+	void setTransferCall(final int _transferCall) {
 		transferCall = _transferCall;
 	}
 
-	void setTransferredEvent(int _transferredEvent) {
+	void setTransferredEvent(final int _transferredEvent) {
 		transferredEvent = _transferredEvent;
 	}
 
-	void setWorkNotReadyEvent(int _workNotReadyEvent) {
+	void setWorkNotReadyEvent(final int _workNotReadyEvent) {
 		workNotReadyEvent = _workNotReadyEvent;
 	}
 
-	void setWorkReadyEvent(int _workReadyEvent) {
+	void setWorkReadyEvent(final int _workReadyEvent) {
 		workReadyEvent = _workReadyEvent;
 	}
 }
-

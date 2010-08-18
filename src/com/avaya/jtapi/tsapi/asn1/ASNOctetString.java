@@ -7,56 +7,51 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class ASNOctetString extends ASN1 {
-	public static final byte[] decode(InputStream in) {
+	public static final byte[] decode(final InputStream in) {
 		byte[] buf;
 		try {
-			if (in.read() != 4) {
+			if (in.read() != 4)
 				throw new ASN1Exception("Decoder: expected OCTETSTRING tag");
-			}
-			int length = decodeLength(in);
+			final int length = ASN1.decodeLength(in);
 
-			if (length == 0) {
+			if (length == 0)
 				return null;
-			}
 
 			buf = new byte[length];
 			in.read(buf, 0, length);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new ASN1Exception("Decoder: OCTETSTRING got unexpected EOF");
 		}
 		return buf;
 	}
 
-	public static final void encode(byte[] str, OutputStream out) {
+	public static final void encode(final byte[] str, final OutputStream out) {
 		try {
 			out.write(4);
-			if (str == null) {
-				encodeLength(out, 0);
-			} else {
-				encodeLength(out, str.length);
+			if (str == null)
+				ASN1.encodeLength(out, 0);
+			else {
+				ASN1.encodeLength(out, str.length);
 				out.write(str);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new ASN1Exception(
 					"Encoder: OCTETSTRING got unexpected IO error");
 		}
 	}
 
-	public static final Collection<String> print(byte[] str, String name,
-			String indent) {
-		Collection<String> lines = new ArrayList<String>();
-		StringBuffer buffer = new StringBuffer();
+	public static final Collection<String> print(final byte[] str,
+			final String name, final String indent) {
+		final Collection<String> lines = new ArrayList<String>();
+		final StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
-		if (name != null) {
+		if (name != null)
 			buffer.append(name + " ");
-		}
-		if (str == null) {
+		if (str == null)
 			buffer.append("<null>");
-		} else {
-			for (int i = 0; i < str.length; ++i) {
+		else
+			for (int i = 0; i < str.length; ++i)
 				buffer.append(Integer.toHexString(str[i] & 0xFF) + " ");
-			}
-		}
 		lines.add(buffer.toString());
 		return lines;
 	}

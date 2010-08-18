@@ -21,4 +21,3 @@ public abstract interface RouteEvent extends RouteSessionEvent {
 
 	public abstract String getSetupInformation();
 }
-

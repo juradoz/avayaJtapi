@@ -12,15 +12,15 @@ public final class CSTABackInServiceEvent extends CSTAUnsolicited {
 	short cause;
 	static final int PDU = 96;
 
-	public static CSTABackInServiceEvent decode(InputStream in) {
-		CSTABackInServiceEvent _this = new CSTABackInServiceEvent();
+	public static CSTABackInServiceEvent decode(final InputStream in) {
+		final CSTABackInServiceEvent _this = new CSTABackInServiceEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 		cause = ASNEnumerated.decode(memberStream);
 	}
@@ -40,11 +40,11 @@ public final class CSTABackInServiceEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTABackInServiceEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
@@ -53,4 +53,3 @@ public final class CSTABackInServiceEvent extends CSTAUnsolicited {
 		return lines;
 	}
 }
-

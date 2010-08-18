@@ -6,4 +6,3 @@ public abstract interface AgentTerminalCapabilities extends
 		TerminalCapabilities {
 	public abstract boolean canHandleAgents();
 }
-

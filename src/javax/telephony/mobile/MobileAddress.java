@@ -11,4 +11,3 @@ public abstract interface MobileAddress extends Address {
 	public abstract void setCallWaiting(boolean paramBoolean)
 			throws MethodNotSupportedException;
 }
-

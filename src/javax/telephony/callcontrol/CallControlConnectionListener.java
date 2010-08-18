@@ -37,4 +37,3 @@ public abstract interface CallControlConnectionListener extends
 	public abstract void connectionUnknown(
 			CallControlConnectionEvent paramCallControlConnectionEvent);
 }
-

@@ -23,4 +23,3 @@ public abstract interface PhoneRinger extends Component {
 	public abstract void setRingerVolume(int paramInt)
 			throws InvalidArgumentException;
 }
-

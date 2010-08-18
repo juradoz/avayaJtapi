@@ -9,7 +9,8 @@ public class TsapiConnQueuedEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnQueuedEv, ITsapiCallInfo {
 	private int numberQueued = 0;
 
-	public TsapiConnQueuedEvent(ConnEventParams params, int numberQueued) {
+	public TsapiConnQueuedEvent(final ConnEventParams params,
+			final int numberQueued) {
 		super(params);
 		this.numberQueued = numberQueued;
 	}
@@ -22,4 +23,3 @@ public class TsapiConnQueuedEvent extends TsapiCallCtlConnEvent implements
 		return numberQueued;
 	}
 }
-

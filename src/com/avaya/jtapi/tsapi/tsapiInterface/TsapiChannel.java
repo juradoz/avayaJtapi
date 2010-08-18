@@ -15,4 +15,3 @@ public abstract interface TsapiChannel {
 	public abstract void write(ByteArrayOutputStream paramByteArrayOutputStream)
 			throws IOException;
 }
-

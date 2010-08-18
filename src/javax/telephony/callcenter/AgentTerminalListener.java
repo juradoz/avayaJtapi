@@ -27,4 +27,3 @@ public abstract interface AgentTerminalListener extends TerminalListener {
 	public abstract void agentTerminalWorkReady(
 			AgentTerminalEvent paramAgentTerminalEvent);
 }
-

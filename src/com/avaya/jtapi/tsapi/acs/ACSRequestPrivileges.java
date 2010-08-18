@@ -10,20 +10,20 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class ACSRequestPrivileges extends ACSRequest {
 	public static final int PDU = 17;
 
-	public static ACSRequestPrivileges decode(InputStream in) {
-		ACSRequestPrivileges _this = new ACSRequestPrivileges();
+	public static ACSRequestPrivileges decode(final InputStream in) {
+		final ACSRequestPrivileges _this = new ACSRequestPrivileges();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNNull.encode(memberStream);
 	}
 
@@ -34,11 +34,10 @@ public final class ACSRequestPrivileges extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSRequestPrivileges ::=");
 		lines.add("{");
 		lines.add("}");
 		return lines;
 	}
 }
-

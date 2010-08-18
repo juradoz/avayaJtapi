@@ -7,11 +7,11 @@ class TsapiHeartbeatStatus {
 	private static final short HEARTBEAT_INTERVAL_DEFAULT = 20;
 	private boolean enabled;
 	private short interval;
-	private TsapiHeartbeatTimer timer;
+	private final TsapiHeartbeatTimer timer;
 
 	TsapiHeartbeatStatus() {
 		enabled = false;
-		interval = HEARTBEAT_INTERVAL_DEFAULT;
+		interval = TsapiHeartbeatStatus.HEARTBEAT_INTERVAL_DEFAULT;
 		timer = new TsapiHeartbeatTimer(getTimeout());
 	}
 
@@ -21,11 +21,11 @@ class TsapiHeartbeatStatus {
 	}
 
 	synchronized void enableHeartbeat() {
-		if (enabled) {
+		if (enabled)
 			return;
-		}
-		log.info("Enabling the TSAPI heartbeat with a heartbeat interval of "
-				+ interval + " seconds.");
+		TsapiHeartbeatStatus.log
+				.info("Enabling the TSAPI heartbeat with a heartbeat interval of "
+						+ interval + " seconds.");
 
 		timer.reset(getTimeout());
 		enabled = true;
@@ -44,29 +44,25 @@ class TsapiHeartbeatStatus {
 	}
 
 	synchronized void receivedEvent() {
-		if (!enabled) {
+		if (!enabled)
 			return;
-		}
 		timer.reset();
 	}
 
-	synchronized void setHeartbeatInterval(short heartbeatInterval)
+	synchronized void setHeartbeatInterval(final short heartbeatInterval)
 			throws IllegalArgumentException {
-		if (heartbeatInterval < 0) {
+		if (heartbeatInterval < 0)
 			throw new IllegalArgumentException(
 					"Heartbeat interval must be non-negative.");
-		}
 
 		interval = heartbeatInterval;
-		if (!enabled) {
+		if (!enabled)
 			return;
-		}
 		timer.reset(getTimeout());
 	}
 
 	synchronized void setHeartbeatTimeoutListener(
-			ITsapiHeartbeatTimeoutListener listener) {
+			final ITsapiHeartbeatTimeoutListener listener) {
 		timer.setHeartbeatTimeoutListener(listener);
 	}
 }
-

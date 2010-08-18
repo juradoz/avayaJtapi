@@ -46,12 +46,13 @@ public final class TSConnection {
 
 	TSTrunk trunk = null;
 
-	private TSCallObjectAge my_age = new TSCallObjectAge();
+	private final TSCallObjectAge my_age = new TSCallObjectAge();
 
 	private boolean doNotExpectConnectionClearedEvent = false;
 
-	TSConnection(TSProviderImpl _provider, CSTAConnectionID _connID,
-			TSDevice _device, boolean _wantTermConn) {
+	TSConnection(final TSProviderImpl _provider,
+			final CSTAConnectionID _connID, final TSDevice _device,
+			final boolean _wantTermConn) {
 		constructed = false;
 		provider = _provider;
 		connID = _connID;
@@ -62,13 +63,11 @@ public final class TSConnection {
 
 		isTermConn = _wantTermConn;
 
-		if (isTermConn) {
-			if (device != null) {
+		if (isTermConn)
+			if (device != null)
 				isTermConn = device.isTerminal();
-			} else {
+			else
 				isTermConn = false;
-			}
-		}
 
 		if (connID != null) {
 			call = provider.createCall(connID.getCallID());
@@ -78,43 +77,41 @@ public final class TSConnection {
 			}
 		}
 
-		StringBuffer connForProviderString = new StringBuffer();
+		final StringBuffer connForProviderString = new StringBuffer();
 
 		connForProviderString.append(this).append(" for ").append(provider);
 
 		if (provider.isLucent()) {
-			if (isTermConn) {
-				log.info("Constructing Lucent termConn "
+			if (isTermConn)
+				TSConnection.log.info("Constructing Lucent termConn "
 						+ connForProviderString.toString());
-			} else {
-				log.info("Constructing Lucent conn "
+			else
+				TSConnection.log.info("Constructing Lucent conn "
 						+ connForProviderString.toString());
-			}
 
-		} else {
-			log.info("Constructing conn " + connForProviderString.toString());
-		}
+		} else
+			TSConnection.log.info("Constructing conn "
+					+ connForProviderString.toString());
 	}
 
-	void addACDConns(TSConnection acdConn) {
+	void addACDConns(final TSConnection acdConn) {
 		synchronized (acdConns) {
-			if (!acdConns.contains(acdConn)) {
+			if (!acdConns.contains(acdConn))
 				acdConns.addElement(acdConn);
-			}
 		}
 	}
 
-	private void addMyCustomStringCallID(StringBuffer text) {
-		if (connID == null) {
-			text.append((call == null) ? "-" : Integer.toString(call
+	private void addMyCustomStringCallID(final StringBuffer text) {
+		if (connID == null)
+			text
+					.append(call == null ? "-" : Integer.toString(call
+							.getCallID()));
+		else
+			text.append(connID.getCallID() == 0 ? "-" : Integer.toString(connID
 					.getCallID()));
-		} else {
-			text.append((connID.getCallID() == 0) ? "-" : Integer
-					.toString(connID.getCallID()));
-		}
 	}
 
-	private void addMyCustomStringConnectionID(StringBuffer text) {
+	private void addMyCustomStringConnectionID(final StringBuffer text) {
 		text.append("(");
 		addMyCustomStringCallID(text);
 		text.append(",");
@@ -122,16 +119,16 @@ public final class TSConnection {
 		text.append(")");
 	}
 
-	private void addMyCustomStringDeviceID(StringBuffer text) {
-		if (connID == null) {
-			text.append((device == null) ? "-" : device.getName());
-		} else {
-			text.append((connID.getDeviceID() == null) ? "-" : connID
+	private void addMyCustomStringDeviceID(final StringBuffer text) {
+		if (connID == null)
+			text.append(device == null ? "-" : device.getName());
+		else
+			text.append(connID.getDeviceID() == null ? "-" : connID
 					.getDeviceID());
-		}
 	}
 
-	void addTerminalConnection(TSConnection termConn, Vector<TSEvent> eventList) {
+	void addTerminalConnection(final TSConnection termConn,
+			final Vector<TSEvent> eventList) {
 		if (termConns == null) {
 			termConns = new Vector<TSConnection>();
 			termConns.addElement(termConn);
@@ -142,131 +139,120 @@ public final class TSConnection {
 				call.addConnection(this, eventList);
 			}
 			connID = null;
-		} else {
+		} else
 			synchronized (termConns) {
-				if (!termConns.contains(termConn)) {
+				if (!termConns.contains(termConn))
 					termConns.addElement(termConn);
-				}
 			}
-		}
 
 		termConn.connection = this;
 	}
 
-	public void answer(CSTAPrivate reqTermConnPriv)
+	public void answer(final CSTAPrivate reqTermConnPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getAnswerCall() == 0) {
+		if (provider.getCapabilities().getAnswerCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getTSTermConnState();
-			if ((state != 65) && (state != 69)) {
+			final int state = getTSTermConnState();
+			if (state != 65 && state != 69)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 5, state,
 						"terminal connection not ringing");
-			}
 
 		}
 
-		ConfHandler handler = new TalkingConfHandler(this, 4);
+		final ConfHandler handler = new TalkingConfHandler(this, 4);
 		try {
 			provider.tsapi.answerCall(connID, reqTermConnPriv, handler);
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
-			if (e.getErrorType() == 2) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2)
 				switch (e.getErrorCode()) {
 				case 13:
 				case 28:
-					log.info("Conn " + this + " answer UniversalFailure "
-							+ e.getErrorCode() + " requires snapshot of "
-							+ call + " for " + provider);
+					TSConnection.log.info("Conn " + this
+							+ " answer UniversalFailure " + e.getErrorCode()
+							+ " requires snapshot of " + call + " for "
+							+ provider);
 					call.updateSuspiciousObject();
 				}
 
-			}
-
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"answerCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "answerCall failure");
 		}
 	}
 
 	void delete() {
-		log.info("Connection object= " + this + " being deleted" + " for "
-				+ provider);
+		TSConnection.log.info("Connection object= " + this + " being deleted"
+				+ " for " + provider);
 
 		if (connID != null) {
 			provider.deleteConnectionFromHash(connID);
 			provider.addConnectionToSaveHash(this);
 		}
-		if (staleTermConns == null) {
+		if (staleTermConns == null)
 			return;
-		}
 		synchronized (staleTermConns) {
-			for (int i = 0; i < staleTermConns.size(); ++i) {
+			for (int i = 0; i < staleTermConns.size(); ++i)
 				((TSConnection) staleTermConns.elementAt(i)).delete();
-			}
 		}
 	}
 
-	public void disconnect(CSTAPrivate reqConnPriv)
+	public void disconnect(final CSTAPrivate reqConnPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getClearConnection() == 0) {
+		if (provider.getCapabilities().getClearConnection() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getTSConnState();
-			if ((state != 49) && (state != 50) && (state != 51)
-					&& (state != 53) && (state != 54)) {
+			final int state = getTSConnState();
+			if (state != 49 && state != 50 && state != 51 && state != 53
+					&& state != 54)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, true), 2, state,
 						"connection not in acceptable state");
-			}
 
 		}
 
-		DisconnectedConfHandler handler = new DisconnectedConfHandler(this, 10);
+		final DisconnectedConfHandler handler = new DisconnectedConfHandler(
+				this, 10);
 		try {
-			if ((provider.isLucent()) && (termConns != null)) {
-				Vector<TSConnection> tcArray = new Vector<TSConnection>(
+			if (provider.isLucent() && termConns != null) {
+				final Vector<TSConnection> tcArray = new Vector<TSConnection>(
 						termConns);
 
 				handler.handleIt = false;
 				for (int i = 0; i < tcArray.size(); ++i) {
-					TSConnection tc = (TSConnection) tcArray.elementAt(i);
-					if (i == tcArray.size() - 1) {
+					final TSConnection tc = (TSConnection) tcArray.elementAt(i);
+					if (i == tcArray.size() - 1)
 						handler.handleIt = true;
-					}
 					provider.tsapi.clearConnection(tc.connID, reqConnPriv,
 							handler);
 				}
-			} else {
+			} else
 				provider.tsapi.clearConnection(connID, reqConnPriv, handler);
-			}
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
-			if (e.getErrorType() == 2) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2)
 				switch (e.getErrorCode()) {
 				case 24:
 				case 27:
-					log.info("Conn " + this + ": clearConnection "
+					TSConnection.log.info("Conn " + this + ": clearConnection "
 							+ "Universal Failure with error "
 							+ e.getErrorCode() + " requires snapshot of "
 							+ call + " for " + provider);
@@ -274,72 +260,70 @@ public final class TSConnection {
 					call.updateSuspiciousObject();
 				}
 
-			}
-
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"clearConnection failure");
-			}
 			throw new TsapiPlatformException(4, 0, "clearConnection failure");
 		}
 	}
 
-	void dump(String indent) {
-		log.trace(indent + "***** CONNECTION DUMP *****");
-		log.trace(indent + "TSConnection: " + this);
-		log.trace(indent + "TSConnection ID: " + connID);
-		log
-				.trace(indent + "TSConnection is terminal connection? "
-						+ isTermConn);
-		log.trace(indent + "TSConnection age: " + my_age);
-		log.trace(indent + "TSConnection conn state: " + connState);
-		log.trace(indent + "TSConnection term conn state: " + termConnState);
+	void dump(final String indent) {
+		TSConnection.log.trace(indent + "***** CONNECTION DUMP *****");
+		TSConnection.log.trace(indent + "TSConnection: " + this);
+		TSConnection.log.trace(indent + "TSConnection ID: " + connID);
+		TSConnection.log.trace(indent + "TSConnection is terminal connection? "
+				+ isTermConn);
+		TSConnection.log.trace(indent + "TSConnection age: " + my_age);
+		TSConnection.log
+				.trace(indent + "TSConnection conn state: " + connState);
+		TSConnection.log.trace(indent + "TSConnection term conn state: "
+				+ termConnState);
 		if (termConns != null) {
-			log.trace(indent + "TSConnection terminal connections: ");
+			TSConnection.log.trace(indent
+					+ "TSConnection terminal connections: ");
 			synchronized (termConns) {
 				for (int i = 0; i < termConns.size(); ++i) {
-					TSConnection conn = (TSConnection) termConns.elementAt(i);
-					conn.dump(indent + " ");
-				}
-			}
-		}
-		if (staleTermConns != null) {
-			log.trace(indent + "TSConnection stale terminal connections: ");
-			synchronized (staleTermConns) {
-				for (int i = 0; i < staleTermConns.size(); ++i) {
-					TSConnection conn = (TSConnection) staleTermConns
+					final TSConnection conn = (TSConnection) termConns
 							.elementAt(i);
 					conn.dump(indent + " ");
 				}
 			}
 		}
-		if (connection != null) {
-			log.trace(indent + "TSConnection connection: " + connection);
+		if (staleTermConns != null) {
+			TSConnection.log.trace(indent
+					+ "TSConnection stale terminal connections: ");
+			synchronized (staleTermConns) {
+				for (int i = 0; i < staleTermConns.size(); ++i) {
+					final TSConnection conn = (TSConnection) staleTermConns
+							.elementAt(i);
+					conn.dump(indent + " ");
+				}
+			}
 		}
-		if (trunk != null) {
-			log.trace(indent + "TSTrunk trunk: " + trunk);
-		}
-		log.trace(indent + "***** CONNECTION DUMP END *****");
+		if (connection != null)
+			TSConnection.log.trace(indent + "TSConnection connection: "
+					+ connection);
+		if (trunk != null)
+			TSConnection.log.trace(indent + "TSTrunk trunk: " + trunk);
+		TSConnection.log.trace(indent + "***** CONNECTION DUMP END *****");
 	}
 
-	synchronized void finishConstruction(TSDevice _connectionAddress,
-			Vector<TSEvent> eventList) {
+	synchronized void finishConstruction(final TSDevice _connectionAddress,
+			final Vector<TSEvent> eventList) {
 		boolean found = true;
-		if ((isTermConn) && (provider.isLucent())
-				&& (_connectionAddress != null)) {
+		if (isTermConn && provider.isLucent() && _connectionAddress != null) {
 			device.addConnection(this);
-			Vector<TSConnection> connVector = new Vector<TSConnection>(call
-					.getConnections());
+			final Vector<TSConnection> connVector = new Vector<TSConnection>(
+					call.getConnections());
 			TSConnection addressConnection = null;
 			found = false;
 			for (int i = 0; i < connVector.size(); ++i) {
 				addressConnection = (TSConnection) connVector.elementAt(i);
-				if (addressConnection.getTSDevice() != _connectionAddress) {
+				if (addressConnection.getTSDevice() != _connectionAddress)
 					continue;
-				}
 				connection = addressConnection;
 				connection.addTerminalConnection(this, eventList);
 				found = true;
@@ -358,54 +342,48 @@ public final class TSConnection {
 			connection = provider.createConnection(null, _connectionAddress,
 					null);
 			connection.addTerminalConnection(this, eventList);
-			if (eventList != null) {
+			if (eventList != null)
 				eventList.addElement(new TSEvent(6, connection));
-			}
 		}
-		if (eventList == null) {
+		if (eventList == null)
 			return;
-		}
 
-		if ((!isTermConn) || (!provider.isLucent())) {
+		if (!isTermConn || !provider.isLucent())
 			eventList.addElement(new TSEvent(6, this));
-		}
-		if (isTermConn) {
+		if (isTermConn)
 			eventList.addElement(new TSEvent(13, this));
-		}
 	}
 
-	public void generateDtmf(String digits) throws TsapiInvalidStateException,
+	public void generateDtmf(final String digits)
+			throws TsapiInvalidStateException,
 			TsapiResourceUnavailableException, TsapiMethodNotSupportedException {
 		generateDtmf(digits, 0, 0);
 	}
 
-	public void generateDtmf(String digits, int toneDuration, int pauseDuration)
-			throws TsapiInvalidStateException,
+	public void generateDtmf(final String digits, final int toneDuration,
+			final int pauseDuration) throws TsapiInvalidStateException,
 			TsapiResourceUnavailableException, TsapiMethodNotSupportedException {
-		if (!provider.isLucent()) {
+		if (!provider.isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		LucentSendDTMFTone dtmf;
-		if (provider.isLucentV5()) {
+		if (provider.isLucentV5())
 			dtmf = new LucentV5SendDTMFTone(connID, null, digits, toneDuration,
 					pauseDuration);
-		} else {
+		else
 			dtmf = new LucentSendDTMFTone(connID, null, digits, toneDuration,
 					pauseDuration);
-		}
 		try {
 			provider.sendPrivateData(dtmf.makeTsapiPrivate());
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"sendPrivateData failure");
-			}
 			throw new TsapiPlatformException(3, 0, "sendPrivateData failure");
 		}
 	}
@@ -429,9 +407,8 @@ public final class TSConnection {
 	}
 
 	int getCallControlConnState() {
-		if ((isTermConn) && (connection != null)) {
+		if (isTermConn && connection != null)
 			return connection.getCallControlConnState();
-		}
 
 		return connState;
 	}
@@ -453,9 +430,8 @@ public final class TSConnection {
 
 	public CSTAConnectionID getConnID() {
 		synchronized (this) {
-			if (connID != null) {
+			if (connID != null)
 				return connID;
-			}
 		}
 		if (termConns != null) {
 			TSConnection tc = null;
@@ -465,12 +441,11 @@ public final class TSConnection {
 					tc = (TSConnection) termConns.elementAt(i);
 					try {
 						tcConnID = tc.getConnID();
-					} catch (TsapiPlatformException e) {
-						log.error("Ignoring exception: " + e);
+					} catch (final TsapiPlatformException e) {
+						TSConnection.log.error("Ignoring exception: " + e);
 					}
-					if (tcConnID != null) {
+					if (tcConnID != null)
 						return tcConnID;
-					}
 				}
 			}
 		}
@@ -482,12 +457,11 @@ public final class TSConnection {
 					tc = (TSConnection) staleTermConns.elementAt(i);
 					try {
 						tcConnID = tc.getConnID();
-					} catch (TsapiPlatformException e) {
-						log.error("Ignoring exception: " + e);
+					} catch (final TsapiPlatformException e) {
+						TSConnection.log.error("Ignoring exception: " + e);
 					}
-					if (tcConnID != null) {
+					if (tcConnID != null)
 						return tcConnID;
-					}
 				}
 			}
 		}
@@ -495,14 +469,13 @@ public final class TSConnection {
 	}
 
 	public Object getConnPrivateData() {
-		if (replyConnPriv instanceof CSTAPrivate) {
+		if (replyConnPriv instanceof CSTAPrivate)
 			return replyConnPriv;
-		}
 		return null;
 	}
 
 	private String getMyCustomString() {
-		StringBuffer accumulator = new StringBuffer();
+		final StringBuffer accumulator = new StringBuffer();
 
 		if (isTermConn) {
 			accumulator.append("termConn:");
@@ -515,15 +488,15 @@ public final class TSConnection {
 		return accumulator.toString();
 	}
 
-	void getSnapshot(Vector<TSEvent> eventList) {
+	void getSnapshot(final Vector<TSEvent> eventList) {
 		getSnapshot(eventList, true);
 	}
 
-	void getSnapshot(Vector<TSEvent> eventList, boolean includeCreated) {
-		if ((!isTermConn) || (!provider.isLucent())) {
-			if (includeCreated) {
+	void getSnapshot(final Vector<TSEvent> eventList,
+			final boolean includeCreated) {
+		if (!isTermConn || !provider.isLucent()) {
+			if (includeCreated)
 				eventList.addElement(new TSEvent(6, this));
-			}
 			switch (connState) {
 			case 83:
 				eventList.addElement(new TSEvent(9, this));
@@ -572,21 +545,17 @@ public final class TSConnection {
 				eventList.addElement(new TSEvent(20, this));
 			}
 
-			if ((provider.isLucent()) && (termConns != null)) {
+			if (provider.isLucent() && termConns != null)
 				synchronized (termConns) {
-					for (int i = 0; i < termConns.size(); ++i) {
+					for (int i = 0; i < termConns.size(); ++i)
 						((TSConnection) termConns.elementAt(i)).getSnapshot(
 								eventList, includeCreated);
-					}
 				}
-			}
 		}
-		if (!isTermConn) {
+		if (!isTermConn)
 			return;
-		}
-		if (includeCreated) {
+		if (includeCreated)
 			eventList.addElement(new TSEvent(13, this));
-		}
 		switch (termConnState) {
 		case 98:
 			eventList.addElement(new TSEvent(14, this));
@@ -619,22 +588,19 @@ public final class TSConnection {
 	}
 
 	public Object getTermConnPrivateData() {
-		if (replyTermConnPriv instanceof CSTAPrivate) {
+		if (replyTermConnPriv instanceof CSTAPrivate)
 			return replyTermConnPriv;
-		}
 		return null;
 	}
 
 	Vector<TSConnection> getTermConns() {
-		if ((provider.isLucent()) && (termConns != null)) {
+		if (provider.isLucent() && termConns != null)
 			return termConns;
-		}
 
-		Vector<TSConnection> cv = new Vector<TSConnection>();
+		final Vector<TSConnection> cv = new Vector<TSConnection>();
 
-		if (isTermConn) {
+		if (isTermConn)
 			cv.addElement(this);
-		}
 
 		return cv;
 	}
@@ -658,9 +624,8 @@ public final class TSConnection {
 	}
 
 	TSConnection getTSConn() {
-		if ((provider.isLucent()) && (isTermConn)) {
+		if (provider.isLucent() && isTermConn)
 			return connection;
-		}
 
 		return this;
 	}
@@ -672,11 +637,10 @@ public final class TSConnection {
 
 	int getTSConnState() {
 		int connectionState;
-		if ((isTermConn) && (connection != null)) {
+		if (isTermConn && connection != null)
 			connectionState = connection.getCallControlConnState();
-		} else {
+		else
 			connectionState = connState;
-		}
 		switch (connectionState) {
 		case 80:
 			return 48;
@@ -709,9 +673,8 @@ public final class TSConnection {
 	}
 
 	public Vector<TSConnection> getTSTermConns() {
-		if (getConnectionState() == 52) {
+		if (getConnectionState() == 52)
 			return null;
-		}
 
 		return getTermConns();
 	}
@@ -739,51 +702,47 @@ public final class TSConnection {
 		return trunk;
 	}
 
-	public void hold(CSTAPrivate reqTermConnPriv)
+	public void hold(final CSTAPrivate reqTermConnPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getHoldCall() == 0) {
+		if (provider.getCapabilities().getHoldCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getCallControlTermConnState();
-			if ((state != 98) && (state != 103)) {
+			final int state = getCallControlTermConnState();
+			if (state != 98 && state != 103)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 5, state,
 						"terminal connection not talking");
-			}
 
 		}
 
-		ConfHandler handler = new HoldConfHandler(this);
+		final ConfHandler handler = new HoldConfHandler(this);
 		try {
 			provider.tsapi.holdCall(connID, false, reqTermConnPriv, handler);
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
-			if (e.getErrorType() == 2) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2)
 				switch (e.getErrorCode()) {
 				case 13:
 				case 24:
-					log.info("Conn " + this + " hold UniversalFailure "
-							+ e.getErrorCode() + " requires snapshot of "
-							+ call + " for " + provider);
+					TSConnection.log.info("Conn " + this
+							+ " hold UniversalFailure " + e.getErrorCode()
+							+ " requires snapshot of " + call + " for "
+							+ provider);
 					call.updateSuspiciousObject();
 				}
 
-			}
-
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"holdCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "holdCall failure");
 		}
 	}
@@ -796,86 +755,80 @@ public final class TSConnection {
 		return isTermConn;
 	}
 
-	public void join(CSTAPrivate reqTermConnPriv)
+	public void join(final CSTAPrivate reqTermConnPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (!provider.isLucent()) {
+		if (!provider.isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getCallControlTermConnState();
-			if ((state != 100) && (state != 103)) {
+			final int state = getCallControlTermConnState();
+			if (state != 100 && state != 103)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 5, state,
 						"terminal connection not bridged");
-			}
 
 		}
 
-		ConfHandler handler = new TalkingConfHandler(this, 4);
+		final ConfHandler handler = new TalkingConfHandler(this, 4);
 		try {
 			provider.tsapi.answerCall(connID, reqTermConnPriv, handler);
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
-			if (e.getErrorType() == 2) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2)
 				switch (e.getErrorCode()) {
 				case 13:
 				case 28:
-					log.info("Conn " + this + " join UniversalFailure "
-							+ e.getErrorCode() + " requires snapshot of "
-							+ call + " for " + provider);
+					TSConnection.log.info("Conn " + this
+							+ " join UniversalFailure " + e.getErrorCode()
+							+ " requires snapshot of " + call + " for "
+							+ provider);
 					call.updateSuspiciousObject();
 				}
 
-			}
-
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"join failure");
-			}
 			throw new TsapiPlatformException(4, 0, "join failure");
 		}
 	}
 
-	public void leave(CSTAPrivate reqTermConnPriv)
+	public void leave(final CSTAPrivate reqTermConnPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (!provider.isLucent()) {
+		if (!provider.isLucent())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getCallControlTermConnState();
-			if ((state != 98) && (state != 103)) {
+			final int state = getCallControlTermConnState();
+			if (state != 98 && state != 103)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 5, state,
 						"terminal connection not talking");
-			}
 
 		}
 
-		ConfHandler handler = new BridgedConfHandler(this);
+		final ConfHandler handler = new BridgedConfHandler(this);
 		try {
 			provider.tsapi.clearConnection(connID, reqTermConnPriv, handler);
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
-			if (e.getErrorType() == 2) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2)
 				switch (e.getErrorCode()) {
 				case 24:
 				case 27:
-					log.info("Conn " + this + ": clearConnection "
+					TSConnection.log.info("Conn " + this + ": clearConnection "
 							+ "Universal Failure with error "
 							+ e.getErrorCode() + " requires snapshot of "
 							+ call + " for " + provider);
@@ -883,261 +836,232 @@ public final class TSConnection {
 					call.updateSuspiciousObject();
 				}
 
-			}
-
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"clearConnection failure");
-			}
 			throw new TsapiPlatformException(4, 0, "clearConnection failure");
 		}
 	}
 
-	public void listenHold(TSConnection partyToHold)
+	public void listenHold(final TSConnection partyToHold)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		if (!provider.isLucentV5()) {
+		if (!provider.isLucentV5())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
-		if (termConns != null) {
+		if (termConns != null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"subject Connection contains TerminalConnections");
-		}
-		if (connID == null) {
+		if (connID == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"subject connID is null");
-		}
 
 		boolean allParties = true;
 		CSTAConnectionID selectedParty = null;
 
 		if (partyToHold != null) {
 			selectedParty = partyToHold.connID;
-			if (selectedParty == null) {
+			if (selectedParty == null)
 				throw new TsapiInvalidArgumentException(3, 0,
 						"partyToHold connID is null");
-			}
 			allParties = false;
 		}
 
 		try {
-			LucentSelectiveListeningHold slh = new LucentSelectiveListeningHold(
+			final LucentSelectiveListeningHold slh = new LucentSelectiveListeningHold(
 					connID, allParties, selectedParty);
 
 			provider.sendPrivateData(slh.makeTsapiPrivate());
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"listenHold failure");
-			}
 			throw new TsapiPlatformException(4, 0, "listenHold failure");
 		}
 	}
 
-	public void listenUnhold(TSConnection partyToUnhold)
+	public void listenUnhold(final TSConnection partyToUnhold)
 			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		if (!provider.isLucentV5()) {
+		if (!provider.isLucentV5())
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
-		if (connID == null) {
+		if (connID == null)
 			throw new TsapiInvalidArgumentException(3, 0,
 					"subject connID is null");
-		}
 
 		boolean allParties = true;
 		CSTAConnectionID selectedParty = null;
 
 		if (partyToUnhold != null) {
 			selectedParty = partyToUnhold.connID;
-			if (selectedParty == null) {
+			if (selectedParty == null)
 				throw new TsapiInvalidArgumentException(3, 0,
 						"partyToUnhold connID is null");
-			}
 			allParties = false;
 		}
 
 		try {
-			LucentSelectiveListeningRetrieve slr = new LucentSelectiveListeningRetrieve(
+			final LucentSelectiveListeningRetrieve slr = new LucentSelectiveListeningRetrieve(
 					connID, allParties, selectedParty);
 
 			provider.sendPrivateData(slr.makeTsapiPrivate());
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"listenUnhold failure");
-			}
 			throw new TsapiPlatformException(4, 0, "listenUnhold failure");
 		}
 	}
 
-	public TSConnection redirect(String destinationAddress,
-			CSTAPrivate reqConnPriv) throws TsapiPrivilegeViolationException,
+	public TSConnection redirect(final String destinationAddress,
+			final CSTAPrivate reqConnPriv)
+			throws TsapiPrivilegeViolationException,
 			TsapiInvalidPartyException, TsapiInvalidStateException,
 			TsapiResourceUnavailableException, TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getDeflectCall() == 0) {
+		if (provider.getCapabilities().getDeflectCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getCallControlConnState();
-			if ((state != 81) && (state != 83) && (state != 91)) {
+			final int state = getCallControlConnState();
+			if (state != 81 && state != 83 && state != 91)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, true), 2, state,
 						"connection not offering or alerting");
-			}
 
 		}
 
-		ConfHandler handler = new DisconnectedConfHandler(this, 16);
+		final ConfHandler handler = new DisconnectedConfHandler(this, 16);
 		try {
 			provider.tsapi.deflectCall(getConnID(), destinationAddress,
 					reqConnPriv, handler);
-		} catch (TsapiInvalidStateException e) {
+		} catch (final TsapiInvalidStateException e) {
 			throw e;
-		} catch (TsapiInvalidPartyException e) {
+		} catch (final TsapiInvalidPartyException e) {
 			throw e;
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
+		} catch (final TsapiPlatformException e) {
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"deflectCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "deflectCall failure");
 		}
 
 		return null;
 	}
 
-	void removeTerminalConnection(TSConnection termConn,
-			Vector<TSEvent> eventList) {
-		if (termConns == null) {
+	void removeTerminalConnection(final TSConnection termConn,
+			final Vector<TSEvent> eventList) {
+		if (termConns == null)
 			return;
-		}
-		if (!termConns.removeElement(termConn)) {
+		if (!termConns.removeElement(termConn))
 			return;
-		}
 		synchronized (staleTermConns) {
-			if (!staleTermConns.contains(termConn)) {
+			if (!staleTermConns.contains(termConn))
 				staleTermConns.addElement(termConn);
-			}
 		}
 
-		if (termConns.size() != 0) {
+		if (termConns.size() != 0)
 			return;
-		}
 		setConnectionState(89, eventList);
 	}
 
-	public Object sendPrivateData(CSTAPrivate data) {
+	public Object sendPrivateData(final CSTAPrivate data) {
 		try {
 			return provider.sendPrivateData(data);
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"sendPrivateData failure");
-			}
 			throw new TsapiPlatformException(3, 0, "sendPrivateData failure");
 		}
 	}
 
-	void setACDManagerConn(TSConnection _acdManagerConn) {
-		if (_acdManagerConn == null) {
+	void setACDManagerConn(final TSConnection _acdManagerConn) {
+		if (_acdManagerConn == null)
 			return;
-		}
 		acdManagerConn = _acdManagerConn;
 	}
 
-	synchronized void setCall(TSCall newCall) {
+	synchronized void setCall(final TSCall newCall) {
 		call = newCall;
-		if (termConns == null) {
+		if (termConns == null)
 			return;
-		}
 		for (int i = 0; i < termConns.size(); ++i) {
-			TSConnection tc = (TSConnection) termConns.elementAt(i);
+			final TSConnection tc = (TSConnection) termConns.elementAt(i);
 			tc.setCall(newCall);
 		}
 	}
 
-	void setConnectionState(int _connState, Vector<TSEvent> eventList) {
-		if ((isTermConn) && (provider.isLucent())) {
-			if (connection != null) {
+	void setConnectionState(int _connState, final Vector<TSEvent> eventList) {
+		if (isTermConn && provider.isLucent()) {
+			if (connection != null)
 				connection.setConnectionState(_connState, eventList);
-			}
 			return;
 		}
 
-		int oldCoreState = getTSConnState();
+		final int oldCoreState = getTSConnState();
 
 		synchronized (this) {
-			if ((haveNetworkReached) && (_connState == 83)) {
+			if (haveNetworkReached && _connState == 83)
 				_connState = 87;
-			} else if ((_connState == 82) && (device.getDeviceType() == 1)) {
+			else if (_connState == 82 && device.getDeviceType() == 1)
 				_connState = 83;
-			}
 
-			if ((connState == _connState) || (connState == 89)) {
+			if (connState == _connState || connState == 89)
 				return;
-			}
 			connState = _connState;
 		}
 
 		switch (connState) {
 		case 83:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 50) {
+			if (oldCoreState != 50)
 				eventList.addElement(new TSEvent(9, this));
-			}
 			eventList.addElement(new TSEvent(26, this));
 			break;
 		case 88:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 51) {
+			if (oldCoreState != 51)
 				eventList.addElement(new TSEvent(7, this));
-			}
 			eventList.addElement(new TSEvent(21, this));
 			break;
 		case 86:
 			if (eventList != null) {
-				if (oldCoreState != 51) {
+				if (oldCoreState != 51)
 					eventList.addElement(new TSEvent(7, this));
-				}
 				eventList.addElement(new TSEvent(22, this));
 			}
 			synchronized (this) {
@@ -1145,26 +1069,21 @@ public final class TSConnection {
 			}
 			break;
 		case 87:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 51) {
+			if (oldCoreState != 51)
 				eventList.addElement(new TSEvent(7, this));
-			}
 			eventList.addElement(new TSEvent(23, this));
 			break;
 		case 84:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 51) {
+			if (oldCoreState != 51)
 				eventList.addElement(new TSEvent(7, this));
-			}
 			eventList.addElement(new TSEvent(24, this));
 
-			if (provider.getCapabilities().getOriginatedEvent() != 0) {
+			if (provider.getCapabilities().getOriginatedEvent() != 0)
 				return;
-			}
 			setConnectionState(88, eventList);
 			break;
 		case 89:
@@ -1177,20 +1096,19 @@ public final class TSConnection {
 			}
 
 			if (termConns != null) {
-				Vector<TSConnection> conn = new Vector<TSConnection>(termConns);
+				final Vector<TSConnection> conn = new Vector<TSConnection>(
+						termConns);
 				int i;
-				for (i = 0; i < conn.size(); ++i) {
+				for (i = 0; i < conn.size(); ++i)
 					((TSConnection) conn.elementAt(i)).setTermConnState(102,
 							eventList);
-				}
 
-			} else {
+			} else
 				setTermConnState(102, eventList);
-			}
 
 			if (acdManagerConn != null) {
-				TSConnection acdMgrConn = acdManagerConn;
-				Vector<TSConnection> acdConns = acdMgrConn.getACDConns();
+				final TSConnection acdMgrConn = acdManagerConn;
+				final Vector<TSConnection> acdConns = acdMgrConn.getACDConns();
 				int j;
 				for (j = 0; j < acdConns.size(); ++j) {
 					((TSConnection) acdConns.elementAt(j))
@@ -1202,27 +1120,23 @@ public final class TSConnection {
 			}
 
 			if (eventList != null) {
-				if (oldCoreState != 52) {
+				if (oldCoreState != 52)
 					eventList.addElement(new TSEvent(10, this));
-				}
 				eventList.addElement(new TSEvent(27, this));
 			}
 			device.removeConnection(this);
 			call.removeConnection(this, eventList);
 			break;
 		case 90:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 53) {
+			if (oldCoreState != 53)
 				eventList.addElement(new TSEvent(11, this));
-			}
 			eventList.addElement(new TSEvent(28, this));
 			break;
 		case 82:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
 			if (oldCoreState != 49) {
 				eventList.addElement(new TSEvent(8, this));
 				eventList.addElement(new TSEvent(56, this));
@@ -1230,18 +1144,15 @@ public final class TSConnection {
 			eventList.addElement(new TSEvent(25, this));
 			break;
 		case 91:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 54) {
+			if (oldCoreState != 54)
 				eventList.addElement(new TSEvent(12, this));
-			}
 			eventList.addElement(new TSEvent(29, this));
 			break;
 		case 81:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
 			if (oldCoreState != 49) {
 				eventList.addElement(new TSEvent(8, this));
 				eventList.addElement(new TSEvent(56, this));
@@ -1249,59 +1160,54 @@ public final class TSConnection {
 			eventList.addElement(new TSEvent(19, this));
 			break;
 		case 85:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 51) {
+			if (oldCoreState != 51)
 				eventList.addElement(new TSEvent(7, this));
-			}
 			eventList.addElement(new TSEvent(20, this));
 		}
 	}
 
-	synchronized void setConnID(CSTAConnectionID newConnID) {
-		if ((newConnID != null) && (newConnID.equals(connID))) {
+	synchronized void setConnID(final CSTAConnectionID newConnID) {
+		if (newConnID != null && newConnID.equals(connID))
 			return;
-		}
 
-		if ((isTermConn) && (newConnID == null)) {
+		if (isTermConn && newConnID == null)
 			return;
-		}
 
 		provider.deleteConnectionFromHash(connID);
 
-		CSTAConnectionID oldConnID = connID;
+		final CSTAConnectionID oldConnID = connID;
 		connID = newConnID;
 
-		TSConnection saveConn = provider.addConnectionToHash(this);
+		final TSConnection saveConn = provider.addConnectionToHash(this);
 
-		if (saveConn == null) {
+		if (saveConn == null)
 			return;
-		}
 		if (oldConnID != null) {
 			saveConn.connID = oldConnID;
 			provider.addConnectionToHash(saveConn);
 		} else {
-			log
+			TSConnection.log
 					.info("Replaced an older connection with a Conn that has null Conn ID. Not restoring the older connection.");
 
-			log.trace("Dumping call (" + call + "):");
+			TSConnection.log.trace("Dumping call (" + call + "):");
 			call.dump("   ");
-			log.trace("Dumping conn (" + this + "):");
+			TSConnection.log.trace("Dumping conn (" + this + "):");
 			dump("   ");
-			log.trace("Dumping provider (" + provider + "):");
+			TSConnection.log.trace("Dumping provider (" + provider + "):");
 			provider.dump("   ");
 		}
 	}
 
 	public void setDoNotExpectConnectionClearedEvent(
-			boolean connBelongToDifferentDeviceIDType) {
+			final boolean connBelongToDifferentDeviceIDType) {
 		doNotExpectConnectionClearedEvent = connBelongToDifferentDeviceIDType;
-		log.info("Conn " + this
+		TSConnection.log.info("Conn " + this
 				+ ", setting flag 'connBelongToDifferentDeviceIDType'");
 	}
 
-	void setStateFromLocalConnState(int localCallState) {
+	void setStateFromLocalConnState(final int localCallState) {
 		switch (localCallState) {
 		case 1:
 			setConnectionState(84, null);
@@ -1327,11 +1233,11 @@ public final class TSConnection {
 			setTermConnState(102, null);
 			break;
 		case 0:
-			if (!provider.isLucent()) {
+			if (!provider.isLucent())
 				// break label195;
 				break;
-			}
-			log.info("NULL localCallState implies BRIDGED for " + this);
+			TSConnection.log.info("NULL localCallState implies BRIDGED for "
+					+ this);
 			setConnectionState(88, null);
 			setTermConnState(100, null);
 			break;
@@ -1342,21 +1248,18 @@ public final class TSConnection {
 		}
 	}
 
-	void setTermConnState(int _termConnState, Vector<TSEvent> eventList) {
-		if (!isTermConn) {
+	void setTermConnState(int _termConnState, final Vector<TSEvent> eventList) {
+		if (!isTermConn)
 			return;
-		}
 
-		int oldCoreState = getTSTermConnState();
+		final int oldCoreState = getTSTermConnState();
 
 		synchronized (this) {
-			if ((haveNetworkReached) && (_termConnState == 97)) {
+			if (haveNetworkReached && _termConnState == 97)
 				_termConnState = 98;
-			}
 
-			if ((termConnState == _termConnState) || (termConnState == 102)) {
+			if (termConnState == _termConnState || termConnState == 102)
 				return;
-			}
 
 			termConnState = _termConnState;
 		}
@@ -1364,43 +1267,36 @@ public final class TSConnection {
 		switch (termConnState) {
 		case 98:
 			if (eventList != null) {
-				if (oldCoreState != 67) {
+				if (oldCoreState != 67)
 					eventList.addElement(new TSEvent(14, this));
-				}
 				eventList.addElement(new TSEvent(30, this));
 			}
 
-			if ((connection == null) || (connection.termConns == null)) {
+			if (connection == null || connection.termConns == null)
 				return;
-			}
-			Vector<TSConnection> conns = new Vector<TSConnection>(
+			final Vector<TSConnection> conns = new Vector<TSConnection>(
 					connection.termConns);
 			for (int i = 0; i < conns.size(); ++i) {
-				TSConnection conn = (TSConnection) conns.elementAt(i);
-				if (conn == this) {
+				final TSConnection conn = (TSConnection) conns.elementAt(i);
+				if (conn == this)
 					continue;
-				}
-				if (conn.termConnState != 97) {
+				if (conn.termConnState != 97)
 					continue;
-				}
 				conn.setTermConnState(100, eventList);
 			}
 
 			break;
 		case 99:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 67) {
+			if (oldCoreState != 67)
 				eventList.addElement(new TSEvent(14, this));
-			}
 			eventList.addElement(new TSEvent(31, this));
 			break;
 		case 102:
 			if (eventList != null) {
-				if (oldCoreState != 68) {
+				if (oldCoreState != 68)
 					eventList.addElement(new TSEvent(17, this));
-				}
 				eventList.addElement(new TSEvent(34, this));
 			}
 			device.removeConnection(this);
@@ -1413,47 +1309,38 @@ public final class TSConnection {
 
 			break;
 		case 97:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 65) {
+			if (oldCoreState != 65)
 				eventList.addElement(new TSEvent(15, this));
-			}
 			eventList.addElement(new TSEvent(35, this));
 			break;
 		case 100:
 			boolean okToBridge = false;
 			int i = 0;
-			if ((connection != null) && (connection.termConns != null)) {
+			if (connection != null && connection.termConns != null)
 				synchronized (connection.termConns) {
-					if (connection.termConns.size() == 1) {
+					if (connection.termConns.size() == 1)
 						i = 1;
-					} else {
+					else
 						for (i = 0; i < connection.termConns.size(); ++i) {
-							TSConnection conn = (TSConnection) connection.termConns
+							final TSConnection conn = (TSConnection) connection.termConns
 									.elementAt(i);
-							if (conn == this) {
+							if (conn == this)
 								continue;
-							}
-							if ((conn.termConnState != 98)
-									&& (conn.termConnState != 103)) {
+							if (conn.termConnState != 98
+									&& conn.termConnState != 103)
 								continue;
-							}
 							okToBridge = true;
 							break;
 						}
-					}
 				}
-
-			}
 
 			if (okToBridge) {
-				if (eventList == null) {
+				if (eventList == null)
 					return;
-				}
-				if (oldCoreState != 66) {
+				if (oldCoreState != 66)
 					eventList.addElement(new TSEvent(16, this));
-				}
 				eventList.addElement(new TSEvent(32, this));
 				return;
 			}
@@ -1462,41 +1349,34 @@ public final class TSConnection {
 				setTermConnState(97, eventList);
 				return;
 			}
-			if (connection == null) {
+			if (connection == null)
 				return;
-			}
 			connection.setConnectionState(89, eventList);
 			break;
 		case 101:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 66) {
+			if (oldCoreState != 66)
 				eventList.addElement(new TSEvent(16, this));
-			}
 			eventList.addElement(new TSEvent(33, this));
 			break;
 		case 103:
-			if (eventList == null) {
+			if (eventList == null)
 				return;
-			}
-			if (oldCoreState != 69) {
+			if (oldCoreState != 69)
 				eventList.addElement(new TSEvent(18, this));
-			}
 			eventList.addElement(new TSEvent(36, this));
 		}
 	}
 
 	void setTerminalConnection() {
-		if (!provider.isLucent()) {
+		if (!provider.isLucent())
 			isTermConn = true;
-		}
 	}
 
-	public synchronized void setTrunk(TSTrunk _trunk) {
-		if (_trunk == null) {
+	public synchronized void setTrunk(final TSTrunk _trunk) {
+		if (_trunk == null)
 			return;
-		}
 		trunk = _trunk;
 	}
 
@@ -1505,83 +1385,74 @@ public final class TSConnection {
 				+ Integer.toHexString(super.hashCode());
 	}
 
-	public void unhold(CSTAPrivate reqTermConnPriv)
+	public void unhold(final CSTAPrivate reqTermConnPriv)
 			throws TsapiPrivilegeViolationException,
 			TsapiInvalidStateException, TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException {
-		if (provider.getCapabilities().getRetrieveCall() == 0) {
+		if (provider.getCapabilities().getRetrieveCall() == 0)
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
-		}
 		if (call.updateObject()) {
-			int state = getCallControlTermConnState();
-			if ((state != 99) && (state != 103)) {
+			final int state = getCallControlTermConnState();
+			if (state != 99 && state != 103)
 				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
 						.getTsapiObject(this, false), 5, state,
 						"terminal connection not held");
-			}
 
 		}
 
-		ConfHandler handler = new TalkingConfHandler(this, 42);
+		final ConfHandler handler = new TalkingConfHandler(this, 42);
 		try {
 			provider.tsapi.retrieveCall(connID, reqTermConnPriv, handler);
-		} catch (TsapiPrivilegeViolationException e) {
+		} catch (final TsapiPrivilegeViolationException e) {
 			throw e;
-		} catch (TsapiResourceUnavailableException e) {
+		} catch (final TsapiResourceUnavailableException e) {
 			throw e;
-		} catch (TsapiPlatformException e) {
-			if (e.getErrorType() == 2) {
+		} catch (final TsapiPlatformException e) {
+			if (e.getErrorType() == 2)
 				switch (e.getErrorCode()) {
 				case 13:
 				case 24:
-					log.info("Conn " + this + " unhold UniversalFailure "
-							+ e.getErrorCode() + " requires snapshot of "
-							+ call + " for " + provider);
+					TSConnection.log.info("Conn " + this
+							+ " unhold UniversalFailure " + e.getErrorCode()
+							+ " requires snapshot of " + call + " for "
+							+ provider);
 					call.updateSuspiciousObject();
 				}
 
-			}
-
 			throw e;
-		} catch (Exception e) {
-			if (e instanceof ITsapiException) {
+		} catch (final Exception e) {
+			if (e instanceof ITsapiException)
 				throw new TsapiPlatformException(((ITsapiException) e)
 						.getErrorType(), ((ITsapiException) e).getErrorCode(),
 						"retrieveCall failure");
-			}
 			throw new TsapiPlatformException(4, 0, "retrieveCall failure");
 		}
 	}
 
-	void updateConnIDCallID(int newCallID) {
-		if ((connID != null) && (newCallID == connID.getCallID())) {
+	void updateConnIDCallID(final int newCallID) {
+		if (connID != null && newCallID == connID.getCallID())
 			return;
-		}
 
-		if ((isTermConn) && (newCallID == 0)) {
+		if (isTermConn && newCallID == 0)
 			return;
-		}
 
-		CSTAConnectionID newID = new CSTAConnectionID(newCallID, connID
+		final CSTAConnectionID newID = new CSTAConnectionID(newCallID, connID
 				.getDeviceID(), (short) connID.getDevIDType());
 
 		setConnID(newID);
 	}
 
 	synchronized void waitForConstruction() {
-		if (constructed) {
+		if (constructed)
 			return;
-		}
 		try {
 			super.wait(TSProviderImpl.DEFAULT_TIMEOUT);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 		}
-		if (constructed) {
+		if (constructed)
 			return;
-		}
 		throw new TsapiPlatformException(4, 0,
 				"could not finish connection construction");
 	}
 }
-

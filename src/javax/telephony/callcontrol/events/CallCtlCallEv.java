@@ -15,4 +15,3 @@ public abstract interface CallCtlCallEv extends CallCtlEv, CallEv {
 
 	public abstract Address getLastRedirectedAddress();
 }
-

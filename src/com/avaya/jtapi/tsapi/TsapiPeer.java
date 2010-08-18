@@ -13,15 +13,15 @@ public class TsapiPeer implements ITsapiPeer {
 	@SuppressWarnings("unchecked")
 	public TsapiPeer() {
 		try {
-			Class implClass = Class
+			final Class implClass = Class
 					.forName("com.avaya.jtapi.tsapi.impl.TsapiPeerImpl");
-			impl = ((ITsapiPeer) implClass.newInstance());
-		} catch (Exception e) {
+			impl = (ITsapiPeer) implClass.newInstance();
+		} catch (final Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public void addVendor(String vendorName, String versions) {
+	public void addVendor(final String vendorName, final String versions) {
 		impl.addVendor(vendorName, versions);
 	}
 
@@ -29,7 +29,7 @@ public class TsapiPeer implements ITsapiPeer {
 		return super.getClass().getName();
 	}
 
-	public Provider getProvider(String providerString)
+	public Provider getProvider(final String providerString)
 			throws ProviderUnavailableException {
 		return impl.getProvider(providerString);
 	}
@@ -38,4 +38,3 @@ public class TsapiPeer implements ITsapiPeer {
 		return impl.getServices();
 	}
 }
-

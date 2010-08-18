@@ -12,4 +12,3 @@ public abstract interface CallControlTerminalConnectionEvent extends
 	public static final int CALLCTL_TERMINAL_CONNECTION_TALKING = 369;
 	public static final int CALLCTL_TERMINAL_CONNECTION_UNKNOWN = 370;
 }
-

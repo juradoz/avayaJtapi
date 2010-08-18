@@ -15,15 +15,15 @@ public final class CSTAHeldEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 61;
 
-	public static CSTAHeldEvent decode(InputStream in) {
-		CSTAHeldEvent _this = new CSTAHeldEvent();
+	public static CSTAHeldEvent decode(final InputStream in) {
+		final CSTAHeldEvent _this = new CSTAHeldEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		heldConnection = CSTAConnectionID.decode(memberStream);
 		holdingDevice = CSTAExtendedDeviceID.decode(memberStream);
 		localConnectionInfo = ASNEnumerated.decode(memberStream);
@@ -31,7 +31,7 @@ public final class CSTAHeldEvent extends CSTAUnsolicited {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(heldConnection, memberStream);
 		ASNSequence.encode(holdingDevice, memberStream);
 		ASNEnumerated.encode(localConnectionInfo, memberStream);
@@ -61,11 +61,11 @@ public final class CSTAHeldEvent extends CSTAUnsolicited {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAHeldEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(heldConnection, "heldConnection",
 				indent));
@@ -79,20 +79,19 @@ public final class CSTAHeldEvent extends CSTAUnsolicited {
 		return lines;
 	}
 
-	public void setCause(short cause) {
+	public void setCause(final short cause) {
 		this.cause = cause;
 	}
 
-	public void setHeldConnection(CSTAConnectionID heldConnection) {
+	public void setHeldConnection(final CSTAConnectionID heldConnection) {
 		this.heldConnection = heldConnection;
 	}
 
-	public void setHoldingDevice(CSTAExtendedDeviceID holdingDevice) {
+	public void setHoldingDevice(final CSTAExtendedDeviceID holdingDevice) {
 		this.holdingDevice = holdingDevice;
 	}
 
-	public void setLocalConnectionInfo(short localConnectionInfo) {
+	public void setLocalConnectionInfo(final short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }
-

@@ -7,4 +7,3 @@ public abstract interface ButtonPressEv extends PhoneTermEv {
 
 	public abstract String getInfo();
 }
-

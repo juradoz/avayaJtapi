@@ -61,8 +61,8 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 
 	Object syncObject = new Object();
 
-	public TsapiTerminalMonitor(TSProviderImpl _provider,
-			TerminalListener _listener) {
+	public TsapiTerminalMonitor(final TSProviderImpl _provider,
+			final TerminalListener _listener) {
 		provider = _provider;
 		terminalListener = _listener;
 
@@ -71,123 +71,122 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 		deliverEvents(null, false);
 	}
 
-	public TsapiTerminalMonitor(TSProviderImpl _provider,
-			TerminalObserver _observer) {
+	public TsapiTerminalMonitor(final TSProviderImpl _provider,
+			final TerminalObserver _observer) {
 		provider = _provider;
 		observer = _observer;
 
 		provider.addTerminalMonitorThread(this);
 
 		observerType.set(0);
-		if (observer instanceof CallControlTerminalObserver) {
+		if (observer instanceof CallControlTerminalObserver)
 			observerType.set(1);
-		}
-		if (observer instanceof AgentTerminalObserver) {
+		if (observer instanceof AgentTerminalObserver)
 			observerType.set(2);
-		}
-		if (observer instanceof PhoneTerminalObserver) {
+		if (observer instanceof PhoneTerminalObserver)
 			observerType.set(4);
-		}
 
 		observerType.set(5);
 
 		deliverEvents(null, false);
 	}
 
-	private void addAgentTerminalEvent(TerminalEventParams terminalEventParams,
-			Agent agent, String tsEventLog) {
+	private void addAgentTerminalEvent(
+			final TerminalEventParams terminalEventParams, final Agent agent,
+			final String tsEventLog) {
 		if (terminalListener instanceof AgentTerminalListener) {
 			listenerEventList.addElement(new AgentTerminalEventImpl(
 					terminalEventParams, agent));
-			log.debug(tsEventLog + " for listener " + terminalListener);
-		} else {
-			log.debug(tsEventLog + " ignored since listener "
-					+ terminalListener
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for listener "
+					+ terminalListener);
+		} else
+			TsapiTerminalMonitor.log.debug(tsEventLog
+					+ " ignored since listener " + terminalListener
 					+ " is not of type AgentTerminalListener");
-		}
 	}
 
 	private void addCallControlTerminalEvent(
-			TerminalEventParams terminalEventParams, boolean state,
-			String tsEventLog) {
+			final TerminalEventParams terminalEventParams, final boolean state,
+			final String tsEventLog) {
 		if (terminalListener instanceof CallControlTerminalListener) {
 			listenerEventList.addElement(new CallControlTerminalEventImpl(
 					terminalEventParams, state));
-			log.debug(tsEventLog + " for listener " + terminalListener);
-		} else {
-			log.debug(tsEventLog + " ignored since listener "
-					+ terminalListener
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for listener "
+					+ terminalListener);
+		} else
+			TsapiTerminalMonitor.log.debug(tsEventLog
+					+ " ignored since listener " + terminalListener
 					+ " is not of type CallControlTerminalListener");
-		}
 	}
 
-	void addObserverEvent(TermEv event, String tsEventLog) {
-		if ((observerType.get(0))
-				&& (((ITsapiEvent) event).getEventPackage() == 0)) {
-			log.debug(tsEventLog + " for observer " + observer);
+	void addObserverEvent(final TermEv event, final String tsEventLog) {
+		if (observerType.get(0) && ((ITsapiEvent) event).getEventPackage() == 0) {
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(1))
-				&& (((ITsapiEvent) event).getEventPackage() == 1)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(1)
+				&& ((ITsapiEvent) event).getEventPackage() == 1) {
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(2))
-				&& (((ITsapiEvent) event).getEventPackage() == 2)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(2)
+				&& ((ITsapiEvent) event).getEventPackage() == 2) {
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(4))
-				&& (((ITsapiEvent) event).getEventPackage() == 4)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(4)
+				&& ((ITsapiEvent) event).getEventPackage() == 4) {
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else if ((observerType.get(5))
-				&& (((ITsapiEvent) event).getEventPackage() == 5)) {
-			log.debug(tsEventLog + " for observer " + observer);
+		} else if (observerType.get(5)
+				&& ((ITsapiEvent) event).getEventPackage() == 5) {
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for observer "
+					+ observer);
 
 			eventList.addElement(event);
-		} else {
-			log.debug(tsEventLog + " ignored");
-		}
+		} else
+			TsapiTerminalMonitor.log.debug(tsEventLog + " ignored");
 	}
 
-	private void addPrivateDataEvent(int eventId, int cause, Object source,
-			Object privateData, String tsEventLog) {
+	private void addPrivateDataEvent(final int eventId, final int cause,
+			final Object source, final Object privateData,
+			final String tsEventLog) {
 		if (terminalListener instanceof PrivateDataTerminalListener) {
 			listenerEventList.addElement(new PrivateDataEventImpl(eventId,
 					cause, null, source, privateData));
-			log.debug(tsEventLog + " for listener " + terminalListener);
-		} else {
-			log.debug(tsEventLog + " ignored since listener "
-					+ terminalListener
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for listener "
+					+ terminalListener);
+		} else
+			TsapiTerminalMonitor.log.debug(tsEventLog
+					+ " ignored since listener " + terminalListener
 					+ " is not of type PrivateDataTerminalListener");
-		}
 	}
 
 	public synchronized void addReference() {
 		reference += 1L;
 	}
 
-	Agent createAgent(TSAgent agent) {
-		if (agent == null) {
+	Agent createAgent(final TSAgent agent) {
+		if (agent == null)
 			return null;
-		}
 		return (Agent) TsapiCreateObject.getTsapiObject(agent, false);
 	}
 
-	private void createListenerEvents(Vector<TSEvent> _eventList,
-			boolean snapshot) {
+	private void createListenerEvents(final Vector<TSEvent> _eventList,
+			final boolean snapshot) {
 		String tsEventLog = null;
-		if (_eventList == null) {
+		if (_eventList == null)
 			return;
-		}
 		int cause;
-		if (snapshot) {
+		if (snapshot)
 			cause = 110;
-		} else {
+		else
 			cause = 100;
-		}
 
 		TSEvent ev = null;
 		Object tsTarget = null;
@@ -198,8 +197,8 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 		Terminal terminal = null;
 		Agent agent = null;
 		Object source = null;
-		log.debug("meta event BEGIN: cause (" + cause + ")  for "
-				+ terminalListener);
+		TsapiTerminalMonitor.log.debug("meta event BEGIN: cause (" + cause
+				+ ")  for " + terminalListener);
 		for (int i = 0; i < _eventList.size(); ++i) {
 			ev = (TSEvent) _eventList.elementAt(i);
 			tsTarget = ev.getEventTarget();
@@ -217,18 +216,16 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 
 			privateData = ev.getPrivateData();
 
-			if ((privateData != null) && (ev.getEventType() != 9999)) {
+			if (privateData != null && ev.getEventType() != 9999)
 				if (!privateData.equals(prevPrivateData)) {
 					prevPrivateData = privateData;
 					tsEventLog = "PRIVATEEVENT for " + target;
 					addPrivateDataEvent(603, cause, target, privateData,
 							tsEventLog);
-				} else {
+				} else
 					prevPrivateData = null;
-				}
-			}
 
-			TerminalEventParams terminalEventParams = new TerminalEventParams();
+			final TerminalEventParams terminalEventParams = new TerminalEventParams();
 			terminalEventParams.setCause(cause);
 			terminalEventParams.setTerminal(terminal);
 			terminalEventParams.setPrivateData(privateData);
@@ -291,22 +288,21 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 			}
 		}
 
-		log.debug("meta event END for " + terminalListener + " eventList size="
-				+ listenerEventList.size());
+		TsapiTerminalMonitor.log.debug("meta event END for " + terminalListener
+				+ " eventList size=" + listenerEventList.size());
 
-		if (listenerEventList.size() != 0) {
+		if (listenerEventList.size() != 0)
 			return;
-		}
-		log.debug("no events to send to " + terminalListener);
+		TsapiTerminalMonitor.log.debug("no events to send to "
+				+ terminalListener);
 		return;
 	}
 
-	private void createObserverEvents(Vector<TSEvent> _eventList,
-			boolean snapshot) {
+	private void createObserverEvents(final Vector<TSEvent> _eventList,
+			final boolean snapshot) {
 		String tsEventLog = null;
-		if (_eventList == null) {
+		if (_eventList == null)
 			return;
-		}
 		int cause;
 		int metaCode;
 		if (snapshot) {
@@ -317,21 +313,21 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 			cause = 100;
 		}
 
-		int nextMetaEventIndex = eventList.size();
+		final int nextMetaEventIndex = eventList.size();
 
 		TSEvent ev = null;
 		Object tsTarget = null;
 		TSDevice target = null;
 		TSAgent agent = null;
 		Object privateData = null;
-		log.debug("meta event BEGIN: cause (" + cause + ") metaCode ("
-				+ metaCode + ")" + " for " + observer);
+		TsapiTerminalMonitor.log.debug("meta event BEGIN: cause (" + cause
+				+ ") metaCode (" + metaCode + ")" + " for " + observer);
 		for (int i = 0; i < _eventList.size(); ++i) {
 			ev = (TSEvent) _eventList.elementAt(i);
 			tsTarget = ev.getEventTarget();
-			if (tsTarget instanceof TSDevice) {
+			if (tsTarget instanceof TSDevice)
 				target = (TSDevice) tsTarget;
-			} else if (tsTarget instanceof TSAgent) {
+			else if (tsTarget instanceof TSAgent) {
 				agent = (TSAgent) tsTarget;
 				target = agent.getTSAgentDevice();
 			}
@@ -414,52 +410,51 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 		}
 
 		synchronized (eventList) {
-			log.debug("meta event END for " + observer + " eventList size="
-					+ eventList.size());
+			TsapiTerminalMonitor.log.debug("meta event END for " + observer
+					+ " eventList size=" + eventList.size());
 
 			if (eventList.size() == 0) {
-				log.debug("no events to send to " + observer);
+				TsapiTerminalMonitor.log.debug("no events to send to "
+						+ observer);
 				return;
 			}
 
-			if (nextMetaEventIndex < eventList.size()) {
+			if (nextMetaEventIndex < eventList.size())
 				((TsapiObserverEvent) eventList.elementAt(nextMetaEventIndex))
 						.setNewMetaEventFlag();
-			}
 		}
 	}
 
-	Terminal createTerminal(TSDevice device) {
-		if (device == null) {
+	Terminal createTerminal(final TSDevice device) {
+		if (device == null)
 			return null;
-		}
 		return (Terminal) TsapiCreateObject.getTsapiObject(device, false);
 	}
 
-	public void deleteReference(TSDevice device, int cause, Object privateData) {
-		if (observer != null) {
-			log
+	public void deleteReference(final TSDevice device, final int cause,
+			final Object privateData) {
+		if (observer != null)
+			TsapiTerminalMonitor.log
 					.debug("Getting TsapiTerminalMonitor lock to deliver deleteReference events for observer "
 							+ observer);
-		} else {
-			log
+		else
+			TsapiTerminalMonitor.log
 					.debug("Getting TsapiTerminalMonitor lock to deliver deleteReference events for listener "
 							+ terminalListener);
-		}
 		deleteReferenceInternal(device, cause, privateData);
 	}
 
-	private synchronized void deleteReferenceInternal(TSDevice device,
-			int cause, Object privateData) {
+	private synchronized void deleteReferenceInternal(final TSDevice device,
+			final int cause, final Object privateData) {
 		String tsEventLog = null;
 		reference -= 1L;
 
 		if (observer != null) {
-			log.debug("meta event BEGIN: cause (" + cause + ") metaCode ("
-					+ 136 + ")" + " for " + observer);
+			TsapiTerminalMonitor.log.debug("meta event BEGIN: cause (" + cause
+					+ ") metaCode (" + 136 + ")" + " for " + observer);
 			tsEventLog = "OBSERVATIONENDEDEVENT for " + device;
 			synchronized (eventList) {
-				int nextMetaEventIndex = eventList.size();
+				final int nextMetaEventIndex = eventList.size();
 
 				addObserverEvent(new TsapiTermObservationEndedEvent(
 						createTerminal(device), cause, privateData), tsEventLog);
@@ -474,17 +469,18 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 						tsEventLog);
 			}
 
-			log.debug("meta event END for " + observer + " eventList size="
-					+ eventList.size());
+			TsapiTerminalMonitor.log.debug("meta event END for " + observer
+					+ " eventList size=" + eventList.size());
 		} else {
-			log.debug("meta event BEGIN: cause (" + cause + ") for "
-					+ terminalListener);
+			TsapiTerminalMonitor.log.debug("meta event BEGIN: cause (" + cause
+					+ ") for " + terminalListener);
 			tsEventLog = "OBSERVATIONENDEDEVENT for " + device;
 
 			listenerEventList.addElement(new TerminalEventImpl(121, cause,
 					createTerminal(device), privateData));
 
-			log.debug(tsEventLog + " for listener " + terminalListener);
+			TsapiTerminalMonitor.log.debug(tsEventLog + " for listener "
+					+ terminalListener);
 			if (privateData != null) {
 				tsEventLog = "PRIVATEEVENT for " + device;
 				addPrivateDataEvent(603, cause, createTerminal(device),
@@ -492,207 +488,256 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 			}
 		}
 
-		if (reference <= 0L) {
+		if (reference <= 0L)
 			provider.removeTerminalMonitorThread(this);
-		}
 
 		JtapiEventThreadManager.execute(this);
 	}
 
-	public void deliverEvents(Vector<TSEvent> _eventList, boolean snapshot) {
-		if (observer != null) {
-			log
+	public void deliverEvents(final Vector<TSEvent> _eventList,
+			final boolean snapshot) {
+		if (observer != null)
+			TsapiTerminalMonitor.log
 					.debug("Getting TsapiTerminalMonitor lock to deliver events for observer "
 							+ observer);
-		} else {
-			log
+		else
+			TsapiTerminalMonitor.log
 					.debug("Getting TsapiTerminalMonitor lock to deliver events for listener "
 							+ terminalListener);
-		}
-		if ((_eventList == null) || (_eventList.size() == 0)) {
+		if (_eventList == null || _eventList.size() == 0)
 			return;
-		}
 		synchronized (_eventList) {
 			deliverEventsInternal(_eventList, snapshot);
 		}
 	}
 
-	private synchronized void deliverEventsInternal(Vector<TSEvent> _eventList,
-			boolean snapshot) {
+	private synchronized void deliverEventsInternal(
+			final Vector<TSEvent> _eventList, final boolean snapshot) {
 		if (observer != null) {
 			createObserverEvents(_eventList, snapshot);
-			if (eventList.size() == 0) {
+			if (eventList.size() == 0)
 				return;
-			}
 		} else {
 			createListenerEvents(_eventList, snapshot);
-			if (listenerEventList.size() == 0) {
+			if (listenerEventList.size() == 0)
 				return;
-			}
 		}
 		JtapiEventThreadManager.execute(this);
 	}
 
-	private void deliverListenerEvents(Event[] listenerEventArray) {
-		for (Event event : listenerEventArray) {
+	private void deliverListenerEvents(final Event[] listenerEventArray) {
+		for (final Event event : listenerEventArray)
 			switch (event.getID()) {
 			case 121:
-				log.debug("calling terminalListenerEnded in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling terminalListenerEnded in "
+								+ terminalListener);
 				try {
 					terminalListener
 							.terminalListenerEnded((TerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by terminalListenerEnded in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by terminalListenerEnded in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from terminalListenerEnded in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from terminalListenerEnded in "
+								+ terminalListener);
 				break;
 			case 308:
-				log.debug("calling agentTerminalBusy in " + terminalListener);
+				TsapiTerminalMonitor.log.debug("calling agentTerminalBusy in "
+						+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalBusy((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalBusy in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalBusy in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalBusy in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalBusy in "
+								+ terminalListener);
 				break;
 			case 309:
-				log.debug("calling agentTerminalLoggedOff in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling agentTerminalLoggedOff in "
+								+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalLoggedOff((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalLoggedOff in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalLoggedOff in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalLoggedOff in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalLoggedOff in "
+								+ terminalListener);
 				break;
 			case 310:
-				log.debug("calling agentTerminalLoggedOn in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling agentTerminalLoggedOn in "
+								+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalLoggedOn((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalLoggedOn in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalLoggedOn in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalLoggedOn in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalLoggedOn in "
+								+ terminalListener);
 				break;
 			case 311:
-				log.debug("calling agentTerminalNotReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling agentTerminalNotReady in "
+								+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalNotReady((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalNotReady in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalNotReady in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalNotReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalNotReady in "
+								+ terminalListener);
 				break;
 			case 312:
-				log.debug("calling agentTerminalReady in " + terminalListener);
+				TsapiTerminalMonitor.log.debug("calling agentTerminalReady in "
+						+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalReady((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalReady in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalReady in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalReady in "
+								+ terminalListener);
 				break;
 			case 313:
-				log
+				TsapiTerminalMonitor.log
 						.debug("calling agentTerminalUnknown in "
 								+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalUnknown((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalUnknown in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalUnknown in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalUnknown in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalUnknown in "
+								+ terminalListener);
 				break;
 			case 314:
-				log.debug("calling agentTerminalWorkNotReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling agentTerminalWorkNotReady in "
+								+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalWorkNotReady((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
 							.error(
 									"EXCEPTION thrown by agentTerminalWorkNotReady in "
 											+ terminalListener + " - "
 											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalWorkNotReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalWorkNotReady in "
+								+ terminalListener);
 				break;
 			case 315:
-				log.debug("calling agentTerminalWorkReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling agentTerminalWorkReady in "
+								+ terminalListener);
 				try {
 					((AgentTerminalListener) terminalListener)
 							.agentTerminalWorkReady((AgentTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by agentTerminalWorkReady in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by agentTerminalWorkReady in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from agentTerminalWorkReady in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from agentTerminalWorkReady in "
+								+ terminalListener);
 				break;
 			case 371:
-				log
+				TsapiTerminalMonitor.log
 						.debug("calling terminalDoNotDisturb in "
 								+ terminalListener);
 				try {
 					((CallControlTerminalListener) terminalListener)
 							.terminalDoNotDisturb((CallControlTerminalEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by terminalDoNotDisturb in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by terminalDoNotDisturb in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from terminalDoNotDisturb in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from terminalDoNotDisturb in "
+								+ terminalListener);
 				break;
 			case 603:
-				log.debug("calling terminalPrivateData in " + terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("calling terminalPrivateData in "
+								+ terminalListener);
 				try {
 					((PrivateDataTerminalListener) terminalListener)
 							.terminalPrivateData((PrivateDataEvent) event);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by terminalPrivateData in "
-							+ terminalListener + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log
+							.error(
+									"EXCEPTION thrown by terminalPrivateData in "
+											+ terminalListener + " - "
+											+ e.getMessage(), e);
 				}
-				log.debug("returned from terminalPrivateData in "
-						+ terminalListener);
+				TsapiTerminalMonitor.log
+						.debug("returned from terminalPrivateData in "
+								+ terminalListener);
 			}
-		}
 	}
 
-	public void dump(String indent) {
-		log.trace(indent + "***** TsapiTerminalMonitor DUMP *****");
-		log.trace(indent + "TsapiTerminalMonitor: " + this);
-		if (observer != null) {
-			log.trace(indent + "observer: " + observer);
-		} else {
-			log.trace(indent + "listener: " + terminalListener);
-		}
-		log.trace(indent + "***** TsapiTerminalMonitor DUMP END *****");
+	public void dump(final String indent) {
+		TsapiTerminalMonitor.log.trace(indent
+				+ "***** TsapiTerminalMonitor DUMP *****");
+		TsapiTerminalMonitor.log
+				.trace(indent + "TsapiTerminalMonitor: " + this);
+		if (observer != null)
+			TsapiTerminalMonitor.log.trace(indent + "observer: " + observer);
+		else
+			TsapiTerminalMonitor.log.trace(indent + "listener: "
+					+ terminalListener);
+		TsapiTerminalMonitor.log.trace(indent
+				+ "***** TsapiTerminalMonitor DUMP END *****");
 	}
 
 	public TerminalListener getListener() {
@@ -706,61 +751,65 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 	public void run() {
 		TsapiTrace.traceEntry("run[]", this);
 		synchronized (syncObject) {
-			if (observer != null) {
-				log.debug("Got syncObject for TerminalObserver - " + observer);
-			} else {
-				log.debug("Got syncObject for TerminalListener - "
-						+ terminalListener);
-			}
+			if (observer != null)
+				TsapiTerminalMonitor.log
+						.debug("Got syncObject for TerminalObserver - "
+								+ observer);
+			else
+				TsapiTerminalMonitor.log
+						.debug("Got syncObject for TerminalListener - "
+								+ terminalListener);
 			TermEv[] eventArray = null;
 			Event[] listenerEventArray = null;
 			synchronized (this) {
-				if (observer != null) {
+				if (observer != null)
 					synchronized (eventList) {
 						if (eventList.size() == 0) {
-							log
+							TsapiTerminalMonitor.log
 									.debug("TsapiTerminalMonitor: events delivered by previous thread; no events to deliver in this thread");
 							TsapiTrace.traceExit("run[]", this);
 							return;
 						}
-						log
+						TsapiTerminalMonitor.log
 								.debug("Got this for TerminalObserver - "
 										+ observer);
 						eventArray = new TermEv[eventList.size()];
 						eventList.copyInto(eventArray);
 						eventList.clear();
 					}
-				} else {
+				else
 					synchronized (listenerEventList) {
 						if (listenerEventList.size() == 0) {
-							log
+							TsapiTerminalMonitor.log
 									.debug("TsapiTerminalMonitor: events delivered by previous thread; no events to deliver in this thread");
 							TsapiTrace.traceExit("run[]", this);
 							return;
 						}
-						log.debug("Got this for TerminalListener - "
-								+ terminalListener);
+						TsapiTerminalMonitor.log
+								.debug("Got this for TerminalListener - "
+										+ terminalListener);
 						listenerEventArray = new Event[listenerEventList.size()];
 						listenerEventList.copyInto(listenerEventArray);
 						listenerEventList.clear();
 					}
-				}
 			}
 
 			if (observer != null) {
-				log.debug("calling terminalChangedEvent in " + observer);
+				TsapiTerminalMonitor.log
+						.debug("calling terminalChangedEvent in " + observer);
 				try {
 					observer.terminalChangedEvent(eventArray);
-				} catch (Exception e) {
-					log.error("EXCEPTION thrown by terminalChangedEvent in "
-							+ observer + " - " + e.getMessage(), e);
+				} catch (final Exception e) {
+					TsapiTerminalMonitor.log.error(
+							"EXCEPTION thrown by terminalChangedEvent in "
+									+ observer + " - " + e.getMessage(), e);
 				}
-				log.debug("returned from terminalChangedEvent in " + observer);
-			} else {
+				TsapiTerminalMonitor.log
+						.debug("returned from terminalChangedEvent in "
+								+ observer);
+			} else
 				deliverListenerEvents(listenerEventArray);
-			}
 		}
 		TsapiTrace.traceExit("run[]", this);
 	}
 }
-

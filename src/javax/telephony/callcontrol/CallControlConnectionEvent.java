@@ -20,4 +20,3 @@ public abstract interface CallControlConnectionEvent extends
 
 	public abstract int getNumberInQueue();
 }
-

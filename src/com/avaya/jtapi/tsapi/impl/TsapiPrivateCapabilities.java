@@ -8,7 +8,7 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 final class TsapiPrivateCapabilities implements PrivateDataCapabilities {
 	TSCapabilities tsCaps = null;
 
-	TsapiPrivateCapabilities(TSCapabilities _tsCaps) {
+	TsapiPrivateCapabilities(final TSCapabilities _tsCaps) {
 		tsCaps = _tsCaps;
 		TsapiTrace.traceConstruction(this, TsapiPrivateCapabilities.class);
 	}
@@ -31,4 +31,3 @@ final class TsapiPrivateCapabilities implements PrivateDataCapabilities {
 		return true;
 	}
 }
-

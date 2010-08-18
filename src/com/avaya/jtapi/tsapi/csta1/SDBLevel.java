@@ -9,7 +9,8 @@ public final class SDBLevel extends ASNEnumerated {
 	static final short ACS_ONLY = 1;
 	static final short ACS_AND_CSTA_CHECKING = 0;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -25,7 +26,6 @@ public final class SDBLevel extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }
-

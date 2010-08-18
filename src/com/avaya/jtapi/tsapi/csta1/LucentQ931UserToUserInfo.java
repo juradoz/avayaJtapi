@@ -6,8 +6,7 @@ public final class LucentQ931UserToUserInfo extends LucentUserToUserInfo {
 		data = null;
 	}
 
-	public LucentQ931UserToUserInfo(byte[] _data) {
+	public LucentQ931UserToUserInfo(final byte[] _data) {
 		super(_data, (short) 8);
 	}
 }
-

@@ -11,8 +11,8 @@ public final class CSTAQueryDeviceInfo extends CSTARequest {
 	String device;
 	public static final int PDU = 37;
 
-	public static CSTAQueryDeviceInfo decode(InputStream in) {
-		CSTAQueryDeviceInfo _this = new CSTAQueryDeviceInfo();
+	public static CSTAQueryDeviceInfo decode(final InputStream in) {
+		final CSTAQueryDeviceInfo _this = new CSTAQueryDeviceInfo();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,17 +21,17 @@ public final class CSTAQueryDeviceInfo extends CSTARequest {
 	public CSTAQueryDeviceInfo() {
 	}
 
-	public CSTAQueryDeviceInfo(String _device) {
+	public CSTAQueryDeviceInfo(final String _device) {
 		device = _device;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 	}
 
@@ -46,11 +46,11 @@ public final class CSTAQueryDeviceInfo extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAQueryDeviceInfo ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 
@@ -58,8 +58,7 @@ public final class CSTAQueryDeviceInfo extends CSTARequest {
 		return lines;
 	}
 
-	public void setDevice(String device) {
+	public void setDevice(final String device) {
 		this.device = device;
 	}
 }
-

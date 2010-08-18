@@ -6,4 +6,3 @@ public abstract interface CallCenterTrunkEvent extends CallCenterCallEvent {
 
 	public abstract CallCenterTrunk getTrunk();
 }
-

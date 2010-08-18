@@ -8,12 +8,12 @@ public class LucentMonitorFilter extends LucentPrivateData {
 	int privateFilter;
 	static final int PDU = 29;
 
-	LucentMonitorFilter(int _privateFilter) {
+	LucentMonitorFilter(final int _privateFilter) {
 		privateFilter = _privateFilter;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		LucentPrivateFilter.encode(privateFilter, memberStream);
 	}
 
@@ -24,12 +24,12 @@ public class LucentMonitorFilter extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorFilter ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentPrivateFilter.print(privateFilter, "privateFilter",
 				indent));
@@ -38,4 +38,3 @@ public class LucentMonitorFilter extends LucentPrivateData {
 		return lines;
 	}
 }
-

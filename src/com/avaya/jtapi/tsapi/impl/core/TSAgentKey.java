@@ -5,28 +5,27 @@ final class TSAgentKey {
 	String acdDeviceID;
 	String agentID;
 
-	TSAgentKey(String _agentDeviceID, String _acdDeviceID, String _agentID) {
+	TSAgentKey(final String _agentDeviceID, final String _acdDeviceID,
+			final String _agentID) {
 		agentDeviceID = _agentDeviceID;
 		acdDeviceID = _acdDeviceID;
 		agentID = _agentID;
 	}
 
 	@Override
-	public boolean equals(Object anObject) {
+	public boolean equals(final Object anObject) {
 		if (anObject instanceof TSAgentKey) {
-			TSAgentKey anotherAgentKey = (TSAgentKey) anObject;
+			final TSAgentKey anotherAgentKey = (TSAgentKey) anObject;
 
 			boolean acdDeviceIDMatch = true;
 			boolean agentIDMatch = true;
-			if ((acdDeviceID != null) && (anotherAgentKey.acdDeviceID != null)) {
+			if (acdDeviceID != null && anotherAgentKey.acdDeviceID != null)
 				acdDeviceIDMatch = acdDeviceID
 						.equals(anotherAgentKey.acdDeviceID);
-			}
-			if ((agentID != null) && (anotherAgentKey.agentID != null)) {
+			if (agentID != null && anotherAgentKey.agentID != null)
 				agentIDMatch = agentID.equals(anotherAgentKey.agentID);
-			}
-			return (agentDeviceID.equals(anotherAgentKey.agentDeviceID))
-					&& (acdDeviceIDMatch) && (agentIDMatch);
+			return agentDeviceID.equals(anotherAgentKey.agentDeviceID)
+					&& acdDeviceIDMatch && agentIDMatch;
 		}
 
 		return false;
@@ -43,4 +42,3 @@ final class TSAgentKey {
 				+ agentID + ")";
 	}
 }
-

@@ -9,15 +9,15 @@ import com.avaya.jtapi.tsapi.asn1.ASNNull;
 public final class CSTACallCompletionConfEvent extends CSTAConfirmation {
 	public static final int PDU = 6;
 
-	public static CSTACallCompletionConfEvent decode(InputStream in) {
-		CSTACallCompletionConfEvent _this = new CSTACallCompletionConfEvent();
+	public static CSTACallCompletionConfEvent decode(final InputStream in) {
+		final CSTACallCompletionConfEvent _this = new CSTACallCompletionConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		ASNNull.decode(memberStream);
 	}
 
@@ -28,11 +28,11 @@ public final class CSTACallCompletionConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTACallCompletionConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

@@ -11,7 +11,8 @@ public class ChargeError extends ASNEnumerated {
 	public static final short CE_CHARGE_TOO_LARGE = 3;
 	public static final short CE_NETWORK_BUSY = 4;
 
-	static Collection<String> print(short value, String name, String indent) {
+	static Collection<String> print(final short value, final String name,
+			final String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -33,6 +34,6 @@ public class ChargeError extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return print(value, str, name, indent);
+		return ASNEnumerated.print(value, str, name, indent);
 	}
 }

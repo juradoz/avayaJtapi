@@ -11,8 +11,8 @@ public class ACDAddressEventImpl extends TsapiListenerCallCenterEvent implements
 	Agent agent;
 	Address address;
 
-	public ACDAddressEventImpl(AddressEventParams addressEventParams,
-			Address address, Agent agent, Object privateData) {
+	public ACDAddressEventImpl(final AddressEventParams addressEventParams,
+			final Address address, final Agent agent, final Object privateData) {
 		super(addressEventParams.getEventId(), addressEventParams.getCause(),
 				addressEventParams.getMetaEvent(), addressEventParams
 						.getSource(), privateData);

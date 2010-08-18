@@ -12,8 +12,8 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 
 	protected Object privateData = null;
 
-	public TsapiObserverEvent(int _cause, int _metaCode, Object _privateData,
-			int _eventPackage) {
+	public TsapiObserverEvent(final int _cause, final int _metaCode,
+			final Object _privateData, final int _eventPackage) {
 		cause = _cause;
 		metaCode = _metaCode;
 		privateData = _privateData;
@@ -21,30 +21,25 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 	}
 
 	public final int getCallCenterCause() {
-		if ((cause == 101) || (cause == 302)) {
+		if (cause == 101 || cause == 302)
 			return cause;
-		}
 		return 100;
 	}
 
 	public final int getCallControlCause() {
-		if ((cause == 101) || (cause == 202) || (cause == 203)
-				|| (cause == 204) || (cause == 205) || (cause == 206)
-				|| (cause == 207) || (cause == 208) || (cause == 209)
-				|| (cause == 210) || (cause == 211) || (cause == 212)
-				|| (cause == 213) || (cause == 214)) {
+		if (cause == 101 || cause == 202 || cause == 203 || cause == 204
+				|| cause == 205 || cause == 206 || cause == 207 || cause == 208
+				|| cause == 209 || cause == 210 || cause == 211 || cause == 212
+				|| cause == 213 || cause == 214)
 			return cause;
-		}
 		return 100;
 	}
 
 	public final int getCause() {
-		if ((cause == 101) || (cause == 102) || (cause == 103)
-				|| (cause == 104) || (cause == 105) || (cause == 106)
-				|| (cause == 107) || (cause == 108) || (cause == 109)
-				|| (cause == 110)) {
+		if (cause == 101 || cause == 102 || cause == 103 || cause == 104
+				|| cause == 105 || cause == 106 || cause == 107 || cause == 108
+				|| cause == 109 || cause == 110)
 			return cause;
-		}
 		return 100;
 	}
 
@@ -53,9 +48,8 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 	}
 
 	public final int getMediaCause() {
-		if (cause == 401) {
+		if (cause == 401)
 			return cause;
-		}
 		return 400;
 	}
 
@@ -68,11 +62,10 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 	}
 
 	public final Object getPrivateData() {
-		if ((privateData instanceof TsapiPrivate)
-				|| (privateData instanceof LucentChargeAdviceEvent)
-				|| (privateData instanceof TsapiPrivateStateEvent)) {
+		if (privateData instanceof TsapiPrivate
+				|| privateData instanceof LucentChargeAdviceEvent
+				|| privateData instanceof TsapiPrivateStateEvent)
 			return privateData;
-		}
 		return null;
 	}
 
@@ -84,4 +77,3 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 		newMetaEvent = true;
 	}
 }
-

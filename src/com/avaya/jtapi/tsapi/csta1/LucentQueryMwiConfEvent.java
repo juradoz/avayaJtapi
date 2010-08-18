@@ -7,8 +7,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNBitString;
 
 public final class LucentQueryMwiConfEvent extends LucentPrivateData {
-	public static LucentQueryMwiConfEvent decode(InputStream in) {
-		LucentQueryMwiConfEvent _this = new LucentQueryMwiConfEvent();
+	public static LucentQueryMwiConfEvent decode(final InputStream in) {
+		final LucentQueryMwiConfEvent _this = new LucentQueryMwiConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -19,7 +19,7 @@ public final class LucentQueryMwiConfEvent extends LucentPrivateData {
 	static final int PDU = 21;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		applicationType = ASNBitString.decode(memberStream);
 	}
 
@@ -34,12 +34,12 @@ public final class LucentQueryMwiConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryMwiConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(LucentMwiApplication.print(applicationType,
 				"applicationType", indent));
@@ -48,4 +48,3 @@ public final class LucentQueryMwiConfEvent extends LucentPrivateData {
 		return lines;
 	}
 }
-

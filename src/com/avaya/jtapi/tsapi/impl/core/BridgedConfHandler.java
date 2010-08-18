@@ -10,32 +10,29 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class BridgedConfHandler implements ConfHandler {
 	TSConnection conn;
 
-	BridgedConfHandler(TSConnection _conn) {
+	BridgedConfHandler(final TSConnection _conn) {
 		conn = _conn;
 	}
 
-	public void handleConf(CSTAEvent event) {
-		if ((event == null)
-				|| (!(event.getEvent() instanceof CSTAClearConnectionConfEvent))) {
+	public void handleConf(final CSTAEvent event) {
+		if (event == null
+				|| !(event.getEvent() instanceof CSTAClearConnectionConfEvent))
 			return;
-		}
 
 		conn.replyTermConnPriv = event.getPrivData();
 
-		Vector<TSEvent> eventList = new Vector<TSEvent>();
-		if (conn.getTSConn().getTermConns().size() > 1) {
+		final Vector<TSEvent> eventList = new Vector<TSEvent>();
+		if (conn.getTSConn().getTermConns().size() > 1)
 			conn.setTermConnState(100, eventList);
-		} else {
+		else
 			conn.setTermConnState(102, eventList);
-		}
-		if (eventList.size() <= 0) {
+		if (eventList.size() <= 0)
 			return;
-		}
-		Vector<TsapiCallMonitor> observers = conn.getTSCall().getObservers();
+		final Vector<TsapiCallMonitor> observers = conn.getTSCall()
+				.getObservers();
 		for (int j = 0; j < observers.size(); ++j) {
-			TsapiCallMonitor callback = observers.elementAt(j);
+			final TsapiCallMonitor callback = observers.elementAt(j);
 			callback.deliverEvents(eventList, 100, false);
 		}
 	}
 }
-

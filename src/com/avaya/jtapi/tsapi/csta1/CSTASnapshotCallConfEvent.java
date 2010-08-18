@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTASnapshotCallConfEvent extends CSTAConfirmation {
-	public static CSTASnapshotCallConfEvent decode(InputStream in) {
-		CSTASnapshotCallConfEvent _this = new CSTASnapshotCallConfEvent();
+	public static CSTASnapshotCallConfEvent decode(final InputStream in) {
+		final CSTASnapshotCallConfEvent _this = new CSTASnapshotCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,17 +21,17 @@ public final class CSTASnapshotCallConfEvent extends CSTAConfirmation {
 	}
 
 	public CSTASnapshotCallConfEvent(
-			CSTASnapshotCallResponseInfo[] _snapshotData) {
+			final CSTASnapshotCallResponseInfo[] _snapshotData) {
 		snapshotData = _snapshotData;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		snapshotData = CSTASnapshotCallData.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTASnapshotCallData.encode(snapshotData, memberStream);
 	}
 
@@ -46,12 +46,12 @@ public final class CSTASnapshotCallConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASnapshotCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTASnapshotCallData.print(snapshotData, "snapshotData",
 				indent));
@@ -60,4 +60,3 @@ public final class CSTASnapshotCallConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 }
-

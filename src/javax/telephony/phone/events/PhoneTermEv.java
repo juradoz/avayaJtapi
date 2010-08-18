@@ -11,4 +11,3 @@ public abstract interface PhoneTermEv extends PhoneEv, TermEv {
 
 	public abstract ComponentGroup getComponentGroup();
 }
-

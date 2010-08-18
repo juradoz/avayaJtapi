@@ -7,4 +7,3 @@ public abstract interface LampModeEv extends PhoneTermEv {
 
 	public abstract int getMode();
 }
-

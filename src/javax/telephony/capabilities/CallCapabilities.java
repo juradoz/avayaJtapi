@@ -5,4 +5,3 @@ public abstract interface CallCapabilities {
 
 	public abstract boolean isObservable();
 }
-

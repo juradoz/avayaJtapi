@@ -7,4 +7,3 @@ public abstract interface CallEvent extends Event {
 
 	public abstract Call getCall();
 }
-

@@ -7,10 +7,10 @@ import com.avaya.jtapi.tsapi.impl.events.TsapiListenerEvent;
 
 public class TerminalEventImpl extends TsapiListenerEvent implements
 		TerminalEvent {
-	private Terminal terminal;
+	private final Terminal terminal;
 
-	public TerminalEventImpl(int eventId, int _cause, Terminal _device,
-			Object privateData) {
+	public TerminalEventImpl(final int eventId, final int _cause,
+			final Terminal _device, final Object privateData) {
 		super(eventId, _cause, null, _device, privateData);
 		terminal = _device;
 	}
@@ -19,4 +19,3 @@ public class TerminalEventImpl extends TsapiListenerEvent implements
 		return terminal;
 	}
 }
-

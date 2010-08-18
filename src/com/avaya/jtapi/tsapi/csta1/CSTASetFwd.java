@@ -13,8 +13,8 @@ public final class CSTASetFwd extends CSTARequest {
 	CSTAForwardingInfo forward;
 	public static final int PDU = 47;
 
-	public static CSTASetFwd decode(InputStream in) {
-		CSTASetFwd _this = new CSTASetFwd();
+	public static CSTASetFwd decode(final InputStream in) {
+		final CSTASetFwd _this = new CSTASetFwd();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,19 +23,19 @@ public final class CSTASetFwd extends CSTARequest {
 	public CSTASetFwd() {
 	}
 
-	public CSTASetFwd(String _device, CSTAForwardingInfo _forward) {
+	public CSTASetFwd(final String _device, final CSTAForwardingInfo _forward) {
 		device = _device;
 		forward = _forward;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		device = ASNIA5String.decode(memberStream);
 		forward = CSTAForwardingInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(device, memberStream);
 		ASNSequence.encode(forward, memberStream);
 	}
@@ -55,12 +55,12 @@ public final class CSTASetFwd extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetFwd ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(device, "device", indent));
 		lines.addAll(CSTAForwardingInfo.print(forward, "forward", indent));
@@ -69,4 +69,3 @@ public final class CSTASetFwd extends CSTARequest {
 		return lines;
 	}
 }
-

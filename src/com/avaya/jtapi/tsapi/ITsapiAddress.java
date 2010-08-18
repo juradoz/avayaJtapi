@@ -8,4 +8,3 @@ import javax.telephony.callcontrol.CallControlAddress;
 public abstract interface ITsapiAddress extends Address, CallControlAddress,
 		CallCenterAddress, RouteAddress {
 }
-

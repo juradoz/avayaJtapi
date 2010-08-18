@@ -4,7 +4,7 @@ import javax.telephony.events.ConnDisconnectedEv;
 
 public final class TsapiConnDisconnectedEvent extends TsapiConnEvent implements
 		ConnDisconnectedEv {
-	public TsapiConnDisconnectedEvent(ConnEventParams params) {
+	public TsapiConnDisconnectedEvent(final ConnEventParams params) {
 		super(params);
 	}
 
@@ -12,4 +12,3 @@ public final class TsapiConnDisconnectedEvent extends TsapiConnEvent implements
 		return 107;
 	}
 }
-

@@ -10,13 +10,14 @@ public abstract class TsapiProvEvent extends TsapiObserverEvent implements
 		PrivateProvEv {
 	Provider jtapi_provider = null;
 
-	TsapiProvEvent(Provider _provider, int _cause, int _metaCode,
-			Object _privateData) {
+	TsapiProvEvent(final Provider _provider, final int _cause,
+			final int _metaCode, final Object _privateData) {
 		this(_provider, _cause, _metaCode, _privateData, 0);
 	}
 
-	public TsapiProvEvent(Provider _provider, int _cause, int _metaCode,
-			Object _privateData, int _eventPackage) {
+	public TsapiProvEvent(final Provider _provider, final int _cause,
+			final int _metaCode, final Object _privateData,
+			final int _eventPackage) {
 		super(_cause, _metaCode, _privateData, _eventPackage);
 		jtapi_provider = _provider;
 	}
@@ -25,4 +26,3 @@ public abstract class TsapiProvEvent extends TsapiObserverEvent implements
 		return jtapi_provider;
 	}
 }
-

@@ -14,4 +14,3 @@ public abstract interface ACDAddressEvent extends CallCenterEvent, AddressEvent 
 
 	public abstract Agent getAgent();
 }
-

@@ -16,20 +16,20 @@ public class LucentV5RouteRequestEvent extends LucentRouteRequestEvent
 	boolean flexibleBilling;
 	public static final int PDU = 83;
 
-	public static LucentRouteRequestEvent decode(InputStream in) {
-		LucentV5RouteRequestEvent _this = new LucentV5RouteRequestEvent();
+	public static LucentRouteRequestEvent decode(final InputStream in) {
+		final LucentV5RouteRequestEvent _this = new LucentV5RouteRequestEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
+	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
 		return LucentV5LookaheadInfo.decode(memberStream);
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		super.decodeMembers(memberStream);
 		ucid = ASNIA5String.decode(memberStream);
 		callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
@@ -37,7 +37,7 @@ public class LucentV5RouteRequestEvent extends LucentRouteRequestEvent
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 		ASNIA5String.encode(ucid, memberStream);
 		ASNSequence.encode(callOriginatorInfo, memberStream);
@@ -63,12 +63,12 @@ public class LucentV5RouteRequestEvent extends LucentRouteRequestEvent
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5RouteRequestEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(LucentLookaheadInfo.print(lookaheadInfo, "lookaheadInfo",
@@ -86,16 +86,16 @@ public class LucentV5RouteRequestEvent extends LucentRouteRequestEvent
 		return lines;
 	}
 
-	public void setCallOriginatorInfo(CSTACallOriginatorInfo callOriginatorInfo) {
+	public void setCallOriginatorInfo(
+			final CSTACallOriginatorInfo callOriginatorInfo) {
 		this.callOriginatorInfo = callOriginatorInfo;
 	}
 
-	public void setFlexibleBilling(boolean flexibleBilling) {
+	public void setFlexibleBilling(final boolean flexibleBilling) {
 		this.flexibleBilling = flexibleBilling;
 	}
 
-	public void setUcid(String ucid) {
+	public void setUcid(final String ucid) {
 		this.ucid = ucid;
 	}
 }
-

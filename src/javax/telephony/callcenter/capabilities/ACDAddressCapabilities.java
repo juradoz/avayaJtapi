@@ -15,4 +15,3 @@ public abstract interface ACDAddressCapabilities extends AddressCapabilities {
 
 	public abstract boolean canGetRelativeQueueLoad();
 }
-

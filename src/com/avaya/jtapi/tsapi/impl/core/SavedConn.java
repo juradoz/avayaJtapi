@@ -4,9 +4,8 @@ final class SavedConn {
 	TSConnection conn;
 	long saveTime;
 
-	SavedConn(TSConnection _conn) {
+	SavedConn(final TSConnection _conn) {
 		conn = _conn;
 		saveTime = System.currentTimeMillis();
 	}
 }
-

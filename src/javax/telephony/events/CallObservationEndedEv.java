@@ -5,4 +5,3 @@ public abstract interface CallObservationEndedEv extends CallEv {
 
 	public abstract Object getEndedObject();
 }
-

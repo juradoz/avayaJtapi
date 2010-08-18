@@ -7,4 +7,3 @@ public abstract interface ITsapiProviderEx2 extends ITsapiProviderEx {
 	public abstract void setPrivileges(String paramString)
 			throws TsapiInvalidArgumentException;
 }
-

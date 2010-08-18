@@ -11,20 +11,20 @@ public final class CSTAQueryDndConfEvent extends CSTAConfirmation {
 	boolean doNotDisturb;
 	public static final int PDU = 30;
 
-	public static CSTAQueryDndConfEvent decode(InputStream in) {
-		CSTAQueryDndConfEvent _this = new CSTAQueryDndConfEvent();
+	public static CSTAQueryDndConfEvent decode(final InputStream in) {
+		final CSTAQueryDndConfEvent _this = new CSTAQueryDndConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		doNotDisturb = ASNBoolean.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNBoolean.encode(doNotDisturb, memberStream);
 	}
 
@@ -39,12 +39,12 @@ public final class CSTAQueryDndConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryDndConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNBoolean.print(doNotDisturb, "doNotDisturb", indent));
 
@@ -52,8 +52,7 @@ public final class CSTAQueryDndConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 
-	public void setDoNotDisturb(boolean doNotDisturb) {
+	public void setDoNotDisturb(final boolean doNotDisturb) {
 		this.doNotDisturb = doNotDisturb;
 	}
 }
-

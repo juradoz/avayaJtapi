@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class CSTAConsultationCall extends CSTARequest {
-	public static CSTAConsultationCall decode(InputStream in) {
-		CSTAConsultationCall _this = new CSTAConsultationCall();
+	public static CSTAConsultationCall decode(final InputStream in) {
+		final CSTAConsultationCall _this = new CSTAConsultationCall();
 		_this.doDecode(in);
 
 		return _this;
@@ -23,20 +23,20 @@ public final class CSTAConsultationCall extends CSTARequest {
 	public CSTAConsultationCall() {
 	}
 
-	public CSTAConsultationCall(CSTAConnectionID _activeCall,
-			String _calledDevice) {
+	public CSTAConsultationCall(final CSTAConnectionID _activeCall,
+			final String _calledDevice) {
 		activeCall = _activeCall;
 		calledDevice = _calledDevice;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		activeCall = CSTAConnectionID.decode(memberStream);
 		calledDevice = ASNIA5String.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(activeCall, memberStream);
 		ASNIA5String.encode(calledDevice, memberStream);
 	}
@@ -56,11 +56,11 @@ public final class CSTAConsultationCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAConsultationCall ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
 		lines.addAll(ASNIA5String.print(calledDevice, "calledDevice", indent));
@@ -69,4 +69,3 @@ public final class CSTAConsultationCall extends CSTARequest {
 		return lines;
 	}
 }
-

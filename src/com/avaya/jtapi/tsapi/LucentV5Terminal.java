@@ -9,4 +9,3 @@ public abstract interface LucentV5Terminal extends LucentTerminal {
 			int paramInt3, String paramString1, String paramString2)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException;
 }
-

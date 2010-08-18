@@ -9,21 +9,20 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class LucentV7ProviderImpl extends LucentV5ProviderImpl implements
 		LucentV7Provider {
-	LucentV7ProviderImpl(String url, Vector<TsapiVendor> vendors) {
+	LucentV7ProviderImpl(final String url, final Vector<TsapiVendor> vendors) {
 		super(url, vendors);
 		TsapiTrace.traceConstruction(this, LucentV7ProviderImpl.class);
 	}
 
-	LucentV7ProviderImpl(TSProviderImpl _tsProvider) {
+	LucentV7ProviderImpl(final TSProviderImpl _tsProvider) {
 		super(_tsProvider);
 		TsapiTrace.traceConstruction(this, LucentV7ProviderImpl.class);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof LucentV7ProviderImpl) {
+	public boolean equals(final Object obj) {
+		if (obj instanceof LucentV7ProviderImpl)
 			return tsProvider.equals(((LucentV7ProviderImpl) obj).tsProvider);
-		}
 
 		return false;
 	}
@@ -34,4 +33,3 @@ class LucentV7ProviderImpl extends LucentV5ProviderImpl implements
 		TsapiTrace.traceDestruction(this, LucentV7ProviderImpl.class);
 	}
 }
-

@@ -35,28 +35,27 @@ public class TerminalEventParams {
 		return terminal;
 	}
 
-	public void setCause(int cause) {
+	public void setCause(final int cause) {
 		this.cause = cause;
 	}
 
-	public void setEventId(int eventId) {
+	public void setEventId(final int eventId) {
 		this.eventId = eventId;
 	}
 
-	public void setMetaEvent(MetaEvent metaEvent) {
+	public void setMetaEvent(final MetaEvent metaEvent) {
 		this.metaEvent = metaEvent;
 	}
 
-	public void setPrivateData(Object o) {
+	public void setPrivateData(final Object o) {
 		privateData = o;
 	}
 
-	public void setSource(Object source) {
+	public void setSource(final Object source) {
 		this.source = source;
 	}
 
-	public void setTerminal(Terminal terminal) {
+	public void setTerminal(final Terminal terminal) {
 		this.terminal = terminal;
 	}
 }
-

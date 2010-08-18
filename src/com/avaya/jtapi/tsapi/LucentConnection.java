@@ -11,4 +11,3 @@ public abstract interface LucentConnection extends ITsapiConnection {
 			TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException, TsapiInvalidStateException;
 }
-

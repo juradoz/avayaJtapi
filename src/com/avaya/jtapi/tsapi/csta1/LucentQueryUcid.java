@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class LucentQueryUcid extends LucentPrivateData {
-	public static LucentQueryUcid decode(InputStream in) {
-		LucentQueryUcid _this = new LucentQueryUcid();
+	public static LucentQueryUcid decode(final InputStream in) {
+		final LucentQueryUcid _this = new LucentQueryUcid();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,17 +20,17 @@ public final class LucentQueryUcid extends LucentPrivateData {
 	public LucentQueryUcid() {
 	}
 
-	public LucentQueryUcid(CSTAConnectionID _call) {
+	public LucentQueryUcid(final CSTAConnectionID _call) {
 		call = _call;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		call = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(call, memberStream);
 	}
 
@@ -41,12 +41,12 @@ public final class LucentQueryUcid extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryUcid ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(call, "call", indent));
 
@@ -54,4 +54,3 @@ public final class LucentQueryUcid extends LucentPrivateData {
 		return lines;
 	}
 }
-

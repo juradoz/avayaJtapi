@@ -12,28 +12,29 @@ import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 public class CSTAPrivate {
 	private static Logger log = Logger.getLogger(CSTAPrivate.class);
 
-	public static void translatePrivateData(CSTAEvent event, String debugID) {
+	public static void translatePrivateData(final CSTAEvent event,
+			final String debugID) {
 		try {
 			if (event.getPrivData() instanceof CSTAPrivate) {
-				CSTAPrivate priv = (CSTAPrivate) event.getPrivData();
+				final CSTAPrivate priv = (CSTAPrivate) event.getPrivData();
 
-				if ((priv.data != null) && (priv.data.length > 0)) {
+				if (priv.data != null && priv.data.length > 0) {
 					if (LucentPrivateData.isAvayaVendor(priv.vendor)) {
-						LucentPrivateData luPriv = LucentPrivateData.create(
-								priv, event.getEventHeader().getEventType());
+						final LucentPrivateData luPriv = LucentPrivateData
+								.create(priv, event.getEventHeader()
+										.getEventType());
 
-						if (luPriv != null) {
+						if (luPriv != null)
 							event.setPrivData(luPriv);
-						}
 					}
 
-				} else {
+				} else
 					event.setPrivData(null);
-				}
 			}
-		} catch (Exception e) {
-			log.error("tsapi.translatePrivateData() failure: for " + debugID);
-			log.error(e.getMessage(), e);
+		} catch (final Exception e) {
+			CSTAPrivate.log.error("tsapi.translatePrivateData() failure: for "
+					+ debugID);
+			CSTAPrivate.log.error(e.getMessage(), e);
 		}
 	}
 
@@ -42,20 +43,20 @@ public class CSTAPrivate {
 
 	public int tsType;
 
-	public CSTAPrivate(byte[] _data) {
+	public CSTAPrivate(final byte[] _data) {
 		this(_data, false);
 	}
 
-	public CSTAPrivate(byte[] _data, boolean waitForResponse) {
+	public CSTAPrivate(final byte[] _data, final boolean waitForResponse) {
 		data = _data;
-		if (waitForResponse) {
+		if (waitForResponse)
 			tsType = 89;
-		} else {
+		else
 			tsType = 95;
-		}
 	}
 
-	public CSTAPrivate(String _vendor, byte[] _data, int _tsType) {
+	public CSTAPrivate(final String _vendor, final byte[] _data,
+			final int _tsType) {
 		vendor = _vendor;
 		data = _data;
 		tsType = _tsType;
@@ -66,12 +67,12 @@ public class CSTAPrivate {
 	}
 
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("TsapiPrivate ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(vendor, "vendor", indent));
 		lines.addAll(ASNOctetString.print(data, "data", indent));
@@ -81,4 +82,3 @@ public class CSTAPrivate {
 		return lines;
 	}
 }
-

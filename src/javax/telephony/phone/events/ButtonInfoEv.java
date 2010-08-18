@@ -9,4 +9,3 @@ public abstract interface ButtonInfoEv extends PhoneTermEv {
 
 	public abstract String getOldInfo();
 }
-

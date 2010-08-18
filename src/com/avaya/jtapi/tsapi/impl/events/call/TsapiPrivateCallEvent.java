@@ -5,7 +5,7 @@ import javax.telephony.privatedata.events.PrivateCallEv;
 @SuppressWarnings("deprecation")
 public final class TsapiPrivateCallEvent extends TsapiCallEvent implements
 		PrivateCallEv {
-	public TsapiPrivateCallEvent(CallEventParams params) {
+	public TsapiPrivateCallEvent(final CallEventParams params) {
 		super(params, 5);
 	}
 

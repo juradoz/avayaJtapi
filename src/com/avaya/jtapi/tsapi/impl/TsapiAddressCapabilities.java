@@ -16,21 +16,21 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		ACDManagerAddressCapabilities {
 	TSCapabilities tsCaps = null;
 
-	public TsapiAddressCapabilities(TSCapabilities _tsCaps) {
+	public TsapiAddressCapabilities(final TSCapabilities _tsCaps) {
 		tsCaps = _tsCaps;
 		TsapiTrace.traceConstruction(this, TsapiAddressCapabilities.class);
 	}
 
-	public boolean canAddCallObserver(boolean remain) {
+	public boolean canAddCallObserver(final boolean remain) {
 		TsapiTrace.traceEntry("canAddCallObserver[boolean remain]", this);
-		boolean can = tsCaps.getMonitorCallsViaDevice() == 1;
+		final boolean can = tsCaps.getMonitorCallsViaDevice() == 1;
 		TsapiTrace.traceExit("canAddCallObserver[boolean remain]", this);
 		return can;
 	}
 
 	public boolean canCancelForwarding() {
 		TsapiTrace.traceEntry("canCancelForwarding[]", this);
-		boolean can = tsCaps.getSetFwd() == 1;
+		final boolean can = tsCaps.getSetFwd() == 1;
 		TsapiTrace.traceExit("canCancelForwarding[]", this);
 		return can;
 	}
@@ -49,15 +49,15 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 
 	public boolean canGetDoNotDisturb() {
 		TsapiTrace.traceEntry("canGetDoNotDisturb[]", this);
-		boolean can = (tsCaps.getDoNotDisturbEvent() == 1)
-				|| (tsCaps.getQueryDnd() == 1);
+		final boolean can = tsCaps.getDoNotDisturbEvent() == 1
+				|| tsCaps.getQueryDnd() == 1;
 		TsapiTrace.traceExit("canGetDoNotDisturb[]", this);
 		return can;
 	}
 
 	public boolean canGetForwarding() {
 		TsapiTrace.traceEntry("canGetForwarding[]", this);
-		boolean can = tsCaps.getQueryFwd() == 1;
+		final boolean can = tsCaps.getQueryFwd() == 1;
 		TsapiTrace.traceExit("canGetForwarding[]", this);
 		return can;
 	}
@@ -70,15 +70,15 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 
 	public boolean canGetMessageWaiting() {
 		TsapiTrace.traceEntry("canGetMessageWaiting[]", this);
-		boolean can = (tsCaps.getMessageWaitingEvent() == 1)
-				|| (tsCaps.getQueryMwi() == 1);
+		final boolean can = tsCaps.getMessageWaitingEvent() == 1
+				|| tsCaps.getQueryMwi() == 1;
 		TsapiTrace.traceExit("canGetMessageWaiting[]", this);
 		return can;
 	}
 
 	public boolean canGetNumberQueued() {
 		TsapiTrace.traceEntry("canGetNumberQueued[]", this);
-		boolean can = (tsCaps.isLucent()) || (tsCaps.getQueuedEvent() == 1);
+		final boolean can = tsCaps.isLucent() || tsCaps.getQueuedEvent() == 1;
 		TsapiTrace.traceExit("canGetNumberQueued[]", this);
 		return can;
 	}
@@ -103,7 +103,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 
 	public boolean canRouteCalls() {
 		TsapiTrace.traceEntry("canRouteCalls[]", this);
-		boolean can = tsCaps.getRouteRequestEvent() == 1;
+		final boolean can = tsCaps.getRouteRequestEvent() == 1;
 
 		TsapiTrace.traceExit("canRouteCalls[]", this);
 		return can;
@@ -111,21 +111,21 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 
 	public boolean canSetDoNotDisturb() {
 		TsapiTrace.traceEntry("canSetDoNotDisturb[]", this);
-		boolean can = tsCaps.getSetDnd() == 1;
+		final boolean can = tsCaps.getSetDnd() == 1;
 		TsapiTrace.traceExit("canSetDoNotDisturb[]", this);
 		return can;
 	}
 
 	public boolean canSetForwarding() {
 		TsapiTrace.traceEntry("canSetForwarding[]", this);
-		boolean can = tsCaps.getSetFwd() == 1;
+		final boolean can = tsCaps.getSetFwd() == 1;
 		TsapiTrace.traceExit("canSetForwarding[]", this);
 		return can;
 	}
 
 	public boolean canSetMessageWaiting() {
 		TsapiTrace.traceEntry("canSetMessageWaiting[]", this);
-		boolean can = tsCaps.getSetMwi() == 1;
+		final boolean can = tsCaps.getSetMwi() == 1;
 		TsapiTrace.traceExit("canSetMessageWaiting[]", this);
 		return can;
 	}
@@ -138,9 +138,8 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 
 	public boolean isObservable() {
 		TsapiTrace.traceEntry("isObservable[]", this);
-		boolean is = tsCaps.getMonitorDevice() == 1;
+		final boolean is = tsCaps.getMonitorDevice() == 1;
 		TsapiTrace.traceExit("isObservable[]", this);
 		return is;
 	}
 }
-

@@ -63,4 +63,3 @@ public abstract interface LucentCall extends ITsapiCall, LucentCallInfo {
 			TsapiMethodNotSupportedException,
 			TsapiResourceUnavailableException, TsapiPrivilegeViolationException;
 }
-

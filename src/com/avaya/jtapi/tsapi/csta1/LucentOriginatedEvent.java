@@ -12,21 +12,21 @@ public class LucentOriginatedEvent extends LucentPrivateData {
 	LucentUserToUserInfo userInfo;
 	static final int PDU = 47;
 
-	public static LucentOriginatedEvent decode(InputStream in) {
-		LucentOriginatedEvent _this = new LucentOriginatedEvent();
+	public static LucentOriginatedEvent decode(final InputStream in) {
+		final LucentOriginatedEvent _this = new LucentOriginatedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		physicalTerminal_asn = ASNIA5String.decode(memberStream);
 		userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(physicalTerminal_asn, memberStream);
 		LucentUserToUserInfo.encode(userInfo, memberStream);
 	}
@@ -46,12 +46,12 @@ public class LucentOriginatedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentOriginatedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(physicalTerminal_asn,
 				"physicalTerminal", indent));
@@ -61,12 +61,11 @@ public class LucentOriginatedEvent extends LucentPrivateData {
 		return lines;
 	}
 
-	public void setPhysicalTerminal_asn(String physicalTerminal_asn) {
+	public void setPhysicalTerminal_asn(final String physicalTerminal_asn) {
 		this.physicalTerminal_asn = physicalTerminal_asn;
 	}
 
-	public void setUserInfo(LucentUserToUserInfo userInfo) {
+	public void setUserInfo(final LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }
-

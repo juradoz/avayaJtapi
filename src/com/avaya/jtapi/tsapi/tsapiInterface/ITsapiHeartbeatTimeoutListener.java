@@ -5,4 +5,3 @@ import java.util.EventListener;
 public abstract interface ITsapiHeartbeatTimeoutListener extends EventListener {
 	public abstract void heartbeatTimeout();
 }
-

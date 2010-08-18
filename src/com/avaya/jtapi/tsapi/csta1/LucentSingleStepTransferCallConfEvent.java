@@ -9,8 +9,9 @@ public class LucentSingleStepTransferCallConfEvent extends LucentPrivateData {
 	CSTAConnectionID transferredCall;
 	static final int PDU = 143;
 
-	public static LucentSingleStepTransferCallConfEvent decode(InputStream in) {
-		LucentSingleStepTransferCallConfEvent _this = new LucentSingleStepTransferCallConfEvent();
+	public static LucentSingleStepTransferCallConfEvent decode(
+			final InputStream in) {
+		final LucentSingleStepTransferCallConfEvent _this = new LucentSingleStepTransferCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -20,17 +21,17 @@ public class LucentSingleStepTransferCallConfEvent extends LucentPrivateData {
 	}
 
 	public LucentSingleStepTransferCallConfEvent(
-			CSTAConnectionID _transferredCall) {
+			final CSTAConnectionID _transferredCall) {
 		transferredCall = _transferredCall;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		transferredCall = CSTAConnectionID.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(transferredCall, memberStream);
 	}
 
@@ -45,12 +46,12 @@ public class LucentSingleStepTransferCallConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSingleStepTransferCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(transferredCall, "transferredCall",
 				indent));

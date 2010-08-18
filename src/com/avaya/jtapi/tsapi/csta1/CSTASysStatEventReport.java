@@ -10,8 +10,8 @@ import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 public class CSTASysStatEventReport extends CSTAEventReport {
 	public static final int PDU = 106;
 
-	public static CSTASysStatEventReport decode(InputStream in) {
-		CSTASysStatEventReport _this = new CSTASysStatEventReport();
+	public static CSTASysStatEventReport decode(final InputStream in) {
+		final CSTASysStatEventReport _this = new CSTASysStatEventReport();
 		_this.doDecode(in);
 		return _this;
 	}
@@ -19,12 +19,12 @@ public class CSTASysStatEventReport extends CSTAEventReport {
 	private short state;
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		state = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(state, memberStream);
 	}
 
@@ -39,19 +39,18 @@ public class CSTASysStatEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASysStatEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 		lines.addAll(SystemStatus.print(state, "state", indent));
 		lines.add("}");
 		return lines;
 	}
 
-	public void setState(short state) {
+	public void setState(final short state) {
 		this.state = state;
 	}
 }
-

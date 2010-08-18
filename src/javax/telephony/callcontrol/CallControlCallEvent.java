@@ -14,4 +14,3 @@ public abstract interface CallControlCallEvent extends CallControlEvent,
 
 	public abstract Address getLastRedirectedAddress();
 }
-

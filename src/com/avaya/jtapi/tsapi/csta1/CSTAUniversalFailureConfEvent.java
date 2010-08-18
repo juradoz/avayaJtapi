@@ -8,8 +8,8 @@ import java.util.Collection;
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public final class CSTAUniversalFailureConfEvent extends CSTAConfirmation {
-	public static CSTAUniversalFailureConfEvent decode(InputStream in) {
-		CSTAUniversalFailureConfEvent _this = new CSTAUniversalFailureConfEvent();
+	public static CSTAUniversalFailureConfEvent decode(final InputStream in) {
+		final CSTAUniversalFailureConfEvent _this = new CSTAUniversalFailureConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -22,17 +22,17 @@ public final class CSTAUniversalFailureConfEvent extends CSTAConfirmation {
 	public CSTAUniversalFailureConfEvent() {
 	}
 
-	public CSTAUniversalFailureConfEvent(short _error) {
+	public CSTAUniversalFailureConfEvent(final short _error) {
 		error = _error;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		error = ASNEnumerated.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNEnumerated.encode(error, memberStream);
 	}
 
@@ -47,12 +47,12 @@ public final class CSTAUniversalFailureConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAUniversalFailureConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAUniversalFailure.print(error, "error", indent));
 

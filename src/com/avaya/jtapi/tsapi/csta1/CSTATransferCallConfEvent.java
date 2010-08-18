@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTATransferCallConfEvent extends CSTAConfirmation {
-	public static CSTATransferCallConfEvent decode(InputStream in) {
-		CSTATransferCallConfEvent _this = new CSTATransferCallConfEvent();
+	public static CSTATransferCallConfEvent decode(final InputStream in) {
+		final CSTATransferCallConfEvent _this = new CSTATransferCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
@@ -21,20 +21,20 @@ public final class CSTATransferCallConfEvent extends CSTAConfirmation {
 	public CSTATransferCallConfEvent() {
 	}
 
-	public CSTATransferCallConfEvent(CSTAConnectionID _newCall,
-			CSTAConnection[] _connList) {
+	public CSTATransferCallConfEvent(final CSTAConnectionID _newCall,
+			final CSTAConnection[] _connList) {
 		newCall = _newCall;
 		connList = _connList;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		newCall = CSTAConnectionID.decode(memberStream);
 		connList = ConnectionList.decode(memberStream);
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		CSTAConnectionID.encode(newCall, memberStream);
 		ConnectionList.encode(connList, memberStream);
 	}
@@ -54,12 +54,12 @@ public final class CSTATransferCallConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTATransferCallConfEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
 		lines.addAll(ConnectionList.print(connList, "connList", indent));
@@ -68,4 +68,3 @@ public final class CSTATransferCallConfEvent extends CSTAConfirmation {
 		return lines;
 	}
 }
-

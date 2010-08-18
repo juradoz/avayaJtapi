@@ -21,15 +21,15 @@ public class LucentEstablishedEvent extends LucentPrivateData {
 	CSTAExtendedDeviceID distributingDevice_asn;
 	static final int PDU = 61;
 
-	static LucentEstablishedEvent decode(InputStream in) {
-		LucentEstablishedEvent _this = new LucentEstablishedEvent();
+	static LucentEstablishedEvent decode(final InputStream in) {
+		final LucentEstablishedEvent _this = new LucentEstablishedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 		trunkGroup = ASNIA5String.decode(memberStream);
 		trunkMember = ASNIA5String.decode(memberStream);
 		split_asn = ASNIA5String.decode(memberStream);
@@ -42,7 +42,7 @@ public class LucentEstablishedEvent extends LucentPrivateData {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNIA5String.encode(trunkGroup, memberStream);
 		ASNIA5String.encode(trunkMember, memberStream);
 		ASNIA5String.encode(split_asn, memberStream);
@@ -97,12 +97,12 @@ public class LucentEstablishedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentEstablishedEvent ::=");
 		lines.add("{");
 
-		String indent = "  ";
+		final String indent = "  ";
 
 		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
 		lines.addAll(ASNIA5String.print(trunkMember, "trunkMember", indent));
@@ -123,40 +123,40 @@ public class LucentEstablishedEvent extends LucentPrivateData {
 	}
 
 	public void setDistributingDevice_asn(
-			CSTAExtendedDeviceID distributingDevice_asn) {
+			final CSTAExtendedDeviceID distributingDevice_asn) {
 		this.distributingDevice_asn = distributingDevice_asn;
 	}
 
-	public void setLookaheadInfo(LucentLookaheadInfo lookaheadInfo) {
+	public void setLookaheadInfo(final LucentLookaheadInfo lookaheadInfo) {
 		this.lookaheadInfo = lookaheadInfo;
 	}
 
-	public void setOriginalCallInfo(LucentOriginalCallInfo originalCallInfo) {
+	public void setOriginalCallInfo(
+			final LucentOriginalCallInfo originalCallInfo) {
 		this.originalCallInfo = originalCallInfo;
 	}
 
-	public void setReason(short reason) {
+	public void setReason(final short reason) {
 		this.reason = reason;
 	}
 
-	public void setSplit_asn(String split_asn) {
+	public void setSplit_asn(final String split_asn) {
 		this.split_asn = split_asn;
 	}
 
-	public void setTrunkGroup(String trunkGroup) {
+	public void setTrunkGroup(final String trunkGroup) {
 		this.trunkGroup = trunkGroup;
 	}
 
-	public void setTrunkMember(String trunkMember) {
+	public void setTrunkMember(final String trunkMember) {
 		this.trunkMember = trunkMember;
 	}
 
-	public void setUserEnteredCode(LucentUserEnteredCode userEnteredCode) {
+	public void setUserEnteredCode(final LucentUserEnteredCode userEnteredCode) {
 		this.userEnteredCode = userEnteredCode;
 	}
 
-	public void setUserInfo(LucentUserToUserInfo userInfo) {
+	public void setUserInfo(final LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }
-

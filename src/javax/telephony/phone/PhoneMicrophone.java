@@ -11,4 +11,3 @@ public abstract interface PhoneMicrophone extends Component {
 
 	public abstract void setGain(int paramInt) throws InvalidArgumentException;
 }
-

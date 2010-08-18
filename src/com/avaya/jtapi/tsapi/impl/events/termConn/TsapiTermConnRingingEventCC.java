@@ -7,7 +7,7 @@ import com.avaya.jtapi.tsapi.ITsapiCallInfo;
 @SuppressWarnings("deprecation")
 public class TsapiTermConnRingingEventCC extends TsapiCallCtlTermConnEvent
 		implements CallCtlTermConnRingingEv, ITsapiCallInfo {
-	public TsapiTermConnRingingEventCC(TermConnEventParams params) {
+	public TsapiTermConnRingingEventCC(final TermConnEventParams params) {
 		super(params);
 	}
 
@@ -15,4 +15,3 @@ public class TsapiTermConnRingingEventCC extends TsapiCallCtlTermConnEvent
 		return 218;
 	}
 }
-

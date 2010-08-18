@@ -25,37 +25,37 @@ final class TsapiSSLContext {
 	private static TrustManagerFactory trustManagerFactory = null;
 	private static boolean verifyServerCertificate = false;
 
-	private static File findTrustStore(String tsFileName)
+	private static File findTrustStore(final String tsFileName)
 			throws TsapiPlatformException {
 		try {
 			File tsFile = new File(tsFileName);
 			if (tsFile.isAbsolute()) {
 				if (tsFile.canRead()) {
-					log.info("Found trust store \"" + tsFileName + "\"");
+					TsapiSSLContext.log.info("Found trust store \""
+							+ tsFileName + "\"");
 
 					return tsFile.getCanonicalFile();
 				}
 
 			} else {
-				StringTokenizer classpath = new StringTokenizer(System
+				final StringTokenizer classpath = new StringTokenizer(System
 						.getProperty("java.class.path"), System
 						.getProperty("path.separator"));
 				do {
-					if (!classpath.hasMoreTokens()) {
+					if (!classpath.hasMoreTokens())
 						// break label138;
 						break;
-					}
 					tsFile = new File(classpath.nextToken(), tsFileName);
 				} while (!tsFile.canRead());
 
-				log.info("Classpath search for trust store \"" + tsFileName
-						+ "\" succeeded");
+				TsapiSSLContext.log.info("Classpath search for trust store \""
+						+ tsFileName + "\" succeeded");
 
 				// label138:
 				return tsFile.getCanonicalFile();
 			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 		}
 
 		throw new TsapiPlatformException(4, 0, "Couldn't find trust store \""
@@ -63,100 +63,94 @@ final class TsapiSSLContext {
 	}
 
 	public static synchronized TsapiSSLContext getInstance(
-			String trustStoreLocation, String trustStorePassword,
-			boolean verifyServerCertificate) {
-		if (instance == null) {
+			final String trustStoreLocation, final String trustStorePassword,
+			final boolean verifyServerCertificate) {
+		if (TsapiSSLContext.instance == null)
 			try {
-				instance = new TsapiSSLContext(trustStoreLocation,
-						trustStorePassword);
+				TsapiSSLContext.instance = new TsapiSSLContext(
+						trustStoreLocation, trustStorePassword);
 
 				TsapiSSLContext.verifyServerCertificate = verifyServerCertificate;
-			} catch (TsapiPlatformException e) {
+			} catch (final TsapiPlatformException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new TsapiPlatformException(4, 0,
 						"Could not initialize SSL context. " + e.getMessage());
 			}
 
-		}
-
-		return instance;
+		return TsapiSSLContext.instance;
 	}
 
 	public static SSLSocketFactory getSocketFactory() {
-		if (sslContext == null) {
+		if (TsapiSSLContext.sslContext == null)
 			return null;
-		}
-		return sslContext.getSocketFactory();
+		return TsapiSSLContext.sslContext.getSocketFactory();
 	}
 
 	public static TrustManager[] getTrustManagers() {
-		if (trustManagerFactory == null) {
+		if (TsapiSSLContext.trustManagerFactory == null)
 			return null;
-		}
-		return trustManagerFactory.getTrustManagers();
+		return TsapiSSLContext.trustManagerFactory.getTrustManagers();
 	}
 
 	public static boolean getVerifyServerCertificate() {
-		return verifyServerCertificate;
+		return TsapiSSLContext.verifyServerCertificate;
 	}
 
-	private static void setupServerTrustStore(String trustStoreFile,
-			String trustStorePassword) throws TsapiPlatformException {
+	private static void setupServerTrustStore(final String trustStoreFile,
+			final String trustStorePassword) throws TsapiPlatformException {
 		File jksFile = null;
 		try {
-			jksFile = findTrustStore(trustStoreFile);
+			jksFile = TsapiSSLContext.findTrustStore(trustStoreFile);
 
-			log.info("Using trust store file \"" + jksFile + "\"");
-		} catch (Exception e) {
+			TsapiSSLContext.log.info("Using trust store file \"" + jksFile
+					+ "\"");
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(4, 0,
 					"Couldn't find trust store file \"" + trustStoreFile
 							+ "\".");
 		}
 
 		try {
-			FileInputStream jksInputStream = new FileInputStream(jksFile);
+			final FileInputStream jksInputStream = new FileInputStream(jksFile);
 
-			serverTrustStore = KeyStore.getInstance("JKS");
-			serverTrustStore.load(jksInputStream, trustStorePassword
-					.toCharArray());
-		} catch (Exception e) {
-			serverTrustStore = null;
+			TsapiSSLContext.serverTrustStore = KeyStore.getInstance("JKS");
+			TsapiSSLContext.serverTrustStore.load(jksInputStream,
+					trustStorePassword.toCharArray());
+		} catch (final Exception e) {
+			TsapiSSLContext.serverTrustStore = null;
 			throw new TsapiPlatformException(4, 0,
 					"Couldn't set up server trust store \"" + trustStoreFile
 							+ "\". " + e.getMessage());
 		}
 	}
 
-	private static void validateTrustStoreLocation(String trustStoreLocation) {
-		if (trustStoreLocation == null) {
+	private static void validateTrustStoreLocation(
+			final String trustStoreLocation) {
+		if (trustStoreLocation == null)
 			return;
-		}
 		try {
-			File file = new File(trustStoreLocation);
+			final File file = new File(trustStoreLocation);
 
-			if (!file.isAbsolute()) {
+			if (!file.isAbsolute())
 				throw new TsapiPlatformException(4, 0,
 						"Property setting \"trustStoreLocation="
 								+ trustStoreLocation
 								+ "\" does not specify an absolute path.");
-			}
 
-			if (!file.isFile()) {
+			if (!file.isFile())
 				throw new TsapiPlatformException(4, 0,
 						"Property setting \"trustStoreLocation="
 								+ trustStoreLocation
 								+ "\" does not specify a normal file.");
-			}
 
-			if (!file.canRead()) {
+			if (!file.canRead())
 				throw new TsapiPlatformException(4, 0,
 						"Property setting \"trustStoreLocation="
 								+ trustStoreLocation
 								+ "\" does not specify a readable file.");
-			}
 
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			throw new TsapiPlatformException(4, 0,
 					"Property setting \"trustStoreLocation="
 							+ trustStoreLocation + "\" is not valid. "
@@ -164,46 +158,49 @@ final class TsapiSSLContext {
 		}
 	}
 
-	private TsapiSSLContext(String trustStoreLocation, String trustStorePassword) {
-		SecureRandom secureRandom = new SecureRandom();
+	private TsapiSSLContext(final String trustStoreLocation,
+			final String trustStorePassword) {
+		final SecureRandom secureRandom = new SecureRandom();
 		secureRandom.nextInt();
 
 		if (trustStoreLocation != null) {
-			validateTrustStoreLocation(trustStoreLocation);
-			setupServerTrustStore(trustStoreLocation, trustStorePassword);
-		} else {
-			setupServerTrustStore("avayaprca.jks", "password");
-		}
+			TsapiSSLContext.validateTrustStoreLocation(trustStoreLocation);
+			TsapiSSLContext.setupServerTrustStore(trustStoreLocation,
+					trustStorePassword);
+		} else
+			TsapiSSLContext.setupServerTrustStore("avayaprca.jks", "password");
 
 		try {
-			trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
-		} catch (Exception e) {
+			TsapiSSLContext.trustManagerFactory = TrustManagerFactory
+					.getInstance("SunX509");
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(4, 0,
 					"TrustManagerFactory.getInstance() failed. "
 							+ e.getMessage());
 		}
 
 		try {
-			trustManagerFactory.init(serverTrustStore);
-		} catch (Exception e) {
+			TsapiSSLContext.trustManagerFactory
+					.init(TsapiSSLContext.serverTrustStore);
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(4, 0,
 					"TrustManagerFactory.init() failed. " + e.getMessage());
 		}
 
 		try {
-			sslContext = SSLContext.getInstance("TLS");
-		} catch (Exception e) {
+			TsapiSSLContext.sslContext = SSLContext.getInstance("TLS");
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(4, 0,
 					"SSLContext.getInstance() failed. " + e.getMessage());
 		}
 
 		try {
-			sslContext.init(null, trustManagerFactory.getTrustManagers(),
+			TsapiSSLContext.sslContext.init(null,
+					TsapiSSLContext.trustManagerFactory.getTrustManagers(),
 					secureRandom);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new TsapiPlatformException(4, 0, "SSLContext.init() failed. "
 					+ e.getMessage());
 		}
 	}
 }
-

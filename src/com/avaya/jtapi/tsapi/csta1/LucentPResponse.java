@@ -10,12 +10,12 @@ class LucentPResponse extends LucentPrivateData {
 	byte[] value;
 	static final int PDU = 122;
 
-	LucentPResponse(byte[] _val) {
+	LucentPResponse(final byte[] _val) {
 		value = _val;
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 		ASNOctetString.encode(value, memberStream);
 	}
 
@@ -30,4 +30,3 @@ class LucentPResponse extends LucentPrivateData {
 	}
 
 }
-

@@ -7,4 +7,3 @@ public abstract interface MicrophoneGainEv extends PhoneTermEv {
 
 	public abstract int getGain();
 }
-

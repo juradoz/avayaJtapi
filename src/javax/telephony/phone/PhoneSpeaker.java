@@ -9,4 +9,3 @@ public abstract interface PhoneSpeaker extends Component {
 
 	public abstract void setVolume(int paramInt);
 }
-

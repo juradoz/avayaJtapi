@@ -8,13 +8,14 @@ public final class TsapiInvalidArgumentException extends
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiInvalidArgumentException(int _errorType, int _errorCode) {
+	public TsapiInvalidArgumentException(final int _errorType,
+			final int _errorCode) {
 		errorType = _errorType;
 		errorCode = _errorCode;
 	}
 
-	public TsapiInvalidArgumentException(int _errorType, int _errorCode,
-			String s) {
+	public TsapiInvalidArgumentException(final int _errorType,
+			final int _errorCode, final String s) {
 		super(s);
 		errorType = _errorType;
 		errorCode = _errorCode;
@@ -28,4 +29,3 @@ public final class TsapiInvalidArgumentException extends
 		return errorType;
 	}
 }
-

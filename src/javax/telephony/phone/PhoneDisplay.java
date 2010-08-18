@@ -13,4 +13,3 @@ public abstract interface PhoneDisplay extends Component {
 	public abstract void setDisplay(String paramString, int paramInt1,
 			int paramInt2) throws InvalidArgumentException;
 }
-

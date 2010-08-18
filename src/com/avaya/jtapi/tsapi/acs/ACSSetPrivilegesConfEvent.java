@@ -8,8 +8,8 @@ import java.util.Collection;
 public final class ACSSetPrivilegesConfEvent extends ACSConfirmation {
 	public static final int PDU = 20;
 
-	public static ACSSetPrivilegesConfEvent decode(InputStream in) {
-		ACSSetPrivilegesConfEvent _this = new ACSSetPrivilegesConfEvent();
+	public static ACSSetPrivilegesConfEvent decode(final InputStream in) {
+		final ACSSetPrivilegesConfEvent _this = new ACSSetPrivilegesConfEvent();
 
 		_this.doDecode(in);
 
@@ -17,11 +17,11 @@ public final class ACSSetPrivilegesConfEvent extends ACSConfirmation {
 	}
 
 	@Override
-	public void decodeMembers(InputStream memberStream) {
+	public void decodeMembers(final InputStream memberStream) {
 	}
 
 	@Override
-	public void encodeMembers(OutputStream memberStream) {
+	public void encodeMembers(final OutputStream memberStream) {
 	}
 
 	@Override
@@ -31,11 +31,10 @@ public final class ACSSetPrivilegesConfEvent extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection<String> lines = new ArrayList<String>();
+		final Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSSetPrivilegesConfEvent ::=");
 		lines.add("{");
 		lines.add("}");
 		return lines;
 	}
 }
-

@@ -22,4 +22,3 @@ public abstract interface NetworkSelection extends MobileProvider {
 			throws InvalidArgumentException, MethodNotSupportedException,
 			InvalidStateException;
 }
-
