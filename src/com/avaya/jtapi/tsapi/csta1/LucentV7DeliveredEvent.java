@@ -61,7 +61,7 @@ public class LucentV7DeliveredEvent extends LucentV6DeliveredEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7DeliveredEvent ::=");
 		lines.add("{");

@@ -48,7 +48,7 @@ public class LucentV5NetworkProgressInfo extends LucentNetworkProgressInfo {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("V5NetworkProgressInfo ::=");
 		lines.add("{");
 

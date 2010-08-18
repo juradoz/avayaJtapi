@@ -39,7 +39,7 @@ public class CSTASysStatEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASysStatEvent ::=");
 		lines.add("{");

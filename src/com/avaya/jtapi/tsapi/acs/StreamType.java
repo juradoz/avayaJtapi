@@ -13,7 +13,7 @@ public final class StreamType extends ASNEnumerated {
 	public static final short ST_CSTA_TRUSTED_APP = 5;
 
 	static Collection<String> print(short value, String name, String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 1:

@@ -22,7 +22,7 @@ public final class ConnectionList extends ASNSequenceOf {
 
 	public static Collection<String> print(CSTAConnection[] array, String name,
 			String _indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		if (array == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;

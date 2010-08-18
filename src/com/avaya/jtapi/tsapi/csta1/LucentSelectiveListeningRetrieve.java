@@ -53,7 +53,7 @@ public final class LucentSelectiveListeningRetrieve extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSelectiveListeningRetrieve ::=");
 		lines.add("{");

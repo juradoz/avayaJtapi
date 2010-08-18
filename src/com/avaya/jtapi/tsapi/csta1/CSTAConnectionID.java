@@ -39,7 +39,7 @@ public final class CSTAConnectionID extends ASNSequence implements
 
 	public static Collection<String> print(CSTAConnectionID _this, String name,
 			String _indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;

@@ -42,7 +42,7 @@ public final class LucentV7RouteRequestEvent extends LucentV6RouteRequestEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7RouteRequestEvent ::=");
 		lines.add("{");

@@ -34,7 +34,7 @@ public final class ACSAbortStream extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSAbortStream ::=");
 		lines.add("{");
 

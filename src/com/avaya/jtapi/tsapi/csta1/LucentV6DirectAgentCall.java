@@ -43,7 +43,7 @@ public final class LucentV6DirectAgentCall extends LucentDirectAgentCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6DirectAgentCall ::=");
 		lines.add("{");

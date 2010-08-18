@@ -22,7 +22,7 @@ public final class DeviceList extends ASNSequenceOf {
 
 	public static Collection<String> print(String[] array, String name,
 			String _indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		if (array == null) {
 			lines.add(_indent + name + " <null>");

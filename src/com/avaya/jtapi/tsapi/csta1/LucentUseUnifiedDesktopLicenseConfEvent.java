@@ -26,7 +26,7 @@ public final class LucentUseUnifiedDesktopLicenseConfEvent extends
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentUseUnifiedDesktopLicenseConfEvent ::=");
 		lines.add("{");
 		lines.add("}");

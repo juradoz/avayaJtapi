@@ -59,7 +59,7 @@ public final class CSTARouteUsedEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteUsedEventReport ::=");
 		lines.add("{");

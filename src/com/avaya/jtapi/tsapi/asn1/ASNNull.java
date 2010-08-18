@@ -31,7 +31,7 @@ public abstract class ASNNull extends ASN1 {
 	}
 
 	public static final Collection<String> print(String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add(indent + "NULL");
 		return lines;
 	}

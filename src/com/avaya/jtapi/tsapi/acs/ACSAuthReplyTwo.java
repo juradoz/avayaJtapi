@@ -84,7 +84,7 @@ public final class ACSAuthReplyTwo extends ACSConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSAuthReplyTwo ::=");
 		lines.add("{");
 

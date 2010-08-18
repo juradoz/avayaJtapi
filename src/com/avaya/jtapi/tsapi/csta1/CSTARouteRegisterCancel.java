@@ -46,7 +46,7 @@ public final class CSTARouteRegisterCancel extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRegisterCancel ::=");
 		lines.add("{");

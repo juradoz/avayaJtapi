@@ -42,7 +42,7 @@ public class LucentV6ConferencedEvent extends LucentV5ConferencedEvent
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentV6ConferencedEvent ::=");
 		lines.add("{");
 

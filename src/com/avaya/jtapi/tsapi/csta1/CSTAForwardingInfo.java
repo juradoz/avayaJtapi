@@ -20,7 +20,7 @@ public final class CSTAForwardingInfo extends ASNSequence {
 
 	public static Collection<String> print(CSTAForwardingInfo _this,
 			String name, String _indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");

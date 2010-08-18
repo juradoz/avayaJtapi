@@ -46,7 +46,7 @@ public final class LucentQueryDeviceName extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryDeviceName ::=");
 		lines.add("{");

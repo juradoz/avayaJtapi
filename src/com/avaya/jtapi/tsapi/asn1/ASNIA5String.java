@@ -48,7 +48,7 @@ public abstract class ASNIA5String extends ASN1 {
 
 	public static final Collection<String> print(String str, String name,
 			String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
 		if (name != null) {

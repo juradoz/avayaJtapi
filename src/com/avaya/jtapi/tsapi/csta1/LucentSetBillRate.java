@@ -34,7 +34,7 @@ public class LucentSetBillRate extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetBillRate ::=");
 		lines.add("{");

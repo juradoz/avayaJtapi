@@ -22,7 +22,7 @@ public final class ListForwardParameters extends ASNSequenceOf {
 
 	public static Collection<String> print(CSTAForwardingInfo[] array,
 			String name, String _indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		if (array == null) {
 			lines.add(_indent + name + " <null>");

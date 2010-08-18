@@ -39,7 +39,7 @@ public final class LucentPrivateRouteUsedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentPrivateRouteUsedEvent ::=");
 		lines.add("{");
 

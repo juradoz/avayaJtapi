@@ -12,7 +12,7 @@ public final class Level extends ASNEnumerated {
 	public static final short ACS_LEVEL4 = 4;
 
 	static Collection<String> print(short value, String name, String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 1:

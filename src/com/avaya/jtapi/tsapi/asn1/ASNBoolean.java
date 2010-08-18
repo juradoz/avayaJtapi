@@ -37,7 +37,7 @@ public abstract class ASNBoolean extends ASN1 {
 
 	public static final Collection<String> print(boolean value, String name,
 			String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		StringBuffer line = new StringBuffer(indent);
 		if (name != null) {
 			line.append(name + " ");

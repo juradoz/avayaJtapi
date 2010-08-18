@@ -13,7 +13,7 @@ public final class ACSAuthType extends ASNEnumerated {
 	static final short ANY_LOGIN_ID = 3;
 
 	static Collection<String> print(short value, String name, String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case -1:

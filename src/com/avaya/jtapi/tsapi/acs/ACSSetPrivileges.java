@@ -47,7 +47,7 @@ public final class ACSSetPrivileges extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSSetPrivileges ::=");
 		lines.add("{");
 

@@ -61,7 +61,7 @@ public class LucentV7EstablishedEvent extends LucentV5EstablishedEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7EstablishedEvent ::=");
 		lines.add("{");

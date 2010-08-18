@@ -44,7 +44,7 @@ public abstract class ASNOctetString extends ASN1 {
 
 	public static final Collection<String> print(byte[] str, String name,
 			String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
 		if (name != null) {

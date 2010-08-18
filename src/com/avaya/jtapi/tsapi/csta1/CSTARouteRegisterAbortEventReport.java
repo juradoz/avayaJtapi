@@ -39,7 +39,7 @@ public final class CSTARouteRegisterAbortEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRegisterAbortEventReport ::=");
 		lines.add("{");

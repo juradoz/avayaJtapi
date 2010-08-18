@@ -34,7 +34,7 @@ public final class LucentV6MakePredictiveCall extends LucentMakePredictiveCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6MakePredictiveCall ::=");
 		lines.add("{");

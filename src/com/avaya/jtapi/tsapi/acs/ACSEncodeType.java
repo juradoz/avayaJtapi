@@ -13,7 +13,7 @@ public final class ACSEncodeType extends ASNEnumerated {
 	static final short WIN_NT_WRITE_DATA = 5;
 
 	static Collection<String> print(short value, String name, String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 1:

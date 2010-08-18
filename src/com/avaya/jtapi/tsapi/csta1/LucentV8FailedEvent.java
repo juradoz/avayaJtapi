@@ -45,7 +45,7 @@ public final class LucentV8FailedEvent extends LucentFailedEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentV8FailedEvent ::=");
 		lines.add("{");
 

@@ -23,7 +23,7 @@ public final class LucentV6OriginatedEvent extends LucentOriginatedEvent {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6OriginatedEvent ::=");
 		lines.add("{");

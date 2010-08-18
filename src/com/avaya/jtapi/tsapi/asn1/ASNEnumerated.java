@@ -32,7 +32,7 @@ public abstract class ASNEnumerated extends ASN1 {
 
 	public static Collection<String> print(short value, String str,
 			String name, String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
 		if (name != null) {

@@ -54,7 +54,7 @@ public final class CSTARouteEndEventReport extends CSTAEventReport {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteEndEventReport ::=");
 		lines.add("{");

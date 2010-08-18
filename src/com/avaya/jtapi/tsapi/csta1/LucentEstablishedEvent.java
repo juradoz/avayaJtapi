@@ -97,7 +97,7 @@ public class LucentEstablishedEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentEstablishedEvent ::=");
 		lines.add("{");

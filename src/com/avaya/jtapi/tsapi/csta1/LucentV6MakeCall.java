@@ -43,7 +43,7 @@ public final class LucentV6MakeCall extends LucentMakeCall {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6MakeCall ::=");
 		lines.add("{");

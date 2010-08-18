@@ -47,7 +47,7 @@ public abstract class ASNBitString extends ASN1 {
 
 	public static Collection<String> print(int bits, String str, String name,
 			String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		StringBuffer line = new StringBuffer(indent);
 		if (name != null) {
 			line.append(name + " ");

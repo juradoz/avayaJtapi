@@ -28,7 +28,7 @@ public final class LucentSetAdviceOfChargeConfEvent extends LucentPrivateData {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetAdviceOfChargeConfEvent ::=");
 		lines.add("{");

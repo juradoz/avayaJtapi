@@ -33,7 +33,7 @@ public final class CSTAQueryCallMonitorConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAQueryCallMonitorConfEvent ::=");
 		lines.add("{");
 

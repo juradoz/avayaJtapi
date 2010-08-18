@@ -79,7 +79,7 @@ public final class CSTARouteRequestEv extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRequestEv ::=");
 		lines.add("{");

@@ -145,7 +145,7 @@ public final class ACSUniversalFailure extends ASNEnumerated {
 	public static final short DRIVER_OAM_IN_USE = 1008;
 
 	static Collection<String> print(short value, String name, String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 0:

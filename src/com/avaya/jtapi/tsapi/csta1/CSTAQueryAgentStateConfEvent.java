@@ -39,7 +39,7 @@ public final class CSTAQueryAgentStateConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryAgentStateConfEvent ::=");
 		lines.add("{");

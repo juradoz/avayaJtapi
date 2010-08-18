@@ -66,7 +66,7 @@ public class CSTAPrivate {
 	}
 
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("TsapiPrivate ::=");
 		lines.add("{");

@@ -54,7 +54,7 @@ public final class CSTAAlternateCall extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAAlternateCall ::=");
 		lines.add("{");
 

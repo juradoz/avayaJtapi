@@ -25,7 +25,7 @@ public class LucentV6RouteSelect extends LucentRouteSelect {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV6RouteSelect ::=");
 		lines.add("{");

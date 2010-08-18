@@ -33,7 +33,7 @@ public class CSTASysStatReq extends CSTARequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatReq ::=");
 		lines.add("{");
 

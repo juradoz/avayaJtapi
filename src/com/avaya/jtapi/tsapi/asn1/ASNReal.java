@@ -51,7 +51,7 @@ public abstract class ASNReal extends ASN1 {
 
 	public static Collection<String> print(float value, String name,
 			String indent) {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(indent);
 		if (name != null) {

@@ -45,7 +45,7 @@ public final class CSTAMakeCallConfEvent extends CSTAConfirmation {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAMakeCallConfEvent ::=");
 		lines.add("{");
 

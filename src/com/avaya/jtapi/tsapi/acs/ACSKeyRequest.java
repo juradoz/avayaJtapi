@@ -47,7 +47,7 @@ public final class ACSKeyRequest extends ACSRequest {
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSKeyRequest ::=");
 		lines.add("{");
 

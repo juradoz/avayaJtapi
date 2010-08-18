@@ -42,7 +42,7 @@ public final class LucentV7NetworkProgressInfo extends
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("V7NetworkProgressInfo ::=");
 		lines.add("{");
 

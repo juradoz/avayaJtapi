@@ -63,7 +63,7 @@ public class LucentV5RouteRequestEvent extends LucentRouteRequestEvent
 
 	@Override
 	public Collection<String> print() {
-		Collection lines = new ArrayList();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5RouteRequestEvent ::=");
 		lines.add("{");
