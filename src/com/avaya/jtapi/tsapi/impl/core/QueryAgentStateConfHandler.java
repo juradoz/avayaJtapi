@@ -14,6 +14,7 @@ final class QueryAgentStateConfHandler implements ConfHandler {
 		agent = _agent;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))

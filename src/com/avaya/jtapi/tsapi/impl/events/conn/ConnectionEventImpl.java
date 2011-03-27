@@ -14,6 +14,7 @@ public class ConnectionEventImpl extends CallEventImpl implements
 		super(params, event, eventId);
 	}
 
+	@Override
 	public Connection getConnection() {
 		Connection connection = null;
 		if (callEventParams instanceof ConnEventParams)

@@ -48,6 +48,7 @@ public class LucentV5ConferencedEvent extends LucentConferencedEvent implements
 		return 78;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

@@ -11,6 +11,7 @@ public class TsapiConnInProgressEventCC extends TsapiCallCtrConnEvent implements
 		super(params);
 	}
 
+	@Override
 	public final int getID() {
 		return 319;
 	}

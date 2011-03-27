@@ -8,6 +8,7 @@ public final class TsapiConnFailedEvent extends TsapiConnEvent implements
 		super(params);
 	}
 
+	@Override
 	public int getID() {
 		return 108;
 	}

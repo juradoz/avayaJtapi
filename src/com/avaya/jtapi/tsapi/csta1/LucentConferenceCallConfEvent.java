@@ -34,6 +34,7 @@ public final class LucentConferenceCallConfEvent extends LucentPrivateData
 		return 90;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

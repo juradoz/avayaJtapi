@@ -346,8 +346,9 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 						.size()];
 				for (int i = 0; i < tsSession.size(); ++i)
 					tsapiSessions[i] = (RouteSession) TsapiCreateObject
-							.getTsapiObject((TSRouteSession) tsSession
-									.elementAt(i), false);
+							.getTsapiObject(
+									(TSRouteSession) tsSession.elementAt(i),
+									false);
 				TsapiTrace.traceExit("getActiveRouteSessions[]", this);
 
 				privData = null;
@@ -511,8 +512,9 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 					final Connection[] tsapiConn = new Connection[tsconn.size()];
 					for (int i = 0; i < tsconn.size(); ++i)
 						tsapiConn[i] = (Connection) TsapiCreateObject
-								.getTsapiObject((TSConnection) tsconn
-										.elementAt(i), true);
+								.getTsapiObject(
+										(TSConnection) tsconn.elementAt(i),
+										true);
 					TsapiTrace.traceExit("getConnections[]", this);
 
 					privData = null;
@@ -969,13 +971,14 @@ public class TsapiAddress implements ITsapiAddress, PrivateData, LucentAddress {
 					throw new TsapiInvalidArgumentException(3, 0,
 							"only unconditional forwarding supported for all calls");
 				if (instructions[i].getFilter() == 1)
-					fwd = new TsapiCallControlForwarding(instructions[i]
-							.getDestinationAddress(), instructions[i].getType());
+					fwd = new TsapiCallControlForwarding(
+							instructions[i].getDestinationAddress(),
+							instructions[i].getType());
 				else
-					fwd = new TsapiCallControlForwarding(instructions[i]
-							.getDestinationAddress(),
-							instructions[i].getType(), instructions[i]
-									.getFilter() == 2);
+					fwd = new TsapiCallControlForwarding(
+							instructions[i].getDestinationAddress(),
+							instructions[i].getType(),
+							instructions[i].getFilter() == 2);
 
 				fwdVector.addElement(fwd);
 			}

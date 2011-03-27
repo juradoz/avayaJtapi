@@ -64,6 +64,7 @@ public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 		return 81;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

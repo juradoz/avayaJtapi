@@ -48,6 +48,7 @@ public class LucentV5TransferredEvent extends LucentTransferredEvent implements
 		return 82;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

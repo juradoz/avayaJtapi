@@ -88,8 +88,8 @@ public class TsapiSessionFactoryOio extends TsapiSessionFactory {
 			throws IOException {
 		TsapiSessionFactoryOio.log.debug("Attempting to connect to server <"
 				+ addr + ">");
-		final TsapiChannel channel = new TsapiChannelOio(addr, SocketFactory
-				.getDefault());
+		final TsapiChannel channel = new TsapiChannelOio(addr,
+				SocketFactory.getDefault());
 
 		TsapiSessionFactoryOio.log.debug("Successfully  connected to server <"
 				+ addr + ">");
@@ -104,8 +104,8 @@ public class TsapiSessionFactoryOio extends TsapiSessionFactory {
 	@Override
 	public TsapiSession getTsapiSession(final InetSocketAddress addr)
 			throws IOException {
-		final TsapiChannel channel = new TsapiChannelOio(addr, SocketFactory
-				.getDefault());
+		final TsapiChannel channel = new TsapiChannelOio(addr,
+				SocketFactory.getDefault());
 
 		return new TsapiSession(channel, true, debugID);
 	}

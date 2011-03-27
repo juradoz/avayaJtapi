@@ -17,22 +17,27 @@ public class PrivateDataCallEventImpl implements PrivateDataEvent {
 		this.metaEvent = metaEvent;
 	}
 
+	@Override
 	public int getCause() {
 		return cause;
 	}
 
+	@Override
 	public int getID() {
 		return 601;
 	}
 
+	@Override
 	public MetaEvent getMetaEvent() {
 		return metaEvent;
 	}
 
+	@Override
 	public Object getPrivateData() {
 		return privateData;
 	}
 
+	@Override
 	public Object getSource() {
 		return source;
 	}

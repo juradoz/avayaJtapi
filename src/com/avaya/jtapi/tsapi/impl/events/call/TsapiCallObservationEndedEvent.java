@@ -12,10 +12,12 @@ public final class TsapiCallObservationEndedEvent extends TsapiCallEvent
 		observed = _observed;
 	}
 
+	@Override
 	public Object getEndedObject() {
 		return observed;
 	}
 
+	@Override
 	public int getID() {
 		return 103;
 	}

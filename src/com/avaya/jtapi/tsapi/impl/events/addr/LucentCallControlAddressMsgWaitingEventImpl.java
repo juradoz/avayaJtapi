@@ -12,6 +12,7 @@ public class LucentCallControlAddressMsgWaitingEventImpl extends
 		super(addressEventParams, address);
 	}
 
+	@Override
 	public int getMessageWaitingBits() {
 		return mwBits;
 	}

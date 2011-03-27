@@ -113,6 +113,7 @@ public class TsapiChannelOio implements TsapiChannel {
 		thread.start();
 	}
 
+	@Override
 	public void close() {
 		try {
 			thread.stopRunning();
@@ -124,14 +125,17 @@ public class TsapiChannelOio implements TsapiChannel {
 		}
 	}
 
+	@Override
 	public InetSocketAddress getInetSocketAddress() {
 		return (InetSocketAddress) sock.getLocalSocketAddress();
 	}
 
+	@Override
 	public void setReadHandler(final TsapiChannelReadHandler _handler) {
 		handler = _handler;
 	}
 
+	@Override
 	public void write(final ByteArrayOutputStream msg) throws IOException {
 		msg.writeTo(out);
 	}

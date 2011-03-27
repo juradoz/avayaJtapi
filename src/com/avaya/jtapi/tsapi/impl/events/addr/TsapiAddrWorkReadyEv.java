@@ -12,6 +12,7 @@ public final class TsapiAddrWorkReadyEv extends TsapiACDAddrEv implements
 		super(_device, _agent, _cause, _metaCode, _privateData);
 	}
 
+	@Override
 	public int getID() {
 		return 307;
 	}

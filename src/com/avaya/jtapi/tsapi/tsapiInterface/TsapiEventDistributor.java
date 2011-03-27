@@ -19,9 +19,11 @@ public class TsapiEventDistributor implements TsapiEventHandler {
 		invokeTable = _invokeTable;
 	}
 
+	@Override
 	public void close() {
 	}
 
+	@Override
 	public void handleEvent(final CSTAEvent event) {
 		try {
 			final long begin = System.currentTimeMillis();
@@ -92,6 +94,7 @@ public class TsapiEventDistributor implements TsapiEventHandler {
 		}
 	}
 
+	@Override
 	public synchronized void setUnsolicitedHandler(
 			final TsapiUnsolicitedHandler handler) {
 		this.handler = handler;

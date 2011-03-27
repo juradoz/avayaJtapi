@@ -202,9 +202,10 @@ public final class TSAgent {
 				throw e;
 			} catch (final Exception e) {
 				if (e instanceof ITsapiException)
-					throw new TsapiPlatformException(((ITsapiException) e)
-							.getErrorType(), ((ITsapiException) e)
-							.getErrorCode(), "queryAgentState failure");
+					throw new TsapiPlatformException(
+							((ITsapiException) e).getErrorType(),
+							((ITsapiException) e).getErrorCode(),
+							"queryAgentState failure");
 				throw new TsapiPlatformException(4, 0,
 						"queryAgentState failure");
 			}

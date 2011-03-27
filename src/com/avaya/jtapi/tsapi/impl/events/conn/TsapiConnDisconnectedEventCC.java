@@ -11,6 +11,7 @@ public class TsapiConnDisconnectedEventCC extends TsapiCallCtlConnEvent
 		super(params);
 	}
 
+	@Override
 	public final int getID() {
 		return 205;
 	}

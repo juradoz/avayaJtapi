@@ -93,6 +93,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		return route;
 	}
 
+	@Override
 	public final void endRoute(final int errorValue) {
 		TsapiTrace.traceEntry("endRoute[int errorValue]", this);
 		try {
@@ -118,6 +119,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		TsapiTrace.traceDestruction(this, TsapiRouteSession.class);
 	}
 
+	@Override
 	public final Call getCall() {
 		TsapiTrace.traceEntry("getCall[]", this);
 		try {
@@ -141,6 +143,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		}
 	}
 
+	@Override
 	public final int getCause() {
 		TsapiTrace.traceEntry("getCause[]", this);
 		try {
@@ -210,6 +213,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		}
 	}
 
+	@Override
 	public final Object getPrivateData() {
 		TsapiTrace.traceEntry("getPrivateData[]", this);
 		TsapiTrace.traceExit("getPrivateData[]", this);
@@ -227,6 +231,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 	}
 
 	// ERROR //
+	@Override
 	public final javax.telephony.callcenter.RouteAddress getRouteAddress() {
 		try {
 			final TSDevice tsRouteDevice = tsRouteSession.getTSRouteDevice();
@@ -267,6 +272,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 		}
 	}
 
+	@Override
 	public final int getState() {
 		TsapiTrace.traceEntry("getState[]", this);
 		try {
@@ -369,6 +375,7 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
+	@Override
 	public final void selectRoute(final String[] routeSelected)
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("selectRoute[String[] routeSelected]", this);
@@ -491,12 +498,14 @@ public class TsapiRouteSession implements ITsapiRouteSession, ITsapiCallInfo,
 						this);
 	}
 
+	@Override
 	public final Object sendPrivateData(final Object data) {
 		TsapiTrace.traceEntry("sendPrivateData[Object data]", this);
 		TsapiTrace.traceExit("sendPrivateData[Object data]", this);
 		return null;
 	}
 
+	@Override
 	public final void setPrivateData(final Object data) {
 		TsapiTrace.traceEntry("setPrivateData[Object data]", this);
 		try {

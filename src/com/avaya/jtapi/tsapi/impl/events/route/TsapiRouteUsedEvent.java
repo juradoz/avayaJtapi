@@ -26,18 +26,22 @@ public class TsapiRouteUsedEvent extends TsapiRouteSessionEvent implements
 		this.callingTerminal = callingTerminal;
 	}
 
+	@Override
 	public Address getCallingAddress() {
 		return callingAddress;
 	}
 
+	@Override
 	public Terminal getCallingTerminal() {
 		return callingTerminal;
 	}
 
+	@Override
 	public boolean getDomain() {
 		return outOfDomain;
 	}
 
+	@Override
 	public Terminal getRouteUsed() {
 		if (routeUsedTerminal == null)
 			throw new TsapiPlatformException(3, 0,

@@ -32,6 +32,7 @@ final class QueryAgentStateConfHandler2 implements ConfHandler {
 		return workMode;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))

@@ -15,14 +15,17 @@ public final class V7DeviceHistoryEntryImpl implements V7DeviceHistoryEntry {
 		oldConnectionID = _cid;
 	}
 
+	@Override
 	public short getEventCause() {
 		return eventCause;
 	}
 
+	@Override
 	public ConnectionID getOldConnectionID() {
 		return oldConnectionID;
 	}
 
+	@Override
 	public String getOldDeviceID() {
 		return oldDeviceID;
 	}

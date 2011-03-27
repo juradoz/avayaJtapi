@@ -174,10 +174,10 @@ public final class TsapiPromoter {
 				provider, csta_obj.getOriginalCallInfo()));
 
 		params.setReason(csta_obj.getReason());
-		params.setSplit(TsapiPromoter.promoteACDAddress(provider, csta_obj
-				.getSplit_asn()));
-		params.setTrunk(TsapiPromoter.promoteTrunk(provider, csta_obj
-				.getTrunkGroup(), csta_obj.getTrunkMember()));
+		params.setSplit(TsapiPromoter.promoteACDAddress(provider,
+				csta_obj.getSplit_asn()));
+		params.setTrunk(TsapiPromoter.promoteTrunk(provider,
+				csta_obj.getTrunkGroup(), csta_obj.getTrunkMember()));
 		params.setUserEnteredCode(TsapiPromoter.promoteUserEnteredCode(
 				provider, csta_obj.getUserEnteredCode()));
 		params.setUserToUserInfo(TsapiPromoter.promoteUserToUserInfo(csta_obj
@@ -211,10 +211,10 @@ public final class TsapiPromoter {
 				provider, csta_obj.getOriginalCallInfo()));
 
 		params.setReason(csta_obj.getReason());
-		params.setSplit(TsapiPromoter.promoteACDAddress(provider, csta_obj
-				.getSplit_asn()));
-		params.setTrunk(TsapiPromoter.promoteTrunk(provider, csta_obj
-				.getTrunkGroup(), csta_obj.getTrunkMember()));
+		params.setSplit(TsapiPromoter.promoteACDAddress(provider,
+				csta_obj.getSplit_asn()));
+		params.setTrunk(TsapiPromoter.promoteTrunk(provider,
+				csta_obj.getTrunkGroup(), csta_obj.getTrunkMember()));
 		params.setUserEnteredCode(TsapiPromoter.promoteUserEnteredCode(
 				provider, csta_obj.getUserEnteredCode()));
 		params.setUserToUserInfo(TsapiPromoter.promoteUserToUserInfo(csta_obj

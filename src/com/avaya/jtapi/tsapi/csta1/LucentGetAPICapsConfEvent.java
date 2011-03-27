@@ -55,17 +55,13 @@ public class LucentGetAPICapsConfEvent extends LucentPrivateData {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(ASNIA5String.print(switchVersion, "switchVersion",
-						indent));
+		lines.addAll(ASNIA5String.print(switchVersion, "switchVersion", indent));
 		lines.addAll(ASNBoolean.print(sendDTMFTone, "sendDTMFTone", indent));
 		lines.addAll(ASNBoolean.print(enteredDigitsEvent, "enteredDigitsEvent",
 				indent));
 		lines.addAll(ASNBoolean.print(queryDeviceName, "queryDeviceName",
 				indent));
-		lines
-				.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas",
-						indent));
+		lines.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas", indent));
 		lines.addAll(ASNBoolean.print(querySplitSkillMeas,
 				"querySplitSkillMeas", indent));
 		lines.addAll(ASNBoolean.print(queryTrunkGroupMeas,

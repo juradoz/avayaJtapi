@@ -23,26 +23,32 @@ public class CallEventImpl implements CallEvent, PrivateDataEvent,
 		id = eventId;
 	}
 
+	@Override
 	public Call getCall() {
 		return callEventParams.getCall();
 	}
 
+	@Override
 	public int getCause() {
 		return callEventParams.getCause();
 	}
 
+	@Override
 	public short getCSTACause() {
 		return callEventParams.getCstaCause();
 	}
 
+	@Override
 	public int getID() {
 		return id;
 	}
 
+	@Override
 	public MetaEvent getMetaEvent() {
 		return metaEvent;
 	}
 
+	@Override
 	public Object getPrivateData() {
 		final Object privateData = callEventParams.getPrivateData();
 		if (privateData instanceof TsapiPrivate
@@ -52,6 +58,7 @@ public class CallEventImpl implements CallEvent, PrivateDataEvent,
 		return null;
 	}
 
+	@Override
 	public Object getSource() {
 		return callEventParams.getCall();
 	}

@@ -328,8 +328,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						tsRouteSession.setLAI(luPrivData.getLookaheadInfo());
 						tsRouteSession.setUEC(luPrivData.getUserEnteredCode());
 						final TsapiTrunkImpl tsapiTrunk = TsapiPromoter
-								.promoteTrunk(provider, luPrivData
-										.getTrunkGroup(), null);
+								.promoteTrunk(provider,
+										luPrivData.getTrunkGroup(), null);
 
 						if (tsapiTrunk != null) {
 							final TSTrunk trk = tsapiTrunk.getTSTrunk();
@@ -394,8 +394,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						tsRouteSession.setLAI(luPrivData.getLookaheadInfo());
 						tsRouteSession.setUEC(luPrivData.getUserEnteredCode());
 						final TsapiTrunkImpl tsapiTrunk = TsapiPromoter
-								.promoteTrunk(provider, luPrivData
-										.getTrunkGroup(), null);
+								.promoteTrunk(provider,
+										luPrivData.getTrunkGroup(), null);
 
 						if (tsapiTrunk != null) {
 							final TSTrunk trk = tsapiTrunk.getTSTrunk();
@@ -482,9 +482,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log.info("Handling CSTA_SERVICE_INITIATED for "
 					+ provider);
 			final CSTAServiceInitiatedEvent initiated = (CSTAServiceInitiatedEvent) cstaEvent;
-			doConnEvents(66, monitored, initiated.getCause(), null, initiated
-					.getInitiatedConnection(), 84, 98, privateData, null, null,
-					null, true, 0);
+			doConnEvents(66, monitored, initiated.getCause(), null,
+					initiated.getInitiatedConnection(), 84, 98, privateData,
+					null, null, null, true, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_SERVICE_INITIATED for "
 					+ provider);
@@ -492,9 +492,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 63:
 			TSEventHandler.log.info("Handling CSTA_ORIGINATED for " + provider);
 			final CSTAOriginatedEvent originated = (CSTAOriginatedEvent) cstaEvent;
-			doConnEvents(63, monitored, originated.getCause(), originated
-					.getCallingDevice(), originated.getOriginatedConnection(),
-					88, 98, privateData, originated.getCallingDevice(),
+			doConnEvents(63, monitored, originated.getCause(),
+					originated.getCallingDevice(),
+					originated.getOriginatedConnection(), 88, 98, privateData,
+					originated.getCallingDevice(),
 					originated.getCalledDevice(), null, true, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_ORIGINATED for "
@@ -503,11 +504,11 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 57:
 			TSEventHandler.log.info("Handling CSTA_DELIVERED for " + provider);
 			final CSTADeliveredEvent delivered = (CSTADeliveredEvent) cstaEvent;
-			doConnEvents(57, monitored, delivered.getCause(), delivered
-					.getAlertingDevice(), delivered.getConnection(), 83, 97,
-					privateData, delivered.getCallingDevice(), delivered
-							.getCalledDevice(), delivered
-							.getLastRedirectionDevice(), false, 0);
+			doConnEvents(57, monitored, delivered.getCause(),
+					delivered.getAlertingDevice(), delivered.getConnection(),
+					83, 97, privateData, delivered.getCallingDevice(),
+					delivered.getCalledDevice(),
+					delivered.getLastRedirectionDevice(), false, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_DELIVERED for "
 					+ provider);
@@ -516,12 +517,12 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log
 					.info("Handling CSTA_ESTABLISHED for " + provider);
 			final CSTAEstablishedEvent established = (CSTAEstablishedEvent) cstaEvent;
-			doConnEvents(59, monitored, established.getCause(), established
-					.getAnsweringDevice(), established
-					.getEstablishedConnection(), 88, 98, privateData,
-					established.getCallingDevice(), established
-							.getCalledDevice(), established
-							.getLastRedirectionDevice(), false, 0);
+			doConnEvents(59, monitored, established.getCause(),
+					established.getAnsweringDevice(),
+					established.getEstablishedConnection(), 88, 98,
+					privateData, established.getCallingDevice(),
+					established.getCalledDevice(),
+					established.getLastRedirectionDevice(), false, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_ESTABLISHED for "
 					+ provider);
@@ -531,8 +532,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 					+ provider);
 			final CSTANetworkReachedEvent networkReached = (CSTANetworkReachedEvent) cstaEvent;
 			doConnEvents(62, monitored, networkReached.getCause(),
-					networkReached.getTrunkUsed(), networkReached
-							.getConnection(), 86, 98, privateData, null,
+					networkReached.getTrunkUsed(),
+					networkReached.getConnection(), 86, 98, privateData, null,
 					networkReached.getCalledDevice(), null, false, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_NETWORK_REACHED for "
@@ -541,9 +542,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 65:
 			TSEventHandler.log.info("Handling CSTA_RETRIEVED for " + provider);
 			final CSTARetrievedEvent retrieved = (CSTARetrievedEvent) cstaEvent;
-			doConnEvents(65, monitored, retrieved.getCause(), retrieved
-					.getRetrievingDevice(), retrieved.getRetrievedConnection(),
-					88, 98, privateData, null, null, null, false, 0);
+			doConnEvents(65, monitored, retrieved.getCause(),
+					retrieved.getRetrievingDevice(),
+					retrieved.getRetrievedConnection(), 88, 98, privateData,
+					null, null, null, false, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_RETRIEVED for "
 					+ provider);
@@ -551,8 +553,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 61:
 			TSEventHandler.log.info("Handling CSTA_HELD for " + provider);
 			final CSTAHeldEvent held = (CSTAHeldEvent) cstaEvent;
-			doConnEvents(61, monitored, held.getCause(), held
-					.getHoldingDevice(), held.getHeldConnection(), 88, 99,
+			doConnEvents(61, monitored, held.getCause(),
+					held.getHoldingDevice(), held.getHeldConnection(), 88, 99,
 					privateData, null, null, null, false, 0);
 
 			TSEventHandler.log.info("DONE handling CSTA_HELD for " + provider);
@@ -561,9 +563,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log.info("Handling CSTA_CONNECTION_CLEARED for "
 					+ provider);
 			final CSTAConnectionClearedEvent connCleared = (CSTAConnectionClearedEvent) cstaEvent;
-			doConnEvents(56, monitored, connCleared.getCause(), connCleared
-					.getReleasingDevice(), connCleared.getDroppedConnection(),
-					89, 102, privateData, null, null, null, false, 0);
+			doConnEvents(56, monitored, connCleared.getCause(),
+					connCleared.getReleasingDevice(),
+					connCleared.getDroppedConnection(), 89, 102, privateData,
+					null, null, null, false, 0);
 
 			TSEventHandler.log
 					.info("DONE handling CSTA_CONNECTION_CLEARED for "
@@ -572,9 +575,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 60:
 			TSEventHandler.log.info("Handling CSTA_FAILED for " + provider);
 			final CSTAFailedEvent failed = (CSTAFailedEvent) cstaEvent;
-			doConnEvents(60, monitored, failed.getCause(), failed
-					.getFailingDevice(), failed.getFailedConnection(), 90, 102,
-					privateData, null, failed.getCalledDevice(), null, false, 0);
+			doConnEvents(60, monitored, failed.getCause(),
+					failed.getFailingDevice(), failed.getFailedConnection(),
+					90, 102, privateData, null, failed.getCalledDevice(), null,
+					false, 0);
 
 			TSEventHandler.log
 					.info("DONE handling CSTA_FAILED for " + provider);
@@ -583,20 +587,20 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log.info("Handling CSTA_MONITOR_ENDED for "
 					+ provider);
 			final CSTAMonitorEndedEvent monitorEnded = (CSTAMonitorEndedEvent) cstaEvent;
-			doMonitorEnded(monitorEnded.getCause(), cstaEvent
-					.getMonitorCrossRefID(), monitored, privateData);
+			doMonitorEnded(monitorEnded.getCause(),
+					cstaEvent.getMonitorCrossRefID(), monitored, privateData);
 			TSEventHandler.log.info("DONE handling CSTA_MONITOR_ENDED for "
 					+ provider);
 			break;
 		case 64:
 			TSEventHandler.log.info("Handling CSTA_QUEUED for " + provider);
 			final CSTAQueuedEvent queued = (CSTAQueuedEvent) cstaEvent;
-			doConnEvents(64, monitored, queued.getCause(), queued
-					.getQueueingDevice(), queued.getQueuedConnection(), 82, -1,
-					privateData, queued.getCallingDevice(), queued
-							.getCalledDevice(), queued
-							.getLastRedirectionDevice(), false, queued
-							.getNumberQueued());
+			doConnEvents(64, monitored, queued.getCause(),
+					queued.getQueueingDevice(), queued.getQueuedConnection(),
+					82, -1, privateData, queued.getCallingDevice(),
+					queued.getCalledDevice(),
+					queued.getLastRedirectionDevice(), false,
+					queued.getNumberQueued());
 
 			TSEventHandler.log
 					.info("DONE handling CSTA_QUEUED for " + provider);
@@ -612,19 +616,19 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 						.info("Preserving redirecting VDN party of CSTA_DIVERTED for "
 								+ provider);
 
-				doConnEvents(58, monitored, diverted.getCause(), diverted
-						.getDivertingDevice(), diverted.getConnection(), 91,
-						103, privateData, null, diverted.getNewDestination(),
-						null, false, 0);
+				doConnEvents(58, monitored, diverted.getCause(),
+						diverted.getDivertingDevice(),
+						diverted.getConnection(), 91, 103, privateData, null,
+						diverted.getNewDestination(), null, false, 0);
 			} else {
 				TSEventHandler.log
 						.info("Dropping party due to handling of CSTA_DIVERTED for "
 								+ provider);
 
-				doConnEvents(58, monitored, diverted.getCause(), diverted
-						.getDivertingDevice(), diverted.getConnection(), 89,
-						102, privateData, null, diverted.getNewDestination(),
-						null, false, 0);
+				doConnEvents(58, monitored, diverted.getCause(),
+						diverted.getDivertingDevice(),
+						diverted.getConnection(), 89, 102, privateData, null,
+						diverted.getNewDestination(), null, false, 0);
 			}
 
 			TSEventHandler.log.info("DONE handling CSTA_DIVERTED for "
@@ -634,10 +638,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log
 					.info("Handling CSTA_CONFERENCED for " + provider);
 			final CSTAConferencedEvent conferenced = (CSTAConferencedEvent) cstaEvent;
-			doConfXfer(207, conferenced.getPrimaryOldCall(), conferenced
-					.getSecondaryOldCall(), conferenced
-					.getConferenceConnections(), privateData, conferenced
-					.getCause());
+			doConfXfer(207, conferenced.getPrimaryOldCall(),
+					conferenced.getSecondaryOldCall(),
+					conferenced.getConferenceConnections(), privateData,
+					conferenced.getCause());
 
 			TSEventHandler.log.info("DONE handling CSTA_CONFERENCED for "
 					+ provider);
@@ -646,10 +650,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log
 					.info("Handling CSTA_TRANSFERRED for " + provider);
 			final CSTATransferredEvent transferred = (CSTATransferredEvent) cstaEvent;
-			doConfXfer(212, transferred.getPrimaryOldCall(), transferred
-					.getSecondaryOldCall(), transferred
-					.getTransferredConnections(), privateData, transferred
-					.getCause());
+			doConfXfer(212, transferred.getPrimaryOldCall(),
+					transferred.getSecondaryOldCall(),
+					transferred.getTransferredConnections(), privateData,
+					transferred.getCause());
 
 			TSEventHandler.log.info("DONE handling CSTA_TRANSFERRED for "
 					+ provider);
@@ -658,8 +662,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			TSEventHandler.log.info("Handling CSTA_CALL_CLEARED for "
 					+ provider);
 			final CSTACallClearedEvent callCleared = (CSTACallClearedEvent) cstaEvent;
-			doCallEvents(54, monitored, callCleared.getCause(), callCleared
-					.getClearedCall(), 34, privateData);
+			doCallEvents(54, monitored, callCleared.getCause(),
+					callCleared.getClearedCall(), 34, privateData);
 
 			TSEventHandler.log.info("DONE handling CSTA_CALL_CLEARED for "
 					+ provider);
@@ -667,9 +671,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 72:
 			TSEventHandler.log.info("Handling CSTA_LOGGED_ON for " + provider);
 			final CSTALoggedOnEvent loggedOn = (CSTALoggedOnEvent) cstaEvent;
-			doAgentEvents(72, monitored, loggedOn.getAgentDevice(), loggedOn
-					.getAgentID(), loggedOn.getAgentGroup(), loggedOn
-					.getPassword(), 1, privateData);
+			doAgentEvents(72, monitored, loggedOn.getAgentDevice(),
+					loggedOn.getAgentID(), loggedOn.getAgentGroup(),
+					loggedOn.getPassword(), 1, privateData);
 
 			TSEventHandler.log.info("DONE handling CSTA_LOGGED_ON for "
 					+ provider);
@@ -677,8 +681,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 73:
 			TSEventHandler.log.info("Handling CSTA_LOGGED_OFF for " + provider);
 			final CSTALoggedOffEvent loggedOff = (CSTALoggedOffEvent) cstaEvent;
-			doAgentEvents(73, monitored, loggedOff.getAgentDevice(), loggedOff
-					.getAgentID(), loggedOff.getAgentGroup(), null, 2,
+			doAgentEvents(73, monitored, loggedOff.getAgentDevice(),
+					loggedOff.getAgentID(), loggedOff.getAgentGroup(), null, 2,
 					privateData);
 
 			TSEventHandler.log.info("DONE handling CSTA_LOGGED_OFF for "
@@ -687,8 +691,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 74:
 			TSEventHandler.log.info("Handling CSTA_NOT_READY for " + provider);
 			final CSTANotReadyEvent notReady = (CSTANotReadyEvent) cstaEvent;
-			doAgentEvents(74, monitored, notReady.getAgentDevice(), notReady
-					.getAgentID(), null, null, 3, privateData);
+			doAgentEvents(74, monitored, notReady.getAgentDevice(),
+					notReady.getAgentID(), null, null, 3, privateData);
 
 			TSEventHandler.log.info("DONE handling CSTA_NOT_READY for "
 					+ provider);
@@ -696,8 +700,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 75:
 			TSEventHandler.log.info("Handling CSTA_READY for " + provider);
 			final CSTAReadyEvent ready = (CSTAReadyEvent) cstaEvent;
-			doAgentEvents(75, monitored, ready.getAgentDevice(), ready
-					.getAgentID(), null, null, 4, privateData);
+			doAgentEvents(75, monitored, ready.getAgentDevice(),
+					ready.getAgentID(), null, null, 4, privateData);
 
 			TSEventHandler.log.info("DONE handling CSTA_READY for " + provider);
 			break;
@@ -714,8 +718,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		case 77:
 			TSEventHandler.log.info("Handling CSTA_WORK_READY for " + provider);
 			final CSTAWorkReadyEvent workReady = (CSTAWorkReadyEvent) cstaEvent;
-			doAgentEvents(77, monitored, workReady.getAgentDevice(), workReady
-					.getAgentID(), null, null, 6, privateData);
+			doAgentEvents(77, monitored, workReady.getAgentDevice(),
+					workReady.getAgentID(), null, null, 6, privateData);
 
 			TSEventHandler.log.info("DONE handling CSTA_WORK_READY for "
 					+ provider);
@@ -825,8 +829,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		TSEventHandler.log
 				.debug("updating statistics collector with unsolicited handling time for this iteration");
 		PerfStatisticsCollector.updateUnsolicitedHandlingTime(System
-				.currentTimeMillis()
-				- event.getQueuedTimeStamp());
+				.currentTimeMillis() - event.getQueuedTimeStamp());
 	}
 
 	void doAgentEvents(final int eventType, final Object monitored,
@@ -1005,8 +1008,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			if (privateData instanceof LucentEnteredDigitsEvent) {
 				final LucentEnteredDigitsEvent luPrivData = (LucentEnteredDigitsEvent) privateData;
 				final LucentCallImpl connection = TsapiPromoter
-						.promoteConnection(provider, luPrivData
-								.getConnection_asn());
+						.promoteConnection(provider,
+								luPrivData.getConnection_asn());
 
 				call = connection.getTSCall();
 				call.setDigits(luPrivData.getDigits());
@@ -1112,8 +1115,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		if (primaryConnID != null) {
 			call = provider.createCall(primaryConnID.getCallID(), privateData);
 
-			call = provider.validateCall(privateData, call, primaryConnID
-					.getCallID());
+			call = provider.validateCall(privateData, call,
+					primaryConnID.getCallID());
 		}
 
 		if (secondaryConnID != null) {
@@ -1303,10 +1306,10 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 							for (int m = 0; m < tempEventList.size(); ++m)
 								priEventList.addElement(tempEventList
 										.elementAt(m));
-							conn.setConnectionState(tc
-									.getCallControlConnState(), priEventList);
-							conn.setTermConnState(tc
-									.getCallControlTermConnState(),
+							conn.setConnectionState(
+									tc.getCallControlConnState(), priEventList);
+							conn.setTermConnState(
+									tc.getCallControlTermConnState(),
 									priEventList);
 							found = true;
 							break;
@@ -1315,10 +1318,11 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 					} else if (conn.getTSDevice() == secConn.getTSDevice()) {
 						for (int m = 0; m < tempEventList.size(); ++m)
 							priEventList.addElement(tempEventList.elementAt(m));
-						conn.setConnectionState(secConn
-								.getCallControlConnState(), priEventList);
-						conn.setTermConnState(secConn
-								.getCallControlTermConnState(), priEventList);
+						conn.setConnectionState(
+								secConn.getCallControlConnState(), priEventList);
+						conn.setTermConnState(
+								secConn.getCallControlTermConnState(),
+								priEventList);
 						found = true;
 						break;
 					}
@@ -1363,8 +1367,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		if (privateData instanceof LucentConferencedEvent) {
 			final LucentConferencedEvent luPrivData = (LucentConferencedEvent) privateData;
 			final TsapiAddress address = TsapiPromoter
-					.promoteDeviceIDToAddress(provider, luPrivData
-							.getDistributingDevice_asn());
+					.promoteDeviceIDToAddress(provider,
+							luPrivData.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -1394,8 +1398,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		} else if (privateData instanceof LucentTransferredEvent) {
 			final LucentTransferredEvent luPrivData = (LucentTransferredEvent) privateData;
 			final TsapiAddress address = TsapiPromoter
-					.promoteDeviceIDToAddress(provider, luPrivData
-							.getDistributingDevice_asn());
+					.promoteDeviceIDToAddress(provider,
+							luPrivData.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -1451,8 +1455,9 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			final SnapshotCallExtraConfHandler handler = new XferConfSnapshotCallConfHandler(
 					this, call, jtapiCause, privateData, snapConnections);
 
-			call.doSnapshot(((TSConnection) snapConnections.elementAt(0))
-					.getConnID(), handler, false);
+			call.doSnapshot(
+					((TSConnection) snapConnections.elementAt(0)).getConnID(),
+					handler, false);
 		}
 		TransferredEventParams transferredEventParams;
 		if (jtapiCause == 212 || jtapiCause == 207) {
@@ -1931,8 +1936,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call.setDeliveringACDDevice(deliveringACDDevice);
 			}
 			final TsapiAddress address = TsapiPromoter
-					.promoteDeviceIDToAddress(provider, luPrivData
-							.getDistributingDevice_asn());
+					.promoteDeviceIDToAddress(provider,
+							luPrivData.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -1945,8 +1950,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			call.setOCI(luPrivData.getOriginalCallInfo());
 			call.setReason(luPrivData.getReason());
 			final TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
-					provider, luPrivData.getTrunkGroup(), luPrivData
-							.getTrunkMember());
+					provider, luPrivData.getTrunkGroup(),
+					luPrivData.getTrunkMember());
 
 			if (tsapiTrunk != null) {
 				final TSTrunk trk = tsapiTrunk.getTSTrunk();
@@ -1965,9 +1970,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			if (privateData instanceof LucentV5DeliveredEvent) {
 				final LucentV5DeliveredEvent luV5PrivData = (LucentV5DeliveredEvent) privateData;
 				call.setUCID(luV5PrivData.getUcid());
-				call
-						.setCallOriginatorInfo(luV5PrivData
-								.getCallOriginatorInfo());
+				call.setCallOriginatorInfo(luV5PrivData.getCallOriginatorInfo());
 				call.setFlexibleBilling(luV5PrivData.isFlexibleBilling());
 
 				if (privateData instanceof LucentV7DeliveredEvent) {
@@ -1995,8 +1998,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 				call.setDeliveringACDDevice(deliveringACDDevice);
 			}
 			final TsapiAddress address = TsapiPromoter
-					.promoteDeviceIDToAddress(provider, luPrivData
-							.getDistributingDevice_asn());
+					.promoteDeviceIDToAddress(provider,
+							luPrivData.getDistributingDevice_asn());
 
 			if (address != null) {
 				distributingDevice = address.getTSDevice();
@@ -2008,8 +2011,8 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			call.setOCI(luPrivData.getOriginalCallInfo());
 			call.setReason(luPrivData.getReason());
 			final TsapiTrunkImpl tsapiTrunk = TsapiPromoter.promoteTrunk(
-					provider, luPrivData.getTrunkGroup(), luPrivData
-							.getTrunkMember());
+					provider, luPrivData.getTrunkGroup(),
+					luPrivData.getTrunkMember());
 
 			if (tsapiTrunk != null) {
 				final TSTrunk trk = tsapiTrunk.getTSTrunk();
@@ -2033,9 +2036,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 			if (privateData instanceof LucentV5EstablishedEvent) {
 				final LucentV5EstablishedEvent luV5PrivData = (LucentV5EstablishedEvent) privateData;
 				call.setUCID(luV5PrivData.getUcid());
-				call
-						.setCallOriginatorInfo(luV5PrivData
-								.getCallOriginatorInfo());
+				call.setCallOriginatorInfo(luV5PrivData.getCallOriginatorInfo());
 				call.setFlexibleBilling(luV5PrivData.isFlexibleBilling());
 
 				if (privateData instanceof LucentV7EstablishedEvent) {

@@ -11,6 +11,7 @@ public abstract class TsapiListenerCallCenterEvent extends TsapiListenerEvent
 		super(eventId, _cause, metaEvent, source, privateData);
 	}
 
+	@Override
 	public int getCallCenterCause() {
 		if (cause == 101 || cause == 302)
 			return cause;

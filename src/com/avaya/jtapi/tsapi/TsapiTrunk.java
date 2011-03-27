@@ -17,6 +17,7 @@ public abstract class TsapiTrunk implements CallCenterTrunk {
 	@Override
 	public abstract boolean equals(Object paramObject);
 
+	@Override
 	public abstract Call getCall();
 
 	public abstract Connection getConnection();
@@ -25,10 +26,13 @@ public abstract class TsapiTrunk implements CallCenterTrunk {
 
 	public abstract String getMemberName();
 
+	@Override
 	public abstract String getName();
 
+	@Override
 	public abstract int getState();
 
+	@Override
 	public abstract int getType();
 
 	@Override

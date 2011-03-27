@@ -15,10 +15,12 @@ public class TsapiConnQueuedEvent extends TsapiCallCtlConnEvent implements
 		this.numberQueued = numberQueued;
 	}
 
+	@Override
 	public final int getID() {
 		return 212;
 	}
 
+	@Override
 	public final int getNumberInQueue() {
 		return numberQueued;
 	}

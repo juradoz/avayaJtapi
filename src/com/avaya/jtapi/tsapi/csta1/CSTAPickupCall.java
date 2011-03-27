@@ -62,9 +62,7 @@ public final class CSTAPickupCall extends CSTARequest {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(CSTAConnectionID.print(deflectCall, "deflectCall",
-						indent));
+		lines.addAll(CSTAConnectionID.print(deflectCall, "deflectCall", indent));
 		lines.addAll(ASNIA5String.print(calledDevice, "calledDevice", indent));
 
 		lines.add("}");

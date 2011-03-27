@@ -16,6 +16,7 @@ final class DisconnectedConfHandler implements ConfHandler {
 		pdu = _pdu;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (!handleIt || event == null
 				|| event.getEventHeader().getEventClass() != 5

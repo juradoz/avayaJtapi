@@ -20,12 +20,14 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 		eventPackage = _eventPackage;
 	}
 
+	@Override
 	public final int getCallCenterCause() {
 		if (cause == 101 || cause == 302)
 			return cause;
 		return 100;
 	}
 
+	@Override
 	public final int getCallControlCause() {
 		if (cause == 101 || cause == 202 || cause == 203 || cause == 204
 				|| cause == 205 || cause == 206 || cause == 207 || cause == 208
@@ -35,6 +37,7 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 		return 100;
 	}
 
+	@Override
 	public final int getCause() {
 		if (cause == 101 || cause == 102 || cause == 103 || cause == 104
 				|| cause == 105 || cause == 106 || cause == 107 || cause == 108
@@ -43,10 +46,12 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 		return 100;
 	}
 
+	@Override
 	public final int getEventPackage() {
 		return eventPackage;
 	}
 
+	@Override
 	public final int getMediaCause() {
 		if (cause == 401)
 			return cause;
@@ -61,6 +66,7 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 		return null;
 	}
 
+	@Override
 	public final Object getPrivateData() {
 		if (privateData instanceof TsapiPrivate
 				|| privateData instanceof LucentChargeAdviceEvent

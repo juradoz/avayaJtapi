@@ -5,6 +5,7 @@ import javax.telephony.privatedata.PrivateDataTerminalListener;
 
 public abstract class PrivateDataTerminalListenerAdapter extends
 		TerminalListenerAdapter implements PrivateDataTerminalListener {
+	@Override
 	public void terminalPrivateData(final PrivateDataEvent event) {
 	}
 }

@@ -11,6 +11,7 @@ public final class TsapiPrivateProviderEvent extends TsapiProvEvent implements
 		super(_provider, _cause, _metaCode, _privateData, 5);
 	}
 
+	@Override
 	public int getID() {
 		return 602;
 	}

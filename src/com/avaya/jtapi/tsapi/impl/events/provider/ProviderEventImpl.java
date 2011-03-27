@@ -16,6 +16,7 @@ public class ProviderEventImpl extends TsapiListenerEvent implements
 		provider = params.getProvider();
 	}
 
+	@Override
 	public Provider getProvider() {
 		return provider;
 	}

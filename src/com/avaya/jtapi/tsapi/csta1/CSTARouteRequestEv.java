@@ -91,9 +91,7 @@ public final class CSTARouteRequestEv extends CSTARequest {
 		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
 				indent));
 		lines.addAll(ASNIA5String.print(currentRoute, "currentRoute", indent));
-		lines
-				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
-						indent));
+		lines.addAll(ASNIA5String.print(callingDevice, "callingDevice", indent));
 		lines.addAll(CSTAConnectionID.print(routedCall, "routedCall", indent));
 		lines.addAll(SelectValue.print(routedSelAlgorithm,
 				"routedSelAlgorithm", indent));

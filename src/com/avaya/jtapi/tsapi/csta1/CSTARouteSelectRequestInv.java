@@ -103,9 +103,7 @@ public final class CSTARouteSelectRequestInv extends CSTARequest {
 				indent));
 		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
 				indent));
-		lines
-				.addAll(ASNIA5String.print(routeSelected, "routeSelected",
-						indent));
+		lines.addAll(ASNIA5String.print(routeSelected, "routeSelected", indent));
 		lines.addAll(RetryValue.print(remainRetry, "remainRetry", indent));
 		lines.addAll(ASNOctetString.print(setupInformation, "setupInformation",
 				indent));

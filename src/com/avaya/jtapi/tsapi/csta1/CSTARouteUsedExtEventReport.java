@@ -80,9 +80,7 @@ public final class CSTARouteUsedExtEventReport extends CSTAEventReport {
 				indent));
 		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
 				indent));
-		lines
-				.addAll(CSTAExtendedDeviceID.print(routeUsed, "routeUsed",
-						indent));
+		lines.addAll(CSTAExtendedDeviceID.print(routeUsed, "routeUsed", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(callingDevice, "callingDevice",
 				indent));
 		lines.addAll(ASNBoolean.print(domain, "domain", indent));

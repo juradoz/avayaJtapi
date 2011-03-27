@@ -19,6 +19,7 @@ class EscapeConfHandler implements ConfHandler {
 		return privateData;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		Object privData = null;
 		try {

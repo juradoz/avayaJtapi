@@ -25,6 +25,7 @@ final class MakeCallConfHandler implements ConfHandler {
 		pdu = _pdu;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null || event.getEventHeader().getEventClass() != 5
 				|| event.getEventHeader().getEventType() != pdu)
@@ -43,9 +44,8 @@ final class MakeCallConfHandler implements ConfHandler {
 			newCall = ((CSTAMakePredictiveCallConfEvent) event.getEvent())
 					.getNewCall();
 			if (call.replyPriv instanceof LucentMakePredictiveCallConfEvent)
-				call
-						.setUCID(((LucentMakePredictiveCallConfEvent) call.replyPriv)
-								.getUcid());
+				call.setUCID(((LucentMakePredictiveCallConfEvent) call.replyPriv)
+						.getUcid());
 			break;
 		case 14:
 			newCall = ((CSTAConsultationCallConfEvent) event.getEvent())

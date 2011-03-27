@@ -22,6 +22,7 @@ public class PrivateDtmfEventImpl implements PrivateDtmfEvent {
 		return dtmfDigit == other.dtmfDigit;
 	}
 
+	@Override
 	public char getDtmfDigit() {
 		return dtmfDigit;
 	}

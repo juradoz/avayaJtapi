@@ -19,34 +19,42 @@ public class LucentCallCenterConnectionEvent extends
 		super(params, event, eventId);
 	}
 
+	@Override
 	public ACDAddress getDeliveringACDAddress() {
 		return callEventParams.getSplit();
 	}
 
+	@Override
 	public CallCenterAddress getDistributingAddress() {
 		return callEventParams.getDistributingDevice();
 	}
 
+	@Override
 	public LookaheadInfo getLookaheadInfo() {
 		return callEventParams.getLookaheadInfo();
 	}
 
+	@Override
 	public OriginalCallInfo getOriginalCallInfo() {
 		return callEventParams.getOriginalCallInfo();
 	}
 
+	@Override
 	public short getReason() {
 		return callEventParams.getReason();
 	}
 
+	@Override
 	public CallCenterTrunk getTrunk() {
 		return callEventParams.getTrunk();
 	}
 
+	@Override
 	public UserEnteredCode getUserEnteredCode() {
 		return callEventParams.getUserEnteredCode();
 	}
 
+	@Override
 	public UserToUserInfo getUserToUserInfo() {
 		return callEventParams.getUserToUserInfo();
 	}

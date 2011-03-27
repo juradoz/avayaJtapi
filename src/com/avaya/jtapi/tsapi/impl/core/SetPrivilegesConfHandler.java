@@ -11,6 +11,7 @@ final class SetPrivilegesConfHandler implements ConfHandler {
 		this.provider = provider;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event != null
 				&& event.getEvent() instanceof ACSSetPrivilegesConfEvent)

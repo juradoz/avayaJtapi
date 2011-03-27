@@ -34,6 +34,7 @@ public final class LucentServiceInitiatedEvent extends LucentPrivateData
 		return 95;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

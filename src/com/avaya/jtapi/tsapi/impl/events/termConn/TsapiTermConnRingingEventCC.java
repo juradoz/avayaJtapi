@@ -11,6 +11,7 @@ public class TsapiTermConnRingingEventCC extends TsapiCallCtlTermConnEvent
 		super(params);
 	}
 
+	@Override
 	public final int getID() {
 		return 218;
 	}

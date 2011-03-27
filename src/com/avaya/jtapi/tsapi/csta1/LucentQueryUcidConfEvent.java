@@ -34,6 +34,7 @@ public final class LucentQueryUcidConfEvent extends LucentPrivateData implements
 		return 77;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

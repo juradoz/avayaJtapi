@@ -21,6 +21,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		TsapiTrace.traceConstruction(this, TsapiAddressCapabilities.class);
 	}
 
+	@Override
 	public boolean canAddCallObserver(final boolean remain) {
 		TsapiTrace.traceEntry("canAddCallObserver[boolean remain]", this);
 		final boolean can = tsCaps.getMonitorCallsViaDevice() == 1;
@@ -28,6 +29,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canCancelForwarding() {
 		TsapiTrace.traceEntry("canCancelForwarding[]", this);
 		final boolean can = tsCaps.getSetFwd() == 1;
@@ -35,18 +37,21 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetACDAddresses() {
 		TsapiTrace.traceEntry("canGetACDAddresses[]", this);
 		TsapiTrace.traceExit("canGetACDAddresses[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canGetACDManagerAddress() {
 		TsapiTrace.traceEntry("canGetACDManagerAddress[]", this);
 		TsapiTrace.traceExit("canGetACDManagerAddress[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canGetDoNotDisturb() {
 		TsapiTrace.traceEntry("canGetDoNotDisturb[]", this);
 		final boolean can = tsCaps.getDoNotDisturbEvent() == 1
@@ -55,6 +60,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetForwarding() {
 		TsapiTrace.traceEntry("canGetForwarding[]", this);
 		final boolean can = tsCaps.getQueryFwd() == 1;
@@ -62,12 +68,14 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetLoggedOnAgents() {
 		TsapiTrace.traceEntry("canGetLoggedOnAgents[]", this);
 		TsapiTrace.traceExit("canGetLoggedOnAgents[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canGetMessageWaiting() {
 		TsapiTrace.traceEntry("canGetMessageWaiting[]", this);
 		final boolean can = tsCaps.getMessageWaitingEvent() == 1
@@ -76,6 +84,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetNumberQueued() {
 		TsapiTrace.traceEntry("canGetNumberQueued[]", this);
 		final boolean can = tsCaps.isLucent() || tsCaps.getQueuedEvent() == 1;
@@ -83,24 +92,28 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetOldestCallQueued() {
 		TsapiTrace.traceEntry("canGetOldestCallQueued[]", this);
 		TsapiTrace.traceExit("canGetOldestCallQueued[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canGetQueueWaitTime() {
 		TsapiTrace.traceEntry("canGetQueueWaitTime[]", this);
 		TsapiTrace.traceExit("canGetQueueWaitTime[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canGetRelativeQueueLoad() {
 		TsapiTrace.traceEntry("canGetRelativeQueueLoad[]", this);
 		TsapiTrace.traceExit("canGetRelativeQueueLoad[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canRouteCalls() {
 		TsapiTrace.traceEntry("canRouteCalls[]", this);
 		final boolean can = tsCaps.getRouteRequestEvent() == 1;
@@ -109,6 +122,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canSetDoNotDisturb() {
 		TsapiTrace.traceEntry("canSetDoNotDisturb[]", this);
 		final boolean can = tsCaps.getSetDnd() == 1;
@@ -116,6 +130,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canSetForwarding() {
 		TsapiTrace.traceEntry("canSetForwarding[]", this);
 		final boolean can = tsCaps.getSetFwd() == 1;
@@ -123,6 +138,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canSetMessageWaiting() {
 		TsapiTrace.traceEntry("canSetMessageWaiting[]", this);
 		final boolean can = tsCaps.getSetMwi() == 1;
@@ -136,6 +152,7 @@ public final class TsapiAddressCapabilities implements AddressCapabilities,
 		TsapiTrace.traceDestruction(this, TsapiAddressCapabilities.class);
 	}
 
+	@Override
 	public boolean isObservable() {
 		TsapiTrace.traceEntry("isObservable[]", this);
 		final boolean is = tsCaps.getMonitorDevice() == 1;

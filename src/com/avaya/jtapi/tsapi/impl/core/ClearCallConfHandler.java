@@ -14,6 +14,7 @@ final class ClearCallConfHandler implements ConfHandler {
 		call = _call;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof CSTAClearCallConfEvent))

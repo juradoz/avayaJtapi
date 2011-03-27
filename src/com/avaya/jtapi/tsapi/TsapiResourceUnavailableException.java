@@ -22,10 +22,12 @@ public final class TsapiResourceUnavailableException extends
 		errorCode = _errorCode;
 	}
 
+	@Override
 	public int getErrorCode() {
 		return errorCode;
 	}
 
+	@Override
 	public int getErrorType() {
 		return errorType;
 	}

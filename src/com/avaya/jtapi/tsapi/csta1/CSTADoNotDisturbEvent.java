@@ -54,9 +54,7 @@ public final class CSTADoNotDisturbEvent extends CSTAUnsolicited {
 		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAExtendedDeviceID.print(device, "device", indent));
-		lines
-				.addAll(ASNBoolean.print(doNotDisturbOn, "doNotDisturbOn",
-						indent));
+		lines.addAll(ASNBoolean.print(doNotDisturbOn, "doNotDisturbOn", indent));
 
 		lines.add("}");
 		return lines;

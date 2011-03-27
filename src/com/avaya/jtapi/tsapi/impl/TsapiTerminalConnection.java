@@ -44,6 +44,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceConstruction(this, TsapiTerminalConnection.class);
 	}
 
+	@Override
 	public final void answer() throws TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException,
 			TsapiMethodNotSupportedException, TsapiInvalidStateException {
@@ -124,6 +125,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 						this);
 	}
 
+	@Override
 	public final int getCallControlState() {
 		TsapiTrace.traceEntry("getCallControlState[]", this);
 		try {
@@ -136,6 +138,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
+	@Override
 	public final TerminalConnectionCapabilities getCapabilities() {
 		TsapiTrace.traceEntry("getCapabilities[]", this);
 		try {
@@ -149,6 +152,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	}
 
 	// ERROR //
+	@Override
 	public final javax.telephony.Connection getConnection() {
 		try {
 			final TSConnection tsConn = tsConnection.getTSConnection();
@@ -188,6 +192,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
+	@Override
 	public final Object getPrivateData() {
 		TsapiTrace.traceEntry("getPrivateData[]", this);
 		final Object obj = TsapiPromoter
@@ -197,6 +202,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		return obj;
 	}
 
+	@Override
 	public final int getState() {
 		TsapiTrace.traceEntry("getState[]", this);
 		try {
@@ -209,6 +215,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	}
 
 	// ERROR //
+	@Override
 	public final Terminal getTerminal() {
 		try {
 			final TSDevice tsDevice = tsConnection.getTSDevice();
@@ -226,6 +233,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
+	@Override
 	public final TerminalConnectionCapabilities getTerminalConnectionCapabilities(
 			final Terminal terminal, final Address address)
 			throws InvalidArgumentException, PlatformException {
@@ -241,12 +249,14 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		return caps;
 	}
 
+	@Override
 	public final ConnectionID getTsapiConnectionID() {
 		TsapiTrace.traceEntry("getTsapiConnectionID[]", this);
 		try {
 			final CSTAConnectionID cstaConnectionID = tsConnection.getConnID();
-			final ConnectionID id = new ConnectionID(cstaConnectionID
-					.getCallID(), cstaConnectionID.getDeviceID(),
+			final ConnectionID id = new ConnectionID(
+					cstaConnectionID.getCallID(),
+					cstaConnectionID.getDeviceID(),
 					(short) cstaConnectionID.getDevIDType());
 
 			TsapiTrace.traceExit("getTsapiConnectionID[]", this);
@@ -267,6 +277,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		return tsConnection.hashCode();
 	}
 
+	@Override
 	public final void hold() throws TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
@@ -279,6 +290,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceExit("hold[]", this);
 	}
 
+	@Override
 	public final void join() throws TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
@@ -291,6 +303,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		TsapiTrace.traceExit("join[]", this);
 	}
 
+	@Override
 	public final void leave() throws TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
@@ -389,6 +402,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 				"listenUnhold[LucentTerminalConnection partyToUnhold]", this);
 	}
 
+	@Override
 	public final Object sendPrivateData(final Object data) {
 		TsapiTrace.traceEntry("sendPrivateData[Object data]", this);
 		try {
@@ -413,6 +427,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 		}
 	}
 
+	@Override
 	public final void setPrivateData(final Object data) {
 		TsapiTrace.traceEntry("setPrivateData[Object data]", this);
 		try {
@@ -453,6 +468,7 @@ class TsapiTerminalConnection implements ITsapiTerminalConnection, PrivateData,
 	public final void stopRecording() {
 	}// Byte code:
 
+	@Override
 	public final void unhold() throws TsapiInvalidStateException,
 			TsapiMethodNotSupportedException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {

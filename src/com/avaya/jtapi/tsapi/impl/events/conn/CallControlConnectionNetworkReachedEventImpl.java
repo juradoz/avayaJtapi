@@ -15,6 +15,7 @@ public class CallControlConnectionNetworkReachedEventImpl extends
 		super(params, event, eventId, numInQueue, digits);
 	}
 
+	@Override
 	public NetworkProgressInfo getNetworkProgressInfo() {
 		final Object privateData = callEventParams.getPrivateData();
 		if (privateData instanceof NetworkProgressInfo)

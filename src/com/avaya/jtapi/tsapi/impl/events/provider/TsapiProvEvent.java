@@ -22,6 +22,7 @@ public abstract class TsapiProvEvent extends TsapiObserverEvent implements
 		jtapi_provider = _provider;
 	}
 
+	@Override
 	public final Provider getProvider() {
 		return jtapi_provider;
 	}

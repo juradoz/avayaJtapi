@@ -16,6 +16,7 @@ final class RequestPrivilegesConfHandler implements ConfHandler {
 		return nonce;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof ACSRequestPrivilegesConfEvent))

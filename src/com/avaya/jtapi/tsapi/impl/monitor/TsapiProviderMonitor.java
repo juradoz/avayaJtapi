@@ -382,8 +382,7 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 					TsapiProviderMonitor.log
 							.debug("calling providerEventTransmissionEnded in "
 									+ listener);
-					listener
-							.providerEventTransmissionEnded((ProviderEvent) event);
+					listener.providerEventTransmissionEnded((ProviderEvent) event);
 					TsapiProviderMonitor.log
 							.debug("returned from providerEventTransmissionEnded in "
 									+ listener);
@@ -429,6 +428,7 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 				+ observer);
 	}
 
+	@Override
 	public void run() {
 		TsapiTrace.traceEntry("run[]", this);
 		synchronized (syncObject) {

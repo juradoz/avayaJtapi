@@ -494,6 +494,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 		return vendorVersion;
 	}
 
+	@Override
 	public void handleException(final Exception e) {
 		if (unsolicitedHandler == null) {
 			TsapiSession.log.error("Call Control: no handler for session");
@@ -523,6 +524,7 @@ public class TsapiSession implements TsapiChannelReadHandler {
 			}
 	}
 
+	@Override
 	public void handleRead(final IntelByteArrayInputStream msg) {
 		try {
 			if (msg.readShort() != TsapiSession.AC_BLOCK_VER)

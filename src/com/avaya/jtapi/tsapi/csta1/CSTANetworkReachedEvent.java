@@ -75,9 +75,7 @@ public final class CSTANetworkReachedEvent extends CSTAUnsolicited {
 		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
 		lines.addAll(CSTAConnectionID.print(connection, "connection", indent));
-		lines
-				.addAll(CSTAExtendedDeviceID.print(trunkUsed, "trunkUsed",
-						indent));
+		lines.addAll(CSTAExtendedDeviceID.print(trunkUsed, "trunkUsed", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(calledDevice, "calledDevice",
 				indent));
 		lines.addAll(LocalConnectionState.print(localConnectionInfo,

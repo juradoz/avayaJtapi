@@ -21,6 +21,7 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		super(params, event, eventId, numInQueue, digits);
 	}
 
+	@Override
 	public ACDAddress getDeliveringACDAddress() {
 		ACDAddress acdAddr = null;
 		if (callEventParams.getSplit() != null)
@@ -30,6 +31,7 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		return acdAddr;
 	}
 
+	@Override
 	public CallCenterAddress getDistributingAddress() {
 		CallCenterAddress cca = null;
 		if (callEventParams.getDistributingDevice() != null)
@@ -39,6 +41,7 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		return cca;
 	}
 
+	@Override
 	public LookaheadInfo getLookaheadInfo() {
 		LookaheadInfo lai = null;
 		if (callEventParams.getLookaheadInfo() != null)
@@ -48,6 +51,7 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		return lai;
 	}
 
+	@Override
 	public OriginalCallInfo getOriginalCallInfo() {
 		OriginalCallInfo oci = null;
 		if (callEventParams.getOriginalCallInfo() != null)
@@ -57,10 +61,12 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		return oci;
 	}
 
+	@Override
 	public short getReason() {
 		return callEventParams.getReason();
 	}
 
+	@Override
 	public CallCenterTrunk getTrunk() {
 		CallCenterTrunk trunk = null;
 		if (callEventParams.getTrunk() != null)
@@ -70,6 +76,7 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		return trunk;
 	}
 
+	@Override
 	public UserEnteredCode getUserEnteredCode() {
 		UserEnteredCode uec = null;
 		if (callEventParams.getUserEnteredCode() != null)
@@ -79,6 +86,7 @@ public class LucentCallControlConnectionNetworkReachedEvent extends
 		return uec;
 	}
 
+	@Override
 	public UserToUserInfo getUserToUserInfo() {
 		UserToUserInfo uui = null;
 		if (callEventParams.getUserToUserInfo() != null)

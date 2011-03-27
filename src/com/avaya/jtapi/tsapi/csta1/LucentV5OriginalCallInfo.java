@@ -42,9 +42,7 @@ public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
 				"callingDevice", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.calledDevice_asn,
 				"calledDevice", indent));
-		lines
-				.addAll(ASNIA5String.print(_this.trunkGroup, "trunkGroup",
-						indent));
+		lines.addAll(ASNIA5String.print(_this.trunkGroup, "trunkGroup", indent));
 		lines.addAll(ASNIA5String.print(_this.trunkMember, "trunkMember",
 				indent));
 		lines.addAll(LucentLookaheadInfo.print(_this.lookaheadInfo,

@@ -509,15 +509,11 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 
 		lines.addAll(ASNInteger.print(alternateCall, "alternateCall", indent));
 		lines.addAll(ASNInteger.print(answerCall, "answerCall", indent));
-		lines
-				.addAll(ASNInteger.print(callCompletion, "callCompletion",
-						indent));
+		lines.addAll(ASNInteger.print(callCompletion, "callCompletion", indent));
 		lines.addAll(ASNInteger.print(clearCall, "clearCall", indent));
 		lines.addAll(ASNInteger.print(clearConnection, "clearConnection",
 				indent));
-		lines
-				.addAll(ASNInteger.print(conferenceCall, "conferenceCall",
-						indent));
+		lines.addAll(ASNInteger.print(conferenceCall, "conferenceCall", indent));
 		lines.addAll(ASNInteger.print(consultationCall, "consultationCall",
 				indent));
 		lines.addAll(ASNInteger.print(deflectCall, "deflectCall", indent));
@@ -551,9 +547,7 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 				indent));
 		lines.addAll(ASNInteger.print(connectionClearedEvent,
 				"connectionClearedEvent", indent));
-		lines
-				.addAll(ASNInteger.print(deliveredEvent, "deliveredEvent",
-						indent));
+		lines.addAll(ASNInteger.print(deliveredEvent, "deliveredEvent", indent));
 		lines.addAll(ASNInteger.print(divertedEvent, "divertedEvent", indent));
 		lines.addAll(ASNInteger.print(establishedEvent, "establishedEvent",
 				indent));
@@ -564,9 +558,7 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 		lines.addAll(ASNInteger.print(originatedEvent, "originatedEvent",
 				indent));
 		lines.addAll(ASNInteger.print(queuedEvent, "queuedEvent", indent));
-		lines
-				.addAll(ASNInteger.print(retrievedEvent, "retrievedEvent",
-						indent));
+		lines.addAll(ASNInteger.print(retrievedEvent, "retrievedEvent", indent));
 		lines.addAll(ASNInteger.print(serviceInitiatedEvent,
 				"serviceInitiatedEvent", indent));
 		lines.addAll(ASNInteger.print(transferredEvent, "transferredEvent",
@@ -580,16 +572,12 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 		lines.addAll(ASNInteger.print(messageWaitingEvent,
 				"messageWaitingEvent", indent));
 		lines.addAll(ASNInteger.print(loggedOnEvent, "loggedOnEvent", indent));
-		lines
-				.addAll(ASNInteger.print(loggedOffEvent, "loggedOffEvent",
-						indent));
+		lines.addAll(ASNInteger.print(loggedOffEvent, "loggedOffEvent", indent));
 		lines.addAll(ASNInteger.print(notReadyEvent, "notReadyEvent", indent));
 		lines.addAll(ASNInteger.print(readyEvent, "readyEvent", indent));
 		lines.addAll(ASNInteger.print(workNotReadyEvent, "workNotReadyEvent",
 				indent));
-		lines
-				.addAll(ASNInteger.print(workReadyEvent, "workReadyEvent",
-						indent));
+		lines.addAll(ASNInteger.print(workReadyEvent, "workReadyEvent", indent));
 		lines.addAll(ASNInteger.print(backInServiceEvent, "backInServiceEvent",
 				indent));
 		lines.addAll(ASNInteger.print(outOfServiceEvent, "outOfServiceEvent",
@@ -599,9 +587,7 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 				indent));
 		lines.addAll(ASNInteger.print(reRoute, "reRoute", indent));
 		lines.addAll(ASNInteger.print(routeSelect, "routeSelect", indent));
-		lines
-				.addAll(ASNInteger.print(routeUsedEvent, "routeUsedEvent",
-						indent));
+		lines.addAll(ASNInteger.print(routeUsedEvent, "routeUsedEvent", indent));
 		lines.addAll(ASNInteger.print(routeEndEvent, "routeEndEvent", indent));
 		lines.addAll(ASNInteger.print(monitorDevice, "monitorDevice", indent));
 		lines.addAll(ASNInteger.print(monitorCall, "monitorCall", indent));
@@ -631,9 +617,7 @@ public final class CSTAGetAPICapsConfEvent extends CSTAConfirmation {
 				"changeSysStatFilter", indent));
 		lines.addAll(ASNInteger.print(sysStatReqEvent, "sysStatReqEvent",
 				indent));
-		lines
-				.addAll(ASNInteger.print(sysStatReqConf, "sysStatReqConf",
-						indent));
+		lines.addAll(ASNInteger.print(sysStatReqConf, "sysStatReqConf", indent));
 		lines.addAll(ASNInteger.print(sysStatEvent, "sysStatEvent", indent));
 
 		lines.add("}");

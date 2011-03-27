@@ -30,8 +30,7 @@ public final class TsapiAlternateTlinkEntriesList {
 						+ "\": the maximum number of Alternate Tlink entries ("
 						+ 16 + ") has already been processed.");
 
-			entries
-					.add(new TsapiAlternateTlinkEntry(propertyName, valueString));
+			entries.add(new TsapiAlternateTlinkEntry(propertyName, valueString));
 		} catch (final TsapiPropertySyntaxException e) {
 			throw new TsapiPropertiesException("Error processing property \""
 					+ propertyName + "\": " + e.getMessage());

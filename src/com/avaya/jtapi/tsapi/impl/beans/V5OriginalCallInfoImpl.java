@@ -15,18 +15,22 @@ public class V5OriginalCallInfoImpl extends OriginalCallInfoImpl implements
 		flexibleBilling = false;
 	}
 
+	@Override
 	public boolean canSetBillRate() {
 		return flexibleBilling;
 	}
 
+	@Override
 	public int getCallOriginatorType() {
 		return callOriginatorType;
 	}
 
+	@Override
 	public String getUCID() {
 		return ucid;
 	}
 
+	@Override
 	public boolean hasCallOriginatorType() {
 		return hasCallOriginatorType;
 	}

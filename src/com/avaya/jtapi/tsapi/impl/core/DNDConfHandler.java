@@ -24,6 +24,7 @@ final class DNDConfHandler implements ConfHandler {
 		enable = _enable;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null || event.getEventHeader().getEventClass() != 5
 				|| event.getEventHeader().getEventType() != pdu)

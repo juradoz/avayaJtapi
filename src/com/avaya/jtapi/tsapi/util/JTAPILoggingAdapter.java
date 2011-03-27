@@ -136,15 +136,12 @@ public class JTAPILoggingAdapter {
 
 					if (JTAPILoggingAdapter.traceFileCount != null)
 						loggingProperties
-								.put(
-										"log4j.appender.defaultAppender.MaxBackupIndex",
-										Integer
-												.valueOf(Integer
-														.parseInt(JTAPILoggingAdapter.traceFileCount) - 1));
+								.put("log4j.appender.defaultAppender.MaxBackupIndex",
+										Integer.valueOf(Integer
+												.parseInt(JTAPILoggingAdapter.traceFileCount) - 1));
 					else
 						loggingProperties
-								.put(
-										"log4j.appender.defaultAppender.MaxBackupIndex",
+								.put("log4j.appender.defaultAppender.MaxBackupIndex",
 										"9");
 					if (JTAPILoggingAdapter.traceFileSize != null)
 						loggingProperties.put(
@@ -165,8 +162,7 @@ public class JTAPILoggingAdapter {
 				loggingProperties.put("log4j.appender.defaultAppender.layout",
 						"org.apache.log4j.PatternLayout");
 				loggingProperties
-						.put(
-								"log4j.appender.defaultAppender.layout.ConversionPattern",
+						.put("log4j.appender.defaultAppender.layout.ConversionPattern",
 								"%d [%t] %-5p %c{1} - %m%n");
 			}
 
@@ -180,11 +176,9 @@ public class JTAPILoggingAdapter {
 
 				if (JTAPILoggingAdapter.errorFileCount != null)
 					loggingProperties
-							.put(
-									"log4j.appender.errorAppender.MaxBackupIndex",
-									Integer
-											.valueOf(Integer
-													.parseInt(JTAPILoggingAdapter.errorFileCount) - 1));
+							.put("log4j.appender.errorAppender.MaxBackupIndex",
+									Integer.valueOf(Integer
+											.parseInt(JTAPILoggingAdapter.errorFileCount) - 1));
 				else
 					loggingProperties.put(
 							"log4j.appender.errorAppender.MaxBackupIndex", "9");
@@ -198,8 +192,7 @@ public class JTAPILoggingAdapter {
 				loggingProperties.put("log4j.appender.errorAppender.layout",
 						"org.apache.log4j.PatternLayout");
 				loggingProperties
-						.put(
-								"log4j.appender.errorAppender.layout.ConversionPattern",
+						.put("log4j.appender.errorAppender.layout.ConversionPattern",
 								"%d [%t] %-5p %c{1} - %m%n");
 			}
 			if (JTAPILoggingAdapter.isPerformanceLoggingEnabled()) {
@@ -213,15 +206,12 @@ public class JTAPILoggingAdapter {
 
 				if (JTAPILoggingAdapter.perfFileCount != null)
 					loggingProperties
-							.put(
-									"log4j.appender.performanceAppender.MaxBackupIndex",
-									Integer
-											.valueOf(Integer
-													.parseInt(JTAPILoggingAdapter.perfFileCount) - 1));
+							.put("log4j.appender.performanceAppender.MaxBackupIndex",
+									Integer.valueOf(Integer
+											.parseInt(JTAPILoggingAdapter.perfFileCount) - 1));
 				else
 					loggingProperties
-							.put(
-									"log4j.appender.performanceAppender.MaxBackupIndex",
+							.put("log4j.appender.performanceAppender.MaxBackupIndex",
 									"9");
 				if (JTAPILoggingAdapter.perfFileSize != null)
 					loggingProperties.put(
@@ -235,8 +225,7 @@ public class JTAPILoggingAdapter {
 						"log4j.appender.performanceAppender.layout",
 						"org.apache.log4j.PatternLayout");
 				loggingProperties
-						.put(
-								"log4j.appender.performanceAppender.layout.ConversionPattern",
+						.put("log4j.appender.performanceAppender.layout.ConversionPattern",
 								"%d [%t] %-5p %c{1} - %m%n");
 			}
 			if (JTAPILoggingAdapter.isTraceLoggingEnabled()

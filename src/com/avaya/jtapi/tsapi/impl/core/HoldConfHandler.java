@@ -14,6 +14,7 @@ final class HoldConfHandler implements ConfHandler {
 		conn = _conn;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof CSTAHoldCallConfEvent))

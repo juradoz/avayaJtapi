@@ -121,8 +121,8 @@ final class TSAuditThread extends Thread {
 				}
 				try {
 					if (sConn.conn.getConnID().getCallID() != callID) {
-						final Object oldObj = keepHash.put(sConn.conn
-								.getConnID(), sConn);
+						final Object oldObj = keepHash.put(
+								sConn.conn.getConnID(), sConn);
 						if (oldObj != null)
 							TSAuditThread.log
 									.info("NOTICE: keepHash.put() replaced "
@@ -289,8 +289,8 @@ final class TSAuditThread extends Thread {
 
 						if (curTime - sConn.saveTime < 5000L)
 							try {
-								final Object oldObj = keepHash.put(sConn.conn
-										.getConnID(), sConn);
+								final Object oldObj = keepHash.put(
+										sConn.conn.getConnID(), sConn);
 								if (oldObj != null)
 									TSAuditThread.log
 											.info("NOTICE: keepHash.put() replaced "
@@ -325,8 +325,8 @@ final class TSAuditThread extends Thread {
 						}
 
 						if (curTime - sAgent.saveTime < 5000L) {
-							final Object oldObj = keepHash.put(sAgent.agent
-									.getAgentKey(), sAgent);
+							final Object oldObj = keepHash.put(
+									sAgent.agent.getAgentKey(), sAgent);
 							if (oldObj != null)
 								TSAuditThread.log
 										.info("NOTICE: keepHash.put() replaced "

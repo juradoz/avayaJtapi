@@ -331,14 +331,10 @@ public final class TSDevice implements IDomainDevice {
 			return;
 
 		final TSCall call = tsConn.getTSCall();
-		call
-				.addDeviceObservers(this,
-						doTerminalObservers ? callsAtTerminalMonitorThreads
-								: null,
-						doAddressObservers ? callsAtAddressMonitorThreads
-								: null,
-						doAddressObservers ? callsViaAddressMonitorThreads
-								: null, true);
+		call.addDeviceObservers(this,
+				doTerminalObservers ? callsAtTerminalMonitorThreads : null,
+				doAddressObservers ? callsAtAddressMonitorThreads : null,
+				doAddressObservers ? callsViaAddressMonitorThreads : null, true);
 	}
 
 	void addName(final CSTAExtendedDeviceID deviceID) {
@@ -624,9 +620,10 @@ public final class TSDevice implements IDomainDevice {
 					throw e;
 				} catch (final Exception e) {
 					if (e instanceof ITsapiException)
-						throw new TsapiPlatformException(((ITsapiException) e)
-								.getErrorType(), ((ITsapiException) e)
-								.getErrorCode(), "setFwd failure");
+						throw new TsapiPlatformException(
+								((ITsapiException) e).getErrorType(),
+								((ITsapiException) e).getErrorCode(),
+								"setFwd failure");
 					throw new TsapiPlatformException(4, 0, "setFwd failure");
 				}
 			}
@@ -671,8 +668,8 @@ public final class TSDevice implements IDomainDevice {
 			else
 				instructions[i] = new CallControlForwarding(
 						tsapiInstructions[i].getDestinationAddress(),
-						tsapiInstructions[i].getType(), tsapiInstructions[i]
-								.getFilter() == 2);
+						tsapiInstructions[i].getType(),
+						tsapiInstructions[i].getFilter() == 2);
 
 		return instructions;
 	}
@@ -1074,8 +1071,8 @@ public final class TSDevice implements IDomainDevice {
 		try {
 			final LucentQueryDeviceName lqdn = new LucentQueryDeviceName(
 					getName());
-			final Object lqdnConf = provider.sendPrivateData(lqdn
-					.makeTsapiPrivate(), null, true);
+			final Object lqdnConf = provider.sendPrivateData(
+					lqdn.makeTsapiPrivate(), null, true);
 			if (lqdnConf instanceof LucentQueryDeviceNameConfEvent)
 				return ((LucentQueryDeviceNameConfEvent) lqdnConf).getName();
 			return null;
@@ -1088,8 +1085,9 @@ public final class TSDevice implements IDomainDevice {
 			if (e instanceof TsapiInvalidArgumentException)
 				return null;
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"queryDeviceName failure");
 
 			throw new TsapiPlatformException(4, 0, "queryDeviceName failure");
@@ -1464,8 +1462,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"groupPickupCall failure");
 			throw new TsapiPlatformException(4, 0, "groupPickupCall failure");
 		}
@@ -1634,9 +1633,9 @@ public final class TSDevice implements IDomainDevice {
 		if (pickConnection.getTSCall().updateObject()) {
 			final int state = pickConnection.getTSConnState();
 			if (state != 50 && state != 49 && state != 54)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(pickConnection, true), 2, state,
-						"connection not alerting or in progress");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(pickConnection, true),
+						2, state, "connection not alerting or in progress");
 
 		}
 
@@ -1657,8 +1656,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"pickupCall failure");
 			throw new TsapiPlatformException(4, 0, "pickupCall failure");
 		}
@@ -1752,8 +1752,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"registerRouteCallback failure");
 			throw new TsapiPlatformException(4, 0,
 					"registerRouteCallback failure");
@@ -1878,8 +1879,9 @@ public final class TSDevice implements IDomainDevice {
 		final Vector<TsapiTerminalMonitor> terminalObservers = new Vector<TsapiTerminalMonitor>(
 				terminalMonitorThreads);
 		for (int i = 0; i < terminalObservers.size(); ++i)
-			removeTerminalMonitor((TsapiTerminalMonitor) terminalObservers
-					.elementAt(i), cause, privateData);
+			removeTerminalMonitor(
+					(TsapiTerminalMonitor) terminalObservers.elementAt(i),
+					cause, privateData);
 		final Vector<TsapiCallMonitor> callsViaAddressObservers = new Vector<TsapiCallMonitor>(
 				callsViaAddressMonitorThreads);
 		for (int i = 0; i < callsViaAddressObservers.size(); ++i)
@@ -1890,8 +1892,9 @@ public final class TSDevice implements IDomainDevice {
 		final Vector<TsapiCallMonitor> callsAtAddressObservers = new Vector<TsapiCallMonitor>(
 				callsAtAddressMonitorThreads);
 		for (int i = 0; i < callsAtAddressObservers.size(); ++i)
-			removeAddressCallMonitor((TsapiCallMonitor) callsAtAddressObservers
-					.elementAt(i), cause, privateData);
+			removeAddressCallMonitor(
+					(TsapiCallMonitor) callsAtAddressObservers.elementAt(i),
+					cause, privateData);
 
 		final Vector<TsapiCallMonitor> callsAtTerminalObservers = new Vector<TsapiCallMonitor>(
 				callsAtTerminalMonitorThreads);
@@ -1920,8 +1923,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"cancelRouteCallback failure");
 			throw new TsapiPlatformException(4, 0,
 					"cancelRouteCallback failure");
@@ -2118,9 +2122,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
-						"setDnd failure");
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(), "setDnd failure");
 			throw new TsapiPlatformException(4, 0, "setDnd failure");
 		}
 	}
@@ -2193,9 +2197,10 @@ public final class TSDevice implements IDomainDevice {
 					throw e;
 				} catch (final Exception e) {
 					if (e instanceof ITsapiException)
-						throw new TsapiPlatformException(((ITsapiException) e)
-								.getErrorType(), ((ITsapiException) e)
-								.getErrorCode(), "setFwd failure");
+						throw new TsapiPlatformException(
+								((ITsapiException) e).getErrorType(),
+								((ITsapiException) e).getErrorCode(),
+								"setFwd failure");
 					throw new TsapiPlatformException(4, 0, "setFwd failure");
 				}
 			}
@@ -2281,8 +2286,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"setMsgWaitingInd failure");
 			throw new TsapiPlatformException(4, 0, "setMsgWaitingInd failure");
 		}
@@ -2453,8 +2459,9 @@ public final class TSDevice implements IDomainDevice {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"setAgentState failure");
 			throw new TsapiPlatformException(4, 0, "setAgentState failure");
 		}
@@ -2470,8 +2477,8 @@ public final class TSDevice implements IDomainDevice {
 					getName());
 			waitingForAgents = true;
 			final ConfHandler handler = new QueryAgentLoginConfHandler(this);
-			final Object lqalConf = provider.sendPrivateData(lqal
-					.makeTsapiPrivate(), handler);
+			final Object lqalConf = provider.sendPrivateData(
+					lqal.makeTsapiPrivate(), handler);
 
 			if (lqalConf instanceof LucentQueryAgentLoginConfEvent) {
 				synchronized (this) {
@@ -2743,38 +2750,38 @@ public final class TSDevice implements IDomainDevice {
 			for (int i = 0; i < fwdInfo.length; ++i) {
 				switch (fwdInfo[i].getForwardingType()) {
 				case 1:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 2);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 2);
 
 					break;
 				case 4:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 2, false);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 2, false);
 
 					break;
 				case 3:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 2, true);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 2, true);
 
 					break;
 				case 0:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 1);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 1);
 
 					break;
 				case 2:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 3);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 3);
 
 					break;
 				case 6:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 3, false);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 3, false);
 
 					break;
 				case 5:
-					newFwd = new TsapiCallControlForwarding(fwdInfo[i]
-							.getForwardDN(), 3, true);
+					newFwd = new TsapiCallControlForwarding(
+							fwdInfo[i].getForwardDN(), 3, true);
 				}
 
 				typeMatch = false;

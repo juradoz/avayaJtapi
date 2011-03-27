@@ -24,6 +24,7 @@ final class MWIConfHandler implements ConfHandler {
 		bits = _bits;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null || event.getEventHeader().getEventClass() != 5
 				|| event.getEventHeader().getEventType() != pdu)

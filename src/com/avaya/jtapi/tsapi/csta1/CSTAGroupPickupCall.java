@@ -44,9 +44,7 @@ public class CSTAGroupPickupCall extends CSTARequest {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(CSTAConnectionID.print(deflectCall, "deflectCall",
-						indent));
+		lines.addAll(CSTAConnectionID.print(deflectCall, "deflectCall", indent));
 		lines.addAll(ASNIA5String.print(pickupDevice, "pickupDevice", indent));
 
 		lines.add("}");

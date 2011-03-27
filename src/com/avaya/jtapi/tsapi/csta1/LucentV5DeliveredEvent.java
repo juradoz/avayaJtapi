@@ -58,6 +58,7 @@ public class LucentV5DeliveredEvent extends LucentDeliveredEvent implements
 		return 80;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

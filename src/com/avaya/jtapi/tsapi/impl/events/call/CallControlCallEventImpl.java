@@ -12,22 +12,27 @@ public class CallControlCallEventImpl extends CallEventImpl implements
 		super(params, event, eventId);
 	}
 
+	@Override
 	public int getCallControlCause() {
 		return callEventParams.getCause();
 	}
 
+	@Override
 	public Address getCalledAddress() {
 		return callEventParams.getCalledAddress();
 	}
 
+	@Override
 	public Address getCallingAddress() {
 		return callEventParams.getCallingAddress();
 	}
 
+	@Override
 	public Terminal getCallingTerminal() {
 		return callEventParams.getCallingTerminal();
 	}
 
+	@Override
 	public Address getLastRedirectedAddress() {
 		return callEventParams.getLastRedirectionAddress();
 	}

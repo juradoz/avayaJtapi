@@ -21,10 +21,12 @@ public class AgentTerminalEventImpl extends TsapiListenerCallCenterEvent
 		this.agent = agent;
 	}
 
+	@Override
 	public Agent getAgent() {
 		return agent;
 	}
 
+	@Override
 	public Terminal getTerminal() {
 		return terminal;
 	}

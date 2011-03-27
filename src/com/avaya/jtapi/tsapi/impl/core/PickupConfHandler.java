@@ -19,6 +19,7 @@ final class PickupConfHandler implements ConfHandler {
 		pickConnection = _pickConnection;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof CSTAPickupCallConfEvent))

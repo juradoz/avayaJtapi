@@ -382,9 +382,9 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 				.traceEntry(
 						"getConnection[com.avaya.jtapi.tsapi.ConnectionID tsapiConnID, Address address]",
 						this);
-		final CSTAConnectionID connID = new CSTAConnectionID(tsapiConnID
-				.getCallID(), tsapiConnID.getDeviceID(), (short) tsapiConnID
-				.getDevIDType());
+		final CSTAConnectionID connID = new CSTAConnectionID(
+				tsapiConnID.getCallID(), tsapiConnID.getDeviceID(),
+				(short) tsapiConnID.getDevIDType());
 
 		if (!(address instanceof ITsapiAddress))
 			throw new TsapiPlatformException(3, 0,
@@ -688,9 +688,9 @@ class TsapiProvider implements ITsapiProviderEx, PrivateData,
 				.traceEntry(
 						"getTerminalConnection[com.avaya.jtapi.tsapi.ConnectionID tsapiConnID, Terminal terminal]",
 						this);
-		final CSTAConnectionID connID = new CSTAConnectionID(tsapiConnID
-				.getCallID(), tsapiConnID.getDeviceID(), (short) tsapiConnID
-				.getDevIDType());
+		final CSTAConnectionID connID = new CSTAConnectionID(
+				tsapiConnID.getCallID(), tsapiConnID.getDeviceID(),
+				(short) tsapiConnID.getDevIDType());
 
 		if (!(terminal instanceof ITsapiTerminal))
 			throw new TsapiPlatformException(3, 0,

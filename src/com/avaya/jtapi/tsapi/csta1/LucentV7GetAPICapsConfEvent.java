@@ -87,18 +87,14 @@ public final class LucentV7GetAPICapsConfEvent extends
 
 		final String indent = "  ";
 
-		lines
-				.addAll(ASNIA5String.print(switchVersion, "switchVersion",
-						indent));
+		lines.addAll(ASNIA5String.print(switchVersion, "switchVersion", indent));
 		lines.addAll(ASNBoolean.print(sendDTMFTone, "sendDTMFTone", indent));
 		lines.addAll(ASNBoolean.print(enteredDigitsEvent, "enteredDigitsEvent",
 				indent));
 
 		lines.addAll(ASNBoolean.print(queryDeviceName, "queryDeviceName",
 				indent));
-		lines
-				.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas",
-						indent));
+		lines.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas", indent));
 		lines.addAll(ASNBoolean.print(querySplitSkillMeas,
 				"querySplitSkillMeas", indent));
 
@@ -115,9 +111,7 @@ public final class LucentV7GetAPICapsConfEvent extends
 		lines.addAll(ASNBoolean.print(selectiveListeningRetrieve,
 				"selectiveListeningRetrieve", indent));
 
-		lines
-				.addAll(ASNBoolean.print(setBillingRate, "setBillingRate",
-						indent));
+		lines.addAll(ASNBoolean.print(setBillingRate, "setBillingRate", indent));
 		lines.addAll(ASNBoolean.print(queryUCID, "queryUCID", indent));
 		lines.addAll(ASNBoolean.print(chargeAdviceEvent, "chargeAdviceEvent",
 				indent));

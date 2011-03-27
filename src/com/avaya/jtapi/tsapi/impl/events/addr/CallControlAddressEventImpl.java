@@ -25,18 +25,22 @@ public class CallControlAddressEventImpl extends TsapiListenerCallControlEvent
 		this.address = address;
 	}
 
+	@Override
 	public Address getAddress() {
 		return address;
 	}
 
+	@Override
 	public boolean getDoNotDisturbState() {
 		return doNotDisturbState;
 	}
 
+	@Override
 	public CallControlForwarding[] getForwarding() {
 		return callControlForwarding;
 	}
 
+	@Override
 	public boolean getMessageWaitingState() {
 		return mwBits != 0;
 	}

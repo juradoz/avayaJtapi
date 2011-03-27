@@ -16,30 +16,37 @@ public class OriginalCallInfoImpl implements OriginalCallInfo {
 	private ITsapiAddress calledDevice;
 	private TsapiTrunk trunk;
 
+	@Override
 	public ITsapiAddress getCalledDevice() {
 		return calledDevice;
 	}
 
+	@Override
 	public ITsapiAddress getCallingDevice() {
 		return callingDevice;
 	}
 
+	@Override
 	public LookaheadInfo getLookaheadInfo() {
 		return lookaheadInfo;
 	}
 
+	@Override
 	public short getReason() {
 		return reason;
 	}
 
+	@Override
 	public TsapiTrunk getTrunk() {
 		return trunk;
 	}
 
+	@Override
 	public UserEnteredCode getUserEnteredCode() {
 		return userEnteredCode;
 	}
 
+	@Override
 	public UserToUserInfo getUserToUserInfo() {
 		return userInfo;
 	}

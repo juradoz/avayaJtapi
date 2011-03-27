@@ -22,6 +22,7 @@ public abstract class TsapiAddressEvent extends TsapiObserverEvent implements
 		address = _address;
 	}
 
+	@Override
 	public final Address getAddress() {
 		return address;
 	}

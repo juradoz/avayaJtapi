@@ -13,18 +13,21 @@ final class TsapiPrivateCapabilities implements PrivateDataCapabilities {
 		TsapiTrace.traceConstruction(this, TsapiPrivateCapabilities.class);
 	}
 
+	@Override
 	public boolean canGetPrivateData() {
 		TsapiTrace.traceEntry("canGetPrivateData[]", this);
 		TsapiTrace.traceExit("canGetPrivateData[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canSendPrivateData() {
 		TsapiTrace.traceEntry("canSendPrivateData[]", this);
 		TsapiTrace.traceExit("canSendPrivateData[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canSetPrivateData() {
 		TsapiTrace.traceEntry("canSetPrivateData[]", this);
 		TsapiTrace.traceExit("canSetPrivateData[]", this);

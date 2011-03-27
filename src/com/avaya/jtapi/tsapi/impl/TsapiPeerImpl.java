@@ -24,6 +24,7 @@ public class TsapiPeerImpl extends AbstractTsapiPeer implements ITsapiPeer {
 		TsapiTrace.traceDestruction(this, TsapiPeerImpl.class);
 	}
 
+	@Override
 	public String getName() {
 		TsapiTrace.traceEntry("getName[]", this);
 		final String name = super.getClass().getName();
@@ -31,6 +32,7 @@ public class TsapiPeerImpl extends AbstractTsapiPeer implements ITsapiPeer {
 		return name;
 	}
 
+	@Override
 	public final Provider getProvider(final String providerString) {
 		TsapiTrace.traceEntry("getProvider[String providerString]", this);
 

@@ -22,6 +22,7 @@ public abstract class TsapiTerminalEvent extends TsapiObserverEvent implements
 		terminal = _terminal;
 	}
 
+	@Override
 	public final Terminal getTerminal() {
 		return terminal;
 	}

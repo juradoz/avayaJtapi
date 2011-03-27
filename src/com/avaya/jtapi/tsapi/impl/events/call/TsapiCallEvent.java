@@ -34,6 +34,7 @@ public abstract class TsapiCallEvent extends TsapiObserverEvent implements
 		return params.isFlexibleBilling();
 	}
 
+	@Override
 	public final Call getCall() {
 		return params.getCall();
 	}
@@ -54,6 +55,7 @@ public abstract class TsapiCallEvent extends TsapiObserverEvent implements
 		return params.getCallOriginatorType();
 	}
 
+	@Override
 	public short getCSTACause() {
 		return params.getCstaCause();
 	}

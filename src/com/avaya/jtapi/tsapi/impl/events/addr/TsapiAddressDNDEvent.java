@@ -14,10 +14,12 @@ public final class TsapiAddressDNDEvent extends TsapiCallCtlAddressEvent
 		state = _state;
 	}
 
+	@Override
 	public boolean getDoNotDisturbState() {
 		return state;
 	}
 
+	@Override
 	public int getID() {
 		return 200;
 	}

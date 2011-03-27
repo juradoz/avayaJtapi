@@ -41,6 +41,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 		TsapiTrace.traceDestruction(this, TsapiACDAddress.class);
 	}
 
+	@Override
 	public final ACDManagerAddress getACDManagerAddress()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getACDManagerAddress[]", this);
@@ -67,6 +68,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 
 	}
 
+	@Override
 	public final int getAgentsAvailable()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getAgentsAvailable[]", this);
@@ -79,6 +81,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 		}
 	}
 
+	@Override
 	public final int getAgentsLoggedIn()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getAgentsLoggedIn[]", this);
@@ -91,6 +94,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 		}
 	}
 
+	@Override
 	public final Agent[] getLoggedOnAgents() {
 		TsapiTrace.traceEntry("getLoggedOnAgents[]", this);
 		try {
@@ -121,6 +125,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 
 	}
 
+	@Override
 	public final int getNumberQueued() throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getNumberQueued[]", this);
 		try {
@@ -133,6 +138,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 
 	}
 
+	@Override
 	public final Call getOldestCallQueued()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getOldestCallQueued[]", this);
@@ -152,6 +158,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 
 	}
 
+	@Override
 	public final int getQueueWaitTime() throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getQueueWaitTime[]", this);
 		try {
@@ -166,6 +173,7 @@ class TsapiACDAddress extends TsapiAddress implements ACDAddress {
 
 	}
 
+	@Override
 	public final int getRelativeQueueLoad()
 			throws TsapiMethodNotSupportedException {
 		try {

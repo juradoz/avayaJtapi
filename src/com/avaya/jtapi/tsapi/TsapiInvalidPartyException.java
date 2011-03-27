@@ -22,10 +22,12 @@ public final class TsapiInvalidPartyException extends InvalidPartyException
 		errorCode = _errorCode;
 	}
 
+	@Override
 	public int getErrorCode() {
 		return errorCode;
 	}
 
+	@Override
 	public int getErrorType() {
 		return errorType;
 	}

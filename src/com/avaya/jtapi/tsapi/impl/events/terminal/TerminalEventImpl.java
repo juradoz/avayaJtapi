@@ -15,6 +15,7 @@ public class TerminalEventImpl extends TsapiListenerEvent implements
 		terminal = _device;
 	}
 
+	@Override
 	public Terminal getTerminal() {
 		return terminal;
 	}

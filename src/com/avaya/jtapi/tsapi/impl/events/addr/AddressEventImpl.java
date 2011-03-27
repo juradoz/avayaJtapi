@@ -18,6 +18,7 @@ public class AddressEventImpl extends TsapiListenerEvent implements
 		this.address = address;
 	}
 
+	@Override
 	public Address getAddress() {
 		return address;
 	}

@@ -46,6 +46,7 @@ final class SnapshotCallConfHandler implements ConfHandler {
 		extraHandlerVector.addElement(_extraHandler);
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		try {
 			synchronized (call.callbackAndTypeVector) {

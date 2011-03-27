@@ -31,9 +31,7 @@ public final class ACSNameAddr extends ASNSequence {
 
 		final String indent = _indent + "  ";
 
-		lines
-				.addAll(ASNIA5String.print(_this.serverName, "serverName",
-						indent));
+		lines.addAll(ASNIA5String.print(_this.serverName, "serverName", indent));
 		lines.addAll(ASNOctetString.print(_this.serverAddr, "serverAddr",
 				indent));
 

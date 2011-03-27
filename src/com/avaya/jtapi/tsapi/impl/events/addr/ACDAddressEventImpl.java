@@ -21,10 +21,12 @@ public class ACDAddressEventImpl extends TsapiListenerCallCenterEvent implements
 		this.address = address;
 	}
 
+	@Override
 	public Address getAddress() {
 		return address;
 	}
 
+	@Override
 	public Agent getAgent() {
 		return agent;
 	}

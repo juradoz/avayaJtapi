@@ -19,6 +19,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		TsapiTrace.traceConstruction(this, TsapiTerminalCapabilities.class);
 	}
 
+	@Override
 	public boolean canGetDoNotDisturb() {
 		TsapiTrace.traceEntry("canGetDoNotDisturb[]", this);
 		final boolean can = tsCaps.getDoNotDisturbEvent() == 1
@@ -27,6 +28,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canHandleAgents() {
 		TsapiTrace.traceEntry("canHandleAgents[]", this);
 		final boolean can = tsCaps.getSetAgentState() == 1
@@ -35,6 +37,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickup() {
 		TsapiTrace.traceEntry("canPickup[]", this);
 		final boolean can = tsCaps.getPickupCall() == 1;
@@ -42,6 +45,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickup(final Address address1, final Address address2) {
 		TsapiTrace.traceEntry("canPickup[Address address1, Address address2]",
 				this);
@@ -51,6 +55,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickup(final Connection connection, final Address address) {
 		TsapiTrace.traceEntry(
 				"canPickup[Connection connection, Address address]", this);
@@ -60,6 +65,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickup(final TerminalConnection tc, final Address address) {
 		TsapiTrace.traceEntry(
 				"canPickup[TerminalConnection tc, Address address]", this);
@@ -69,6 +75,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickupFromGroup() {
 		TsapiTrace.traceEntry("canPickupFromGroup[]", this);
 		final boolean can = canPickupFromGroup((Address) null);
@@ -76,6 +83,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickupFromGroup(final Address address) {
 		TsapiTrace.traceEntry("canPickupFromGroup[Address address]", this);
 		final boolean can = tsCaps.getGroupPickupCall() == 1;
@@ -83,6 +91,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPickupFromGroup(final String group, final Address address) {
 		TsapiTrace.traceEntry(
 				"canPickupFromGroup[String group, Address address]", this);
@@ -91,6 +100,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		return false;
 	}
 
+	@Override
 	public boolean canSetDoNotDisturb() {
 		TsapiTrace.traceEntry("canSetDoNotDisturb[]", this);
 		final boolean can = tsCaps.getSetDnd() == 1;
@@ -104,6 +114,7 @@ public final class TsapiTerminalCapabilities implements TerminalCapabilities,
 		TsapiTrace.traceDestruction(this, TsapiTerminalCapabilities.class);
 	}
 
+	@Override
 	public boolean isObservable() {
 		TsapiTrace.traceEntry("isObservable[]", this);
 		final boolean can = tsCaps.getMonitorDevice() == 1;

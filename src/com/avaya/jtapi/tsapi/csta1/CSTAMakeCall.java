@@ -61,9 +61,7 @@ public final class CSTAMakeCall extends CSTARequest {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
-						indent));
+		lines.addAll(ASNIA5String.print(callingDevice, "callingDevice", indent));
 		lines.addAll(ASNIA5String.print(calledDevice, "calledDevice", indent));
 
 		lines.add("}");

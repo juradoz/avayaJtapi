@@ -44,6 +44,7 @@ class TsapiAgent implements ITsapiAgent {
 		TsapiTrace.traceDestruction(this, TsapiAgent.class);
 	}
 
+	@Override
 	public final ACDAddress getACDAddress() {
 		TsapiTrace.traceEntry("getACDAddress[]", this);
 		final TSDevice tsDevice = tsAgent.getTSACDDevice();
@@ -58,6 +59,7 @@ class TsapiAgent implements ITsapiAgent {
 		return null;
 	}
 
+	@Override
 	public final Address getAgentAddress() {
 		TsapiTrace.traceEntry("getAgentAddress[]", this);
 		final TSDevice tsDevice = tsAgent.getTSAgentDevice();
@@ -71,6 +73,7 @@ class TsapiAgent implements ITsapiAgent {
 		throw new TsapiPlatformException(4, 0, "could not locate address");
 	}
 
+	@Override
 	public final String getAgentID() {
 		TsapiTrace.traceEntry("getAgentID[]", this);
 		final String id = tsAgent.getAgentID();
@@ -78,6 +81,7 @@ class TsapiAgent implements ITsapiAgent {
 		return id;
 	}
 
+	@Override
 	public final AgentTerminal getAgentTerminal() {
 		TsapiTrace.traceEntry("getAgentTerminal[]", this);
 		final TSDevice tsDevice = tsAgent.getTSAgentDevice();
@@ -91,6 +95,7 @@ class TsapiAgent implements ITsapiAgent {
 		throw new TsapiPlatformException(4, 0, "could not locate terminal");
 	}
 
+	@Override
 	public final int getState() {
 		TsapiTrace.traceEntry("getState[]", this);
 		final int state = tsAgent.getState();
@@ -116,6 +121,7 @@ class TsapiAgent implements ITsapiAgent {
 		return tsAgent.hashCode();
 	}
 
+	@Override
 	public final void setState(final int state)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		TsapiTrace.traceEntry("setState[int state]", this);

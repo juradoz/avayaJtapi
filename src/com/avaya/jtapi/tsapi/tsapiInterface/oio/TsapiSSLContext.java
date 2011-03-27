@@ -38,9 +38,9 @@ final class TsapiSSLContext {
 				}
 
 			} else {
-				final StringTokenizer classpath = new StringTokenizer(System
-						.getProperty("java.class.path"), System
-						.getProperty("path.separator"));
+				final StringTokenizer classpath = new StringTokenizer(
+						System.getProperty("java.class.path"),
+						System.getProperty("path.separator"));
 				do {
 					if (!classpath.hasMoreTokens())
 						// break label138;

@@ -10,6 +10,7 @@ final class MonitorStopConfHandler implements ConfHandler {
 		device = _device;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (device.monitorDeviceXRefID != 0) {
 			device.getTSProviderImpl()

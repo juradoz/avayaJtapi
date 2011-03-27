@@ -65,9 +65,7 @@ public final class LucentSingleStepTransferCall extends LucentPrivateData {
 		final String indent = "  ";
 
 		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
-		lines
-				.addAll(ASNIA5String.print(transferredTo, "transferredTo",
-						indent));
+		lines.addAll(ASNIA5String.print(transferredTo, "transferredTo", indent));
 
 		lines.add("}");
 		return lines;

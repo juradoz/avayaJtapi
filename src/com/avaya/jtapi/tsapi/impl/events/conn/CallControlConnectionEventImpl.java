@@ -20,30 +20,37 @@ public class CallControlConnectionEventImpl extends ConnectionEventImpl
 		this.digits = digits;
 	}
 
+	@Override
 	public int getCallControlCause() {
 		return callEventParams.getCause();
 	}
 
+	@Override
 	public Address getCalledAddress() {
 		return callEventParams.getCalledAddress();
 	}
 
+	@Override
 	public Address getCallingAddress() {
 		return callEventParams.getCallingAddress();
 	}
 
+	@Override
 	public Terminal getCallingTerminal() {
 		return callEventParams.getCallingTerminal();
 	}
 
+	@Override
 	public String getDigits() {
 		return digits;
 	}
 
+	@Override
 	public Address getLastRedirectedAddress() {
 		return callEventParams.getLastRedirectionAddress();
 	}
 
+	@Override
 	public int getNumberInQueue() {
 		return numInQueue;
 	}

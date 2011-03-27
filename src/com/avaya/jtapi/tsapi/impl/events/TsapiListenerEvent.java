@@ -20,6 +20,7 @@ public abstract class TsapiListenerEvent implements PrivateDataEvent {
 		this.privateData = privateData;
 	}
 
+	@Override
 	public final int getCause() {
 		if (cause == 101 || cause == 102 || cause == 103 || cause == 104
 				|| cause == 105 || cause == 106 || cause == 107 || cause == 108
@@ -28,18 +29,22 @@ public abstract class TsapiListenerEvent implements PrivateDataEvent {
 		return 100;
 	}
 
+	@Override
 	public int getID() {
 		return eventId;
 	}
 
+	@Override
 	public MetaEvent getMetaEvent() {
 		return metaEvent;
 	}
 
+	@Override
 	public Object getPrivateData() {
 		return privateData;
 	}
 
+	@Override
 	public Object getSource() {
 		return source;
 	}

@@ -7,11 +7,11 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -100,8 +100,10 @@ public class Tsapi {
 		try {
 			if (System.getProperty("com.avaya.jtapi.tsapi.servers") != null) {
 				final Collection<InetSocketAddress> serverEntries = JtapiUtils
-						.parseTelephonyServerEntry(System.getProperty(
-								"com.avaya.jtapi.tsapi.servers").trim(), 450);
+						.parseTelephonyServerEntry(
+								System.getProperty(
+										"com.avaya.jtapi.tsapi.servers").trim(),
+								450);
 
 				for (final Object server : serverEntries)
 					Tsapi.addServer((InetSocketAddress) server);
@@ -332,8 +334,8 @@ public class Tsapi {
 			} else
 				roundedOfValue = value;
 			if (value != roundedOfValue)
-				prop.setProperty(tsapiProperty, Integer
-						.toString(roundedOfValue));
+				prop.setProperty(tsapiProperty,
+						Integer.toString(roundedOfValue));
 			Tsapi.callCleanupRate = roundedOfValue;
 		} else if (tsapiProperty.equalsIgnoreCase("callCompletionTimeout")) {
 			final int value = Tsapi.getIntegerProperty("callCompletionTimeout",
@@ -603,8 +605,8 @@ public class Tsapi {
 		Tsapi.saveJtapiProperties.put("errorFileSize", Integer.valueOf(50));
 		Tsapi.saveJtapiProperties.put("debugLevel", "0");
 		Tsapi.saveJtapiProperties.put("maxWaitForSocket", "20");
-		Tsapi.saveJtapiProperties.put("propertyRefreshRate", Integer
-				.valueOf(100));
+		Tsapi.saveJtapiProperties.put("propertyRefreshRate",
+				Integer.valueOf(100));
 
 		String value = "";
 		final ClassLoader loader = ClassLoader.getSystemClassLoader();
@@ -673,8 +675,8 @@ public class Tsapi {
 			Tsapi.callCompletionTimeout = Integer.parseInt("15") * 1000;
 
 			while (eprop.hasMoreElements())
-				Tsapi.handleVolatileConfigurationUpdate((String) eprop
-						.nextElement(), prop);
+				Tsapi.handleVolatileConfigurationUpdate(
+						(String) eprop.nextElement(), prop);
 			Tsapi.saveJtapiProperties.putAll(prop);
 
 			JTAPILoggingAdapter.updateLoggingProperties();
@@ -1112,8 +1114,9 @@ public class Tsapi {
 			session.send(req, priv, handler);
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"requestPrivileges failure: " + e);
 
 			throw new TsapiPlatformException(4, 0,
@@ -1241,14 +1244,16 @@ public class Tsapi {
 			session.send(req, priv, handler);
 		} catch (final Exception e) {
 			if (e instanceof TsapiInvalidArgumentException)
-				throw new TsapiInvalidArgumentException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiInvalidArgumentException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"setPrivileges failure: " + e);
 
 			if (!(e instanceof ITsapiException))
 				return;
-			throw new TsapiPlatformException(((ITsapiException) e)
-					.getErrorType(), ((ITsapiException) e).getErrorCode(),
+			throw new TsapiPlatformException(
+					((ITsapiException) e).getErrorType(),
+					((ITsapiException) e).getErrorCode(),
 					"setPrivileges unexpected exception: " + e);
 		}
 	}

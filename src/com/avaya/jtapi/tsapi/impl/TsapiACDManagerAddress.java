@@ -107,6 +107,7 @@ class TsapiACDManagerAddress extends TsapiAddress implements
 		TsapiTrace.traceDestruction(this, TsapiACDManagerAddress.class);
 	}
 
+	@Override
 	public final javax.telephony.callcenter.ACDAddress[] getACDAddresses()
 			throws TsapiMethodNotSupportedException {
 		try {

@@ -18,6 +18,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		TsapiTrace.traceConstruction(this, TsapiCallCapabilities.class);
 	}
 
+	@Override
 	public boolean canAddParty() {
 		TsapiTrace.traceEntry("canAddParty[]", this);
 		final boolean can = tsCaps.getAddParty() == 1;
@@ -25,6 +26,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canConference() {
 		TsapiTrace.traceEntry("canConference[]", this);
 		final boolean can = tsCaps.getConferenceCall() == 1;
@@ -32,6 +34,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canConnect() {
 		TsapiTrace.traceEntry("canConnect[]", this);
 		final boolean can = tsCaps.getMakeCall() == 1;
@@ -39,6 +42,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canConnectPredictive() {
 		TsapiTrace.traceEntry("canConnectPredictive[]", this);
 		final boolean can = tsCaps.getMakePredictiveCall() == 1;
@@ -46,6 +50,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canConsult() {
 		TsapiTrace.traceEntry("canConsult[]", this);
 		final boolean can = canConsult((TerminalConnection) null, (String) null);
@@ -53,12 +58,14 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canConsult(final TerminalConnection tc) {
 		TsapiTrace.traceEntry("canConsult[TerminalConnection tc]", this);
 		TsapiTrace.traceExit("canConsult[TerminalConnection tc]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canConsult(final TerminalConnection tc,
 			final String destination) {
 		TsapiTrace.traceEntry(
@@ -69,6 +76,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canDrop() {
 		TsapiTrace.traceEntry("canDrop[]", this);
 		final boolean can = tsCaps.getClearCall() == 1;
@@ -76,6 +84,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetTrunks() {
 		TsapiTrace.traceEntry("canGetTrunks[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -83,42 +92,49 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canHandleApplicationData() {
 		TsapiTrace.traceEntry("canHandleApplicationData[]", this);
 		TsapiTrace.traceExit("canHandleApplicationData[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canOffHook() {
 		TsapiTrace.traceEntry("canOffHook[]", this);
 		TsapiTrace.traceExit("canOffHook[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canSetConferenceController() {
 		TsapiTrace.traceEntry("canSetConferenceController[]", this);
 		TsapiTrace.traceExit("canSetConferenceController[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canSetConferenceEnable() {
 		TsapiTrace.traceEntry("canSetConferenceEnable[]", this);
 		TsapiTrace.traceExit("canSetConferenceEnable[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canSetTransferController() {
 		TsapiTrace.traceEntry("canSetTransferController[]", this);
 		TsapiTrace.traceExit("canSetTransferController[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canSetTransferEnable() {
 		TsapiTrace.traceEntry("canSetTransferEnable[]", this);
 		TsapiTrace.traceExit("canSetTransferEnable[]", this);
 		return true;
 	}
 
+	@Override
 	public boolean canTransfer() {
 		TsapiTrace.traceEntry("canTransfer[]", this);
 		final boolean can = canTransfer((Call) null);
@@ -126,6 +142,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canTransfer(final Call call) {
 		TsapiTrace.traceEntry("canTransfer[Call call]", this);
 		final boolean can = tsCaps.getTransferCall() == 1;
@@ -133,6 +150,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canTransfer(final String destination) {
 		TsapiTrace.traceEntry("canTransfer[String destination]", this);
 		if (tsCaps.isLucent()) {
@@ -153,6 +171,7 @@ public final class TsapiCallCapabilities implements CallCapabilities,
 		TsapiTrace.traceDestruction(this, TsapiCallCapabilities.class);
 	}
 
+	@Override
 	public boolean isObservable() {
 		TsapiTrace.traceEntry("isObservable[]", this);
 		final boolean can = tsCaps.getMonitorCall() == 1;

@@ -25,10 +25,12 @@ public final class TsapiProviderUnavailableException extends
 		super(cause, s);
 	}
 
+	@Override
 	public int getErrorCode() {
 		return errorCode;
 	}
 
+	@Override
 	public int getErrorType() {
 		return errorType;
 	}

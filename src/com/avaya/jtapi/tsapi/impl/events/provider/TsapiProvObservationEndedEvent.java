@@ -10,6 +10,7 @@ public final class TsapiProvObservationEndedEvent extends TsapiProvEvent
 		super(_provider, _cause, 136, _privateData);
 	}
 
+	@Override
 	public int getID() {
 		return 112;
 	}

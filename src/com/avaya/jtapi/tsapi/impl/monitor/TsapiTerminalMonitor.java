@@ -537,10 +537,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.terminalListenerEnded((TerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by terminalListenerEnded in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by terminalListenerEnded in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from terminalListenerEnded in "
@@ -554,10 +553,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalBusy((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalBusy in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalBusy in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalBusy in "
@@ -572,10 +570,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalLoggedOff((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalLoggedOff in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalLoggedOff in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalLoggedOff in "
@@ -590,10 +587,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalLoggedOn((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalLoggedOn in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalLoggedOn in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalLoggedOn in "
@@ -608,10 +604,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalNotReady((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalNotReady in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalNotReady in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalNotReady in "
@@ -625,10 +620,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalReady((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalReady in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalReady in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalReady in "
@@ -643,10 +637,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalUnknown((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalUnknown in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalUnknown in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalUnknown in "
@@ -661,10 +654,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalWorkNotReady((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalWorkNotReady in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalWorkNotReady in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalWorkNotReady in "
@@ -679,10 +671,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.agentTerminalWorkReady((AgentTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by agentTerminalWorkReady in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by agentTerminalWorkReady in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from agentTerminalWorkReady in "
@@ -697,10 +688,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.terminalDoNotDisturb((CallControlTerminalEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by terminalDoNotDisturb in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by terminalDoNotDisturb in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from terminalDoNotDisturb in "
@@ -715,10 +705,9 @@ public final class TsapiTerminalMonitor implements TsapiMonitor {
 							.terminalPrivateData((PrivateDataEvent) event);
 				} catch (final Exception e) {
 					TsapiTerminalMonitor.log
-							.error(
-									"EXCEPTION thrown by terminalPrivateData in "
-											+ terminalListener + " - "
-											+ e.getMessage(), e);
+							.error("EXCEPTION thrown by terminalPrivateData in "
+									+ terminalListener + " - " + e.getMessage(),
+									e);
 				}
 				TsapiTerminalMonitor.log
 						.debug("returned from terminalPrivateData in "

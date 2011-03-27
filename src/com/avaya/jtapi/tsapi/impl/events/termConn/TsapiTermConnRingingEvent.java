@@ -8,6 +8,7 @@ public final class TsapiTermConnRingingEvent extends TsapiTermConnEvent
 		super(params);
 	}
 
+	@Override
 	public int getID() {
 		return 119;
 	}

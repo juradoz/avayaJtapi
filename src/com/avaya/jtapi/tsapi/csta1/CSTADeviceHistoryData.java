@@ -35,9 +35,7 @@ public final class CSTADeviceHistoryData extends ASNSequenceOf {
 		final String indent = _indent + "  ";
 
 		for (int i = 0; i < array.length; ++i)
-			lines
-					.addAll(LucentDeviceHistoryEntry.print(array[i], null,
-							indent));
+			lines.addAll(LucentDeviceHistoryEntry.print(array[i], null, indent));
 		lines.add(_indent + "}");
 		return lines;
 	}

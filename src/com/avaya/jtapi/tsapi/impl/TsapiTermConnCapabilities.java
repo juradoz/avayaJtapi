@@ -16,6 +16,7 @@ public final class TsapiTermConnCapabilities implements
 		TsapiTrace.traceConstruction(this, TsapiTermConnCapabilities.class);
 	}
 
+	@Override
 	public boolean canAnswer() {
 		TsapiTrace.traceEntry("canAnswer[]", this);
 		final boolean can = tsCaps.getAnswerCall() == 1;
@@ -36,6 +37,7 @@ public final class TsapiTermConnCapabilities implements
 		return can;
 	}
 
+	@Override
 	public boolean canHold() {
 		TsapiTrace.traceEntry("canHold[]", this);
 		final boolean can = tsCaps.getHoldCall() == 1;
@@ -43,6 +45,7 @@ public final class TsapiTermConnCapabilities implements
 		return can;
 	}
 
+	@Override
 	public boolean canJoin() {
 		TsapiTrace.traceEntry("canJoin[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -50,6 +53,7 @@ public final class TsapiTermConnCapabilities implements
 		return can;
 	}
 
+	@Override
 	public boolean canLeave() {
 		TsapiTrace.traceEntry("canLeave[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -81,6 +85,7 @@ public final class TsapiTermConnCapabilities implements
 		return false;
 	}
 
+	@Override
 	public boolean canUnhold() {
 		TsapiTrace.traceEntry("canUnhold[]", this);
 		final boolean can = tsCaps.getRetrieveCall() == 1;

@@ -13,22 +13,27 @@ public class SingleCallMetaEventImpl implements SingleCallMetaEvent {
 		this.id = id;
 	}
 
+	@Override
 	public Call getCall() {
 		return callEventParams.getCall();
 	}
 
+	@Override
 	public int getCause() {
 		return callEventParams.getCause();
 	}
 
+	@Override
 	public int getID() {
 		return id;
 	}
 
+	@Override
 	public MetaEvent getMetaEvent() {
 		return null;
 	}
 
+	@Override
 	public Object getSource() {
 		return callEventParams.getCall();
 	}

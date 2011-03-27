@@ -70,9 +70,7 @@ public final class CSTAMakePredictiveCall extends CSTARequest {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
-						indent));
+		lines.addAll(ASNIA5String.print(callingDevice, "callingDevice", indent));
 		lines.addAll(ASNIA5String.print(calledDevice, "calledDevice", indent));
 		lines.addAll(AllocationState.print(allocationState, "allocationState",
 				indent));

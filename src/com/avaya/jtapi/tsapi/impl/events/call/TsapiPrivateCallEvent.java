@@ -9,6 +9,7 @@ public final class TsapiPrivateCallEvent extends TsapiCallEvent implements
 		super(params, 5);
 	}
 
+	@Override
 	public int getID() {
 		return 601;
 	}

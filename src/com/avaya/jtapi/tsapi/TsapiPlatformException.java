@@ -15,10 +15,12 @@ public class TsapiPlatformException extends PlatformException implements
 		errorCode = _errorCode;
 	}
 
+	@Override
 	public int getErrorCode() {
 		return errorCode;
 	}
 
+	@Override
 	public int getErrorType() {
 		return errorType;
 	}

@@ -15,14 +15,17 @@ public class LucentV5CallControlConnectionNetworkReachedEvent extends
 		super(params, event, eventId, numInQueue, digits);
 	}
 
+	@Override
 	public boolean canSetBillRate() {
 		return callEventParams.isFlexibleBilling();
 	}
 
+	@Override
 	public int getCallOriginatorType() {
 		return callEventParams.getCallOriginatorType();
 	}
 
+	@Override
 	public String getUCID() {
 		String ucid = null;
 		if (callEventParams.getUcid() != null)
@@ -32,6 +35,7 @@ public class LucentV5CallControlConnectionNetworkReachedEvent extends
 		return ucid;
 	}
 
+	@Override
 	public boolean hasCallOriginatorType() {
 		return callEventParams.hasCallOriginatorType();
 	}

@@ -27,8 +27,7 @@ public abstract class TsapiSessionFactory {
 		String className = "com.avaya.jtapi.tsapi.tsapiInterface.oio.TsapiSessionFactoryOio";
 
 		if (props != null
-				&& props
-						.get("com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory.sessionFactory") != null)
+				&& props.get("com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory.sessionFactory") != null)
 			className = (String) props
 					.get("com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory.sessionFactory");
 		TsapiSessionFactory factory = null;

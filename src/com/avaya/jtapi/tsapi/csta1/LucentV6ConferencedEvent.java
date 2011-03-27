@@ -31,6 +31,7 @@ public class LucentV6ConferencedEvent extends LucentV5ConferencedEvent
 		LucentTrunkInfoList.encode(lucentTrunkInfo, memberStream);
 	}
 
+	@Override
 	public CSTATrunkInfo[] getLucentTrunkInfo() {
 		return lucentTrunkInfo;
 	}

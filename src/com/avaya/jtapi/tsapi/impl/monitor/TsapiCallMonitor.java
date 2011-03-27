@@ -575,32 +575,35 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 			callTarget = (TSCall) event.getEventTarget();
 			if ((cause == 212 || cause == 207)
 					&& event.getTransferredEventParams() != null)
-				callEventParams = createCallParams(callTarget, cause, -1, event
-						.getPrivateData(), event.getTransferredEventParams()
-						.getOldCalls(), event);
+				callEventParams = createCallParams(callTarget, cause, -1,
+						event.getPrivateData(), event
+								.getTransferredEventParams().getOldCalls(),
+						event);
 			else
-				callEventParams = createCallParams(callTarget, cause, -1, event
-						.getPrivateData(), event);
+				callEventParams = createCallParams(callTarget, cause, -1,
+						event.getPrivateData(), event);
 		} else if (event.getEventTarget() instanceof TSTrunk) {
 			trkTarget = (TSTrunk) event.getEventTarget();
 			if ((cause == 212 || cause == 207)
 					&& event.getTransferredEventParams() != null)
-				callEventParams = createCallParams(callTarget, cause, -1, event
-						.getPrivateData(), event.getTransferredEventParams()
-						.getOldCalls(), event);
+				callEventParams = createCallParams(callTarget, cause, -1,
+						event.getPrivateData(), event
+								.getTransferredEventParams().getOldCalls(),
+						event);
 			else
-				callEventParams = createCallParams(trkTarget, cause, -1, event
-						.getPrivateData(), event);
+				callEventParams = createCallParams(trkTarget, cause, -1,
+						event.getPrivateData(), event);
 		} else {
 			connTarget = (TSConnection) event.getEventTarget();
 			if ((cause == 212 || cause == 207)
 					&& event.getTransferredEventParams() != null)
-				callEventParams = createConnParams(connTarget, cause, -1, event
-						.getPrivateData(), event.getTransferredEventParams()
-						.getOldCalls(), event);
+				callEventParams = createConnParams(connTarget, cause, -1,
+						event.getPrivateData(), event
+								.getTransferredEventParams().getOldCalls(),
+						event);
 			else
-				callEventParams = createConnParams(connTarget, cause, -1, event
-						.getPrivateData(), event);
+				callEventParams = createConnParams(connTarget, cause, -1,
+						event.getPrivateData(), event);
 
 		}
 
@@ -869,15 +872,15 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 				for (i = 0; i < digits.length(); ++i) {
 					tsEventLog = "CALLDTMFEVENT for " + callTarget;
 					final PrivateDataCallEventImpl privEvent = new PrivateDataCallEventImpl(
-							new PrivateDtmfEventImpl(digits.charAt(i)), ev
-									.getEventTarget(), cause, metaEvent);
+							new PrivateDtmfEventImpl(digits.charAt(i)),
+							ev.getEventTarget(), cause, metaEvent);
 					checkAndAddPrivateEvent(ev.getEventTarget(), privEvent,
 							metaEvent);
 				}
 				break;
 			case 9999:
-				params = createCallParams(callTarget, cause, metaCode, ev
-						.getPrivateData(), ev);
+				params = createCallParams(callTarget, cause, metaCode,
+						ev.getPrivateData(), ev);
 				final PrivateDataCallEventImpl privEvent = new PrivateDataCallEventImpl(
 						params.getPrivateData(), params.getCall(), cause,
 						metaEvent);
@@ -933,396 +936,474 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 			case 4:
 				tsEventLog = "CALLACTIVEEVENT for " + callTarget;
 
-				addObserverEvent(new TsapiCallActiveEvent(createCallParams(
-						callTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiCallActiveEvent(createCallParams(callTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 5:
 				tsEventLog = "CALLINVALIDEVENT for " + callTarget;
 
-				addObserverEvent(new TsapiCallInvalidEvent(createCallParams(
-						callTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiCallInvalidEvent(createCallParams(callTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 6:
 				tsEventLog = "CONNECTIONCREATEDEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnCreatedEvent(createConnParams(
-						connTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiConnCreatedEvent(createConnParams(connTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 7:
 				tsEventLog = "CONNECTIONCONNECTEDEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnConnectedEvent(createConnParams(
-						connTarget, cause, metaCode, privateData, ev)),
+				addObserverEvent(
+						new TsapiConnConnectedEvent(createConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
 						tsEventLog);
 
 				break;
 			case 8:
 				tsEventLog = "CONNECTIONINPROGRESSEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnInProgressEvent(createConnParams(
-						connTarget, cause, metaCode, privateData, ev)),
+				addObserverEvent(
+						new TsapiConnInProgressEvent(createConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
 						tsEventLog);
 
 				break;
 			case 9:
 				tsEventLog = "CONNECTIONALERTINGEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnAlertingEvent(createConnParams(
-						connTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiConnAlertingEvent(createConnParams(connTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 10:
 				tsEventLog = "CONNECTIONDISCONNECTEDEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnDisconnectedEvent(
-						createConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiConnDisconnectedEvent(createConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 11:
 				tsEventLog = "CONNECTIONFAILEDEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnFailedEvent(createConnParams(
-						connTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiConnFailedEvent(createConnParams(connTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 12:
 				tsEventLog = "CONNECTIONUNKNOWNEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiConnUnknownEvent(createConnParams(
-						connTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiConnUnknownEvent(createConnParams(connTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 13:
 				tsEventLog = "TERMINALCONNECTIONCREATEDEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiTermConnCreatedEvent(
-						createTermConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiTermConnCreatedEvent(createTermConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 14:
 				tsEventLog = "TERMINALCONNECTIONACTIVEEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiTermConnActiveEvent(
-						createTermConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiTermConnActiveEvent(createTermConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 15:
 				tsEventLog = "TERMINALCONNECTIONRINGINGEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiTermConnRingingEvent(
-						createTermConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiTermConnRingingEvent(createTermConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 16:
 				tsEventLog = "TERMINALCONNECTIONPASSIVEEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiTermConnPassiveEvent(
-						createTermConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiTermConnPassiveEvent(createTermConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 17:
 				tsEventLog = "TERMINALCONNECTIONDROPPEDEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiTermConnDroppedEvent(
-						createTermConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiTermConnDroppedEvent(createTermConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 18:
 				tsEventLog = "TERMINALCONNECTIONUNKNOWNEVENT for " + connTarget;
 
-				addObserverEvent(new TsapiTermConnUnknownEvent(
-						createTermConnParams(connTarget, cause, metaCode,
-								privateData, ev)), tsEventLog);
+				addObserverEvent(
+						new TsapiTermConnUnknownEvent(createTermConnParams(
+								connTarget, cause, metaCode, privateData, ev)),
+						tsEventLog);
 
 				break;
 			case 19:
 				tsEventLog = "CONNECTIONOFFEREDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnOfferedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnOfferedEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnOfferedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnOfferedEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnOfferedEvent(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnOfferedEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 20:
 				tsEventLog = "CONNECTIONDIALINGEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnDialingEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnDialingEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnDialingEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnDialingEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnDialingEvent(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnDialingEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 21:
 				tsEventLog = "CONNECTIONESTABLISHEDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnEstablishedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnEstablishedEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnEstablishedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnEstablishedEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiConnEstablishedEvent(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnEstablishedEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 22:
 				tsEventLog = "CONNECTIONNETWORKREACHEDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnNetworkReachedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnNetworkReachedEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnNetworkReachedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnNetworkReachedEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiConnNetworkReachedEvent(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnNetworkReachedEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 23:
 				tsEventLog = "CONNECTIONNETWORKALERTINGEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnNetworkAlertingEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnNetworkAlertingEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnNetworkAlertingEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnNetworkAlertingEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiConnNetworkAlertingEvent(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnNetworkAlertingEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 24:
 				tsEventLog = "CONNECTIONINITIATEDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnInitiatedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnInitiatedEventImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnInitiatedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnInitiatedEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnInitiatedEvent(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnInitiatedEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 25:
 				tsEventLog = "CONNECTIONQUEUEDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnQueuedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev), connTarget.getTSDevice()
+					addObserverEvent(
+							new LucentV5ConnQueuedEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev), connTarget.getTSDevice()
 									.getNumberQueued()), tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnQueuedEventImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev), connTarget.getTSDevice()
+					addObserverEvent(
+							new LucentConnQueuedEventImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev), connTarget.getTSDevice()
 									.getNumberQueued()), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnQueuedEvent(createConnParams(
-							connTarget, cause, metaCode, privateData, ev),
-							connTarget.getTSDevice().getNumberQueued()),
-							tsEventLog);
+					addObserverEvent(
+							new TsapiConnQueuedEvent(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev), connTarget.getTSDevice()
+									.getNumberQueued()), tsEventLog);
 
 				break;
 			case 26:
 				tsEventLog = "CONNECTIONALERTINGEVENT_CC for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnAlertingEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnAlertingEventCCImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnAlertingEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnAlertingEventCCImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnAlertingEventCC(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnAlertingEventCC(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 27:
 				tsEventLog = "CONNECTIONDISCONNECTEDEVENT_CC for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnDisconnectedEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnDisconnectedEventCCImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnDisconnectedEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnDisconnectedEventCCImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiConnDisconnectedEventCC(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnDisconnectedEventCC(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 28:
 				tsEventLog = "CONNECTIONFAILEDEVENT_CC for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnFailedEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnFailedEventCCImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnFailedEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnFailedEventCCImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnFailedEventCC(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnFailedEventCC(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 29:
 				tsEventLog = "CONNECTIONUNKNOWNEVENT_CC for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnUnknownEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnUnknownEventCCImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnUnknownEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnUnknownEventCCImpl(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 				else
-					addObserverEvent(new TsapiConnUnknownEventCC(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnUnknownEventCC(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 56:
 				tsEventLog = "CONNECTIONINPROGRESSEVENT_CC for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5ConnInProgressEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5ConnInProgressEventCCImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentConnInProgressEventCCImpl(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentConnInProgressEventCCImpl(
+									createConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiConnInProgressEventCC(
-							createConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiConnInProgressEventCC(createConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 30:
 				tsEventLog = "TERMINALCONNECTIONTALKINGEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnTalkingEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnTalkingEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnTalkingEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnTalkingEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnTalkingEvent(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnTalkingEvent(createTermConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 31:
 				tsEventLog = "TERMINALCONNECTIONHELDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnHeldEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnHeldEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnHeldEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnHeldEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnHeldEvent(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnHeldEvent(createTermConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 32:
 				tsEventLog = "TERMINALCONNECTIONBRIDGEDEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnBridgedEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnBridgedEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnBridgedEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnBridgedEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnBridgedEvent(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnBridgedEvent(createTermConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 33:
 				tsEventLog = "TERMINALCONNECTIONINUSEEVENT for " + connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnInUseEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnInUseEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnInUseEventImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnInUseEventImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnInUseEvent(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnInUseEvent(createTermConnParams(
+									connTarget, cause, metaCode, privateData,
+									ev)), tsEventLog);
 
 				break;
 			case 34:
@@ -1330,17 +1411,23 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 						+ connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnDroppedEventCCImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnDroppedEventCCImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnDroppedEventCCImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnDroppedEventCCImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnDroppedEventCC(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnDroppedEventCC(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 
 				break;
 			case 35:
@@ -1348,17 +1435,23 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 						+ connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnRingingEventCCImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnRingingEventCCImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnRingingEventCCImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnRingingEventCCImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnRingingEventCC(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnRingingEventCC(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 
 				break;
 			case 36:
@@ -1366,33 +1459,39 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 						+ connTarget;
 
 				if (provider.isLucentV5())
-					addObserverEvent(new LucentV5TermConnUnknownEventCCImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentV5TermConnUnknownEventCCImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else if (provider.isLucent())
-					addObserverEvent(new LucentTermConnUnknownEventCCImpl(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new LucentTermConnUnknownEventCCImpl(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 				else
-					addObserverEvent(new TsapiTermConnUnknownEventCC(
-							createTermConnParams(connTarget, cause, metaCode,
-									privateData, ev)), tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnUnknownEventCC(
+									createTermConnParams(connTarget, cause,
+											metaCode, privateData, ev)),
+							tsEventLog);
 
 				break;
 			case 54:
 				tsEventLog = "TRUNKVALIDEVENT for " + trkTarget;
 
-				addObserverEvent(new TsapiTrunkValidEv(createCallParams(
-						trkTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiTrunkValidEv(createCallParams(trkTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 55:
 				tsEventLog = "TRUNKINVALIDEVENT for " + trkTarget;
 
-				addObserverEvent(new TsapiTrunkInvalidEv(createCallParams(
-						trkTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiTrunkInvalidEv(createCallParams(trkTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 
 				break;
 			case 57:
@@ -1400,19 +1499,19 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 				for (int strIndex = 0; strIndex < digits.length(); ++strIndex) {
 					tsEventLog = "CALLDTMFEVENT for " + callTarget;
 
-					addObserverEvent(new TsapiTermConnDTMFEvent(
-							createCallParams(callTarget, cause, metaCode,
-									privateData, ev), digits.charAt(strIndex)),
-							tsEventLog);
+					addObserverEvent(
+							new TsapiTermConnDTMFEvent(createCallParams(
+									callTarget, cause, metaCode, privateData,
+									ev), digits.charAt(strIndex)), tsEventLog);
 				}
 
 				break;
 			case 9999:
 				tsEventLog = "PRIVATEEVENT for " + callTarget;
 
-				addObserverEvent(new TsapiPrivateCallEvent(createCallParams(
-						callTarget, cause, metaCode, privateData, ev)),
-						tsEventLog);
+				addObserverEvent(
+						new TsapiPrivateCallEvent(createCallParams(callTarget,
+								cause, metaCode, privateData, ev)), tsEventLog);
 			}
 
 		}
@@ -1493,9 +1592,10 @@ public final class TsapiCallMonitor implements TsapiMonitor {
 
 				if (targetCall != null && privateData != null) {
 					tsEventLog = "PRIVATEEVENT for " + targetCall;
-					addObserverEvent(new TsapiPrivateCallEvent(
-							createCallParams(targetCall, cause, 136,
-									privateData, null)), tsEventLog);
+					addObserverEvent(
+							new TsapiPrivateCallEvent(createCallParams(
+									targetCall, cause, 136, privateData, null)),
+							tsEventLog);
 				}
 
 				TsapiCallMonitor.log.debug("meta event END for " + observer

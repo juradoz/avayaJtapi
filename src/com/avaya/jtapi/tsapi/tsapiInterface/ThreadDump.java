@@ -48,16 +48,16 @@ public class ThreadDump extends Thread {
 			final String[] cmd = { "bash", "-c", "echo $PPID" };
 			Process p = rt.exec(cmd);
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(p
-					.getInputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					p.getInputStream()));
 
 			String line = null;
 			if ((line = br.readLine()) != null) {
 				ThreadDump.log.info("The parent PID is " + line);
 
 				p = rt.exec("kill -QUIT " + line);
-				br = new BufferedReader(new InputStreamReader(p
-						.getInputStream()));
+				br = new BufferedReader(new InputStreamReader(
+						p.getInputStream()));
 			}
 		} catch (final IOException e) {
 			ThreadDump.log.error(e.getMessage(), e);
@@ -77,8 +77,8 @@ public class ThreadDump extends Thread {
 		try {
 			ThreadDump.dumpJavaThreadsByAPI();
 		} catch (final Exception ex) {
-			ThreadDump.log.error("Exception when doing thread dump:"
-					+ ex.getMessage(), ex);
+			ThreadDump.log.error(
+					"Exception when doing thread dump:" + ex.getMessage(), ex);
 		}
 	}
 }

@@ -13,22 +13,27 @@ public class MultiCallMetaEventImpl implements MultiCallMetaEvent {
 		this.id = id;
 	}
 
+	@Override
 	public int getCause() {
 		return callEventParams.getCause();
 	}
 
+	@Override
 	public int getID() {
 		return id;
 	}
 
+	@Override
 	public MetaEvent getMetaEvent() {
 		return null;
 	}
 
+	@Override
 	public Call getNewCall() {
 		return callEventParams.getCall();
 	}
 
+	@Override
 	public Call[] getOldCalls() {
 		if (callEventParams.getOldCalls() == null)
 			return null;
@@ -37,6 +42,7 @@ public class MultiCallMetaEventImpl implements MultiCallMetaEvent {
 		return callEventParams.getOldCalls().toArray(oldCallArray);
 	}
 
+	@Override
 	public Object getSource() {
 		return callEventParams.getCall();
 	}

@@ -53,9 +53,7 @@ public final class CSTARouteRegisterReq extends CSTARequest {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(ASNIA5String.print(routingDevice, "routingDevice",
-						indent));
+		lines.addAll(ASNIA5String.print(routingDevice, "routingDevice", indent));
 
 		lines.add("}");
 		return lines;

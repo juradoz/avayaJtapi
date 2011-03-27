@@ -10,6 +10,7 @@ public final class TsapiProviderInServiceEvent extends TsapiProvEvent implements
 		super(_provider, _cause, _metaCode, _privateData);
 	}
 
+	@Override
 	public int getID() {
 		return 111;
 	}

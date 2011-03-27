@@ -29,30 +29,37 @@ public class LucentChargeAdviceEventImpl implements LucentChargeAdviceEvent {
 		trunk = _trunk;
 	}
 
+	@Override
 	public final LucentCall getCall() {
 		return call;
 	}
 
+	@Override
 	public final LucentAddress getCalledAddress() {
 		return (LucentAddress) calledDevice;
 	}
 
+	@Override
 	public final int getCharge() {
 		return charge;
 	}
 
+	@Override
 	public final short getChargeError() {
 		return error;
 	}
 
+	@Override
 	public final short getChargeType() {
 		return chargeType;
 	}
 
+	@Override
 	public final LucentAddress getChargingAddress() {
 		return (LucentAddress) chargingDevice;
 	}
 
+	@Override
 	public final TsapiTrunk getTrunk() {
 		return trunk;
 	}

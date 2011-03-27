@@ -59,9 +59,7 @@ public final class CSTACallClearedEvent extends CSTAUnsolicited {
 
 		final String indent = "  ";
 		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines
-				.addAll(CSTAConnectionID.print(clearedCall, "clearedCall",
-						indent));
+		lines.addAll(CSTAConnectionID.print(clearedCall, "clearedCall", indent));
 		lines.addAll(LocalConnectionState.print(localConnectionInfo,
 				"localConnectionInfo", indent));
 		lines.addAll(CSTAEventCause.print(cause, "cause", indent));

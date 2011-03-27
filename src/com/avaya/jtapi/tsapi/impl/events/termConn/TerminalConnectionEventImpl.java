@@ -21,6 +21,7 @@ public class TerminalConnectionEventImpl extends ConnectionEventImpl implements
 		return super.getSource();
 	}
 
+	@Override
 	public TerminalConnection getTerminalConnection() {
 		TerminalConnection tc = null;
 		if (callEventParams instanceof TermConnEventParams)

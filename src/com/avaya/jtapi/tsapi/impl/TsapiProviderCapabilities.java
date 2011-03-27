@@ -15,6 +15,7 @@ public final class TsapiProviderCapabilities implements ProviderCapabilities,
 		TsapiTrace.traceConstruction(this, TsapiProviderCapabilities.class);
 	}
 
+	@Override
 	public boolean canGetACDAddresses() {
 		TsapiTrace.traceEntry("canGetACDAddresses[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -22,6 +23,7 @@ public final class TsapiProviderCapabilities implements ProviderCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetACDManagerAddresses() {
 		TsapiTrace.traceEntry("canGetACDManagerAddresses[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -29,6 +31,7 @@ public final class TsapiProviderCapabilities implements ProviderCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetRouteableAddresses() {
 		TsapiTrace.traceEntry("canGetRouteableAddresses[]", this);
 		TsapiTrace.traceExit("canGetRouteableAddresses[]", this);
@@ -41,6 +44,7 @@ public final class TsapiProviderCapabilities implements ProviderCapabilities,
 		TsapiTrace.traceDestruction(this, TsapiProviderCapabilities.class);
 	}
 
+	@Override
 	public boolean isObservable() {
 		TsapiTrace.traceEntry("isObservable[]", this);
 		TsapiTrace.traceExit("isObservable[]", this);

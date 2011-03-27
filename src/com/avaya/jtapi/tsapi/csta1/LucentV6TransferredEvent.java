@@ -31,6 +31,7 @@ public class LucentV6TransferredEvent extends LucentV5TransferredEvent
 		LucentTrunkInfoList.encode(lucentTrunkInfo, memberStream);
 	}
 
+	@Override
 	public CSTATrunkInfo[] getLucentTrunkInfo() {
 		return lucentTrunkInfo;
 	}

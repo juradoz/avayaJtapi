@@ -20,10 +20,12 @@ public class CallControlTerminalEventImpl extends TsapiListenerCallControlEvent
 		this.state = state;
 	}
 
+	@Override
 	public boolean getDoNotDisturbState() {
 		return state;
 	}
 
+	@Override
 	public Terminal getTerminal() {
 		return terminal;
 	}

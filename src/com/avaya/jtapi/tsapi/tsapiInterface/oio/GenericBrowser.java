@@ -81,8 +81,8 @@ public class GenericBrowser {
 		try {
 			socket.close();
 		} catch (final IOException ioe) {
-			GenericBrowser.log.error("Couldn't close socket; "
-					+ ioe.getMessage(), ioe);
+			GenericBrowser.log.error(
+					"Couldn't close socket; " + ioe.getMessage(), ioe);
 		}
 	}
 
@@ -209,9 +209,9 @@ public class GenericBrowser {
 		} catch (final NoSuchMethodError e) {
 			File propfile = null;
 			try {
-				final StringTokenizer classpath = new StringTokenizer(System
-						.getProperty("java.class.path"), System
-						.getProperty("path.separator"));
+				final StringTokenizer classpath = new StringTokenizer(
+						System.getProperty("java.class.path"),
+						System.getProperty("path.separator"));
 				do {
 					if (!classpath.hasMoreTokens())
 						// break label176;
@@ -263,8 +263,8 @@ public class GenericBrowser {
 			if (in != null) {
 				tsapiProLocation = "<unknown>";
 				if (super.getClass().getResource("/" + resource) != null)
-					tsapiProLocation = super.getClass().getResource(
-							"/" + resource).getFile();
+					tsapiProLocation = super.getClass()
+							.getResource("/" + resource).getFile();
 				if (startUp)
 					GenericBrowser.info("Found '" + resource
 							+ "' as a resource at location '"
@@ -436,8 +436,8 @@ public class GenericBrowser {
 		}
 		try {
 			final TLSServerCertificateValidator validator = new TLSServerCertificateValidator(
-					sslSocket, listener.getSslSession(), TsapiSSLContext
-							.getTrustManagers());
+					sslSocket, listener.getSslSession(),
+					TsapiSSLContext.getTrustManagers());
 
 			validator.validateAll();
 		} catch (final Exception e) {
@@ -453,8 +453,8 @@ public class GenericBrowser {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		props.store(out, "");
 		out.flush();
-		final ByteArrayInputStream in = new ByteArrayInputStream(out
-				.toByteArray());
+		final ByteArrayInputStream in = new ByteArrayInputStream(
+				out.toByteArray());
 		out.close();
 		return in;
 	}

@@ -8,6 +8,7 @@ public final class TsapiConnConnectedEvent extends TsapiConnEvent implements
 		super(params);
 	}
 
+	@Override
 	public int getID() {
 		return 105;
 	}

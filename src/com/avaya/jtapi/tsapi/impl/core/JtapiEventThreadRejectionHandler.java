@@ -10,6 +10,7 @@ public class JtapiEventThreadRejectionHandler implements
 	private static Logger log = Logger
 			.getLogger(JtapiEventThreadRejectionHandler.class);
 
+	@Override
 	public void rejectedExecution(final Runnable r,
 			final ThreadPoolExecutor executor) {
 		JtapiEventThreadRejectionHandler.log

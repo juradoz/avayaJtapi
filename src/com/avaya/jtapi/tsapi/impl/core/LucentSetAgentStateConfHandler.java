@@ -11,6 +11,7 @@ final class LucentSetAgentStateConfHandler implements ConfHandler {
 		device = _device;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null || event.getEventHeader().getEventClass() != 5
 				|| event.getEventHeader().getEventType() != 50)

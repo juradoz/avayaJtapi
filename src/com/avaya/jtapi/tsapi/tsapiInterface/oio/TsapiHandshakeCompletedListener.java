@@ -18,6 +18,7 @@ class TsapiHandshakeCompletedListener implements HandshakeCompletedListener {
 		return null;
 	}
 
+	@Override
 	public void handshakeCompleted(final HandshakeCompletedEvent event) {
 		this.event = event;
 

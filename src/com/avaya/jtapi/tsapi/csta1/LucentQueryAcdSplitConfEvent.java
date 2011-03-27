@@ -63,9 +63,7 @@ public final class LucentQueryAcdSplitConfEvent extends LucentPrivateData {
 		lines.addAll(ASNInteger.print(availableAgents, "availableAgents",
 				indent));
 		lines.addAll(ASNInteger.print(callsInQueue, "callsInQueue", indent));
-		lines
-				.addAll(ASNInteger.print(agentsLoggedIn, "agentsLoggedIn",
-						indent));
+		lines.addAll(ASNInteger.print(agentsLoggedIn, "agentsLoggedIn", indent));
 
 		lines.add("}");
 		return lines;

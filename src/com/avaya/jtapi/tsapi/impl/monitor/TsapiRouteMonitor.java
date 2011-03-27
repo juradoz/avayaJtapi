@@ -165,6 +165,7 @@ public final class TsapiRouteMonitor implements TsapiMonitor {
 		return observer;
 	}
 
+	@Override
 	public void run() {
 		TsapiTrace.traceEntry("run[]", this);
 		synchronized (syncObject) {
@@ -218,8 +219,7 @@ public final class TsapiRouteMonitor implements TsapiMonitor {
 					TsapiRouteMonitor.log
 							.debug("calling routeCallbackEndedEvent in "
 									+ observer + " CrossRef " + i);
-					observer
-							.routeCallbackEndedEvent((TsapiRouteCallbackEndedEvent) event);
+					observer.routeCallbackEndedEvent((TsapiRouteCallbackEndedEvent) event);
 					TsapiRouteMonitor.log
 							.debug("returned from routeCallbackEndedEvent in "
 									+ observer + " CrossRef " + i);

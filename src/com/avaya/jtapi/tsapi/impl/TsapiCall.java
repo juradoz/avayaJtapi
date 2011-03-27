@@ -376,8 +376,8 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 
 		TsapiCall.log
 				.info("*****connectDirectAgent: ACDAddress is NULL, using default Skill (ACD)");
-		final Connection[] conns = connect(origterm, origaddr, calledAgent
-				.getAgentID());
+		final Connection[] conns = connect(origterm, origaddr,
+				calledAgent.getAgentID());
 		TsapiTrace
 				.traceExit(
 						"connectDirectAgent[LucentTerminal origterm, LucentAddress origaddr, LucentAgent calledAgent, boolean priorityCall, UserToUserInfo userInfo]",
@@ -639,8 +639,9 @@ public class TsapiCall implements ITsapiCall, PrivateData, ITsapiCallIDPrivate,
 						.size()];
 				for (int i = 0; i < tsConnVector.size(); ++i)
 					tsapiConn[i] = (Connection) TsapiCreateObject
-							.getTsapiObject((TSConnection) tsConnVector
-									.elementAt(i), true);
+							.getTsapiObject(
+									(TSConnection) tsConnVector.elementAt(i),
+									true);
 
 				privData = null;
 				return tsapiConn;

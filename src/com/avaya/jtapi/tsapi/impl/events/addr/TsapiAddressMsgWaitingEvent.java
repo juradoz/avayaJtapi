@@ -15,6 +15,7 @@ public class TsapiAddressMsgWaitingEvent extends TsapiCallCtlAddressEvent
 		mwBits = _mwBits;
 	}
 
+	@Override
 	public final int getID() {
 		return 202;
 	}
@@ -23,6 +24,7 @@ public class TsapiAddressMsgWaitingEvent extends TsapiCallCtlAddressEvent
 		return mwBits;
 	}
 
+	@Override
 	public final boolean getMessageWaitingState() {
 		return mwBits != 0;
 	}

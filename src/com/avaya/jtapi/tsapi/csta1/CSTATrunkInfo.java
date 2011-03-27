@@ -31,9 +31,7 @@ public final class CSTATrunkInfo extends ASNSequence {
 
 		lines.addAll(CSTAConnectionID.print(_this.connection_asn, "connection",
 				indent));
-		lines
-				.addAll(ASNIA5String.print(_this.trunkGroup, "trunkGroup",
-						indent));
+		lines.addAll(ASNIA5String.print(_this.trunkGroup, "trunkGroup", indent));
 		lines.addAll(ASNIA5String.print(_this.trunkMember, "trunkMember",
 				indent));
 

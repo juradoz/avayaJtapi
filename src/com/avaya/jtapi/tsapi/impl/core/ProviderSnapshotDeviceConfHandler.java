@@ -16,6 +16,7 @@ final class ProviderSnapshotDeviceConfHandler implements ConfHandler {
 		provider = _provider;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof CSTASnapshotDeviceConfEvent))

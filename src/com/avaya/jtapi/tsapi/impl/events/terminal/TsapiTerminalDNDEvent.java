@@ -14,10 +14,12 @@ public final class TsapiTerminalDNDEvent extends TsapiCallCtlTerminalEvent
 		state = _state;
 	}
 
+	@Override
 	public boolean getDoNotDisturbState() {
 		return state;
 	}
 
+	@Override
 	public int getID() {
 		return 221;
 	}

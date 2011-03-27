@@ -105,14 +105,17 @@ public final class CSTAConnectionID extends ASNSequence implements
 		return false;
 	}
 
+	@Override
 	public int getCallID() {
 		return callID;
 	}
 
+	@Override
 	public String getDeviceID() {
 		return deviceID;
 	}
 
+	@Override
 	public int getDevIDType() {
 		return devIDType;
 	}

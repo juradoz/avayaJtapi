@@ -20,6 +20,7 @@ final class SysStatHandler implements ConfHandler, HandleConfOnCurrentThread {
 		return systemStatus;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null)
 			return;

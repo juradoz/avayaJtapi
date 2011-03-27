@@ -27,6 +27,7 @@ class TsapiACDConnection extends TsapiConnection implements ACDConnection {
 		TsapiTrace.traceDestruction(this, TsapiACDConnection.class);
 	}
 
+	@Override
 	public final ACDManagerConnection getACDManagerConnection()
 			throws TsapiMethodNotSupportedException {
 		TsapiTrace.traceEntry("getACDManagerConnection[]", this);

@@ -13,10 +13,12 @@ public class TsapiConnDialingEvent extends TsapiCallCtlConnEvent implements
 		super(params);
 	}
 
+	@Override
 	public final String getDigits() {
 		return dialedDigits;
 	}
 
+	@Override
 	public final int getID() {
 		return 204;
 	}

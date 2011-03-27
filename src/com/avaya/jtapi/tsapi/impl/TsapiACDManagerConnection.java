@@ -31,6 +31,7 @@ class TsapiACDManagerConnection extends TsapiConnection implements
 	}
 
 	// ERROR //
+	@Override
 	public final javax.telephony.callcenter.ACDConnection[] getACDConnections()
 			throws com.avaya.jtapi.tsapi.TsapiMethodNotSupportedException {
 		try {

@@ -10,6 +10,7 @@ public final class TsapiProviderOutOfServiceEvent extends TsapiProvEvent
 		super(_provider, _cause, _metaCode, _privateData);
 	}
 
+	@Override
 	public int getID() {
 		return 113;
 	}

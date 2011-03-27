@@ -11,6 +11,7 @@ public final class TsapiPrivateTerminalEvent extends TsapiTerminalEvent
 		super(_terminal, _cause, _metaCode, _privateData, 5);
 	}
 
+	@Override
 	public int getID() {
 		return 603;
 	}

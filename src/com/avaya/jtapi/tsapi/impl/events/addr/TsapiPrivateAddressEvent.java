@@ -11,6 +11,7 @@ public final class TsapiPrivateAddressEvent extends TsapiAddressEvent implements
 		super(_address, _cause, _metaCode, _privateData, 5);
 	}
 
+	@Override
 	public int getID() {
 		return 600;
 	}

@@ -31,6 +31,7 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 		start();
 	}
 
+	@Override
 	public void close() {
 		keepRunning = false;
 		synchronized (this) {
@@ -64,6 +65,7 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 		return event;
 	}
 
+	@Override
 	public void handleEvent(final CSTAEvent event) {
 		put(event);
 	}
@@ -133,6 +135,7 @@ public class TsapiEventQueue extends Thread implements TsapiEventHandler {
 		}
 	}
 
+	@Override
 	public void setUnsolicitedHandler(final TsapiUnsolicitedHandler handler) {
 		realHandler.setUnsolicitedHandler(handler);
 	}

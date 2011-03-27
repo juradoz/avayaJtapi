@@ -258,9 +258,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				tsapi.startSystemStatusMonitoring(null, handler);
 			} catch (final Exception e) {
 				if (e instanceof ITsapiException)
-					throw new TsapiPlatformException(((ITsapiException) e)
-							.getErrorType(), ((ITsapiException) e)
-							.getErrorCode(),
+					throw new TsapiPlatformException(
+							((ITsapiException) e).getErrorType(),
+							((ITsapiException) e).getErrorCode(),
 							"startSystemStatusMonitoring() failure: "
 									+ e.getMessage());
 
@@ -400,8 +400,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 	void addNonCallToHash(final TSCall call) {
 		synchronized (nonCallHash) {
-			final Object oldObj = nonCallHash.put(new Integer(call
-					.getNonCallID()), call);
+			final Object oldObj = nonCallHash.put(
+					new Integer(call.getNonCallID()), call);
 
 			if (oldObj != null)
 				TSProviderImpl.log.info("NOTICE: nonCallHash.put() replaced "
@@ -1207,8 +1207,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						" service failure");
 
 			throw new TsapiPlatformException(4, 0, " service failure");
@@ -1270,9 +1271,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 
 				tsCaps.setConferenceCall(getAPICapsConf.getConferenceCall());
 
-				tsCaps
-						.setConsultationCall(getAPICapsConf
-								.getConsultationCall());
+				tsCaps.setConsultationCall(getAPICapsConf.getConsultationCall());
 
 				tsCaps.setDeflectCall(getAPICapsConf.getDeflectCall());
 				tsCaps.setPickupCall(getAPICapsConf.getPickupCall());
@@ -1300,13 +1299,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				tsCaps.setSetAgentState(getAPICapsConf.getSetAgentState());
 				tsCaps.setTransferCall(getAPICapsConf.getTransferCall());
 				tsCaps.setEventReport(getAPICapsConf.getEventReport());
-				tsCaps
-						.setCallClearedEvent(getAPICapsConf
-								.getCallClearedEvent());
+				tsCaps.setCallClearedEvent(getAPICapsConf.getCallClearedEvent());
 
-				tsCaps
-						.setConferencedEvent(getAPICapsConf
-								.getConferencedEvent());
+				tsCaps.setConferencedEvent(getAPICapsConf.getConferencedEvent());
 
 				tsCaps.setConnectionClearedEvent(getAPICapsConf
 						.getConnectionClearedEvent());
@@ -1314,9 +1309,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				tsCaps.setDeliveredEvent(getAPICapsConf.getDeliveredEvent());
 
 				tsCaps.setDivertedEvent(getAPICapsConf.getDivertedEvent());
-				tsCaps
-						.setEstablishedEvent(getAPICapsConf
-								.getEstablishedEvent());
+				tsCaps.setEstablishedEvent(getAPICapsConf.getEstablishedEvent());
 
 				tsCaps.setFailedEvent(getAPICapsConf.getFailedEvent());
 				tsCaps.setHeldEvent(getAPICapsConf.getHeldEvent());
@@ -1331,9 +1324,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				tsCaps.setServiceInitiatedEvent(getAPICapsConf
 						.getServiceInitiatedEvent());
 
-				tsCaps
-						.setTransferredEvent(getAPICapsConf
-								.getTransferredEvent());
+				tsCaps.setTransferredEvent(getAPICapsConf.getTransferredEvent());
 
 				tsCaps.setCallInformationEvent(getAPICapsConf
 						.getCallInformationEvent());
@@ -1396,9 +1387,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				tsCaps.setEscapeServiceConf(getAPICapsConf
 						.getEscapeServiceConf());
 
-				tsCaps
-						.setSendPrivateEvent(getAPICapsConf
-								.getSendPrivateEvent());
+				tsCaps.setSendPrivateEvent(getAPICapsConf.getSendPrivateEvent());
 
 				tsCaps.setSysStatReq(getAPICapsConf.getSysStatReq());
 				tsCaps.setSysStatStart(getAPICapsConf.getSysStatStart());
@@ -1728,8 +1717,8 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 				if (tod.getYear() < 97)
 					tod.setYear(tod.getYear() + 100);
 				final Calendar cal = Calendar.getInstance();
-				cal.set(tod.getYear(), tod.getMonth() - 1, tod.getDay(), tod
-						.getHour(), tod.getMinute(), tod.getSecond());
+				cal.set(tod.getYear(), tod.getMonth() - 1, tod.getDay(),
+						tod.getHour(), tod.getMinute(), tod.getSecond());
 
 				return cal.getTime();
 			}
@@ -1738,8 +1727,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						" service failure");
 
 			throw new TsapiPlatformException(4, 0, " service failure");
@@ -1771,8 +1761,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						" service failure");
 
 			throw new TsapiPlatformException(4, 0, " service failure");
@@ -2071,12 +2062,12 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		final int firstSemiColon_index = _url.indexOf(';');
 		serverID = _url.substring(0, firstSemiColon_index);
 		if (firstSemiColon_index >= 0) {
-			final StringTokenizer params = new StringTokenizer(_url
-					.substring(firstSemiColon_index + 1), ";");
+			final StringTokenizer params = new StringTokenizer(
+					_url.substring(firstSemiColon_index + 1), ";");
 
 			while (params.hasMoreTokens()) {
-				final StringTokenizer param = new StringTokenizer(params
-						.nextToken(), "=");
+				final StringTokenizer param = new StringTokenizer(
+						params.nextToken(), "=");
 
 				if (!param.hasMoreTokens())
 					continue;
@@ -2291,8 +2282,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						" service failure");
 
 			throw new TsapiPlatformException(4, 0, " service failure");
@@ -2348,8 +2340,9 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"setHeartbeatInterval() failure: " + e.getMessage());
 
 			throw new TsapiPlatformException(4, 0,

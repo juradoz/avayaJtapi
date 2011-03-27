@@ -42,9 +42,7 @@ final class ConfXferConfHandler implements ConfHandler {
 		if (otherCall != null)
 			oldCallList.add(otherCall);
 		for (final TSEvent ev : evList)
-			ev
-					.setTransferredEventParams(new TransferredEventParams(
-							oldCallList));
+			ev.setTransferredEventParams(new TransferredEventParams(oldCallList));
 	}
 
 	TSConnection createNewCallConnectionTryToGetStateFromOtherCall(
@@ -94,6 +92,7 @@ final class ConfXferConfHandler implements ConfHandler {
 		return conn;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null || event.getEventHeader().getEventClass() != 5
 				|| event.getEventHeader().getEventType() != pdu)
@@ -123,9 +122,8 @@ final class ConfXferConfHandler implements ConfHandler {
 					.getConnList();
 			cause = 212;
 			if (event.getPrivData() instanceof LucentTransferCallConfEvent)
-				call
-						.setUCID(((LucentTransferCallConfEvent) event
-								.getPrivData()).getUcid());
+				call.setUCID(((LucentTransferCallConfEvent) event.getPrivData())
+						.getUcid());
 			break;
 		case 90:
 			if (event.getPrivData() instanceof LucentSingleStepConferenceCallConfEvent) {

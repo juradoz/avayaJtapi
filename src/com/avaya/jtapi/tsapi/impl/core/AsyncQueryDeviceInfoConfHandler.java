@@ -15,6 +15,7 @@ final class AsyncQueryDeviceInfoConfHandler implements ConfHandler,
 		device = _device;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		try {
 			if (event == null
@@ -45,12 +46,10 @@ final class AsyncQueryDeviceInfoConfHandler implements ConfHandler,
 							device.setDeviceType((short) 2);
 
 						if (replyPriv instanceof LucentV5QueryDeviceInfoConfEvent) {
-							device
-									.setAssociatedDevice(((LucentV5QueryDeviceInfoConfEvent) replyPriv)
-											.getAssociatedDevice());
-							device
-									.setAssociatedClass(((LucentV5QueryDeviceInfoConfEvent) replyPriv)
-											.getAssociatedClass());
+							device.setAssociatedDevice(((LucentV5QueryDeviceInfoConfEvent) replyPriv)
+									.getAssociatedDevice());
+							device.setAssociatedClass(((LucentV5QueryDeviceInfoConfEvent) replyPriv)
+									.getAssociatedClass());
 						}
 					}
 				}

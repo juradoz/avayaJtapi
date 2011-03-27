@@ -16,10 +16,12 @@ public final class TsapiAddressForwardEvent extends TsapiCallCtlAddressEvent
 		forwarding = _forwarding;
 	}
 
+	@Override
 	public CallControlForwarding[] getForwarding() {
 		return forwarding;
 	}
 
+	@Override
 	public int getID() {
 		return 201;
 	}

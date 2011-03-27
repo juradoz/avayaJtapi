@@ -454,15 +454,15 @@ public final class TSCall implements IDomainCall {
 					"unsupported by driver");
 
 		if (updateObject() && state != 33)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state,
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
 					"call is not active");
 
 		final CSTAConnectionID connID = selectConnectionIdForAddParty();
 
 		if (connID == null)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state,
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
 					"call is not active (no connections)");
 
 		final LucentSingleStepConferenceCall ssc = new LucentSingleStepConferenceCall(
@@ -481,8 +481,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"addParty failure, exception: " + e);
 
 			throw new TsapiPlatformException(3, 0,
@@ -600,13 +601,13 @@ public final class TSCall implements IDomainCall {
 		final boolean otherCallUpdate = otherCall.updateObject();
 
 		if (thisCallUpdate && state != 33)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state,
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
 					"call is not active");
 
 		if (!confEnable || !otherCall.confEnable)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state,
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
 					"conferencing disabled");
 
 		TSConnection activeTermConn = confController;
@@ -676,17 +677,17 @@ public final class TSCall implements IDomainCall {
 			if (thisCallUpdate
 					&& activeTermConn.getCallControlTermConnState() != 98
 					&& activeTermConn.getCallControlTermConnState() != 103)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"Terminal connection not active. It's state is "
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "Terminal connection not active. It's state is "
 								+ activeTermConn.getCallControlTermConnState());
 
 			heldTermConn = otherCall.findHeldTermConnection(activeTermConn
 					.getTSDevice());
 			if (heldTermConn == null)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"no held terminal connection found");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "no held terminal connection found");
 
 		} else if (thisCallUpdate && otherCallUpdate) {
 			if (activeTermConn.getCallControlTermConnState() != 98
@@ -711,10 +712,11 @@ public final class TSCall implements IDomainCall {
 						"the state of the held terminal connection is not HELD or UNKNOWN; its state is "
 								+ heldTermConn.getCallControlTermConnState());
 
-			if (!activeTermConn.getTSDevice().getTermConns().contains(
-					heldTermConn))
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
+			if (!activeTermConn.getTSDevice().getTermConns()
+					.contains(heldTermConn))
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state,
 						"the held terminal connection is not associated with the device ("
 								+ activeTermConn.getTSDevice()
 								+ ") of the active terminal connection");
@@ -737,8 +739,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"conferenceCall failure");
 			throw new TsapiPlatformException(4, 0, "conferenceCall failure");
 		}
@@ -755,8 +758,9 @@ public final class TSCall implements IDomainCall {
 					"unsupported by driver");
 
 		if (state != 32)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "call not idle");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"call not idle");
 
 		final String devName = device.getName();
 
@@ -796,8 +800,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"makeCall failure");
 			throw new TsapiPlatformException(4, 0, "makeCall failure");
 		}
@@ -857,8 +862,9 @@ public final class TSCall implements IDomainCall {
 					"unsupported by driver");
 
 		if (state != 32)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "call not idle");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"call not idle");
 
 		final String devName = device.getName();
 		short allocState;
@@ -917,8 +923,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"makePredictiveCall failure");
 			throw new TsapiPlatformException(4, 0, "makePredictiveCall failure");
 		}
@@ -979,20 +986,21 @@ public final class TSCall implements IDomainCall {
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
 		if (state != 32)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "call not idle");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"call not idle");
 
 		final boolean otherCallUpdate = termconn.getTSCall().updateObject();
 		if (otherCallUpdate && termconn.getTSCall().state != 33)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(termconn.getTSCall(), false), 1, state,
-					"other call not active");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(termconn.getTSCall(),
+							false), 1, state, "other call not active");
 
 		if (otherCallUpdate && termconn.getCallControlTermConnState() != 98
 				&& termconn.getCallControlTermConnState() != 103)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(termconn, false), 5, state,
-					"terminal connection not talking");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(termconn, false), 5,
+					state, "terminal connection not talking");
 
 		if ((provider.getCapabilities().getSnapshotCallReq() == 0 || monitorPending)
 				&& internalDeviceMonitor == null)
@@ -1022,8 +1030,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"consultationCall failure");
 			throw new TsapiPlatformException(4, 0, "consultationCall failure");
 		}
@@ -1282,8 +1291,8 @@ public final class TSCall implements IDomainCall {
 			throw new TsapiMethodNotSupportedException(4, 0,
 					"unsupported by driver");
 		if (updateObject() && state != 33)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state,
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
 					"call is not active");
 
 		CSTAConnectionID clearConnID = null;
@@ -1293,8 +1302,8 @@ public final class TSCall implements IDomainCall {
 						.getConnID();
 		}
 		if (clearConnID == null)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state,
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
 					"call is not active (no connections)");
 
 		final ConfHandler handler = new ClearCallConfHandler(this);
@@ -1311,8 +1320,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"clearCall failure");
 			throw new TsapiPlatformException(4, 0, "clearCall failure");
 		}
@@ -1390,8 +1400,9 @@ public final class TSCall implements IDomainCall {
 		}
 
 		int i = 0;
-		for (final String str : LucentUserToUserInfo.print(TsapiPromoter
-				.demoteUserToUserInfo(getUUI()), "CallUUI", indent + " ")) {
+		for (final String str : LucentUserToUserInfo.print(
+				TsapiPromoter.demoteUserToUserInfo(getUUI()), "CallUUI", indent
+						+ " ")) {
 			if (i == 0)
 				TSCall.log.trace(indent + "TSCALL UUI" + str);
 			else
@@ -1435,8 +1446,9 @@ public final class TSCall implements IDomainCall {
 					"unsupported by driver");
 
 		if (state != 32)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "call not idle");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"call not idle");
 
 		final String devName = device.getName();
 
@@ -1467,8 +1479,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"makeCall failure");
 
 			throw new TsapiPlatformException(4, 0, "makeCall failure");
@@ -1775,8 +1788,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"getUCIDConf failure, exception: " + e);
 
 			throw new TsapiPlatformException(4, 0,
@@ -2516,8 +2530,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"setBillRate failure, exception: " + e);
 
 			throw new TsapiPlatformException(4, 0,
@@ -2637,14 +2652,14 @@ public final class TSCall implements IDomainCall {
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		if (updateObject()) {
 			if (state != 33)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"call is not active");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "call is not active");
 
 			if (termconn.getCallControlTermConnState() == 102)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(termconn, false), 5, state,
-						"terminal connection is dropped");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(termconn, false), 5,
+						state, "terminal connection is dropped");
 
 			boolean contains = false;
 
@@ -2661,9 +2676,9 @@ public final class TSCall implements IDomainCall {
 			}
 
 			if (!contains)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"terminal connection is not in this call");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "terminal connection is not in this call");
 
 		}
 
@@ -2893,14 +2908,14 @@ public final class TSCall implements IDomainCall {
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		if (updateObject()) {
 			if (state != 33)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"call is not active");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "call is not active");
 
 			if (termconn.getCallControlTermConnState() == 102)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(termconn, false), 5, 102,
-						"terminal connection is dropped");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(termconn, false), 5,
+						102, "terminal connection is dropped");
 
 			boolean contains = false;
 
@@ -2917,9 +2932,9 @@ public final class TSCall implements IDomainCall {
 			}
 
 			if (!contains)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"terminal connection is not in this call");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "terminal connection is not in this call");
 
 		}
 
@@ -2961,12 +2976,14 @@ public final class TSCall implements IDomainCall {
 		final boolean thisCallUpdate = updateObject();
 
 		if (thisCallUpdate && state != 33)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "call not active");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"call not active");
 
 		if (!xferEnable)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "transfer disabled");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"transfer disabled");
 
 		final TSConnection activeTermConn = xferController;
 
@@ -3008,8 +3025,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"transfer(String) failure");
 			throw new TsapiPlatformException(4, 0, "transfer(String) failure: "
 					+ e);
@@ -3031,12 +3049,14 @@ public final class TSCall implements IDomainCall {
 		final boolean otherCallUpdate = otherCall.updateObject();
 
 		if (thisCallUpdate && state != 33)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "call not active");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"call not active");
 
 		if (!xferEnable || !otherCall.xferEnable)
-			throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-					.getTsapiObject(this, false), 1, state, "transfer disabled");
+			throw new TsapiInvalidStateException(3, 0,
+					TsapiCreateObject.getTsapiObject(this, false), 1, state,
+					"transfer disabled");
 
 		TSConnection activeTermConn = xferController;
 		TSConnection heldTermConn = otherCall.xferController;
@@ -3105,17 +3125,17 @@ public final class TSCall implements IDomainCall {
 			if (thisCallUpdate
 					&& activeTermConn.getCallControlTermConnState() != 98
 					&& activeTermConn.getCallControlTermConnState() != 103)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"terminal connection not active. It's state is "
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "terminal connection not active. It's state is "
 								+ activeTermConn.getCallControlTermConnState());
 
 			heldTermConn = otherCall.findHeldTermConnection(activeTermConn
 					.getTSDevice());
 			if (heldTermConn == null)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
-						"no held terminal connection found");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state, "no held terminal connection found");
 
 		} else if (thisCallUpdate && otherCallUpdate) {
 			if (activeTermConn.getCallControlTermConnState() != 98
@@ -3140,10 +3160,11 @@ public final class TSCall implements IDomainCall {
 						"the state of the held terminal connection is not HELD or UNKNOWN; its state is "
 								+ heldTermConn.getCallControlTermConnState());
 
-			if (!activeTermConn.getTSDevice().getTermConns().contains(
-					heldTermConn))
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 1, state,
+			if (!activeTermConn.getTSDevice().getTermConns()
+					.contains(heldTermConn))
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 1,
+						state,
 						"the held terminal connection is not associated with the device ("
 								+ activeTermConn.getTSDevice()
 								+ ") of the active terminal connection");
@@ -3168,8 +3189,9 @@ public final class TSCall implements IDomainCall {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"transferCall failure");
 			throw new TsapiPlatformException(4, 0, "transferCall failure");
 		}

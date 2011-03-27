@@ -11,13 +11,13 @@ final class SetHeartbeatIntervalConfHandler implements ConfHandler {
 		this.provider = provider;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null
 				|| !(event.getEvent() instanceof ACSSetHeartbeatIntervalConfEvent))
 			return;
 
-		provider
-				.setClientHeartbeatInterval(((ACSSetHeartbeatIntervalConfEvent) event
-						.getEvent()).getHeartbeatInterval());
+		provider.setClientHeartbeatInterval(((ACSSetHeartbeatIntervalConfEvent) event
+				.getEvent()).getHeartbeatInterval());
 	}
 }

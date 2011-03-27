@@ -60,6 +60,7 @@ public final class LucentSingleStepConferenceCallConfEvent extends
 		return 66;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

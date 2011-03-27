@@ -103,9 +103,7 @@ public final class TSConnection {
 
 	private void addMyCustomStringCallID(final StringBuffer text) {
 		if (connID == null)
-			text
-					.append(call == null ? "-" : Integer.toString(call
-							.getCallID()));
+			text.append(call == null ? "-" : Integer.toString(call.getCallID()));
 		else
 			text.append(connID.getCallID() == 0 ? "-" : Integer.toString(connID
 					.getCallID()));
@@ -158,9 +156,9 @@ public final class TSConnection {
 		if (call.updateObject()) {
 			final int state = getTSTermConnState();
 			if (state != 65 && state != 69)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 5, state,
-						"terminal connection not ringing");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 5,
+						state, "terminal connection not ringing");
 
 		}
 
@@ -186,8 +184,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"answerCall failure");
 			throw new TsapiPlatformException(4, 0, "answerCall failure");
 		}
@@ -220,8 +219,8 @@ public final class TSConnection {
 			final int state = getTSConnState();
 			if (state != 49 && state != 50 && state != 51 && state != 53
 					&& state != 54)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, true), 2, state,
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, true), 2, state,
 						"connection not in acceptable state");
 
 		}
@@ -263,8 +262,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"clearConnection failure");
 			throw new TsapiPlatformException(4, 0, "clearConnection failure");
 		}
@@ -381,8 +381,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"sendPrivateData failure");
 			throw new TsapiPlatformException(3, 0, "sendPrivateData failure");
 		}
@@ -712,9 +713,9 @@ public final class TSConnection {
 		if (call.updateObject()) {
 			final int state = getCallControlTermConnState();
 			if (state != 98 && state != 103)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 5, state,
-						"terminal connection not talking");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 5,
+						state, "terminal connection not talking");
 
 		}
 
@@ -740,8 +741,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"holdCall failure");
 			throw new TsapiPlatformException(4, 0, "holdCall failure");
 		}
@@ -765,9 +767,9 @@ public final class TSConnection {
 		if (call.updateObject()) {
 			final int state = getCallControlTermConnState();
 			if (state != 100 && state != 103)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 5, state,
-						"terminal connection not bridged");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 5,
+						state, "terminal connection not bridged");
 
 		}
 
@@ -793,9 +795,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
-						"join failure");
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(), "join failure");
 			throw new TsapiPlatformException(4, 0, "join failure");
 		}
 	}
@@ -810,9 +812,9 @@ public final class TSConnection {
 		if (call.updateObject()) {
 			final int state = getCallControlTermConnState();
 			if (state != 98 && state != 103)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 5, state,
-						"terminal connection not talking");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 5,
+						state, "terminal connection not talking");
 
 		}
 
@@ -839,8 +841,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"clearConnection failure");
 			throw new TsapiPlatformException(4, 0, "clearConnection failure");
 		}
@@ -886,8 +889,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"listenHold failure");
 			throw new TsapiPlatformException(4, 0, "listenHold failure");
 		}
@@ -930,8 +934,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"listenUnhold failure");
 			throw new TsapiPlatformException(4, 0, "listenUnhold failure");
 		}
@@ -948,8 +953,8 @@ public final class TSConnection {
 		if (call.updateObject()) {
 			final int state = getCallControlConnState();
 			if (state != 81 && state != 83 && state != 91)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, true), 2, state,
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, true), 2, state,
 						"connection not offering or alerting");
 
 		}
@@ -970,8 +975,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"deflectCall failure");
 			throw new TsapiPlatformException(4, 0, "deflectCall failure");
 		}
@@ -1000,8 +1006,9 @@ public final class TSConnection {
 			return provider.sendPrivateData(data);
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"sendPrivateData failure");
 			throw new TsapiPlatformException(3, 0, "sendPrivateData failure");
 		}
@@ -1395,9 +1402,9 @@ public final class TSConnection {
 		if (call.updateObject()) {
 			final int state = getCallControlTermConnState();
 			if (state != 99 && state != 103)
-				throw new TsapiInvalidStateException(3, 0, TsapiCreateObject
-						.getTsapiObject(this, false), 5, state,
-						"terminal connection not held");
+				throw new TsapiInvalidStateException(3, 0,
+						TsapiCreateObject.getTsapiObject(this, false), 5,
+						state, "terminal connection not held");
 
 		}
 
@@ -1423,8 +1430,9 @@ public final class TSConnection {
 			throw e;
 		} catch (final Exception e) {
 			if (e instanceof ITsapiException)
-				throw new TsapiPlatformException(((ITsapiException) e)
-						.getErrorType(), ((ITsapiException) e).getErrorCode(),
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
 						"retrieveCall failure");
 			throw new TsapiPlatformException(4, 0, "retrieveCall failure");
 		}
@@ -1437,8 +1445,8 @@ public final class TSConnection {
 		if (isTermConn && newCallID == 0)
 			return;
 
-		final CSTAConnectionID newID = new CSTAConnectionID(newCallID, connID
-				.getDeviceID(), (short) connID.getDevIDType());
+		final CSTAConnectionID newID = new CSTAConnectionID(newCallID,
+				connID.getDeviceID(), (short) connID.getDevIDType());
 
 		setConnID(newID);
 	}

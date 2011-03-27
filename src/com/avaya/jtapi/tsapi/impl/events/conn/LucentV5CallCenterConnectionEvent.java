@@ -12,18 +12,22 @@ public class LucentV5CallCenterConnectionEvent extends
 		super(params, event, eventId);
 	}
 
+	@Override
 	public boolean canSetBillRate() {
 		return callEventParams.isFlexibleBilling();
 	}
 
+	@Override
 	public int getCallOriginatorType() {
 		return callEventParams.getCallOriginatorType();
 	}
 
+	@Override
 	public String getUCID() {
 		return callEventParams.getUcid();
 	}
 
+	@Override
 	public boolean hasCallOriginatorType() {
 		return callEventParams.hasCallOriginatorType();
 	}

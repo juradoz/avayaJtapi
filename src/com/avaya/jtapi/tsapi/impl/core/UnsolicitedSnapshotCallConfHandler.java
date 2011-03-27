@@ -52,6 +52,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 		connectionDevice = _connectionDevice;
 	}
 
+	@Override
 	public Object handleConf(final boolean rc, Vector<TSEvent> eventList,
 			final Object _privateData) {
 		if (call.getTSState() == 34)
@@ -171,8 +172,8 @@ final class UnsolicitedSnapshotCallConfHandler implements
 						if (eventList.elementAt(0).getEventType() == 4)
 							++index;
 						for (int i = 0; i < snapEventList.size(); ++i) {
-							eventList.insertElementAt(snapEventList
-									.elementAt(i), index);
+							eventList.insertElementAt(
+									snapEventList.elementAt(i), index);
 							++index;
 						}
 					}
@@ -187,8 +188,8 @@ final class UnsolicitedSnapshotCallConfHandler implements
 						if (eventList.elementAt(0).getEventType() == 4)
 							++index;
 						for (int i = 0; i < snapEventList.size(); ++i) {
-							eventList.insertElementAt(snapEventList
-									.elementAt(i), index);
+							eventList.insertElementAt(
+									snapEventList.elementAt(i), index);
 							++index;
 						}
 					}

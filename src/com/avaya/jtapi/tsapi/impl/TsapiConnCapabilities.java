@@ -18,18 +18,21 @@ public final class TsapiConnCapabilities implements ConnectionCapabilities,
 		TsapiTrace.traceConstruction(this, TsapiConnCapabilities.class);
 	}
 
+	@Override
 	public boolean canAccept() {
 		TsapiTrace.traceEntry("canAccept[]", this);
 		TsapiTrace.traceExit("canAccept[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canAddToAddress() {
 		TsapiTrace.traceEntry("canAddToAddress[]", this);
 		TsapiTrace.traceExit("canAddToAddress[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canDisconnect() {
 		TsapiTrace.traceEntry("canDisconnect[]", this);
 		final boolean can = tsCaps.getClearConnection() == 1;
@@ -37,6 +40,7 @@ public final class TsapiConnCapabilities implements ConnectionCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetACDConnections() {
 		TsapiTrace.traceEntry("canGetACDConnections[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -44,6 +48,7 @@ public final class TsapiConnCapabilities implements ConnectionCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canGetACDManagerConnection() {
 		TsapiTrace.traceEntry("canGetACDManagerConnection[]", this);
 		final boolean can = tsCaps.isLucent();
@@ -51,12 +56,14 @@ public final class TsapiConnCapabilities implements ConnectionCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canPark() {
 		TsapiTrace.traceEntry("canPark[]", this);
 		TsapiTrace.traceExit("canPark[]", this);
 		return false;
 	}
 
+	@Override
 	public boolean canRedirect() {
 		TsapiTrace.traceEntry("canRedirect[]", this);
 		final boolean can = tsCaps.getDeflectCall() == 1;
@@ -64,6 +71,7 @@ public final class TsapiConnCapabilities implements ConnectionCapabilities,
 		return can;
 	}
 
+	@Override
 	public boolean canReject() {
 		TsapiTrace.traceEntry("canReject[]", this);
 		TsapiTrace.traceExit("canReject[]", this);

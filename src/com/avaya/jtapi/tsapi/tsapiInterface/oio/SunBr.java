@@ -25,8 +25,7 @@ final class SunBr extends GenericBrowser {
 			throws UnknownHostException, IOException {
 		System.out.println("in SunBr  checkPermission\n");
 		AccessController.checkPermission(new SocketPermission(addr.getAddress()
-				.getHostAddress()
-				+ ":" + addr.getPort(), "connect"));
+				.getHostAddress() + ":" + addr.getPort(), "connect"));
 
 		System.out.println("in SunBr  trySocket\n");
 		return super.trySocket(addr, sf);

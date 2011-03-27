@@ -12,6 +12,7 @@ final class TermPrivConfHandler implements ConfHandler {
 		pdu = _pdu;
 	}
 
+	@Override
 	public void handleConf(final CSTAEvent event) {
 		if (event == null || event.getEventHeader().getEventClass() != 5
 				|| event.getEventHeader().getEventType() != pdu)

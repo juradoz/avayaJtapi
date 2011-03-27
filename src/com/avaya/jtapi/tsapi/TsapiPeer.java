@@ -21,19 +21,23 @@ public class TsapiPeer implements ITsapiPeer {
 		}
 	}
 
+	@Override
 	public void addVendor(final String vendorName, final String versions) {
 		impl.addVendor(vendorName, versions);
 	}
 
+	@Override
 	public String getName() {
 		return super.getClass().getName();
 	}
 
+	@Override
 	public Provider getProvider(final String providerString)
 			throws ProviderUnavailableException {
 		return impl.getProvider(providerString);
 	}
 
+	@Override
 	public String[] getServices() {
 		return impl.getServices();
 	}

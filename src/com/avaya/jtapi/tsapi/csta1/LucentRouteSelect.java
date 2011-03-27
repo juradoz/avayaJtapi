@@ -59,9 +59,7 @@ public class LucentRouteSelect extends LucentPrivateData {
 
 		final String indent = "  ";
 
-		lines
-				.addAll(ASNIA5String.print(callingDevice, "callingDevice",
-						indent));
+		lines.addAll(ASNIA5String.print(callingDevice, "callingDevice", indent));
 		lines.addAll(ASNIA5String.print(directAgentCallSplit,
 				"directAgentCallSplit", indent));
 		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",

@@ -92,9 +92,7 @@ public final class CSTASetAgentState extends CSTARequest {
 		lines.addAll(AgentMode.print(agentMode, "agentMode", indent));
 		lines.addAll(ASNIA5String.print(agentID, "agentID", indent));
 		lines.addAll(ASNIA5String.print(agentGroup, "agentGroup", indent));
-		lines
-				.addAll(ASNIA5String.print(agentPassword, "agentPassword",
-						indent));
+		lines.addAll(ASNIA5String.print(agentPassword, "agentPassword", indent));
 
 		lines.add("}");
 		return lines;

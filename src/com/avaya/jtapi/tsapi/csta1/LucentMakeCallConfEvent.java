@@ -34,6 +34,7 @@ public final class LucentMakeCallConfEvent extends LucentPrivateData implements
 		return 85;
 	}
 
+	@Override
 	public String getUcid() {
 		return ucid;
 	}

@@ -10,6 +10,7 @@ public final class TsapiAddrObservationEndedEvent extends TsapiAddressEvent
 		super(_address, _cause, 136, _privateData);
 	}
 
+	@Override
 	public int getID() {
 		return 100;
 	}

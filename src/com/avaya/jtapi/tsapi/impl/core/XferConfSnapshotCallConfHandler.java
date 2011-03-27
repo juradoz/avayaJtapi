@@ -34,6 +34,7 @@ final class XferConfSnapshotCallConfHandler implements
 		snapConnections = _snapConnections;
 	}
 
+	@Override
 	public Object handleConf(final boolean rc,
 			final Vector<TSEvent> _eventList, final Object _privateData) {
 		if (call.getNeedRedoSnapshotCall()) {
