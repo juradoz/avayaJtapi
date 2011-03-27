@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 public class JtapiUtils {
 	private static Logger log = Logger.getLogger(JtapiUtils.class);
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	public static boolean isLog4jConfigured() {
 		final Enumeration appenders = Logger.getRootLogger().getAllAppenders();
 		if (appenders.hasMoreElements())

@@ -6,7 +6,6 @@ public class JtapiPeerFactory {
 		return JtapiPeerName;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static synchronized JtapiPeer getJtapiPeer(String jtapiPeerName)
 			throws JtapiPeerUnavailableException {
 		if (jtapiPeerName == null || jtapiPeerName.length() == 0)
@@ -15,6 +14,7 @@ public class JtapiPeerFactory {
 		if (jtapiPeerName == null)
 			throw new JtapiPeerUnavailableException();
 		try {
+			@SuppressWarnings("rawtypes")
 			final Class jtapiPeerClass = Class.forName(jtapiPeerName);
 
 			return (JtapiPeer) jtapiPeerClass.newInstance();

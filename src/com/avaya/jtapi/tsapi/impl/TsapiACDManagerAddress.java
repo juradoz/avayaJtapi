@@ -59,10 +59,6 @@ class TsapiACDManagerAddress extends TsapiAddress implements
 
 				if (obsToUse == null) {
 					obsToUse = new TsapiCallMonitor(prov, observer);
-					if (obsToUse == null)
-						throw new TsapiPlatformException(4, 0,
-								"could not allocate Monitor wrapper");
-
 				}
 
 			}

@@ -5,7 +5,7 @@ import java.util.Vector;
 public class TsapiFactory {
 	// private static final String OVERRIDE_IMPL = "tsapi_impl_class_name";
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static Tsapi getTsapi(final String tlink, final String login,
 			final String passwd, final Vector<TsapiVendor> vendors,
 			final TsapiUnsolicitedHandler handler) {

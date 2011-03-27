@@ -170,7 +170,7 @@ public class Tsapi {
 		Tsapi.showImplementationVersion();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static void displayProperties(final Properties systemProperties,
 			final Properties jtapiProperties) {
 		Set list = null;

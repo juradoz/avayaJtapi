@@ -21,7 +21,7 @@ public abstract class TsapiSessionFactory {
 	private static Logger log = Logger.getLogger(TsapiSessionFactory.class);
 	public static final String FACTORY_KEY = "com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory.sessionFactory";
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static TsapiSessionFactory getTsapiSessionFactory(
 			final Properties props) {
 		String className = "com.avaya.jtapi.tsapi.tsapiInterface.oio.TsapiSessionFactoryOio";

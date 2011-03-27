@@ -1597,7 +1597,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return xrefHash.get(new Integer(xrefID));
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public String getMonitoredObjects() {
 		final StringBuffer buffer = new StringBuffer();
 		for (final Map.Entry entry : xrefHash.entrySet())
@@ -1875,7 +1875,7 @@ public final class TSProviderImpl extends TSProvider implements IDomainTracker,
 		return new TsapiTerminalCapabilities(tsCaps);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Vector<TSCall> getTSCalls() {
 		final Vector tsCallVector = new Vector();
 		Vector tsDevCallVector = null;

@@ -13,7 +13,7 @@ public class TsapiTrace {
 		return buffer.toString();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static String print(final Object o) {
 		if (o != null) {
 			if (o instanceof Class)

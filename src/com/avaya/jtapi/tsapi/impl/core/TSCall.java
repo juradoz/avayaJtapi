@@ -2805,7 +2805,7 @@ public final class TSCall implements IDomainCall {
 		snapshotCallConfPending = flag;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	void setState(final int _state, final Vector<TSEvent> eventList) {
 		synchronized (this) {
 			if (state == _state || state == 34)

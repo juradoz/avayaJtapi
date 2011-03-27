@@ -74,7 +74,7 @@ class TSDomainTracker implements IDomainTracker {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	public void dumpDomainData(final String indent) {
 		HashMap<Integer, IDomainDevice> dup = null;
 
@@ -125,7 +125,7 @@ class TSDomainTracker implements IDomainTracker {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public synchronized void removeAllCallsForDomain(final IDomainDevice d) {
 		int found_count = 0;
 

@@ -947,7 +947,7 @@ public final class TSDevice implements IDomainDevice {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Vector<TsapiCallMonitor> getAddressCallObservers() {
 		recreate();
 
@@ -1039,7 +1039,7 @@ public final class TSDevice implements IDomainDevice {
 		return associatedDevice;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	Vector<TSConnection> getConns() {
 		recreate();
 

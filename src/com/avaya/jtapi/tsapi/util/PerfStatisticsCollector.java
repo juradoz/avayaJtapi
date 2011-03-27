@@ -236,7 +236,7 @@ public class PerfStatisticsCollector {
 			perfBean.computeMinMaxAverage();
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public void run() {
 			// PerfStatisticsCollector.access$108();

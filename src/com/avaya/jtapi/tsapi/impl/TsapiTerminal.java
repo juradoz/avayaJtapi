@@ -583,7 +583,7 @@ class TsapiTerminal implements ITsapiTerminal, PrivateData, LucentV5TerminalEx {
 	}
 
 	// ERROR //
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public final TerminalConnection[] getTerminalConnections() {
 		try {
 			Vector<TSConnection> tsconn = null;

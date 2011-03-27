@@ -1068,7 +1068,7 @@ final class TSEventHandler implements TsapiUnsolicitedHandler {
 		call.staleObsCleanup(jtapiCause);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	void doConfXfer(final int jtapiCause, CSTAConnectionID primaryConnID,
 			CSTAConnectionID secondaryConnID, final CSTAConnection[] connList,
 			final Object privateData, final short cause) {

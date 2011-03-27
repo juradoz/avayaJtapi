@@ -10,7 +10,7 @@ public class TsapiPeer implements ITsapiPeer {
 	ITsapiPeer impl = null;
 	Logger logger = Logger.getLogger(TsapiPeer.class);
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public TsapiPeer() {
 		try {
 			final Class implClass = Class
