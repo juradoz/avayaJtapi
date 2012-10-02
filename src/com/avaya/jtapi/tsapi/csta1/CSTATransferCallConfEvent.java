@@ -6,65 +6,60 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTATransferCallConfEvent extends CSTAConfirmation {
-	public static CSTATransferCallConfEvent decode(final InputStream in) {
-		final CSTATransferCallConfEvent _this = new CSTATransferCallConfEvent();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	CSTAConnectionID newCall;
 	CSTAConnection[] connList;
-
 	public static final int PDU = 52;
 
 	public CSTATransferCallConfEvent() {
 	}
 
-	public CSTATransferCallConfEvent(final CSTAConnectionID _newCall,
-			final CSTAConnection[] _connList) {
-		newCall = _newCall;
-		connList = _connList;
+	public CSTATransferCallConfEvent(CSTAConnectionID _newCall,
+			CSTAConnection[] _connList) {
+		this.newCall = _newCall;
+		this.connList = _connList;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		newCall = CSTAConnectionID.decode(memberStream);
-		connList = ConnectionList.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.newCall, memberStream);
+		ConnectionList.encode(this.connList, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(newCall, memberStream);
-		ConnectionList.encode(connList, memberStream);
+	public static CSTATransferCallConfEvent decode(InputStream in) {
+		CSTATransferCallConfEvent _this = new CSTATransferCallConfEvent();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	public CSTAConnection[] getConnList() {
-		return connList;
+	public void decodeMembers(InputStream memberStream) {
+		this.newCall = CSTAConnectionID.decode(memberStream);
+		this.connList = ConnectionList.decode(memberStream);
 	}
 
-	public CSTAConnectionID getNewCall() {
-		return newCall;
-	}
-
-	@Override
-	public int getPDU() {
-		return 52;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTATransferCallConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
-		lines.addAll(ConnectionList.print(connList, "connList", indent));
+		lines.addAll(CSTAConnectionID.print(this.newCall, "newCall", indent));
+		lines.addAll(ConnectionList.print(this.connList, "connList", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 52;
+	}
+
+	public CSTAConnection[] getConnList() {
+		return this.connList;
+	}
+
+	public CSTAConnectionID getNewCall() {
+		return this.newCall;
 	}
 }

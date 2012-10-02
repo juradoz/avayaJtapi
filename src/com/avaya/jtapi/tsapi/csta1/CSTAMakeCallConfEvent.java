@@ -6,54 +6,49 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTAMakeCallConfEvent extends CSTAConfirmation {
-	public static CSTAMakeCallConfEvent decode(final InputStream in) {
-		final CSTAMakeCallConfEvent _this = new CSTAMakeCallConfEvent();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	CSTAConnectionID newCall;
-
 	public static final int PDU = 24;
 
 	public CSTAMakeCallConfEvent() {
 	}
 
-	public CSTAMakeCallConfEvent(final CSTAConnectionID _newCall) {
-		newCall = _newCall;
+	public CSTAMakeCallConfEvent(CSTAConnectionID _newCall) {
+		this.newCall = _newCall;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		newCall = CSTAConnectionID.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.newCall, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(newCall, memberStream);
+	public static CSTAMakeCallConfEvent decode(InputStream in) {
+		CSTAMakeCallConfEvent _this = new CSTAMakeCallConfEvent();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	public CSTAConnectionID getNewCall() {
-		return newCall;
+	public void decodeMembers(InputStream memberStream) {
+		this.newCall = CSTAConnectionID.decode(memberStream);
 	}
 
-	@Override
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("CSTAMakeCallConfEvent ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(CSTAConnectionID.print(this.newCall, "newCall", indent));
+
+		lines.add("}");
+		return lines;
+	}
+
 	public int getPDU() {
 		return 24;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("CSTAMakeCallConfEvent ::=");
-		lines.add("{");
-
-		final String indent = "  ";
-
-		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
-
-		lines.add("}");
-		return lines;
+	public CSTAConnectionID getNewCall() {
+		return this.newCall;
 	}
 }

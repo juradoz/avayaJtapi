@@ -1,65 +1,75 @@
 package com.avaya.jtapi.tsapi.impl.events.call;
 
+import com.avaya.jtapi.tsapi.CSTACauseVariant;
+import com.avaya.jtapi.tsapi.ITsapiCallEvent;
+import com.avaya.jtapi.tsapi.LucentChargeAdviceEvent;
+import com.avaya.jtapi.tsapi.TsapiPrivate;
+import com.avaya.jtapi.tsapi.impl.events.TsapiPrivateStateEvent;
 import javax.telephony.Call;
 import javax.telephony.CallEvent;
 import javax.telephony.MetaEvent;
 import javax.telephony.privatedata.PrivateDataEvent;
 
-import com.avaya.jtapi.tsapi.ITsapiCallEvent;
-import com.avaya.jtapi.tsapi.LucentChargeAdviceEvent;
-import com.avaya.jtapi.tsapi.TsapiPrivate;
-import com.avaya.jtapi.tsapi.impl.events.TsapiPrivateStateEvent;
-
 public class CallEventImpl implements CallEvent, PrivateDataEvent,
 		ITsapiCallEvent {
 	protected CallEventParams callEventParams;
-	private final MetaEvent metaEvent;
-	private final int id;
+	private MetaEvent metaEvent;
+	private int id;
 
-	public CallEventImpl(final CallEventParams params, final MetaEvent event,
-			final int eventId) {
-		callEventParams = params;
-		metaEvent = event;
-		id = eventId;
+	public CallEventImpl(CallEventParams params, MetaEvent event, int eventId) {
+		this.callEventParams = params;
+		this.metaEvent = event;
+		this.id = eventId;
 	}
 
-	@Override
 	public Call getCall() {
-		return callEventParams.getCall();
+		return this.callEventParams.getCall();
 	}
 
-	@Override
-	public int getCause() {
-		return callEventParams.getCause();
-	}
-
-	@Override
-	public short getCSTACause() {
-		return callEventParams.getCstaCause();
-	}
-
-	@Override
 	public int getID() {
-		return id;
+		return this.id;
 	}
 
-	@Override
 	public MetaEvent getMetaEvent() {
-		return metaEvent;
+		return this.metaEvent;
 	}
 
-	@Override
+	public Object getSource() {
+		return this.callEventParams.getCall();
+	}
+
+	public int getCause() {
+		int cause = this.callEventParams.getCause();
+		if ((cause == 101) || (cause == 102) || (cause == 103)
+				|| (cause == 104) || (cause == 105) || (cause == 106)
+				|| (cause == 107) || (cause == 108) || (cause == 109)
+				|| (cause == 110)) {
+			return cause;
+		}
+		return 100;
+	}
+
 	public Object getPrivateData() {
-		final Object privateData = callEventParams.getPrivateData();
-		if (privateData instanceof TsapiPrivate
-				|| privateData instanceof LucentChargeAdviceEvent
-				|| privateData instanceof TsapiPrivateStateEvent)
+		Object privateData = this.callEventParams.getPrivateData();
+		if (((privateData instanceof TsapiPrivate))
+				|| ((privateData instanceof LucentChargeAdviceEvent))
+				|| ((privateData instanceof TsapiPrivateStateEvent))) {
 			return privateData;
+		}
 		return null;
 	}
 
-	@Override
-	public Object getSource() {
-		return callEventParams.getCall();
+	public short getCSTACause() {
+		return this.callEventParams.getCstaCause();
+	}
+
+	public short getCSTACause(CSTACauseVariant cstaCauseVariant) {
+		short retValue;
+		if (cstaCauseVariant == CSTACauseVariant.override) {
+			retValue = this.callEventParams.getCsta3Cause();
+		} else {
+			retValue = this.callEventParams.getCstaCause();
+		}
+		return retValue;
 	}
 }

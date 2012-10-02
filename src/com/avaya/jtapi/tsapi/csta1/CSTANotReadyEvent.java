@@ -1,55 +1,64 @@
 package com.avaya.jtapi.tsapi.csta1;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class CSTANotReadyEvent extends CSTAUnsolicited {
 	CSTAExtendedDeviceID agentDevice;
 	String agentID;
 	public static final int PDU = 74;
 
-	public static CSTANotReadyEvent decode(final InputStream in) {
-		final CSTANotReadyEvent _this = new CSTANotReadyEvent();
+	public static CSTANotReadyEvent decode(InputStream in) {
+		CSTANotReadyEvent _this = new CSTANotReadyEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		agentDevice = CSTAExtendedDeviceID.decode(memberStream);
-		agentID = ASNIA5String.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.agentDevice = CSTAExtendedDeviceID.decode(memberStream);
+		this.agentID = AgentID.decode(memberStream);
 	}
 
-	public CSTAExtendedDeviceID getAgentDevice() {
-		return agentDevice;
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAExtendedDeviceID.encode(this.agentDevice, memberStream);
+		AgentID.encode(this.agentID, memberStream);
 	}
 
-	public String getAgentID() {
-		return agentID;
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("CSTANotReadyEvent ::=");
+		lines.add("{");
+
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAExtendedDeviceID.print(this.agentDevice,
+				"agentDevice", indent));
+		lines.addAll(AgentID.print(this.agentID, "agentID", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	@Override
 	public int getPDU() {
 		return 74;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("CSTANotReadyEvent ::=");
-		lines.add("{");
+	public CSTAExtendedDeviceID getAgentDevice() {
+		return this.agentDevice;
+	}
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAExtendedDeviceID.print(agentDevice, "agentDevice",
-				indent));
-		lines.addAll(ASNIA5String.print(agentID, "agentID", indent));
+	public void setAgentDevice(CSTAExtendedDeviceID agentDevice) {
+		this.agentDevice = agentDevice;
+	}
 
-		lines.add("}");
-		return lines;
+	public void setAgentID(String agentID) {
+		this.agentID = agentID;
+	}
+
+	public String getAgentID() {
+		return this.agentID;
 	}
 }

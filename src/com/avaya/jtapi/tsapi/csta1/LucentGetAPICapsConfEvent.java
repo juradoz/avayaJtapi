@@ -1,11 +1,10 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public class LucentGetAPICapsConfEvent extends LucentPrivateData {
 	String switchVersion;
@@ -20,57 +19,62 @@ public class LucentGetAPICapsConfEvent extends LucentPrivateData {
 	boolean reserved2;
 	static final int PDU = 64;
 
-	static LucentGetAPICapsConfEvent decode(final InputStream in) {
-		final LucentGetAPICapsConfEvent _this = new LucentGetAPICapsConfEvent();
+	static LucentGetAPICapsConfEvent decode(InputStream in) {
+		LucentGetAPICapsConfEvent _this = new LucentGetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		switchVersion = ASNIA5String.decode(memberStream);
-		sendDTMFTone = ASNBoolean.decode(memberStream);
-		enteredDigitsEvent = ASNBoolean.decode(memberStream);
-		queryDeviceName = ASNBoolean.decode(memberStream);
-		queryAgentMeas = ASNBoolean.decode(memberStream);
-		querySplitSkillMeas = ASNBoolean.decode(memberStream);
-		queryTrunkGroupMeas = ASNBoolean.decode(memberStream);
-		queryVdnMeas = ASNBoolean.decode(memberStream);
-		reserved1 = ASNBoolean.decode(memberStream);
-		reserved2 = ASNBoolean.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.switchVersion = ASNIA5String.decode(memberStream);
+		this.sendDTMFTone = ASNBoolean.decode(memberStream);
+		this.enteredDigitsEvent = ASNBoolean.decode(memberStream);
+		this.queryDeviceName = ASNBoolean.decode(memberStream);
+		this.queryAgentMeas = ASNBoolean.decode(memberStream);
+		this.querySplitSkillMeas = ASNBoolean.decode(memberStream);
+		this.queryTrunkGroupMeas = ASNBoolean.decode(memberStream);
+		this.queryVdnMeas = ASNBoolean.decode(memberStream);
+		this.reserved1 = ASNBoolean.decode(memberStream);
+		this.reserved2 = ASNBoolean.decode(memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 64;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentGetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(switchVersion, "switchVersion", indent));
-		lines.addAll(ASNBoolean.print(sendDTMFTone, "sendDTMFTone", indent));
-		lines.addAll(ASNBoolean.print(enteredDigitsEvent, "enteredDigitsEvent",
+		lines.addAll(ASNIA5String.print(this.switchVersion, "switchVersion",
 				indent));
-		lines.addAll(ASNBoolean.print(queryDeviceName, "queryDeviceName",
+		lines.addAll(ASNBoolean
+				.print(this.sendDTMFTone, "sendDTMFTone", indent));
+		lines.addAll(ASNBoolean.print(this.enteredDigitsEvent,
+				"enteredDigitsEvent", indent));
+		lines.addAll(ASNBoolean.print(this.queryDeviceName, "queryDeviceName",
 				indent));
-		lines.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas", indent));
-		lines.addAll(ASNBoolean.print(querySplitSkillMeas,
+		lines.addAll(ASNBoolean.print(this.queryAgentMeas, "queryAgentMeas",
+				indent));
+		lines.addAll(ASNBoolean.print(this.querySplitSkillMeas,
 				"querySplitSkillMeas", indent));
-		lines.addAll(ASNBoolean.print(queryTrunkGroupMeas,
+		lines.addAll(ASNBoolean.print(this.queryTrunkGroupMeas,
 				"queryTrunkGroupMeas", indent));
-		lines.addAll(ASNBoolean.print(queryVdnMeas, "queryVdnMeas", indent));
-		lines.addAll(ASNBoolean.print(reserved1, "reserved1", indent));
-		lines.addAll(ASNBoolean.print(reserved2, "reserved2", indent));
+		lines.addAll(ASNBoolean
+				.print(this.queryVdnMeas, "queryVdnMeas", indent));
+		lines.addAll(ASNBoolean.print(this.reserved1, "reserved1", indent));
+		lines.addAll(ASNBoolean.print(this.reserved2, "reserved2", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 64;
+	}
+
+	public void setMonitorCallsViaDevice(boolean monitorCallsViaDevice) {
+		this.reserved2 = monitorCallsViaDevice;
 	}
 }

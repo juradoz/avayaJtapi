@@ -1,9 +1,8 @@
 package com.avaya.jtapi.tsapi.acs;
 
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public final class ACSEncodeType extends ASNEnumerated {
 	static final short CAN_USE_BINDERY_ENCRYPTION = 1;
@@ -12,9 +11,8 @@ public final class ACSEncodeType extends ASNEnumerated {
 	static final short WIN_NT_NAMED_PIPE = 4;
 	static final short WIN_NT_WRITE_DATA = 5;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
-		final Collection<String> lines = new ArrayList<String>();
+	static Collection<String> print(short value, String name, String indent) {
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 1:
@@ -36,7 +34,7 @@ public final class ACSEncodeType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		lines.addAll(ASNEnumerated.print(value, str, name, indent));
+		lines.addAll(print(value, str, name, indent));
 		return lines;
 	}
 }

@@ -57,13 +57,14 @@ public final class TSEvent {
 	public static final int TRUNKVALIDEVENT = 54;
 	public static final int TRUNKINVALIDEVENT = 55;
 	public static final int CONNECTIONINPROGRESSEVENT_CC = 56;
-	public static final int CALLDTMFEVENT = 57;
-	public static final int TERMINALDONOTDISTURBEVENT = 58;
-	public static final int REROUTEEVENT = 59;
-	public static final int ROUTECALLBACKENDEDEVENT = 60;
-	public static final int ROUTEENDEVENT = 61;
-	public static final int ROUTEEVENT = 62;
-	public static final int ROUTEUSEDEVENT = 63;
+	public static final int APPLICATIONDATAEVENT = 57;
+	public static final int CALLDTMFEVENT = 58;
+	public static final int TERMINALDONOTDISTURBEVENT = 59;
+	public static final int REROUTEEVENT = 60;
+	public static final int ROUTECALLBACKENDEDEVENT = 61;
+	public static final int ROUTEENDEVENT = 62;
+	public static final int ROUTEEVENT = 63;
+	public static final int ROUTEUSEDEVENT = 64;
 	public static final int PRIVATEEVENT = 9999;
 	private TransferredEventParams transferredEventParams;
 	Object eventTarget;
@@ -72,69 +73,82 @@ public final class TSEvent {
 	TSDevice skillDevice;
 	private short snapshotCstaCause = -1;
 
-	TSEvent(final int _eventType, final Object _eventTarget) {
-		eventType = _eventType;
-		eventTarget = _eventTarget;
-		privateData = null;
-	}
-
-	public TSEvent(final int _eventType, final Object _eventTarget,
-			final Object _privateData) {
-		this(_eventType, _eventTarget, _privateData, null);
-	}
-
-	public TSEvent(final int _eventType, final Object _eventTarget,
-			final Object _privateData, final TSProviderImpl _provider) {
-		eventType = _eventType;
-		eventTarget = _eventTarget;
-
-		privateData = TsapiPromoter
-				.promotePrivateEvent(_provider, _privateData);
-	}
-
-	public Object getEventTarget() {
-		return eventTarget;
-	}
-
-	public int getEventType() {
-		return eventType;
-	}
-
-	public Object getPrivateData() {
-		return privateData;
-	}
-
-	public TSDevice getSkillDevice() {
-		return skillDevice;
-	}
-
-	public short getSnapshotCstaCause() {
-		return snapshotCstaCause;
-	}
+	private short snapshotCsta3Cause = -1;
 
 	public TransferredEventParams getTransferredEventParams() {
-		return transferredEventParams;
-	}
-
-	public void setPrivateData(final Object _privateData) {
-		privateData = _privateData;
-	}
-
-	public void setSkillDevice(final TSDevice _skillDevice) {
-		skillDevice = _skillDevice;
-	}
-
-	public void setSnapshotCstaCause(final short snapshotCstaCause) {
-		this.snapshotCstaCause = snapshotCstaCause;
+		return this.transferredEventParams;
 	}
 
 	public void setTransferredEventParams(
-			final TransferredEventParams transferredEventParams) {
+			TransferredEventParams transferredEventParams) {
 		this.transferredEventParams = transferredEventParams;
 	}
 
-	@Override
+	public int getEventType() {
+		return this.eventType;
+	}
+
+	public Object getEventTarget() {
+		return this.eventTarget;
+	}
+
+	public Object getPrivateData() {
+		return this.privateData;
+	}
+
+	public void setPrivateData(Object _privateData) {
+		this.privateData = _privateData;
+	}
+
+	public TSDevice getSkillDevice() {
+		return this.skillDevice;
+	}
+
+	public void setSkillDevice(TSDevice _skillDevice) {
+		this.skillDevice = _skillDevice;
+	}
+
+	TSEvent(int _eventType, Object _eventTarget) {
+		this.eventType = _eventType;
+		this.eventTarget = _eventTarget;
+		this.privateData = null;
+	}
+
+	public TSEvent(int _eventType, Object _eventTarget, Object _privateData,
+			TSProviderImpl _provider) {
+		this.eventType = _eventType;
+		this.eventTarget = _eventTarget;
+
+		this.privateData = TsapiPromoter.promotePrivateEvent(_provider,
+				_privateData);
+	}
+
+	public TSEvent(int _eventType, Object _eventTarget, Object _privateData) {
+		this(_eventType, _eventTarget, _privateData, null);
+	}
+
 	public String toString() {
-		return "eventTarget=" + eventTarget + ";eventType=" + eventType;
+		return "eventTarget=" + this.eventTarget + ";eventType="
+				+ this.eventType;
+	}
+
+	public void setSnapshotCstaCause(short snapshotCstaCause) {
+		this.snapshotCstaCause = snapshotCstaCause;
+	}
+
+	public void setSnapshotCsta3Cause(short snapshotCsta3Cause) {
+		this.snapshotCsta3Cause = snapshotCsta3Cause;
+	}
+
+	public short getSnapshotCstaCause() {
+		return this.snapshotCstaCause;
+	}
+
+	public short getSnapshotCsta3Cause() {
+		return this.snapshotCsta3Cause;
+	}
+
+	public void setEventTarget(Object eventTarget) {
+		this.eventTarget = eventTarget;
 	}
 }

@@ -9,48 +9,45 @@ public final class CSTAQueryFwdConfEvent extends CSTAConfirmation {
 	CSTAForwardingInfo[] forward;
 	public static final int PDU = 32;
 
-	public static CSTAQueryFwdConfEvent decode(final InputStream in) {
-		final CSTAQueryFwdConfEvent _this = new CSTAQueryFwdConfEvent();
+	public static CSTAQueryFwdConfEvent decode(InputStream in) {
+		CSTAQueryFwdConfEvent _this = new CSTAQueryFwdConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		forward = ListForwardParameters.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.forward = ListForwardParameters.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ListForwardParameters.encode(forward, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ListForwardParameters.encode(this.forward, memberStream);
 	}
 
-	public CSTAForwardingInfo[] getForward() {
-		return forward;
-	}
-
-	@Override
-	public int getPDU() {
-		return 32;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryFwdConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ListForwardParameters.print(forward, "forward", indent));
+		lines.addAll(ListForwardParameters.print(this.forward, "forward",
+				indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setForward(final CSTAForwardingInfo[] forward) {
+	public int getPDU() {
+		return 32;
+	}
+
+	public CSTAForwardingInfo[] getForward() {
+		return this.forward;
+	}
+
+	public void setForward(CSTAForwardingInfo[] forward) {
 		this.forward = forward;
 	}
 }

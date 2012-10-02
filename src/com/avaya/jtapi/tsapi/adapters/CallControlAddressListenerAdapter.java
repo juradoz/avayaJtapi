@@ -5,15 +5,12 @@ import javax.telephony.callcontrol.CallControlAddressListener;
 
 public abstract class CallControlAddressListenerAdapter extends
 		AddressListenerAdapter implements CallControlAddressListener {
-	@Override
-	public void addressDoNotDisturb(final CallControlAddressEvent event) {
+	public void addressDoNotDisturb(CallControlAddressEvent event) {
 	}
 
-	@Override
-	public void addressForwarded(final CallControlAddressEvent event) {
+	public void addressForwarded(CallControlAddressEvent event) {
 	}
 
-	@Override
-	public void addressMessageWaiting(final CallControlAddressEvent event) {
+	public void addressMessageWaiting(CallControlAddressEvent event) {
 	}
 }

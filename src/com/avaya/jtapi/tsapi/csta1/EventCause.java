@@ -1,8 +1,7 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 class EventCause extends ASNEnumerated {
 	public static final short EC_NONE = -1;
@@ -40,16 +39,17 @@ class EventCause extends ASNEnumerated {
 	public static final short EC_TRANSFER = 32;
 	public static final short EC_TRUNKS_BUSY = 33;
 	public static final short EC_VOICE_UNIT_INITIATOR = 34;
+	public static final short EC_CONSULTATION = 37;
 	public static final short EC_NETWORK_SIGNAL = 46;
 	public static final short EC_SINGLE_STEP_TRANSFER = 52;
 	public static final short EC_ALERT_TIME_EXPIRED = 60;
+	public static final short EC_CONFERENCE = 63;
 	public static final short EC_DESTINATION_OUT_OF_ORDER = 65;
 	public static final short EC_NOT_SUPPORTED_BEARER_SERVICE = 80;
 	public static final short EC_UNASSIGNED_NUMBER = 81;
 	public static final short EC_INCOMPATIBLE_BEARER_SERVICE = 87;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -160,11 +160,17 @@ class EventCause extends ASNEnumerated {
 		case 34:
 			str = "EC_VOICE_UNIT_INITIATOR";
 			break;
+		case 37:
+			str = "EC_CONSULTATION";
+			break;
 		case 46:
 			str = "EC_NETWORK_SIGNAL";
 			break;
 		case 60:
 			str = "EC_ALERT_TIME_EXPIRED";
+			break;
+		case 63:
+			str = "EC_CONFERENCE";
 			break;
 		case 65:
 			str = "EC_DESTINATION_OUT_OF_ORDER";
@@ -181,7 +187,6 @@ class EventCause extends ASNEnumerated {
 		case 0:
 		case 35:
 		case 36:
-		case 37:
 		case 38:
 		case 39:
 		case 40:
@@ -204,7 +209,6 @@ class EventCause extends ASNEnumerated {
 		case 59:
 		case 61:
 		case 62:
-		case 63:
 		case 64:
 		case 66:
 		case 67:
@@ -229,6 +233,6 @@ class EventCause extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

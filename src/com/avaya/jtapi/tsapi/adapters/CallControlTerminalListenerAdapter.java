@@ -5,7 +5,6 @@ import javax.telephony.callcontrol.CallControlTerminalListener;
 
 public abstract class CallControlTerminalListenerAdapter extends
 		TerminalListenerAdapter implements CallControlTerminalListener {
-	@Override
-	public void terminalDoNotDisturb(final CallControlTerminalEvent event) {
+	public void terminalDoNotDisturb(CallControlTerminalEvent event) {
 	}
 }

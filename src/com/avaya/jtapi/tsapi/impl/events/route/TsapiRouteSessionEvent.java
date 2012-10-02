@@ -6,12 +6,11 @@ import javax.telephony.callcenter.events.RouteSessionEvent;
 public abstract class TsapiRouteSessionEvent implements RouteSessionEvent {
 	private RouteSession routeSession = null;
 
-	public TsapiRouteSessionEvent(final RouteSession routeSession) {
-		this.routeSession = routeSession;
+	public final RouteSession getRouteSession() {
+		return this.routeSession;
 	}
 
-	@Override
-	public final RouteSession getRouteSession() {
-		return routeSession;
+	public TsapiRouteSessionEvent(RouteSession routeSession) {
+		this.routeSession = routeSession;
 	}
 }

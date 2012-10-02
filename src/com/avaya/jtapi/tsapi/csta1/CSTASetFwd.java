@@ -5,67 +5,60 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTASetFwd extends CSTARequest {
 	String device;
 	CSTAForwardingInfo forward;
 	public static final int PDU = 47;
 
-	public static CSTASetFwd decode(final InputStream in) {
-		final CSTASetFwd _this = new CSTASetFwd();
+	public CSTASetFwd() {
+	}
+
+	public CSTASetFwd(String _device, CSTAForwardingInfo _forward) {
+		this.device = _device;
+		this.forward = _forward;
+	}
+
+	public static CSTASetFwd decode(InputStream in) {
+		CSTASetFwd _this = new CSTASetFwd();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public CSTASetFwd() {
+	public void decodeMembers(InputStream memberStream) {
+		this.device = DeviceID.decode(memberStream);
+		this.forward = CSTAForwardingInfo.decode(memberStream);
 	}
 
-	public CSTASetFwd(final String _device, final CSTAForwardingInfo _forward) {
-		device = _device;
-		forward = _forward;
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
+		CSTAForwardingInfo.encode(this.forward, memberStream);
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		device = ASNIA5String.decode(memberStream);
-		forward = CSTAForwardingInfo.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
-		ASNSequence.encode(forward, memberStream);
-	}
-
-	public String getDevice() {
-		return device;
-	}
-
-	public CSTAForwardingInfo getForward() {
-		return forward;
-	}
-
-	@Override
-	public int getPDU() {
-		return 47;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetFwd ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(device, "device", indent));
-		lines.addAll(CSTAForwardingInfo.print(forward, "forward", indent));
+		lines.addAll(DeviceID.print(this.device, "device", indent));
+		lines.addAll(CSTAForwardingInfo.print(this.forward, "forward", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 47;
+	}
+
+	public String getDevice() {
+		return this.device;
+	}
+
+	public CSTAForwardingInfo getForward() {
+		return this.forward;
 	}
 }

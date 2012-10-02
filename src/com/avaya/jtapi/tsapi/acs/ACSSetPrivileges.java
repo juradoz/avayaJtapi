@@ -5,57 +5,50 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class ACSSetPrivileges extends ACSRequest {
-	public static ACSSetPrivileges decode(final InputStream in) {
-		final ACSSetPrivileges _this = new ACSSetPrivileges();
+	String xmlData;
+	public static final int PDU = 19;
+
+	public ACSSetPrivileges(String _xmlData) {
+		this.xmlData = _xmlData;
+	}
+
+	public ACSSetPrivileges() {
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		XmlData.encode(this.xmlData, memberStream);
+	}
+
+	public void decodeMembers(InputStream memberStream) {
+		this.xmlData = XmlData.decode(memberStream);
+	}
+
+	public static ACSSetPrivileges decode(InputStream in) {
+		ACSSetPrivileges _this = new ACSSetPrivileges();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	String xmlData;
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("ACSSetPrivileges ::=");
+		lines.add("{");
 
-	public static final int PDU = 19;
+		String indent = "  ";
 
-	public ACSSetPrivileges() {
+		lines.addAll(XmlData.print(this.xmlData, "xmlData", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	public ACSSetPrivileges(final String _xmlData) {
-		xmlData = _xmlData;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		xmlData = ASNIA5String.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(xmlData, memberStream);
-	}
-
-	@Override
 	public int getPDU() {
 		return 19;
 	}
 
 	public String getxmlData() {
-		return xmlData;
-	}
-
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("ACSSetPrivileges ::=");
-		lines.add("{");
-
-		final String indent = "  ";
-
-		lines.addAll(ASNIA5String.print(xmlData, "xmlData", indent));
-
-		lines.add("}");
-		return lines;
+		return this.xmlData;
 	}
 }

@@ -6,79 +6,75 @@ import javax.telephony.callcontrol.CallControlForwarding;
 public class AddressEventParams {
 	CallControlForwarding[] callControlForwarding;
 	boolean doNotDisturbState;
-	int mwBits;
+	int mwBits = 0;
 	int eventId;
 	MetaEvent metaEvent;
 	int cause;
 	Object source;
 	private Object privateData;
 
-	public AddressEventParams() {
-		mwBits = 0;
-	}
-
-	public CallControlForwarding[] getCallControlForwarding() {
-		return callControlForwarding;
-	}
-
-	public int getCause() {
-		return cause;
-	}
-
-	public int getEventId() {
-		return eventId;
-	}
-
-	public MetaEvent getMetaEvent() {
-		return metaEvent;
-	}
-
-	public int getMwBits() {
-		return mwBits;
-	}
-
-	public Object getPrivateData() {
-		return privateData;
-	}
-
 	public Object getSource() {
-		return source;
+		return this.source;
 	}
 
-	public boolean isDoNotDisturbState() {
-		return doNotDisturbState;
+	public void setSource(Object source) {
+		this.source = source;
 	}
 
-	public void setCallControlForwarding(
-			final CallControlForwarding[] callControlForwarding) {
-		this.callControlForwarding = callControlForwarding;
-	}
-
-	public void setCause(final int cause) {
-		this.cause = cause;
-	}
-
-	public void setDoNotDisturbState(final boolean doNotDisturbState) {
-		this.doNotDisturbState = doNotDisturbState;
-	}
-
-	public void setEventId(final int eventId) {
-		this.eventId = eventId;
-	}
-
-	public void setMetaEvent(final MetaEvent metaEvent) {
+	public void setMetaEvent(MetaEvent metaEvent) {
 		this.metaEvent = metaEvent;
 	}
 
-	public void setMwBits(final int mwBits) {
+	public int getEventId() {
+		return this.eventId;
+	}
+
+	public void setEventId(int eventId) {
+		this.eventId = eventId;
+	}
+
+	public int getCause() {
+		return this.cause;
+	}
+
+	public void setCause(int cause) {
+		this.cause = cause;
+	}
+
+	public MetaEvent getMetaEvent() {
+		return this.metaEvent;
+	}
+
+	public CallControlForwarding[] getCallControlForwarding() {
+		return this.callControlForwarding;
+	}
+
+	public void setCallControlForwarding(
+			CallControlForwarding[] callControlForwarding) {
+		this.callControlForwarding = callControlForwarding;
+	}
+
+	public boolean isDoNotDisturbState() {
+		return this.doNotDisturbState;
+	}
+
+	public void setDoNotDisturbState(boolean doNotDisturbState) {
+		this.doNotDisturbState = doNotDisturbState;
+	}
+
+	public int getMwBits() {
+		return this.mwBits;
+	}
+
+	public void setMwBits(int mwBits) {
 		this.mwBits = mwBits;
 	}
 
-	public void setPrivateData(final Object privateData) {
-		this.privateData = privateData;
+	public Object getPrivateData() {
+		return this.privateData;
 	}
 
-	public void setSource(final Object source) {
-		this.source = source;
+	public void setPrivateData(Object privateData) {
+		this.privateData = privateData;
 	}
 }

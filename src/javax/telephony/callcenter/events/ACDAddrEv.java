@@ -7,23 +7,18 @@ import javax.telephony.callcenter.CallCenterTrunk;
 import javax.telephony.events.AddrEv;
 
 /** @deprecated */
-@Deprecated
 public abstract interface ACDAddrEv extends CallCentEv, AddrEv {
 	public abstract Agent getAgent();
 
 	/** @deprecated */
-	@Deprecated
-	public abstract Address getAgentAddress();
-
-	/** @deprecated */
-	@Deprecated
 	public abstract AgentTerminal getAgentTerminal();
 
 	/** @deprecated */
-	@Deprecated
 	public abstract int getState();
 
 	/** @deprecated */
-	@Deprecated
+	public abstract Address getAgentAddress();
+
+	/** @deprecated */
 	public abstract CallCenterTrunk[] getTrunks();
 }

@@ -24,13 +24,12 @@ public abstract interface Ev {
 
 	public abstract int getCause();
 
-	public abstract int getID();
-
 	public abstract int getMetaCode();
 
-	/** @deprecated */
-	@Deprecated
-	public abstract Object getObserved();
-
 	public abstract boolean isNewMetaEvent();
+
+	public abstract int getID();
+
+	/** @deprecated */
+	public abstract Object getObserved();
 }

@@ -1,12 +1,11 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public class LucentV5GetAPICapsConfEvent extends LucentGetAPICapsConfEvent {
 	boolean singleStepConference;
@@ -17,100 +16,101 @@ public class LucentV5GetAPICapsConfEvent extends LucentGetAPICapsConfEvent {
 	boolean chargeAdviceEvent;
 	static final int PDU = 97;
 
-	static LucentGetAPICapsConfEvent decode(final InputStream in) {
-		final LucentV5GetAPICapsConfEvent _this = new LucentV5GetAPICapsConfEvent();
+	static LucentGetAPICapsConfEvent decode(InputStream in) {
+		LucentV5GetAPICapsConfEvent _this = new LucentV5GetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		switchVersion = ASNIA5String.decode(memberStream);
-		sendDTMFTone = ASNBoolean.decode(memberStream);
-		enteredDigitsEvent = ASNBoolean.decode(memberStream);
-		queryDeviceName = ASNBoolean.decode(memberStream);
-		queryAgentMeas = ASNBoolean.decode(memberStream);
-		querySplitSkillMeas = ASNBoolean.decode(memberStream);
-		queryTrunkGroupMeas = ASNBoolean.decode(memberStream);
-		queryVdnMeas = ASNBoolean.decode(memberStream);
-		singleStepConference = ASNBoolean.decode(memberStream);
-		selectiveListeningHold = ASNBoolean.decode(memberStream);
-		selectiveListeningRetrieve = ASNBoolean.decode(memberStream);
-		setBillingRate = ASNBoolean.decode(memberStream);
-		queryUCID = ASNBoolean.decode(memberStream);
-		chargeAdviceEvent = ASNBoolean.decode(memberStream);
-		reserved1 = ASNBoolean.decode(memberStream);
-		reserved2 = ASNBoolean.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.switchVersion = ASNIA5String.decode(memberStream);
+		this.sendDTMFTone = ASNBoolean.decode(memberStream);
+		this.enteredDigitsEvent = ASNBoolean.decode(memberStream);
+		this.queryDeviceName = ASNBoolean.decode(memberStream);
+		this.queryAgentMeas = ASNBoolean.decode(memberStream);
+		this.querySplitSkillMeas = ASNBoolean.decode(memberStream);
+		this.queryTrunkGroupMeas = ASNBoolean.decode(memberStream);
+		this.queryVdnMeas = ASNBoolean.decode(memberStream);
+		this.singleStepConference = ASNBoolean.decode(memberStream);
+		this.selectiveListeningHold = ASNBoolean.decode(memberStream);
+		this.selectiveListeningRetrieve = ASNBoolean.decode(memberStream);
+		this.setBillingRate = ASNBoolean.decode(memberStream);
+		this.queryUCID = ASNBoolean.decode(memberStream);
+		this.chargeAdviceEvent = ASNBoolean.decode(memberStream);
+		this.reserved1 = ASNBoolean.decode(memberStream);
+		this.reserved2 = ASNBoolean.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(switchVersion, memberStream);
-		ASNBoolean.encode(sendDTMFTone, memberStream);
-		ASNBoolean.encode(enteredDigitsEvent, memberStream);
-		ASNBoolean.encode(queryDeviceName, memberStream);
-		ASNBoolean.encode(queryAgentMeas, memberStream);
-		ASNBoolean.encode(querySplitSkillMeas, memberStream);
-		ASNBoolean.encode(queryTrunkGroupMeas, memberStream);
-		ASNBoolean.encode(queryVdnMeas, memberStream);
-		ASNBoolean.encode(singleStepConference, memberStream);
-		ASNBoolean.encode(selectiveListeningHold, memberStream);
-		ASNBoolean.encode(selectiveListeningRetrieve, memberStream);
-		ASNBoolean.encode(setBillingRate, memberStream);
-		ASNBoolean.encode(queryUCID, memberStream);
-		ASNBoolean.encode(chargeAdviceEvent, memberStream);
-		ASNBoolean.encode(reserved1, memberStream);
-		ASNBoolean.encode(reserved2, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ASNIA5String.encode(this.switchVersion, memberStream);
+		ASNBoolean.encode(this.sendDTMFTone, memberStream);
+		ASNBoolean.encode(this.enteredDigitsEvent, memberStream);
+		ASNBoolean.encode(this.queryDeviceName, memberStream);
+		ASNBoolean.encode(this.queryAgentMeas, memberStream);
+		ASNBoolean.encode(this.querySplitSkillMeas, memberStream);
+		ASNBoolean.encode(this.queryTrunkGroupMeas, memberStream);
+		ASNBoolean.encode(this.queryVdnMeas, memberStream);
+		ASNBoolean.encode(this.singleStepConference, memberStream);
+		ASNBoolean.encode(this.selectiveListeningHold, memberStream);
+		ASNBoolean.encode(this.selectiveListeningRetrieve, memberStream);
+		ASNBoolean.encode(this.setBillingRate, memberStream);
+		ASNBoolean.encode(this.queryUCID, memberStream);
+		ASNBoolean.encode(this.chargeAdviceEvent, memberStream);
+		ASNBoolean.encode(this.reserved1, memberStream);
+		ASNBoolean.encode(this.reserved2, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 97;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5GetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(switchVersion, "switchVersion", indent));
-		lines.addAll(ASNBoolean.print(sendDTMFTone, "sendDTMFTone", indent));
-		lines.addAll(ASNBoolean.print(enteredDigitsEvent, "enteredDigitsEvent",
+		lines.addAll(ASNIA5String.print(this.switchVersion, "switchVersion",
 				indent));
+		lines.addAll(ASNBoolean
+				.print(this.sendDTMFTone, "sendDTMFTone", indent));
+		lines.addAll(ASNBoolean.print(this.enteredDigitsEvent,
+				"enteredDigitsEvent", indent));
 
-		lines.addAll(ASNBoolean.print(queryDeviceName, "queryDeviceName",
+		lines.addAll(ASNBoolean.print(this.queryDeviceName, "queryDeviceName",
 				indent));
-		lines.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas", indent));
-		lines.addAll(ASNBoolean.print(querySplitSkillMeas,
+		lines.addAll(ASNBoolean.print(this.queryAgentMeas, "queryAgentMeas",
+				indent));
+		lines.addAll(ASNBoolean.print(this.querySplitSkillMeas,
 				"querySplitSkillMeas", indent));
 
-		lines.addAll(ASNBoolean.print(queryTrunkGroupMeas,
+		lines.addAll(ASNBoolean.print(this.queryTrunkGroupMeas,
 				"queryTrunkGroupMeas", indent));
 
-		lines.addAll(ASNBoolean.print(queryVdnMeas, "queryVdnMeas", indent));
-		lines.addAll(ASNBoolean.print(singleStepConference,
+		lines.addAll(ASNBoolean
+				.print(this.queryVdnMeas, "queryVdnMeas", indent));
+		lines.addAll(ASNBoolean.print(this.singleStepConference,
 				"singleStepConference", indent));
 
-		lines.addAll(ASNBoolean.print(selectiveListeningHold,
+		lines.addAll(ASNBoolean.print(this.selectiveListeningHold,
 				"selectiveListeningHold", indent));
 
-		lines.addAll(ASNBoolean.print(selectiveListeningRetrieve,
+		lines.addAll(ASNBoolean.print(this.selectiveListeningRetrieve,
 				"selectiveListeningRetrieve", indent));
 
-		lines.addAll(ASNBoolean.print(setBillingRate, "setBillingRate", indent));
-		lines.addAll(ASNBoolean.print(queryUCID, "queryUCID", indent));
-		lines.addAll(ASNBoolean.print(chargeAdviceEvent, "chargeAdviceEvent",
+		lines.addAll(ASNBoolean.print(this.setBillingRate, "setBillingRate",
 				indent));
+		lines.addAll(ASNBoolean.print(this.queryUCID, "queryUCID", indent));
+		lines.addAll(ASNBoolean.print(this.chargeAdviceEvent,
+				"chargeAdviceEvent", indent));
 
-		lines.addAll(ASNBoolean.print(reserved1, "reserved1", indent));
-		lines.addAll(ASNBoolean.print(reserved2, "reserved2", indent));
+		lines.addAll(ASNBoolean.print(this.reserved1, "reserved1", indent));
+		lines.addAll(ASNBoolean.print(this.reserved2, "reserved2", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 97;
 	}
 }

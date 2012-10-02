@@ -1,18 +1,16 @@
 package com.avaya.jtapi.tsapi.impl.events.conn;
 
-import javax.telephony.callcontrol.events.CallCtlConnNetworkAlertingEv;
-
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
+import javax.telephony.callcontrol.events.CallCtlConnNetworkAlertingEv;
 
 @SuppressWarnings("deprecation")
 public class TsapiConnNetworkAlertingEvent extends TsapiCallCtlConnEvent
 		implements CallCtlConnNetworkAlertingEv, ITsapiCallInfo {
-	public TsapiConnNetworkAlertingEvent(final ConnEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public final int getID() {
 		return 209;
+	}
+
+	public TsapiConnNetworkAlertingEvent(ConnEventParams params) {
+		super(params);
 	}
 }

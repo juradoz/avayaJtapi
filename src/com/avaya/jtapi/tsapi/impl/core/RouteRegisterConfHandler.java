@@ -7,18 +7,18 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class RouteRegisterConfHandler implements ConfHandler {
 	TSDevice device;
 
-	RouteRegisterConfHandler(final TSDevice _device) {
-		device = _device;
+	RouteRegisterConfHandler(TSDevice _device) {
+		this.device = _device;
 	}
 
-	@Override
-	public void handleConf(final CSTAEvent event) {
-		if (event == null
-				|| !(event.getEvent() instanceof CSTARouteRegisterReqConfEvent))
+	public void handleConf(CSTAEvent event) {
+		if ((event == null)
+				|| (!(event.getEvent() instanceof CSTARouteRegisterReqConfEvent))) {
 			return;
+		}
 
-		final CSTARouteRegisterReqConfEvent routeRegisterConf = (CSTARouteRegisterReqConfEvent) event
+		CSTARouteRegisterReqConfEvent routeRegisterConf = (CSTARouteRegisterReqConfEvent) event
 				.getEvent();
-		device.registerReqID = routeRegisterConf.getRegisterReqID();
+		this.device.registerReqID = routeRegisterConf.getRegisterReqID();
 	}
 }

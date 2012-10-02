@@ -14,56 +14,57 @@ final class TSInvokeID {
 	String debugID;
 	long serviceRequestTurnaroundTime;
 
-	TSInvokeID(final int _value, final ConfHandler _handler,
-			final String _debugID) {
-		value = _value;
-		handler = _handler;
-		debugID = _debugID;
-		conf = null;
-	}
-
-	ConfHandler getConfHandler() {
-		return handler;
-	}
-
-	public long getServiceRequestTurnaroundTime() {
-		return serviceRequestTurnaroundTime;
+	TSInvokeID(int _value, ConfHandler _handler, String _debugID) {
+		this.value = _value;
+		this.handler = _handler;
+		this.debugID = _debugID;
+		this.conf = null;
 	}
 
 	int getValue() {
-		return value;
+		return this.value;
 	}
 
-	synchronized void setConf(final CSTAEvent _conf) {
-		try {
-			TSInvokeID.log.info("Handling INVOKE ID " + value + " for "
-					+ debugID);
-			conf = _conf;
-			if (handler != null)
-				handler.handleConf(conf);
-			TSInvokeID.log.info("DONE handling INVOKE ID " + value + " for "
-					+ debugID);
-		} finally {
-			setServiceRequestTurnaroundTime(System.currentTimeMillis()
-					- getServiceRequestTurnaroundTime());
-			if (JTAPILoggingAdapter.isPerformanceLoggingEnabled())
-				PerfStatisticsCollector
-						.updateServiceRequestTurnaroundTime(getServiceRequestTurnaroundTime());
-			super.notify();
-		}
+	ConfHandler getConfHandler() {
+		return this.handler;
+	}
+
+	public long getServiceRequestTurnaroundTime() {
+		return this.serviceRequestTurnaroundTime;
 	}
 
 	public void setServiceRequestTurnaroundTime(
-			final long serviceRequestTurnaroundTime) {
+			long serviceRequestTurnaroundTime) {
 		this.serviceRequestTurnaroundTime = serviceRequestTurnaroundTime;
 	}
 
-	synchronized CSTAEvent waitForConf(final int timeout) {
-		if (conf == null)
-			try {
-				super.wait(timeout);
-			} catch (final InterruptedException e) {
+	synchronized void setConf(CSTAEvent _conf) {
+		try {
+			log.info("Handling INVOKE ID " + this.value + " for "
+					+ this.debugID);
+			this.conf = _conf;
+			if (this.handler != null)
+				this.handler.handleConf(this.conf);
+			log.info("DONE handling INVOKE ID " + this.value + " for "
+					+ this.debugID);
+		} finally {
+			setServiceRequestTurnaroundTime(System.currentTimeMillis()
+					- getServiceRequestTurnaroundTime());
+			if (JTAPILoggingAdapter.isPerformanceLoggingEnabled()) {
+				PerfStatisticsCollector
+						.updateServiceRequestTurnaroundTime(getServiceRequestTurnaroundTime());
 			}
-		return conf;
+			notify();
+		}
+	}
+
+	synchronized CSTAEvent waitForConf(int timeout) {
+		if (this.conf == null) {
+			try {
+				wait(timeout);
+			} catch (InterruptedException e) {
+			}
+		}
+		return this.conf;
 	}
 }

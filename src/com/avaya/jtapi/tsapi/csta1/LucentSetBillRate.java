@@ -1,11 +1,9 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNReal;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNReal;
 
 public class LucentSetBillRate extends LucentPrivateData {
 	CSTAConnectionID call;
@@ -13,39 +11,36 @@ public class LucentSetBillRate extends LucentPrivateData {
 	float billRate;
 	static final int PDU = 74;
 
-	public LucentSetBillRate(final CSTAConnectionID _call,
-			final short _billType, final float _billRate) {
-		call = _call;
-		billType = _billType;
-		billRate = _billRate;
+	public LucentSetBillRate(CSTAConnectionID _call, short _billType,
+			float _billRate) {
+		this.call = _call;
+		this.billType = _billType;
+		this.billRate = _billRate;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(call, memberStream);
-		ASNEnumerated.encode(billType, memberStream);
-		ASNReal.encode(billRate, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.call, memberStream);
+		BillType.encode(this.billType, memberStream);
+		ASNReal.encode(this.billRate, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 74;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetBillRate ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAConnectionID.print(call, "call", indent));
-		lines.addAll(BillType.print(billType, "billType", indent));
-		lines.addAll(ASNReal.print(billRate, "billRate", indent));
+		lines.addAll(CSTAConnectionID.print(this.call, "call", indent));
+		lines.addAll(BillType.print(this.billType, "billType", indent));
+		lines.addAll(ASNReal.print(this.billRate, "billRate", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 74;
 	}
 }

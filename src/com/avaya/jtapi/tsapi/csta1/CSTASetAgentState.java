@@ -5,9 +5,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class CSTASetAgentState extends CSTARequest {
 	String device;
 	short agentMode;
@@ -16,85 +13,81 @@ public final class CSTASetAgentState extends CSTARequest {
 	String agentPassword;
 	public static final int PDU = 49;
 
-	public static CSTASetAgentState decode(final InputStream in) {
-		final CSTASetAgentState _this = new CSTASetAgentState();
+	public CSTASetAgentState() {
+	}
+
+	public CSTASetAgentState(String _device, short _agentMode, String _agentID,
+			String _agentGroup, String _agentPassword) {
+		this.device = _device;
+		this.agentMode = _agentMode;
+		this.agentID = _agentID;
+		this.agentGroup = _agentGroup;
+		this.agentPassword = _agentPassword;
+	}
+
+	public static CSTASetAgentState decode(InputStream in) {
+		CSTASetAgentState _this = new CSTASetAgentState();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public CSTASetAgentState() {
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
+		AgentMode.encode(this.agentMode, memberStream);
+		AgentID.encode(this.agentID, memberStream);
+		DeviceID.encode(this.agentGroup, memberStream);
+		AgentPassword.encode(this.agentPassword, memberStream);
 	}
 
-	public CSTASetAgentState(final String _device, final short _agentMode,
-			final String _agentID, final String _agentGroup,
-			final String _agentPassword) {
-		device = _device;
-		agentMode = _agentMode;
-		agentID = _agentID;
-		agentGroup = _agentGroup;
-		agentPassword = _agentPassword;
+	public void decodeMembers(InputStream memberStream) {
+		this.device = DeviceID.decode(memberStream);
+		this.agentMode = AgentMode.decode(memberStream);
+		this.agentID = AgentID.decode(memberStream);
+		this.agentGroup = DeviceID.decode(memberStream);
+		this.agentPassword = AgentPassword.decode(memberStream);
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		device = ASNIA5String.decode(memberStream);
-		agentMode = ASNEnumerated.decode(memberStream);
-		agentID = ASNIA5String.decode(memberStream);
-		agentGroup = ASNIA5String.decode(memberStream);
-		agentPassword = ASNIA5String.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
-		ASNEnumerated.encode(agentMode, memberStream);
-		ASNIA5String.encode(agentID, memberStream);
-		ASNIA5String.encode(agentGroup, memberStream);
-		ASNIA5String.encode(agentPassword, memberStream);
-	}
-
-	public String getAgentGroup() {
-		return agentGroup;
-	}
-
-	public String getAgentID() {
-		return agentID;
-	}
-
-	public short getAgentMode() {
-		return agentMode;
-	}
-
-	public String getAgentPassword() {
-		return agentPassword;
-	}
-
-	public String getDevice() {
-		return device;
-	}
-
-	@Override
-	public int getPDU() {
-		return 49;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetAgentState ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(device, "device", indent));
-		lines.addAll(AgentMode.print(agentMode, "agentMode", indent));
-		lines.addAll(ASNIA5String.print(agentID, "agentID", indent));
-		lines.addAll(ASNIA5String.print(agentGroup, "agentGroup", indent));
-		lines.addAll(ASNIA5String.print(agentPassword, "agentPassword", indent));
+		lines.addAll(DeviceID.print(this.device, "device", indent));
+		lines.addAll(AgentMode.print(this.agentMode, "agentMode", indent));
+		lines.addAll(AgentID.print(this.agentID, "agentID", indent));
+		lines.addAll(DeviceID.print(this.agentGroup, "agentGroup", indent));
+		lines.addAll(AgentPassword.print(this.agentPassword, "agentPassword",
+				indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 49;
+	}
+
+	public String getAgentGroup() {
+		return this.agentGroup;
+	}
+
+	public String getAgentID() {
+		return this.agentID;
+	}
+
+	public short getAgentMode() {
+		return this.agentMode;
+	}
+
+	public String getAgentPassword() {
+		return this.agentPassword;
+	}
+
+	public String getDevice() {
+		return this.device;
 	}
 }

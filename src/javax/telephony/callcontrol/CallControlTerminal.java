@@ -14,10 +14,8 @@ public abstract interface CallControlTerminal extends Terminal {
 	public abstract boolean getDoNotDisturb()
 			throws MethodNotSupportedException;
 
-	public abstract TerminalConnection pickup(Address paramAddress1,
-			Address paramAddress2) throws InvalidArgumentException,
-			InvalidStateException, MethodNotSupportedException,
-			PrivilegeViolationException, ResourceUnavailableException;
+	public abstract void setDoNotDisturb(boolean paramBoolean)
+			throws MethodNotSupportedException, InvalidStateException;
 
 	public abstract TerminalConnection pickup(Connection paramConnection,
 			Address paramAddress) throws InvalidArgumentException,
@@ -30,16 +28,18 @@ public abstract interface CallControlTerminal extends Terminal {
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
-	public abstract TerminalConnection pickupFromGroup(Address paramAddress)
-			throws InvalidArgumentException, InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException,
-			ResourceUnavailableException;
+	public abstract TerminalConnection pickup(Address paramAddress1,
+			Address paramAddress2) throws InvalidArgumentException,
+			InvalidStateException, MethodNotSupportedException,
+			PrivilegeViolationException, ResourceUnavailableException;
 
 	public abstract TerminalConnection pickupFromGroup(String paramString,
 			Address paramAddress) throws InvalidArgumentException,
 			InvalidStateException, MethodNotSupportedException,
 			PrivilegeViolationException, ResourceUnavailableException;
 
-	public abstract void setDoNotDisturb(boolean paramBoolean)
-			throws MethodNotSupportedException, InvalidStateException;
+	public abstract TerminalConnection pickupFromGroup(Address paramAddress)
+			throws InvalidArgumentException, InvalidStateException,
+			MethodNotSupportedException, PrivilegeViolationException,
+			ResourceUnavailableException;
 }

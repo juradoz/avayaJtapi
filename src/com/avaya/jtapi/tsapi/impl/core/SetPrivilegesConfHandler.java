@@ -7,15 +7,16 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class SetPrivilegesConfHandler implements ConfHandler {
 	TSProviderImpl provider;
 
-	SetPrivilegesConfHandler(final TSProviderImpl provider) {
+	SetPrivilegesConfHandler(TSProviderImpl provider) {
 		this.provider = provider;
 	}
 
-	@Override
-	public void handleConf(final CSTAEvent event) {
-		if (event != null
-				&& event.getEvent() instanceof ACSSetPrivilegesConfEvent)
+	public void handleConf(CSTAEvent event) {
+		if ((event == null)
+				|| (!(event.getEvent() instanceof ACSSetPrivilegesConfEvent))) {
 			return;
-		return;
+		}
+
+		this.provider.setCapabilities(this.provider.getCaps());
 	}
 }

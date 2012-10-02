@@ -1,78 +1,73 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class LucentV7RouteSelect extends LucentRouteSelect {
-	public static LucentV7RouteSelect decode(final InputStream in) {
-		final LucentV7RouteSelect _this = new LucentV7RouteSelect();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	short useNCR;
-
 	public static final int PDU = 126;
 
 	public LucentV7RouteSelect() {
 	}
 
-	public LucentV7RouteSelect(final String _callingDevice,
-			final String _directAgentCallSplit, final boolean _priorityCalling,
-			final String _destRoute, final LucentUserCollectCode _collectCode,
-			final LucentUserProvidedCode _userProvidedCode,
-			final LucentUserToUserInfo _userInfo, final short _useNCR) {
+	public LucentV7RouteSelect(String _callingDevice,
+			String _directAgentCallSplit, boolean _priorityCalling,
+			String _destRoute, LucentUserCollectCode _collectCode,
+			LucentUserProvidedCode _userProvidedCode,
+			LucentUserToUserInfo _userInfo, short _useNCR) {
 		super(_callingDevice, _directAgentCallSplit, _priorityCalling,
 				_destRoute, _collectCode, _userProvidedCode, _userInfo);
-		useNCR = _useNCR;
+		this.useNCR = _useNCR;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		super.decodeMembers(memberStream);
-		useNCR = ASNEnumerated.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
+	public void encodeMembers(OutputStream memberStream) {
 		super.encodeMembers(memberStream);
-		ASNEnumerated.encode(useNCR, memberStream);
+		ASNEnumerated.encode(this.useNCR, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 126;
+	public static LucentV7RouteSelect decode(InputStream in) {
+		LucentV7RouteSelect _this = new LucentV7RouteSelect();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	@Override
+	public void decodeMembers(InputStream memberStream) {
+		super.decodeMembers(memberStream);
+		this.useNCR = ASNEnumerated.decode(memberStream);
+	}
+
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7RouteSelect ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(callingDevice, "callingDevice", indent));
-		lines.addAll(ASNIA5String.print(directAgentCallSplit,
+		lines.addAll(DeviceID
+				.print(this.callingDevice, "callingDevice", indent));
+		lines.addAll(DeviceID.print(this.directAgentCallSplit,
 				"directAgentCallSplit", indent));
-		lines.addAll(ASNBoolean.print(priorityCalling, "priorityCalling",
+		lines.addAll(ASNBoolean.print(this.priorityCalling, "priorityCalling",
 				indent));
-		lines.addAll(ASNIA5String.print(destRoute, "destRoute", indent));
-		lines.addAll(LucentUserCollectCode.print(collectCode, "collectCode",
-				indent));
-		lines.addAll(LucentUserProvidedCode.print(userProvidedCode,
+		lines.addAll(DeviceID.print(this.destRoute, "destRoute", indent));
+		lines.addAll(LucentUserCollectCode.print(this.collectCode,
+				"collectCode", indent));
+		lines.addAll(LucentUserProvidedCode.print(this.userProvidedCode,
 				"userProvidedCode", indent));
-		lines.addAll(LucentRedirectType.print(useNCR, "useNCR", indent));
-		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
+		lines.addAll(LucentRedirectType.print(this.useNCR, "useNCR", indent));
+		lines.addAll(LucentUserToUserInfo.print(this.userInfo, "userInfo",
+				indent));
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 126;
 	}
 }

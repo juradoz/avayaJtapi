@@ -30,13 +30,13 @@ public abstract interface CallCenterCall extends Call {
 			InvalidPartyException, InvalidArgumentException,
 			InvalidStateException, MethodNotSupportedException;
 
+	public abstract void setApplicationData(Object paramObject)
+			throws ResourceUnavailableException, InvalidArgumentException,
+			InvalidStateException, MethodNotSupportedException;
+
 	public abstract Object getApplicationData()
 			throws MethodNotSupportedException;
 
 	public abstract CallCenterTrunk[] getTrunks()
 			throws MethodNotSupportedException;
-
-	public abstract void setApplicationData(Object paramObject)
-			throws ResourceUnavailableException, InvalidArgumentException,
-			InvalidStateException, MethodNotSupportedException;
 }

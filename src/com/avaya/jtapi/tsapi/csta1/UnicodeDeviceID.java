@@ -1,60 +1,57 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
-
 public final class UnicodeDeviceID extends ASNSequenceOf {
-	public static String decode(final InputStream in) {
-		final UnicodeDeviceID _this = new UnicodeDeviceID();
-		_this.doDecode(in);
-		if (_this.array.length > 0)
-			return new String(_this.array);
-		return null;
-	}
-
-	public static void encode(final String device,
-			final OutputStream memberStream) {
-		final char[] deviceArray = device.toCharArray();
-		final UnicodeDeviceID _this = new UnicodeDeviceID(deviceArray);
-		_this.doEncode(deviceArray.length, memberStream);
-	}
-
-	public static Collection<String> print(final String str, final String name,
-			final String indent) {
-		return ASNIA5String.print(str, name, indent);
-	}
-
 	char[] array;
 
 	public UnicodeDeviceID() {
 	}
 
-	public UnicodeDeviceID(final char[] _array) {
-		array = _array;
+	public UnicodeDeviceID(char[] _array) {
+		this.array = _array;
 	}
 
-	@Override
-	public Object decodeMember(final InputStream memberStream) {
+	public static String decode(InputStream in) {
+		UnicodeDeviceID _this = new UnicodeDeviceID();
+		_this.doDecode(in);
+		if (_this.array.length > 0) {
+			return new String(_this.array);
+		}
+		return null;
+	}
+
+	public void doDecode(InputStream in) {
+		super.doDecode(in);
+
+		this.array = new char[this.vec.size()];
+
+		for (int i = 0; i < this.array.length; i++) {
+			this.array[i] = ((Character) this.vec.elementAt(i)).charValue();
+		}
+	}
+
+	public static void encode(String device, OutputStream memberStream) {
+		char[] deviceArray = device.toCharArray();
+		UnicodeDeviceID _this = new UnicodeDeviceID(deviceArray);
+		_this.doEncode(deviceArray.length, memberStream);
+	}
+
+	public void encodeMember(int idx, OutputStream memberStream) {
+		ASNInteger.encode(this.array[idx], memberStream);
+	}
+
+	public Object decodeMember(InputStream memberStream) {
 		return new Character((char) ASNInteger.decode(memberStream));
 	}
 
-	@Override
-	public void doDecode(final InputStream in) {
-		super.doDecode(in);
-
-		array = new char[vec.size()];
-
-		for (int i = 0; i < array.length; ++i)
-			array[i] = ((Character) vec.elementAt(i)).charValue();
-	}
-
-	@Override
-	public void encodeMember(final int idx, final OutputStream memberStream) {
-		ASNInteger.encode(array[idx], memberStream);
+	public static Collection<String> print(String str, String name,
+			String indent) {
+		return ASNIA5String.print(str, name, indent);
 	}
 }

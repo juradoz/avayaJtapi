@@ -1,31 +1,29 @@
 package com.avaya.jtapi.tsapi.impl.events.termConn;
 
+import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
+import com.avaya.jtapi.tsapi.impl.events.conn.ConnectionEventImpl;
 import javax.telephony.MetaEvent;
 import javax.telephony.TerminalConnection;
 import javax.telephony.TerminalConnectionEvent;
 
-import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
-import com.avaya.jtapi.tsapi.impl.events.conn.ConnectionEventImpl;
-
 public class TerminalConnectionEventImpl extends ConnectionEventImpl implements
 		TerminalConnectionEvent {
-	public TerminalConnectionEventImpl(final CallEventParams params,
-			final MetaEvent event, final int eventId) {
+	public TerminalConnectionEventImpl(CallEventParams params, MetaEvent event,
+			int eventId) {
 		super(params, event, eventId);
 	}
 
-	@Override
-	public Object getSource() {
-		if (callEventParams instanceof TermConnEventParams)
-			return ((TermConnEventParams) callEventParams).getTermConn();
-		return super.getSource();
-	}
-
-	@Override
 	public TerminalConnection getTerminalConnection() {
 		TerminalConnection tc = null;
-		if (callEventParams instanceof TermConnEventParams)
-			tc = ((TermConnEventParams) callEventParams).getTermConn();
+		if ((this.callEventParams instanceof TermConnEventParams))
+			tc = ((TermConnEventParams) this.callEventParams).getTermConn();
 		return tc;
+	}
+
+	public Object getSource() {
+		if ((this.callEventParams instanceof TermConnEventParams)) {
+			return ((TermConnEventParams) this.callEventParams).getTermConn();
+		}
+		return super.getSource();
 	}
 }

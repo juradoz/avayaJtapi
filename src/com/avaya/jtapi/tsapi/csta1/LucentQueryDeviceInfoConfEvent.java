@@ -5,55 +5,49 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public class LucentQueryDeviceInfoConfEvent extends LucentPrivateData {
 	short extensionClass;
 	static final int PDU = 20;
 
-	public static LucentQueryDeviceInfoConfEvent decode(final InputStream in) {
-		final LucentQueryDeviceInfoConfEvent _this = new LucentQueryDeviceInfoConfEvent();
+	public static LucentQueryDeviceInfoConfEvent decode(InputStream in) {
+		LucentQueryDeviceInfoConfEvent _this = new LucentQueryDeviceInfoConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		extensionClass = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.extensionClass = LucentExtensionClass.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(extensionClass, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentExtensionClass.encode(this.extensionClass, memberStream);
 	}
 
-	public short getExtensionClass() {
-		return extensionClass;
-	}
-
-	@Override
-	public int getPDU() {
-		return 20;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryDeviceInfoConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentExtensionClass.print(extensionClass,
+		lines.addAll(LucentExtensionClass.print(this.extensionClass,
 				"extensionClass", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setExtensionClass(final short extensionClass) {
+	public int getPDU() {
+		return 20;
+	}
+
+	public short getExtensionClass() {
+		return this.extensionClass;
+	}
+
+	public void setExtensionClass(short extensionClass) {
 		this.extensionClass = extensionClass;
 	}
 }

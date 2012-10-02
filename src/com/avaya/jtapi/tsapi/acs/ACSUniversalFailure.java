@@ -1,9 +1,8 @@
 package com.avaya.jtapi.tsapi.acs;
 
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public final class ACSUniversalFailure extends ASNEnumerated {
 	public static final short TSERVER_STREAM_FAILED = 0;
@@ -144,9 +143,8 @@ public final class ACSUniversalFailure extends ASNEnumerated {
 	public static final short DRIVER_LINK_UNAVAILABLE = 1007;
 	public static final short DRIVER_OAM_IN_USE = 1008;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
-		final Collection<String> lines = new ArrayList<String>();
+	static Collection<String> print(short value, String name, String indent) {
+		Collection<String> lines = new ArrayList<String>();
 		String str;
 		switch (value) {
 		case 0:
@@ -564,7 +562,7 @@ public final class ACSUniversalFailure extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		lines.addAll(ASNEnumerated.print(value, str, name, indent));
+		lines.addAll(print(value, str, name, indent));
 		return lines;
 	}
 }

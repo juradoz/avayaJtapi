@@ -12,74 +12,78 @@ public abstract class TsapiObserverEvent implements ITsapiEvent {
 
 	protected Object privateData = null;
 
-	public TsapiObserverEvent(final int _cause, final int _metaCode,
-			final Object _privateData, final int _eventPackage) {
-		cause = _cause;
-		metaCode = _metaCode;
-		privateData = _privateData;
-		eventPackage = _eventPackage;
-	}
-
-	@Override
-	public final int getCallCenterCause() {
-		if (cause == 101 || cause == 302)
-			return cause;
-		return 100;
-	}
-
-	@Override
-	public final int getCallControlCause() {
-		if (cause == 101 || cause == 202 || cause == 203 || cause == 204
-				|| cause == 205 || cause == 206 || cause == 207 || cause == 208
-				|| cause == 209 || cause == 210 || cause == 211 || cause == 212
-				|| cause == 213 || cause == 214)
-			return cause;
-		return 100;
-	}
-
-	@Override
 	public final int getCause() {
-		if (cause == 101 || cause == 102 || cause == 103 || cause == 104
-				|| cause == 105 || cause == 106 || cause == 107 || cause == 108
-				|| cause == 109 || cause == 110)
-			return cause;
+		if ((this.cause == 101) || (this.cause == 102) || (this.cause == 103)
+				|| (this.cause == 104) || (this.cause == 105)
+				|| (this.cause == 106) || (this.cause == 107)
+				|| (this.cause == 108) || (this.cause == 109)
+				|| (this.cause == 110)) {
+			return this.cause;
+		}
 		return 100;
-	}
-
-	@Override
-	public final int getEventPackage() {
-		return eventPackage;
-	}
-
-	@Override
-	public final int getMediaCause() {
-		if (cause == 401)
-			return cause;
-		return 400;
 	}
 
 	public final int getMetaCode() {
-		return metaCode;
+		return this.metaCode;
+	}
+
+	public final boolean isNewMetaEvent() {
+		return this.newMetaEvent;
+	}
+
+	public final Object getPrivateData() {
+		if (((this.privateData instanceof TsapiPrivate))
+				|| ((this.privateData instanceof LucentChargeAdviceEvent))
+				|| ((this.privateData instanceof TsapiPrivateStateEvent))) {
+			return this.privateData;
+		}
+		return null;
 	}
 
 	public Object getObserved() {
 		return null;
 	}
 
-	@Override
-	public final Object getPrivateData() {
-		if (privateData instanceof TsapiPrivate
-				|| privateData instanceof LucentChargeAdviceEvent
-				|| privateData instanceof TsapiPrivateStateEvent)
-			return privateData;
-		return null;
+	public final int getCallControlCause() {
+		if ((this.cause == 101) || (this.cause == 202) || (this.cause == 203)
+				|| (this.cause == 204) || (this.cause == 205)
+				|| (this.cause == 206) || (this.cause == 207)
+				|| (this.cause == 208) || (this.cause == 209)
+				|| (this.cause == 210) || (this.cause == 211)
+				|| (this.cause == 212) || (this.cause == 213)
+				|| (this.cause == 214)) {
+			return this.cause;
+		}
+		return 100;
 	}
 
-	public final boolean isNewMetaEvent() {
-		return newMetaEvent;
+	public final int getCallCenterCause() {
+		if ((this.cause == 101) || (this.cause == 302)) {
+			return this.cause;
+		}
+		return 100;
+	}
+
+	public final int getMediaCause() {
+		if (this.cause == 401) {
+			return this.cause;
+		}
+		return 400;
+	}
+
+	public final int getEventPackage() {
+		return this.eventPackage;
 	}
 
 	public final void setNewMetaEventFlag() {
-		newMetaEvent = true;
+		this.newMetaEvent = true;
+	}
+
+	public TsapiObserverEvent(int _cause, int _metaCode, Object _privateData,
+			int _eventPackage) {
+		this.cause = _cause;
+		this.metaCode = _metaCode;
+		this.privateData = _privateData;
+		this.eventPackage = _eventPackage;
 	}
 }

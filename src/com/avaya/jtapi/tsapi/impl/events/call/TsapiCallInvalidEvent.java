@@ -4,12 +4,11 @@ import javax.telephony.events.CallInvalidEv;
 
 public final class TsapiCallInvalidEvent extends TsapiCallEvent implements
 		CallInvalidEv {
-	public TsapiCallInvalidEvent(final CallEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public int getID() {
 		return 102;
+	}
+
+	public TsapiCallInvalidEvent(CallEventParams params) {
+		super(params);
 	}
 }

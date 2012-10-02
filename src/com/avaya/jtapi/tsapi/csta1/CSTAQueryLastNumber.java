@@ -4,42 +4,37 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public class CSTAQueryLastNumber extends CSTARequest {
 	String device;
 	static final int PDU = 35;
 
-	CSTAQueryLastNumber(final String _device) {
-		device = _device;
+	CSTAQueryLastNumber(String _device) {
+		this.device = _device;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
 	}
 
-	public String getDevice() {
-		return device;
-	}
-
-	@Override
-	public int getPDU() {
-		return 35;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryLastNumber ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(device, "device", indent));
+		lines.addAll(DeviceID.print(this.device, "device", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 35;
+	}
+
+	public String getDevice() {
+		return this.device;
 	}
 }

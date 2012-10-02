@@ -1,41 +1,37 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 
 public class LucentSetAdviceOfCharge extends LucentPrivateData {
 	boolean featureFlag;
 	static final int PDU = 99;
 
-	public LucentSetAdviceOfCharge(final boolean _featureFlag) {
-		featureFlag = _featureFlag;
+	public LucentSetAdviceOfCharge(boolean _featureFlag) {
+		this.featureFlag = _featureFlag;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNBoolean.encode(featureFlag, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ASNBoolean.encode(this.featureFlag, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 99;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentSetAdviceOfCharge ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNBoolean.print(featureFlag, "featureFlag", indent));
+		lines.addAll(ASNBoolean.print(this.featureFlag, "featureFlag", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 99;
 	}
 }

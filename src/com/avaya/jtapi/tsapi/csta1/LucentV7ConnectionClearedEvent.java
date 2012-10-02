@@ -10,52 +10,49 @@ public final class LucentV7ConnectionClearedEvent extends
 	private LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 134;
 
-	public static LucentConnectionClearedEvent decode(final InputStream in) {
-		final LucentV7ConnectionClearedEvent _this = new LucentV7ConnectionClearedEvent();
+	public static LucentConnectionClearedEvent decode(InputStream in) {
+		LucentV7ConnectionClearedEvent _this = new LucentV7ConnectionClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
+	public void decodeMembers(InputStream memberStream) {
 		super.decodeMembers(memberStream);
-		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
+		this.deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
+	public void encodeMembers(OutputStream memberStream) {
 		super.encodeMembers(memberStream);
-		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
+		CSTADeviceHistoryData.encode(this.deviceHistory, memberStream);
 	}
 
-	public LucentDeviceHistoryEntry[] getDeviceHistory() {
-		return deviceHistory;
-	}
-
-	@Override
-	public int getPDU() {
-		return 134;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7ConnectionClearedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
-		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
+		lines.addAll(LucentUserToUserInfo.print(this.userInfo, "userInfo",
+				indent));
+		lines.addAll(CSTADeviceHistoryData.print(this.deviceHistory,
 				"deviceHistory", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
+	public int getPDU() {
+		return 134;
+	}
+
+	public LucentDeviceHistoryEntry[] getDeviceHistory() {
+		return this.deviceHistory;
+	}
+
+	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }

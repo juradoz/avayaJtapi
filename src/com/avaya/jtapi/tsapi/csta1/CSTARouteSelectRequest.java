@@ -1,14 +1,10 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 
 public final class CSTARouteSelectRequest extends CSTARequest {
 	int routeRegisterReqID;
@@ -19,97 +15,94 @@ public final class CSTARouteSelectRequest extends CSTARequest {
 	boolean routeUsedReq;
 	public static final int PDU = 84;
 
-	public static CSTARouteSelectRequest decode(final InputStream in) {
-		final CSTARouteSelectRequest _this = new CSTARouteSelectRequest();
+	public CSTARouteSelectRequest() {
+	}
+
+	public CSTARouteSelectRequest(int _routeRegisterReqID,
+			int _routingCrossRefID, String _routeSelected, int _remainRetry,
+			byte[] _setupInformation, boolean _routeUsedReq) {
+		this.routeRegisterReqID = _routeRegisterReqID;
+		this.routingCrossRefID = _routingCrossRefID;
+		this.routeSelected = _routeSelected;
+		this.remainRetry = _remainRetry;
+		this.setupInformation = _setupInformation;
+		this.routeUsedReq = _routeUsedReq;
+	}
+
+	public static CSTARouteSelectRequest decode(InputStream in) {
+		CSTARouteSelectRequest _this = new CSTARouteSelectRequest();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public CSTARouteSelectRequest() {
+	public void decodeMembers(InputStream memberStream) {
+		this.routeRegisterReqID = RouteRegisterReqID.decode(memberStream);
+		this.routingCrossRefID = RoutingCrossRefID.decode(memberStream);
+		this.routeSelected = DeviceID.decode(memberStream);
+		this.remainRetry = RetryValue.decode(memberStream);
+		this.setupInformation = SetUpValues.decode(memberStream);
+		this.routeUsedReq = ASNBoolean.decode(memberStream);
 	}
 
-	public CSTARouteSelectRequest(final int _routeRegisterReqID,
-			final int _routingCrossRefID, final String _routeSelected,
-			final int _remainRetry, final byte[] _setupInformation,
-			final boolean _routeUsedReq) {
-		routeRegisterReqID = _routeRegisterReqID;
-		routingCrossRefID = _routingCrossRefID;
-		routeSelected = _routeSelected;
-		remainRetry = _remainRetry;
-		setupInformation = _setupInformation;
-		routeUsedReq = _routeUsedReq;
+	public void encodeMembers(OutputStream memberStream) {
+		RouteRegisterReqID.encode(this.routeRegisterReqID, memberStream);
+		RoutingCrossRefID.encode(this.routingCrossRefID, memberStream);
+		DeviceID.encode(this.routeSelected, memberStream);
+		RetryValue.encode(this.remainRetry, memberStream);
+		SetUpValues.encode(this.setupInformation, memberStream);
+		ASNBoolean.encode(this.routeUsedReq, memberStream);
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		routeRegisterReqID = ASNInteger.decode(memberStream);
-		routingCrossRefID = ASNInteger.decode(memberStream);
-		routeSelected = ASNIA5String.decode(memberStream);
-		remainRetry = ASNInteger.decode(memberStream);
-		setupInformation = ASNOctetString.decode(memberStream);
-		routeUsedReq = ASNBoolean.decode(memberStream);
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+
+		lines.add("CSTARouteSelectRequest ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(RouteRegisterReqID.print(this.routeRegisterReqID,
+				"routeRegisterReqID", indent));
+		lines.addAll(RoutingCrossRefID.print(this.routingCrossRefID,
+				"routingCrossRefID", indent));
+		lines.addAll(DeviceID
+				.print(this.routeSelected, "routeSelected", indent));
+		lines.addAll(RetryValue.print(this.remainRetry, "remainRetry", indent));
+		lines.addAll(SetUpValues.print(this.setupInformation,
+				"setupInformation", indent));
+		lines.addAll(ASNBoolean
+				.print(this.routeUsedReq, "routeUsedReq", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNInteger.encode(routeRegisterReqID, memberStream);
-		ASNInteger.encode(routingCrossRefID, memberStream);
-		ASNIA5String.encode(routeSelected, memberStream);
-		ASNInteger.encode(remainRetry, memberStream);
-		ASNOctetString.encode(setupInformation, memberStream);
-		ASNBoolean.encode(routeUsedReq, memberStream);
-	}
-
-	@Override
 	public int getPDU() {
 		return 84;
 	}
 
 	public int getRemainRetry() {
-		return remainRetry;
+		return this.remainRetry;
 	}
 
 	public int getRouteRegisterReqID() {
-		return routeRegisterReqID;
+		return this.routeRegisterReqID;
 	}
 
 	public String getRouteSelected() {
-		return routeSelected;
-	}
-
-	public int getRoutingCrossRefID() {
-		return routingCrossRefID;
-	}
-
-	public byte[] getSetupInformation() {
-		return setupInformation;
+		return this.routeSelected;
 	}
 
 	public boolean isRouteUsedReq() {
-		return routeUsedReq;
+		return this.routeUsedReq;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+	public int getRoutingCrossRefID() {
+		return this.routingCrossRefID;
+	}
 
-		lines.add("CSTARouteSelectRequest ::=");
-		lines.add("{");
-
-		final String indent = "  ";
-
-		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
-				indent));
-		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
-				indent));
-		lines.addAll(ASNIA5String.print(routeSelected, "routeSelected", indent));
-		lines.addAll(RetryValue.print(remainRetry, "remainRetry", indent));
-		lines.addAll(ASNOctetString.print(setupInformation, "setupInformation",
-				indent));
-		lines.addAll(ASNBoolean.print(routeUsedReq, "routeUsedReq", indent));
-
-		lines.add("}");
-		return lines;
+	public byte[] getSetupInformation() {
+		return this.setupInformation;
 	}
 }

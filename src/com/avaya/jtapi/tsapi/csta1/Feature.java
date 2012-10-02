@@ -1,16 +1,14 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 public final class Feature extends ASNEnumerated {
 	static final short FT_CAMP_ON = 0;
 	static final short FT_CALL_BACK = 1;
 	static final short FT_INTRUDE = 2;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -26,6 +24,6 @@ public final class Feature extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

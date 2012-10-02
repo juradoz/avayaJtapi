@@ -6,58 +6,53 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTAConsultationCallConfEvent extends CSTAConfirmation {
-	public static CSTAConsultationCallConfEvent decode(final InputStream in) {
-		final CSTAConsultationCallConfEvent _this = new CSTAConsultationCallConfEvent();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	CSTAConnectionID newCall;
-
 	public static final int PDU = 14;
 
 	public CSTAConsultationCallConfEvent() {
 	}
 
-	public CSTAConsultationCallConfEvent(final CSTAConnectionID _newCall) {
-		newCall = _newCall;
+	public CSTAConsultationCallConfEvent(CSTAConnectionID _newCall) {
+		this.newCall = _newCall;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		newCall = CSTAConnectionID.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.newCall, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(newCall, memberStream);
+	public static CSTAConsultationCallConfEvent decode(InputStream in) {
+		CSTAConsultationCallConfEvent _this = new CSTAConsultationCallConfEvent();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	public CSTAConnectionID getNewCall() {
-		return newCall;
+	public void decodeMembers(InputStream memberStream) {
+		this.newCall = CSTAConnectionID.decode(memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 14;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAConsultationCallConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAConnectionID.print(newCall, "newCall", indent));
+		lines.addAll(CSTAConnectionID.print(this.newCall, "newCall", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setNewCall(final CSTAConnectionID newCall) {
+	public int getPDU() {
+		return 14;
+	}
+
+	public CSTAConnectionID getNewCall() {
+		return this.newCall;
+	}
+
+	public void setNewCall(CSTAConnectionID newCall) {
 		this.newCall = newCall;
 	}
 }

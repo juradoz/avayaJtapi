@@ -1,8 +1,7 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 public final class DeviceType extends ASNEnumerated {
 	public static final short DT_STATION = 0;
@@ -19,8 +18,7 @@ public final class DeviceType extends ASNEnumerated {
 	public static final short DT_OPERATOR_GROUP = 21;
 	public static final short DT_OTHER = 255;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -66,6 +64,6 @@ public final class DeviceType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

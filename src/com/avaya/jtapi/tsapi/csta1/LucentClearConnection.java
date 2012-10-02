@@ -5,61 +5,55 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public class LucentClearConnection extends LucentPrivateData {
-	public static LucentClearConnection decode(final InputStream in) {
-		final LucentClearConnection _this = new LucentClearConnection();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	short dropResource;
 	LucentUserToUserInfo userInfo;
-
 	static final int PDU = 1;
 
 	public LucentClearConnection() {
 	}
 
-	public LucentClearConnection(final short _dropResource,
-			final LucentUserToUserInfo _userInfo) {
-		dropResource = _dropResource;
-		userInfo = _userInfo;
+	public LucentClearConnection(short _dropResource,
+			LucentUserToUserInfo _userInfo) {
+		this.dropResource = _dropResource;
+		this.userInfo = _userInfo;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		dropResource = ASNEnumerated.decode(memberStream);
-		userInfo = LucentUserToUserInfo.decode(memberStream);
+	public static LucentClearConnection decode(InputStream in) {
+		LucentClearConnection _this = new LucentClearConnection();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(dropResource, memberStream);
-		LucentUserToUserInfo.encode(userInfo, memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.dropResource = LucentDropResource.decode(memberStream);
+		this.userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 1;
+	public void encodeMembers(OutputStream memberStream) {
+		LucentDropResource.encode(this.dropResource, memberStream);
+		LucentUserToUserInfo.encode(this.userInfo, memberStream);
 	}
 
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentClearConnection ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentDropResource.print(dropResource, "dropResource",
+		lines.addAll(LucentDropResource.print(this.dropResource,
+				"dropResource", indent));
+		lines.addAll(LucentUserToUserInfo.print(this.userInfo, "userInfo",
 				indent));
-		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 1;
 	}
 }

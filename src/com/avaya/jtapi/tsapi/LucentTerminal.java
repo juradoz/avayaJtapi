@@ -10,4 +10,6 @@ public abstract interface LucentTerminal extends ITsapiTerminal {
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException;
 
 	public abstract String getDirectoryName();
+
+	public abstract boolean isOnSwitch();
 }

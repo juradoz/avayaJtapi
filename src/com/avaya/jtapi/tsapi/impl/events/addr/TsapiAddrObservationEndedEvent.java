@@ -5,13 +5,12 @@ import javax.telephony.events.AddrObservationEndedEv;
 
 public final class TsapiAddrObservationEndedEvent extends TsapiAddressEvent
 		implements AddrObservationEndedEv {
-	public TsapiAddrObservationEndedEvent(final Address _address,
-			final int _cause, final Object _privateData) {
-		super(_address, _cause, 136, _privateData);
-	}
-
-	@Override
 	public int getID() {
 		return 100;
+	}
+
+	public TsapiAddrObservationEndedEvent(Address _address, int _cause,
+			Object _privateData) {
+		super(_address, _cause, 136, _privateData);
 	}
 }

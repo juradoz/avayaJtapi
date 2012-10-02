@@ -4,12 +4,11 @@ import javax.telephony.events.ConnInProgressEv;
 
 public final class TsapiConnInProgressEvent extends TsapiConnEvent implements
 		ConnInProgressEv {
-	public TsapiConnInProgressEvent(final ConnEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public int getID() {
 		return 109;
+	}
+
+	public TsapiConnInProgressEvent(ConnEventParams params) {
+		super(params);
 	}
 }

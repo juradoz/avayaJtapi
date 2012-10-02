@@ -4,7 +4,7 @@ import com.avaya.jtapi.tsapi.LucentCallInfo;
 
 public class LucentConnOfferedEventImpl extends TsapiConnOfferedEvent implements
 		LucentCallInfo {
-	public LucentConnOfferedEventImpl(final ConnEventParams params) {
+	public LucentConnOfferedEventImpl(ConnEventParams params) {
 		super(params);
 	}
 }

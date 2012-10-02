@@ -13,8 +13,25 @@ import javax.telephony.Terminal;
 import javax.telephony.TerminalConnection;
 
 public abstract interface CallControlCall extends Call {
+	public abstract Address getCallingAddress();
+
+	public abstract Terminal getCallingTerminal();
+
+	public abstract Address getCalledAddress();
+
+	public abstract Address getLastRedirectedAddress();
+
 	public abstract Connection addParty(String paramString)
 			throws InvalidStateException, InvalidPartyException,
+			MethodNotSupportedException, PrivilegeViolationException,
+			ResourceUnavailableException;
+
+	public abstract void drop() throws InvalidStateException,
+			MethodNotSupportedException, PrivilegeViolationException,
+			ResourceUnavailableException;
+
+	public abstract Connection offHook(Address paramAddress,
+			Terminal paramTerminal) throws InvalidStateException,
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
@@ -22,61 +39,6 @@ public abstract interface CallControlCall extends Call {
 			throws InvalidStateException, InvalidArgumentException,
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
-
-	public abstract Connection consult(
-			TerminalConnection paramTerminalConnection)
-			throws InvalidStateException, InvalidArgumentException,
-			MethodNotSupportedException, ResourceUnavailableException,
-			PrivilegeViolationException;
-
-	public abstract Connection[] consult(
-			TerminalConnection paramTerminalConnection, String paramString)
-			throws InvalidStateException, InvalidArgumentException,
-			MethodNotSupportedException, ResourceUnavailableException,
-			PrivilegeViolationException, InvalidPartyException;
-
-	public abstract void drop() throws InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException,
-			ResourceUnavailableException;
-
-	public abstract Address getCalledAddress();
-
-	public abstract Address getCallingAddress();
-
-	public abstract Terminal getCallingTerminal();
-
-	public abstract TerminalConnection getConferenceController();
-
-	public abstract boolean getConferenceEnable();
-
-	public abstract Address getLastRedirectedAddress();
-
-	public abstract TerminalConnection getTransferController();
-
-	public abstract boolean getTransferEnable();
-
-	public abstract Connection offHook(Address paramAddress,
-			Terminal paramTerminal) throws InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException,
-			ResourceUnavailableException;
-
-	public abstract void setConferenceController(
-			TerminalConnection paramTerminalConnection)
-			throws InvalidArgumentException, InvalidStateException,
-			MethodNotSupportedException, ResourceUnavailableException;
-
-	public abstract void setConferenceEnable(boolean paramBoolean)
-			throws InvalidArgumentException, InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException;
-
-	public abstract void setTransferController(
-			TerminalConnection paramTerminalConnection)
-			throws InvalidArgumentException, InvalidStateException,
-			MethodNotSupportedException, ResourceUnavailableException;
-
-	public abstract void setTransferEnable(boolean paramBoolean)
-			throws InvalidArgumentException, InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException;
 
 	public abstract void transfer(Call paramCall) throws InvalidStateException,
 			InvalidArgumentException, InvalidPartyException,
@@ -87,4 +49,42 @@ public abstract interface CallControlCall extends Call {
 			throws InvalidArgumentException, InvalidStateException,
 			InvalidPartyException, MethodNotSupportedException,
 			PrivilegeViolationException, ResourceUnavailableException;
+
+	public abstract void setConferenceController(
+			TerminalConnection paramTerminalConnection)
+			throws InvalidArgumentException, InvalidStateException,
+			MethodNotSupportedException, ResourceUnavailableException;
+
+	public abstract TerminalConnection getConferenceController();
+
+	public abstract void setTransferController(
+			TerminalConnection paramTerminalConnection)
+			throws InvalidArgumentException, InvalidStateException,
+			MethodNotSupportedException, ResourceUnavailableException;
+
+	public abstract TerminalConnection getTransferController();
+
+	public abstract void setConferenceEnable(boolean paramBoolean)
+			throws InvalidArgumentException, InvalidStateException,
+			MethodNotSupportedException, PrivilegeViolationException;
+
+	public abstract boolean getConferenceEnable();
+
+	public abstract void setTransferEnable(boolean paramBoolean)
+			throws InvalidArgumentException, InvalidStateException,
+			MethodNotSupportedException, PrivilegeViolationException;
+
+	public abstract boolean getTransferEnable();
+
+	public abstract Connection[] consult(
+			TerminalConnection paramTerminalConnection, String paramString)
+			throws InvalidStateException, InvalidArgumentException,
+			MethodNotSupportedException, ResourceUnavailableException,
+			PrivilegeViolationException, InvalidPartyException;
+
+	public abstract Connection consult(
+			TerminalConnection paramTerminalConnection)
+			throws InvalidStateException, InvalidArgumentException,
+			MethodNotSupportedException, ResourceUnavailableException,
+			PrivilegeViolationException;
 }

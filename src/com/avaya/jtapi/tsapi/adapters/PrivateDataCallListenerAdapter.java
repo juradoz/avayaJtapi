@@ -5,7 +5,6 @@ import javax.telephony.privatedata.PrivateDataEvent;
 
 public class PrivateDataCallListenerAdapter extends CallListenerAdapter
 		implements PrivateDataCallListener {
-	@Override
-	public void callPrivateData(final PrivateDataEvent event) {
+	public void callPrivateData(PrivateDataEvent event) {
 	}
 }

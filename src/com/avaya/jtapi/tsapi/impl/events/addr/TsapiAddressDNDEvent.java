@@ -8,19 +8,17 @@ public final class TsapiAddressDNDEvent extends TsapiCallCtlAddressEvent
 		implements CallCtlAddrDoNotDisturbEv {
 	boolean state = false;
 
-	public TsapiAddressDNDEvent(final Address _device, final boolean _state,
-			final int _cause, final int _metaCode, final Object _privateData) {
-		super(_device, _cause, _metaCode, _privateData);
-		state = _state;
-	}
-
-	@Override
 	public boolean getDoNotDisturbState() {
-		return state;
+		return this.state;
 	}
 
-	@Override
 	public int getID() {
 		return 200;
+	}
+
+	public TsapiAddressDNDEvent(Address _device, boolean _state, int _cause,
+			int _metaCode, Object _privateData) {
+		super(_device, _cause, _metaCode, _privateData);
+		this.state = _state;
 	}
 }

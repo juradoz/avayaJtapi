@@ -1,18 +1,17 @@
 package com.avaya.jtapi.tsapi.impl.events.addr;
 
+import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallCenterEvent;
 import javax.telephony.Address;
 import javax.telephony.callcenter.ACDAddressEvent;
 import javax.telephony.callcenter.Agent;
-
-import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallCenterEvent;
 
 public class ACDAddressEventImpl extends TsapiListenerCallCenterEvent implements
 		ACDAddressEvent {
 	Agent agent;
 	Address address;
 
-	public ACDAddressEventImpl(final AddressEventParams addressEventParams,
-			final Address address, final Agent agent, final Object privateData) {
+	public ACDAddressEventImpl(AddressEventParams addressEventParams,
+			Address address, Agent agent, Object privateData) {
 		super(addressEventParams.getEventId(), addressEventParams.getCause(),
 				addressEventParams.getMetaEvent(), addressEventParams
 						.getSource(), privateData);
@@ -21,13 +20,11 @@ public class ACDAddressEventImpl extends TsapiListenerCallCenterEvent implements
 		this.address = address;
 	}
 
-	@Override
-	public Address getAddress() {
-		return address;
+	public Agent getAgent() {
+		return this.agent;
 	}
 
-	@Override
-	public Agent getAgent() {
-		return agent;
+	public Address getAddress() {
+		return this.address;
 	}
 }

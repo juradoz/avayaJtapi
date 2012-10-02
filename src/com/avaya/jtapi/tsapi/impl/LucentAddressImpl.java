@@ -8,33 +8,31 @@ import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 final class LucentAddressImpl extends TsapiAddress implements LucentAddress {
-	LucentAddressImpl(final TSDevice _tsDevice) {
+	public boolean equals(Object obj) {
+		if ((obj instanceof LucentAddressImpl)) {
+			return this.tsDevice.equals(((LucentAddressImpl) obj).tsDevice);
+		}
+
+		return false;
+	}
+
+	LucentAddressImpl(TSDevice _tsDevice) {
 		super(_tsDevice);
 		TsapiTrace.traceConstruction(this, LucentAddressImpl.class);
 	}
 
-	LucentAddressImpl(final TSProviderImpl TSProviderImpl,
-			final CSTAExtendedDeviceID deviceID)
-			throws TsapiInvalidArgumentException {
-		super(TSProviderImpl, deviceID);
-		TsapiTrace.traceConstruction(this, LucentAddressImpl.class);
-	}
-
-	LucentAddressImpl(final TSProviderImpl TSProviderImpl, final String number)
+	LucentAddressImpl(TSProviderImpl TSProviderImpl, String number)
 			throws TsapiInvalidArgumentException {
 		super(TSProviderImpl, number);
 		TsapiTrace.traceConstruction(this, LucentAddressImpl.class);
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof LucentAddressImpl)
-			return tsDevice.equals(((LucentAddressImpl) obj).tsDevice);
-
-		return false;
+	LucentAddressImpl(TSProviderImpl TSProviderImpl,
+			CSTAExtendedDeviceID deviceID) throws TsapiInvalidArgumentException {
+		super(TSProviderImpl, deviceID);
+		TsapiTrace.traceConstruction(this, LucentAddressImpl.class);
 	}
 
-	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, LucentAddressImpl.class);

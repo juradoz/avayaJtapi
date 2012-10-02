@@ -4,41 +4,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 class TsapiHeartbeatTimer {
-	class TsapiHeartbeatTimerTask extends TimerTask {
-		TsapiHeartbeatTimerTask() {
-		}
-
-		@Override
-		public void run() {
-			if (listener == null)
-				return;
-			listener.heartbeatTimeout();
-		}
-	}
-
 	private int delay;
 	private Timer timer;
-
 	private ITsapiHeartbeatTimeoutListener listener;
 
-	TsapiHeartbeatTimer(final int delay) {
+	TsapiHeartbeatTimer(int delay) {
 		this.delay = delay;
-		timer = null;
-	}
-
-	void cancel() {
-		cancelCurrentTimer();
-	}
-
-	private void cancelCurrentTimer() {
-		if (timer == null)
-			return;
-		timer.cancel();
-		timer = null;
+		this.timer = null;
 	}
 
 	int getDelay() {
-		return delay;
+		return this.delay;
 	}
 
 	void reset() throws IllegalArgumentException, IllegalStateException {
@@ -46,21 +22,42 @@ class TsapiHeartbeatTimer {
 		scheduleNewTimer();
 	}
 
-	void reset(final int delay) throws IllegalArgumentException,
+	void reset(int delay) throws IllegalArgumentException,
 			IllegalStateException {
 		this.delay = delay;
 		cancelCurrentTimer();
 		scheduleNewTimer();
 	}
 
-	private void scheduleNewTimer() throws IllegalArgumentException,
-			IllegalStateException {
-		timer = new Timer();
-		timer.schedule(new TsapiHeartbeatTimerTask(), delay * 1000);
+	void cancel() {
+		cancelCurrentTimer();
 	}
 
-	void setHeartbeatTimeoutListener(
-			final ITsapiHeartbeatTimeoutListener listener) {
+	void setHeartbeatTimeoutListener(ITsapiHeartbeatTimeoutListener listener) {
 		this.listener = listener;
+	}
+
+	private void cancelCurrentTimer() {
+		if (this.timer != null) {
+			this.timer.cancel();
+			this.timer = null;
+		}
+	}
+
+	private void scheduleNewTimer() throws IllegalArgumentException,
+			IllegalStateException {
+		this.timer = new Timer();
+		this.timer.schedule(new TsapiHeartbeatTimerTask(), this.delay * 1000);
+	}
+
+	class TsapiHeartbeatTimerTask extends TimerTask {
+		TsapiHeartbeatTimerTask() {
+		}
+
+		public void run() {
+			if (TsapiHeartbeatTimer.this.listener != null) {
+				TsapiHeartbeatTimer.this.listener.heartbeatTimeout();
+			}
+		}
 	}
 }

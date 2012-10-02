@@ -5,12 +5,11 @@ import javax.telephony.callcenter.events.CallCentTrunkInvalidEv;
 @SuppressWarnings("deprecation")
 public final class TsapiTrunkInvalidEv extends TsapiCallCtrTrunkEvent implements
 		CallCentTrunkInvalidEv {
-	public TsapiTrunkInvalidEv(final CallEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public int getID() {
 		return 318;
+	}
+
+	public TsapiTrunkInvalidEv(CallEventParams params) {
+		super(params);
 	}
 }

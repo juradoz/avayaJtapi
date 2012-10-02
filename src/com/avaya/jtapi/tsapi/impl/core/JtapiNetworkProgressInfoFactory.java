@@ -11,36 +11,36 @@ import com.avaya.jtapi.tsapi.csta1.LucentV7NetworkProgressInfo;
 
 class JtapiNetworkProgressInfoFactory {
 	static NetworkProgressInfo createNetworkProgressInfo(
-			final TSProviderImpl provider,
-			final LucentNetworkProgressInfo csta_obj) {
-		if (csta_obj == null)
+			TSProviderImpl provider, LucentNetworkProgressInfo csta_obj) {
+		if (csta_obj == null) {
 			return null;
-		if (csta_obj instanceof LucentV7NetworkProgressInfo)
-			return JtapiNetworkProgressInfoFactory
-					.promoteV7NetworkProgressInfo(provider,
-							(LucentV7NetworkProgressInfo) csta_obj, null);
-		if (csta_obj instanceof LucentV5NetworkProgressInfo)
-			return JtapiNetworkProgressInfoFactory
-					.promoteV5NetworkProgressInfo(provider,
-							(LucentV5NetworkProgressInfo) csta_obj, null);
+		}
+		if ((csta_obj instanceof LucentV7NetworkProgressInfo)) {
+			return promoteV7NetworkProgressInfo(provider,
+					(LucentV7NetworkProgressInfo) csta_obj, null);
+		}
+		if ((csta_obj instanceof LucentV5NetworkProgressInfo)) {
+			return promoteV5NetworkProgressInfo(provider,
+					(LucentV5NetworkProgressInfo) csta_obj, null);
+		}
 
-		return JtapiNetworkProgressInfoFactory.promoteNetworkProgressInfo(
-				provider, csta_obj, null);
+		return promoteNetworkProgressInfo(provider, csta_obj, null);
 	}
 
 	static NetworkProgressInfo promoteNetworkProgressInfo(
-			final TSProviderImpl provider,
-			final LucentNetworkProgressInfo csta_obj,
-			final NetworkProgressInfo obj) {
-		if (csta_obj == null)
+			TSProviderImpl provider, LucentNetworkProgressInfo csta_obj,
+			NetworkProgressInfo obj) {
+		if (csta_obj == null) {
 			return null;
+		}
 
 		NetworkProgressInfo jtapi_obj = null;
 
-		if (obj == null)
+		if (obj == null) {
 			jtapi_obj = new NetworkProgressInfo();
-		else
+		} else {
 			jtapi_obj = obj;
+		}
 
 		jtapi_obj.progressLocation = csta_obj.progressLocation;
 		jtapi_obj.progressDescription = csta_obj.progressDescription;
@@ -49,11 +49,11 @@ class JtapiNetworkProgressInfoFactory {
 	}
 
 	static NetworkProgressInfo promoteV5NetworkProgressInfo(
-			final TSProviderImpl provider,
-			final LucentV5NetworkProgressInfo oci_csta,
-			final V5NetworkProgressInfo obj) {
-		if (oci_csta == null)
+			TSProviderImpl provider, LucentV5NetworkProgressInfo oci_csta,
+			V5NetworkProgressInfo obj) {
+		if (oci_csta == null) {
 			return null;
+		}
 
 		String trunkGroup = null;
 		String trunkMember = null;
@@ -64,50 +64,50 @@ class JtapiNetworkProgressInfoFactory {
 		trunk = TsapiPromoter.promoteTrunk(provider, oci_csta.getTrunkGroup(),
 				oci_csta.getTrunkMember(), 2);
 
-		if (obj == null && trunkGroup == null && trunkMember == null
-				&& trunk == null)
-			return JtapiNetworkProgressInfoFactory.promoteNetworkProgressInfo(
-					provider, oci_csta, null);
-		if (obj == null && trunkGroup.equals("0") && trunkMember.equals("0")
-				&& trunk == null)
-			return JtapiNetworkProgressInfoFactory.promoteNetworkProgressInfo(
-					provider, oci_csta, null);
+		if ((obj == null) && (trunkGroup == null) && (trunkMember == null)
+				&& (trunk == null)) {
+			return promoteNetworkProgressInfo(provider, oci_csta, null);
+		}
+		if ((obj == null) && (trunkGroup.equals("0"))
+				&& (trunkMember.equals("0")) && (trunk == null)) {
+			return promoteNetworkProgressInfo(provider, oci_csta, null);
+		}
 		V5NetworkProgressInfo jtapi_obj;
-		if (obj == null)
+		if (obj == null) {
 			jtapi_obj = new V5NetworkProgressInfo();
-		else
+		} else {
 			jtapi_obj = obj;
+		}
 
 		jtapi_obj.setTrunkGroup(trunkGroup);
 		jtapi_obj.setTrunkMember(trunkMember);
 		jtapi_obj.setTsapiTrunk(trunk);
 
-		return JtapiNetworkProgressInfoFactory.promoteNetworkProgressInfo(
-				provider, oci_csta, jtapi_obj);
+		return promoteNetworkProgressInfo(provider, oci_csta, jtapi_obj);
 	}
 
 	static NetworkProgressInfo promoteV7NetworkProgressInfo(
-			final TSProviderImpl provider,
-			final LucentV7NetworkProgressInfo oci_csta,
-			final V7NetworkProgressInfo obj) {
-		if (oci_csta == null)
+			TSProviderImpl provider, LucentV7NetworkProgressInfo oci_csta,
+			V7NetworkProgressInfo obj) {
+		if (oci_csta == null) {
 			return null;
+		}
 
-		final V7DeviceHistoryEntry[] deviceHistory = TsapiPromoter
+		V7DeviceHistoryEntry[] deviceHistory = TsapiPromoter
 				.promoteDeviceHistory(oci_csta.getDeviceHistory());
 
-		if (obj == null && deviceHistory == null)
-			return JtapiNetworkProgressInfoFactory
-					.promoteV5NetworkProgressInfo(provider, oci_csta, null);
+		if ((obj == null) && (deviceHistory == null)) {
+			return promoteV5NetworkProgressInfo(provider, oci_csta, null);
+		}
 		V7NetworkProgressInfo jtapi_obj;
-		if (obj == null)
+		if (obj == null) {
 			jtapi_obj = new V7NetworkProgressInfo();
-		else
+		} else {
 			jtapi_obj = obj;
+		}
 
 		jtapi_obj.setDeviceHistory(deviceHistory);
 
-		return JtapiNetworkProgressInfoFactory.promoteV5NetworkProgressInfo(
-				provider, oci_csta, jtapi_obj);
+		return promoteV5NetworkProgressInfo(provider, oci_csta, jtapi_obj);
 	}
 }

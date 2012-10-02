@@ -5,54 +5,48 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public final class CSTAQueryAgentStateConfEvent extends CSTAConfirmation {
 	short agentState;
 	public static final int PDU = 34;
 
-	public static CSTAQueryAgentStateConfEvent decode(final InputStream in) {
-		final CSTAQueryAgentStateConfEvent _this = new CSTAQueryAgentStateConfEvent();
+	public static CSTAQueryAgentStateConfEvent decode(InputStream in) {
+		CSTAQueryAgentStateConfEvent _this = new CSTAQueryAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		agentState = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.agentState = AgentState.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(agentState, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		AgentState.encode(this.agentState, memberStream);
 	}
 
-	public short getAgentState() {
-		return agentState;
-	}
-
-	@Override
-	public int getPDU() {
-		return 34;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAQueryAgentStateConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(AgentState.print(agentState, "agentState", indent));
+		lines.addAll(AgentState.print(this.agentState, "agentState", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setAgentState(final short agentState) {
+	public int getPDU() {
+		return 34;
+	}
+
+	public short getAgentState() {
+		return this.agentState;
+	}
+
+	public void setAgentState(short agentState) {
 		this.agentState = agentState;
 	}
 }

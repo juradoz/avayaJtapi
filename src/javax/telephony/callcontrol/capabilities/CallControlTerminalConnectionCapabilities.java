@@ -6,9 +6,9 @@ public abstract interface CallControlTerminalConnectionCapabilities extends
 		TerminalConnectionCapabilities {
 	public abstract boolean canHold();
 
+	public abstract boolean canUnhold();
+
 	public abstract boolean canJoin();
 
 	public abstract boolean canLeave();
-
-	public abstract boolean canUnhold();
 }

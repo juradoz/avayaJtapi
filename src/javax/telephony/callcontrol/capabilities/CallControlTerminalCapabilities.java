@@ -9,12 +9,10 @@ public abstract interface CallControlTerminalCapabilities extends
 		TerminalCapabilities {
 	public abstract boolean canGetDoNotDisturb();
 
-	/** @deprecated */
-	@Deprecated
-	public abstract boolean canPickup();
+	public abstract boolean canSetDoNotDisturb();
 
-	public abstract boolean canPickup(Address paramAddress1,
-			Address paramAddress2);
+	/** @deprecated */
+	public abstract boolean canPickup();
 
 	public abstract boolean canPickup(Connection paramConnection,
 			Address paramAddress);
@@ -22,14 +20,14 @@ public abstract interface CallControlTerminalCapabilities extends
 	public abstract boolean canPickup(
 			TerminalConnection paramTerminalConnection, Address paramAddress);
 
-	/** @deprecated */
-	@Deprecated
-	public abstract boolean canPickupFromGroup();
+	public abstract boolean canPickup(Address paramAddress1,
+			Address paramAddress2);
 
-	public abstract boolean canPickupFromGroup(Address paramAddress);
+	/** @deprecated */
+	public abstract boolean canPickupFromGroup();
 
 	public abstract boolean canPickupFromGroup(String paramString,
 			Address paramAddress);
 
-	public abstract boolean canSetDoNotDisturb();
+	public abstract boolean canPickupFromGroup(Address paramAddress);
 }

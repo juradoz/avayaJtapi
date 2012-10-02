@@ -10,20 +10,19 @@ public abstract interface TerminalConnection {
 	public static final int DROPPED = 68;
 	public static final int UNKNOWN = 69;
 
+	public abstract int getState();
+
+	public abstract Terminal getTerminal();
+
+	public abstract Connection getConnection();
+
 	public abstract void answer() throws PrivilegeViolationException,
 			ResourceUnavailableException, MethodNotSupportedException,
 			InvalidStateException;
 
 	public abstract TerminalConnectionCapabilities getCapabilities();
 
-	public abstract Connection getConnection();
-
-	public abstract int getState();
-
-	public abstract Terminal getTerminal();
-
 	/** @deprecated */
-	@Deprecated
 	public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities(
 			Terminal paramTerminal, Address paramAddress)
 			throws InvalidArgumentException, PlatformException;

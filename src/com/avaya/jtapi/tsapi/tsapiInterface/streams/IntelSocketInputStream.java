@@ -7,19 +7,20 @@ import java.io.InputStream;
 public final class IntelSocketInputStream {
 	InputStream in;
 
-	public IntelSocketInputStream(final InputStream _in) {
-		in = _in;
+	public IntelSocketInputStream(InputStream _in) {
+		this.in = _in;
 	}
 
-	public void readFully(final byte[] buf) throws IOException {
+	public void readFully(byte[] buf) throws IOException {
 		int bytesRead;
-		for (int offset = 0; offset < buf.length; offset += bytesRead)
-			if ((bytesRead = in.read(buf, offset, buf.length - offset)) < 0)
+		for (int offset = 0; offset < buf.length; offset += bytesRead) {
+			if ((bytesRead = this.in.read(buf, offset, buf.length - offset)) < 0)
 				throw new EOFException();
+		}
 	}
 
 	public int readInt() throws IOException {
-		final byte[] buf = new byte[4];
+		byte[] buf = new byte[4];
 		readFully(buf);
 		return ((buf[3] & 0xFF) << 24) + ((buf[2] & 0xFF) << 16)
 				+ ((buf[1] & 0xFF) << 8) + ((buf[0] & 0xFF) << 0);

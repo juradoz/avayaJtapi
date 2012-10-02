@@ -5,56 +5,49 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class LucentTransferCallConfEvent extends LucentPrivateData
 		implements HasUCID {
 	String ucid;
 	static final int PDU = 91;
 
-	public static LucentTransferCallConfEvent decode(final InputStream in) {
-		final LucentTransferCallConfEvent _this = new LucentTransferCallConfEvent();
+	public static LucentTransferCallConfEvent decode(InputStream in) {
+		LucentTransferCallConfEvent _this = new LucentTransferCallConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		ucid = ASNIA5String.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.ucid = UCID.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(ucid, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		UCID.encode(this.ucid, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 91;
-	}
-
-	@Override
-	public String getUcid() {
-		return ucid;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentTransferCallConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(ucid, "ucid", indent));
+		lines.addAll(UCID.print(this.ucid, "ucid", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setUcid(final String ucid) {
+	public int getPDU() {
+		return 91;
+	}
+
+	public String getUcid() {
+		return this.ucid;
+	}
+
+	public void setUcid(String ucid) {
 		this.ucid = ucid;
 	}
 }

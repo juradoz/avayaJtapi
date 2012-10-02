@@ -1,28 +1,25 @@
 package com.avaya.jtapi.tsapi.impl.events.provider;
 
+import com.avaya.jtapi.tsapi.impl.events.TsapiListenerEvent;
 import javax.telephony.Provider;
 import javax.telephony.ProviderEvent;
-
-import com.avaya.jtapi.tsapi.impl.events.TsapiListenerEvent;
 
 public class ProviderEventImpl extends TsapiListenerEvent implements
 		ProviderEvent {
 	private final Provider provider;
 
-	public ProviderEventImpl(final ProviderEventParams params) {
+	public ProviderEventImpl(ProviderEventParams params) {
 		super(params.getId(), params.getCause(), params.getMetaEvent(), params
 				.getSource(), params.getPrivateData());
 
-		provider = params.getProvider();
+		this.provider = params.getProvider();
 	}
 
-	@Override
 	public Provider getProvider() {
-		return provider;
+		return this.provider;
 	}
 
-	@Override
 	public String toString() {
-		return super.toString() + ";provider=" + provider;
+		return super.toString() + ";provider=" + this.provider;
 	}
 }

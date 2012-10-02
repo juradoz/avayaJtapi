@@ -13,27 +13,28 @@ import com.avaya.jtapi.tsapi.impl.beans.V5OriginalCallInfoImpl;
 import com.avaya.jtapi.tsapi.impl.beans.V7OriginalCallInfoImpl;
 
 class JtapiOriginalCallInfoFactory {
-	static OriginalCallInfo createOriginalCallInfo(
-			final TSProviderImpl provider, final LucentOriginalCallInfo csta_obj) {
-		if (csta_obj == null)
+	static OriginalCallInfo createOriginalCallInfo(TSProviderImpl provider,
+			LucentOriginalCallInfo csta_obj) {
+		if (csta_obj == null) {
 			return null;
-		if (csta_obj instanceof LucentV7OriginalCallInfo)
-			return JtapiOriginalCallInfoFactory.promoteV7OriginalCallInfo(
-					provider, (LucentV7OriginalCallInfo) csta_obj, null);
-		if (csta_obj instanceof LucentV5OriginalCallInfo)
-			return JtapiOriginalCallInfoFactory.promoteV5OriginalCallInfo(
-					provider, (LucentV5OriginalCallInfo) csta_obj, null);
+		}
+		if ((csta_obj instanceof LucentV7OriginalCallInfo)) {
+			return promoteV7OriginalCallInfo(provider,
+					(LucentV7OriginalCallInfo) csta_obj, null);
+		}
+		if ((csta_obj instanceof LucentV5OriginalCallInfo)) {
+			return promoteV5OriginalCallInfo(provider,
+					(LucentV5OriginalCallInfo) csta_obj, null);
+		}
 
-		return JtapiOriginalCallInfoFactory.promoteOriginalCallInfo(provider,
-				csta_obj, null);
+		return promoteOriginalCallInfo(provider, csta_obj, null);
 	}
 
-	static OriginalCallInfo promoteOriginalCallInfo(
-			final TSProviderImpl provider,
-			final LucentOriginalCallInfo oci_csta,
-			final OriginalCallInfoImpl obj) {
-		if (oci_csta == null)
+	static OriginalCallInfo promoteOriginalCallInfo(TSProviderImpl provider,
+			LucentOriginalCallInfo oci_csta, OriginalCallInfoImpl obj) {
+		if (oci_csta == null) {
 			return null;
+		}
 
 		OriginalCallInfoImpl jtapi_obj = null;
 
@@ -41,34 +42,41 @@ class JtapiOriginalCallInfoFactory {
 		TsapiAddress calledDevice = null;
 		TsapiTrunk trunk = null;
 
-		if (oci_csta.getCallingDevice_asn() != null)
+		if (oci_csta.getCallingDevice_asn() != null) {
 			callingDevice = TsapiPromoter.promoteDeviceIDToAddress(provider,
 					oci_csta.getCallingDevice_asn());
+		}
 
-		if (oci_csta.getCalledDevice_asn() != null)
+		if (oci_csta.getCalledDevice_asn() != null) {
 			calledDevice = TsapiPromoter.promoteDeviceIDToAddress(provider,
 					oci_csta.getCalledDevice_asn());
+		}
 
 		trunk = TsapiPromoter.promoteTrunk(provider, oci_csta.getTrunkGroup(),
 				oci_csta.getTrunkMember());
 
-		if (obj == null && callingDevice == null && calledDevice == null
-				&& trunk == null)
+		if ((obj == null) && (callingDevice == null) && (calledDevice == null)
+				&& (trunk == null)) {
 			return null;
+		}
 
-		if (obj == null)
+		if (obj == null) {
 			jtapi_obj = new OriginalCallInfoImpl();
-		else
+		} else {
 			jtapi_obj = obj;
-		if (oci_csta.getLookaheadInfo() != null)
+		}
+		if (oci_csta.getLookaheadInfo() != null) {
 			jtapi_obj.setLookaheadInfo(TsapiPromoter
 					.promoteLookaheadInfo(oci_csta.getLookaheadInfo()));
-		if (oci_csta.getUserEnteredCode() != null)
+		}
+		if (oci_csta.getUserEnteredCode() != null) {
 			jtapi_obj.setUserEnteredCode(TsapiPromoter.promoteUserEnteredCode(
 					provider, oci_csta.getUserEnteredCode()));
-		if (oci_csta.getUserToUserInfo() != null)
+		}
+		if (oci_csta.getUserToUserInfo() != null) {
 			jtapi_obj.setUserInfo(TsapiPromoter.promoteUserToUserInfo(oci_csta
 					.getUserToUserInfo()));
+		}
 
 		jtapi_obj.setCallingDevice(callingDevice);
 		jtapi_obj.setCalledDevice(calledDevice);
@@ -78,12 +86,11 @@ class JtapiOriginalCallInfoFactory {
 		return jtapi_obj;
 	}
 
-	static OriginalCallInfo promoteV5OriginalCallInfo(
-			final TSProviderImpl provider,
-			final LucentV5OriginalCallInfo oci_csta,
-			final V5OriginalCallInfoImpl obj) {
-		if (oci_csta == null)
+	static OriginalCallInfo promoteV5OriginalCallInfo(TSProviderImpl provider,
+			LucentV5OriginalCallInfo oci_csta, V5OriginalCallInfoImpl obj) {
+		if (oci_csta == null) {
 			return null;
+		}
 
 		String ucid = null;
 		CSTACallOriginatorInfo cinfo = null;
@@ -93,14 +100,16 @@ class JtapiOriginalCallInfoFactory {
 		cinfo = oci_csta.getCallOriginatorInfo();
 		flexBilling = oci_csta.canSetBillRate();
 
-		if (obj == null && ucid == null && cinfo == null && !flexBilling)
-			return JtapiOriginalCallInfoFactory.promoteOriginalCallInfo(
-					provider, oci_csta, null);
+		if ((obj == null) && (ucid == null) && (cinfo == null)
+				&& (!flexBilling)) {
+			return promoteOriginalCallInfo(provider, oci_csta, null);
+		}
 		V5OriginalCallInfoImpl jtapi_obj;
-		if (obj == null)
+		if (obj == null) {
 			jtapi_obj = new V5OriginalCallInfoImpl();
-		else
+		} else {
 			jtapi_obj = obj;
+		}
 
 		jtapi_obj.setUCID(ucid);
 		jtapi_obj.setFlexibleBilling(flexBilling);
@@ -110,32 +119,30 @@ class JtapiOriginalCallInfoFactory {
 			jtapi_obj.setCallOriginatorType(cinfo.getCallOriginatorType());
 		}
 
-		return JtapiOriginalCallInfoFactory.promoteOriginalCallInfo(provider,
-				oci_csta, jtapi_obj);
+		return promoteOriginalCallInfo(provider, oci_csta, jtapi_obj);
 	}
 
-	static OriginalCallInfo promoteV7OriginalCallInfo(
-			final TSProviderImpl provider,
-			final LucentV7OriginalCallInfo oci_csta,
-			final V7OriginalCallInfoImpl obj) {
-		if (oci_csta == null)
+	static OriginalCallInfo promoteV7OriginalCallInfo(TSProviderImpl provider,
+			LucentV7OriginalCallInfo oci_csta, V7OriginalCallInfoImpl obj) {
+		if (oci_csta == null) {
 			return null;
+		}
 
-		final V7DeviceHistoryEntry[] deviceHistory = TsapiPromoter
+		V7DeviceHistoryEntry[] deviceHistory = TsapiPromoter
 				.promoteDeviceHistory(oci_csta.getDeviceHistory());
 
-		if (obj == null && deviceHistory == null)
-			return JtapiOriginalCallInfoFactory.promoteV5OriginalCallInfo(
-					provider, oci_csta, null);
+		if ((obj == null) && (deviceHistory == null)) {
+			return promoteV5OriginalCallInfo(provider, oci_csta, null);
+		}
 		V7OriginalCallInfoImpl jtapi_obj;
-		if (obj == null)
+		if (obj == null) {
 			jtapi_obj = new V7OriginalCallInfoImpl();
-		else
+		} else {
 			jtapi_obj = obj;
+		}
 
 		jtapi_obj.setDeviceHistory(deviceHistory);
 
-		return JtapiOriginalCallInfoFactory.promoteV5OriginalCallInfo(provider,
-				oci_csta, jtapi_obj);
+		return promoteV5OriginalCallInfo(provider, oci_csta, jtapi_obj);
 	}
 }

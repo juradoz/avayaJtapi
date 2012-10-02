@@ -1,32 +1,54 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTAConnection extends ASNSequence {
-	public static CSTAConnection decode(final InputStream in) {
-		final CSTAConnection _this = new CSTAConnection();
+	CSTAConnectionID party;
+	CSTAExtendedDeviceID staticDevice;
+
+	public CSTAConnection() {
+	}
+
+	public CSTAConnection(CSTAConnectionID _party,
+			CSTAExtendedDeviceID _staticDevice) {
+		this.party = _party;
+		this.staticDevice = _staticDevice;
+	}
+
+	public static CSTAConnection decode(InputStream in) {
+		CSTAConnection _this = new CSTAConnection();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static Collection<String> print(final CSTAConnection _this,
-			final String name, final String _indent) {
-		final Collection<String> lines = new ArrayList<String>();
+	public void decodeMembers(InputStream memberStream) {
+		this.party = CSTAConnectionID.decode(memberStream);
+		this.staticDevice = CSTAExtendedDeviceID.decode(memberStream);
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.party, memberStream);
+		CSTAExtendedDeviceID.encode(this.staticDevice, memberStream);
+	}
+
+	public static Collection<String> print(CSTAConnection _this, String name,
+			String _indent) {
+		Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null)
+		if (name != null) {
 			lines.add(_indent + name);
+		}
 		lines.add(_indent + "{");
 
-		final String indent = _indent + "  ";
+		String indent = _indent + "  ";
 
 		lines.addAll(CSTAConnectionID.print(_this.party, "party", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.staticDevice,
@@ -36,44 +58,19 @@ public final class CSTAConnection extends ASNSequence {
 		return lines;
 	}
 
-	CSTAConnectionID party;
-
-	CSTAExtendedDeviceID staticDevice;
-
-	public CSTAConnection() {
-	}
-
-	public CSTAConnection(final CSTAConnectionID _party,
-			final CSTAExtendedDeviceID _staticDevice) {
-		party = _party;
-		staticDevice = _staticDevice;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		party = CSTAConnectionID.decode(memberStream);
-		staticDevice = CSTAExtendedDeviceID.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(party, memberStream);
-		ASNSequence.encode(staticDevice, memberStream);
-	}
-
 	public CSTAConnectionID getParty() {
-		return party;
+		return this.party;
 	}
 
 	public CSTAExtendedDeviceID getStaticDevice() {
-		return staticDevice;
+		return this.staticDevice;
 	}
 
-	public void setParty(final CSTAConnectionID _party) {
-		party = _party;
+	public void setParty(CSTAConnectionID _party) {
+		this.party = _party;
 	}
 
-	public void setStaticDevice(final CSTAExtendedDeviceID _staticDevice) {
-		staticDevice = _staticDevice;
+	public void setStaticDevice(CSTAExtendedDeviceID _staticDevice) {
+		this.staticDevice = _staticDevice;
 	}
 }

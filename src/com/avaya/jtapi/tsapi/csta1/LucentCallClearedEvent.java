@@ -5,54 +5,48 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public final class LucentCallClearedEvent extends LucentPrivateData {
 	short reason;
 	static final int PDU = 34;
 
-	public static LucentCallClearedEvent decode(final InputStream in) {
-		final LucentCallClearedEvent _this = new LucentCallClearedEvent();
+	public static LucentCallClearedEvent decode(InputStream in) {
+		LucentCallClearedEvent _this = new LucentCallClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		reason = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.reason = LucentReasonCode.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(reason, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentReasonCode.encode(this.reason, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 34;
-	}
-
-	public short getReason() {
-		return reason;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentCallClearedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentReasonCode.print(reason, "reason", indent));
+		lines.addAll(LucentReasonCode.print(this.reason, "reason", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setReason(final short reason) {
+	public int getPDU() {
+		return 34;
+	}
+
+	public short getReason() {
+		return this.reason;
+	}
+
+	public void setReason(short reason) {
 		this.reason = reason;
 	}
 }

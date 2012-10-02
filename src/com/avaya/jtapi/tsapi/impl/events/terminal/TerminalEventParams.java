@@ -11,51 +11,51 @@ public class TerminalEventParams {
 	Terminal terminal;
 	Object privateData;
 
-	public int getCause() {
-		return cause;
-	}
-
 	public int getEventId() {
-		return eventId;
+		return this.eventId;
 	}
 
-	public MetaEvent getMetaEvent() {
-		return metaEvent;
-	}
-
-	public Object getPrivateData() {
-		return privateData;
-	}
-
-	public Object getSource() {
-		return source;
-	}
-
-	public Terminal getTerminal() {
-		return terminal;
-	}
-
-	public void setCause(final int cause) {
-		this.cause = cause;
-	}
-
-	public void setEventId(final int eventId) {
+	public void setEventId(int eventId) {
 		this.eventId = eventId;
 	}
 
-	public void setMetaEvent(final MetaEvent metaEvent) {
+	public int getCause() {
+		return this.cause;
+	}
+
+	public void setCause(int cause) {
+		this.cause = cause;
+	}
+
+	public MetaEvent getMetaEvent() {
+		return this.metaEvent;
+	}
+
+	public void setMetaEvent(MetaEvent metaEvent) {
 		this.metaEvent = metaEvent;
 	}
 
-	public void setPrivateData(final Object o) {
-		privateData = o;
+	public Object getSource() {
+		return this.source;
 	}
 
-	public void setSource(final Object source) {
+	public void setSource(Object source) {
 		this.source = source;
 	}
 
-	public void setTerminal(final Terminal terminal) {
+	public Terminal getTerminal() {
+		return this.terminal;
+	}
+
+	public void setTerminal(Terminal terminal) {
 		this.terminal = terminal;
+	}
+
+	public Object getPrivateData() {
+		return this.privateData;
+	}
+
+	public void setPrivateData(Object o) {
+		this.privateData = o;
 	}
 }

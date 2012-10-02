@@ -14,16 +14,16 @@ public abstract interface Agent {
 	public static final int WORK_READY = 6;
 	public static final int BUSY = 7;
 
+	public abstract void setState(int paramInt)
+			throws InvalidArgumentException, InvalidStateException;
+
+	public abstract int getState();
+
+	public abstract String getAgentID();
+
 	public abstract ACDAddress getACDAddress();
 
 	public abstract Address getAgentAddress();
 
-	public abstract String getAgentID();
-
 	public abstract AgentTerminal getAgentTerminal();
-
-	public abstract int getState();
-
-	public abstract void setState(int paramInt)
-			throws InvalidArgumentException, InvalidStateException;
 }

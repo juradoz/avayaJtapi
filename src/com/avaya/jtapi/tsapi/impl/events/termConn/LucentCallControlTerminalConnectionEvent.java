@@ -1,62 +1,52 @@
 package com.avaya.jtapi.tsapi.impl.events.termConn;
 
-import javax.telephony.MetaEvent;
-import javax.telephony.callcenter.ACDAddress;
-import javax.telephony.callcenter.CallCenterAddress;
-import javax.telephony.callcenter.CallCenterTrunk;
-
 import com.avaya.jtapi.tsapi.LookaheadInfo;
 import com.avaya.jtapi.tsapi.LucentCallInfo;
 import com.avaya.jtapi.tsapi.OriginalCallInfo;
 import com.avaya.jtapi.tsapi.UserEnteredCode;
 import com.avaya.jtapi.tsapi.UserToUserInfo;
 import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
+import javax.telephony.MetaEvent;
+import javax.telephony.callcenter.ACDAddress;
+import javax.telephony.callcenter.CallCenterAddress;
+import javax.telephony.callcenter.CallCenterTrunk;
 
 public class LucentCallControlTerminalConnectionEvent extends
 		CallControlTerminalConnectionEventImpl implements LucentCallInfo {
-	public LucentCallControlTerminalConnectionEvent(
-			final CallEventParams params, final MetaEvent event,
-			final int eventId) {
+	public LucentCallControlTerminalConnectionEvent(CallEventParams params,
+			MetaEvent event, int eventId) {
 		super(params, event, eventId);
 	}
 
-	@Override
 	public ACDAddress getDeliveringACDAddress() {
-		return callEventParams.getSplit();
+		return this.callEventParams.getSplit();
 	}
 
-	@Override
 	public CallCenterAddress getDistributingAddress() {
-		return callEventParams.getDistributingDevice();
+		return this.callEventParams.getDistributingDevice();
 	}
 
-	@Override
 	public LookaheadInfo getLookaheadInfo() {
-		return callEventParams.getLookaheadInfo();
+		return this.callEventParams.getLookaheadInfo();
 	}
 
-	@Override
 	public OriginalCallInfo getOriginalCallInfo() {
-		return callEventParams.getOriginalCallInfo();
+		return this.callEventParams.getOriginalCallInfo();
 	}
 
-	@Override
 	public short getReason() {
-		return callEventParams.getReason();
+		return this.callEventParams.getReason();
 	}
 
-	@Override
 	public CallCenterTrunk getTrunk() {
-		return callEventParams.getTrunk();
+		return this.callEventParams.getTrunk();
 	}
 
-	@Override
 	public UserEnteredCode getUserEnteredCode() {
-		return callEventParams.getUserEnteredCode();
+		return this.callEventParams.getUserEnteredCode();
 	}
 
-	@Override
 	public UserToUserInfo getUserToUserInfo() {
-		return callEventParams.getUserToUserInfo();
+		return this.callEventParams.getUserToUserInfo();
 	}
 }

@@ -1,9 +1,8 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import java.io.InputStream;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 
 public final class UUIProtocolType extends ASNEnumerated {
 	public static final short UUI_NONE = -1;
@@ -12,7 +11,7 @@ public final class UUIProtocolType extends ASNEnumerated {
 	public static final short UUI_Q931_CALLCTRL = 8;
 
 	public static LucentUserToUserInfo decodeUserToUserInfo(
-			final InputStream memberStream, final CSTATSProvider provider) {
+			InputStream memberStream, CSTATSProvider provider) {
 		LucentUserToUserInfo _this = new LucentUserToUserInfo();
 		_this.doDecode(memberStream);
 
@@ -31,7 +30,7 @@ public final class UUIProtocolType extends ASNEnumerated {
 		default:
 			break;
 		case 8:
-			final LucentQ931UserToUserInfo _alternate = new LucentQ931UserToUserInfo(
+			LucentQ931UserToUserInfo _alternate = new LucentQ931UserToUserInfo(
 					_this.getBytes());
 
 			_this = _alternate;
@@ -40,8 +39,7 @@ public final class UUIProtocolType extends ASNEnumerated {
 		return _this;
 	}
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -66,6 +64,6 @@ public final class UUIProtocolType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

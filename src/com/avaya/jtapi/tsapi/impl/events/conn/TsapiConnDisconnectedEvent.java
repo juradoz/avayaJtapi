@@ -4,12 +4,11 @@ import javax.telephony.events.ConnDisconnectedEv;
 
 public final class TsapiConnDisconnectedEvent extends TsapiConnEvent implements
 		ConnDisconnectedEv {
-	public TsapiConnDisconnectedEvent(final ConnEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public int getID() {
 		return 107;
+	}
+
+	public TsapiConnDisconnectedEvent(ConnEventParams params) {
+		super(params);
 	}
 }

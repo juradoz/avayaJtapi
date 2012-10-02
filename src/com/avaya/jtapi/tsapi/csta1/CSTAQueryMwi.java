@@ -4,41 +4,36 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public class CSTAQueryMwi extends CSTARequest {
 	String device;
 	static final int PDU = 27;
 
-	public CSTAQueryMwi(final String _device) {
-		device = _device;
+	public CSTAQueryMwi(String _device) {
+		this.device = _device;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
 	}
 
-	public String getDevice() {
-		return device;
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("CSTAQueryMwi ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(DeviceID.print(this.device, "device", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	@Override
 	public int getPDU() {
 		return 27;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("CSTAQueryMwi ::=");
-		lines.add("{");
-
-		final String indent = "  ";
-
-		lines.addAll(ASNIA5String.print(device, "device", indent));
-
-		lines.add("}");
-		return lines;
+	public String getDevice() {
+		return this.device;
 	}
 }

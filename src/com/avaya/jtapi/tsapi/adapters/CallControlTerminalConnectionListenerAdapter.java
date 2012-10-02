@@ -7,82 +7,62 @@ import javax.telephony.callcontrol.CallControlTerminalConnectionListener;
 public class CallControlTerminalConnectionListenerAdapter extends
 		TerminalConnectionListenerAdapter implements
 		CallControlTerminalConnectionListener {
-	@Override
-	public void connectionAlerting(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionDialing(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionDisconnected(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionEstablished(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionFailed(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionInitiated(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionNetworkAlerting(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionNetworkReached(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionOffered(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionQueued(final CallControlConnectionEvent event) {
-	}
-
-	@Override
-	public void connectionUnknown(final CallControlConnectionEvent event) {
-	}
-
-	@Override
 	public void terminalConnectionBridged(
-			final CallControlTerminalConnectionEvent event) {
+			CallControlTerminalConnectionEvent event) {
 	}
 
-	@Override
 	public void terminalConnectionDropped(
-			final CallControlTerminalConnectionEvent event) {
+			CallControlTerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionHeld(
-			final CallControlTerminalConnectionEvent event) {
+	public void terminalConnectionHeld(CallControlTerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionInUse(
-			final CallControlTerminalConnectionEvent event) {
+	public void terminalConnectionInUse(CallControlTerminalConnectionEvent event) {
 	}
 
-	@Override
 	public void terminalConnectionRinging(
-			final CallControlTerminalConnectionEvent event) {
+			CallControlTerminalConnectionEvent event) {
 	}
 
-	@Override
 	public void terminalConnectionTalking(
-			final CallControlTerminalConnectionEvent event) {
+			CallControlTerminalConnectionEvent event) {
 	}
 
-	@Override
 	public void terminalConnectionUnknown(
-			final CallControlTerminalConnectionEvent event) {
+			CallControlTerminalConnectionEvent event) {
+	}
+
+	public void connectionAlerting(CallControlConnectionEvent event) {
+	}
+
+	public void connectionDialing(CallControlConnectionEvent event) {
+	}
+
+	public void connectionDisconnected(CallControlConnectionEvent event) {
+	}
+
+	public void connectionEstablished(CallControlConnectionEvent event) {
+	}
+
+	public void connectionFailed(CallControlConnectionEvent event) {
+	}
+
+	public void connectionInitiated(CallControlConnectionEvent event) {
+	}
+
+	public void connectionNetworkAlerting(CallControlConnectionEvent event) {
+	}
+
+	public void connectionNetworkReached(CallControlConnectionEvent event) {
+	}
+
+	public void connectionOffered(CallControlConnectionEvent event) {
+	}
+
+	public void connectionQueued(CallControlConnectionEvent event) {
+	}
+
+	public void connectionUnknown(CallControlConnectionEvent event) {
 	}
 }

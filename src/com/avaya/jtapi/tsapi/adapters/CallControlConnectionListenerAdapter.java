@@ -5,47 +5,36 @@ import javax.telephony.callcontrol.CallControlConnectionListener;
 
 public class CallControlConnectionListenerAdapter extends
 		ConnectionListenerAdapter implements CallControlConnectionListener {
-	@Override
-	public void connectionAlerting(final CallControlConnectionEvent event) {
+	public void connectionAlerting(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionDialing(final CallControlConnectionEvent event) {
+	public void connectionDialing(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionDisconnected(final CallControlConnectionEvent event) {
+	public void connectionDisconnected(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionEstablished(final CallControlConnectionEvent event) {
+	public void connectionEstablished(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionFailed(final CallControlConnectionEvent event) {
+	public void connectionFailed(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionInitiated(final CallControlConnectionEvent event) {
+	public void connectionInitiated(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionNetworkAlerting(final CallControlConnectionEvent event) {
+	public void connectionNetworkAlerting(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionNetworkReached(final CallControlConnectionEvent event) {
+	public void connectionNetworkReached(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionOffered(final CallControlConnectionEvent event) {
+	public void connectionOffered(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionQueued(final CallControlConnectionEvent event) {
+	public void connectionQueued(CallControlConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionUnknown(final CallControlConnectionEvent event) {
+	public void connectionUnknown(CallControlConnectionEvent event) {
 	}
 }

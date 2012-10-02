@@ -13,93 +13,87 @@ public abstract interface Provider {
 	public static final int OUT_OF_SERVICE = 17;
 	public static final int SHUTDOWN = 18;
 
-	public abstract void addObserver(ProviderObserver paramProviderObserver)
-			throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract int getState();
 
-	public abstract void addProviderListener(
-			ProviderListener paramProviderListener)
-			throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract String getName();
+
+	public abstract Call[] getCalls() throws ResourceUnavailableException;
+
+	public abstract Address getAddress(String paramString)
+			throws InvalidArgumentException;
+
+	public abstract Address[] getAddresses()
+			throws ResourceUnavailableException;
+
+	public abstract Terminal[] getTerminals()
+			throws ResourceUnavailableException;
+
+	public abstract Terminal getTerminal(String paramString)
+			throws InvalidArgumentException;
+
+	public abstract void shutdown();
 
 	public abstract Call createCall() throws ResourceUnavailableException,
 			InvalidStateException, PrivilegeViolationException,
 			MethodNotSupportedException;
 
-	public abstract Address getAddress(String paramString)
-			throws InvalidArgumentException;
-
-	public abstract AddressCapabilities getAddressCapabilities();
-
-	/** @deprecated */
-	@Deprecated
-	public abstract AddressCapabilities getAddressCapabilities(
-			Terminal paramTerminal) throws InvalidArgumentException,
-			PlatformException;
-
-	public abstract Address[] getAddresses()
-			throws ResourceUnavailableException;
-
-	public abstract CallCapabilities getCallCapabilities();
-
-	/** @deprecated */
-	@Deprecated
-	public abstract CallCapabilities getCallCapabilities(
-			Terminal paramTerminal, Address paramAddress)
-			throws InvalidArgumentException, PlatformException;
-
-	public abstract Call[] getCalls() throws ResourceUnavailableException;
-
-	public abstract ProviderCapabilities getCapabilities();
-
-	public abstract ConnectionCapabilities getConnectionCapabilities();
-
-	/** @deprecated */
-	@Deprecated
-	public abstract ConnectionCapabilities getConnectionCapabilities(
-			Terminal paramTerminal, Address paramAddress)
-			throws InvalidArgumentException, PlatformException;
-
-	public abstract String getName();
+	public abstract void addObserver(ProviderObserver paramProviderObserver)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
 	public abstract ProviderObserver[] getObservers();
 
+	public abstract void removeObserver(ProviderObserver paramProviderObserver);
+
 	public abstract ProviderCapabilities getProviderCapabilities();
 
+	public abstract CallCapabilities getCallCapabilities();
+
+	public abstract AddressCapabilities getAddressCapabilities();
+
+	public abstract TerminalCapabilities getTerminalCapabilities();
+
+	public abstract ConnectionCapabilities getConnectionCapabilities();
+
+	public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities();
+
+	public abstract ProviderCapabilities getCapabilities();
+
 	/** @deprecated */
-	@Deprecated
 	public abstract ProviderCapabilities getProviderCapabilities(
 			Terminal paramTerminal) throws InvalidArgumentException,
 			PlatformException;
 
-	public abstract ProviderListener[] getProviderListeners();
-
-	public abstract int getState();
-
-	public abstract Terminal getTerminal(String paramString)
-			throws InvalidArgumentException;
-
-	public abstract TerminalCapabilities getTerminalCapabilities();
+	/** @deprecated */
+	public abstract CallCapabilities getCallCapabilities(
+			Terminal paramTerminal, Address paramAddress)
+			throws InvalidArgumentException, PlatformException;
 
 	/** @deprecated */
-	@Deprecated
-	public abstract TerminalCapabilities getTerminalCapabilities(
+	public abstract ConnectionCapabilities getConnectionCapabilities(
+			Terminal paramTerminal, Address paramAddress)
+			throws InvalidArgumentException, PlatformException;
+
+	/** @deprecated */
+	public abstract AddressCapabilities getAddressCapabilities(
 			Terminal paramTerminal) throws InvalidArgumentException,
 			PlatformException;
 
-	public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities();
-
 	/** @deprecated */
-	@Deprecated
 	public abstract TerminalConnectionCapabilities getTerminalConnectionCapabilities(
 			Terminal paramTerminal) throws InvalidArgumentException,
 			PlatformException;
 
-	public abstract Terminal[] getTerminals()
-			throws ResourceUnavailableException;
+	/** @deprecated */
+	public abstract TerminalCapabilities getTerminalCapabilities(
+			Terminal paramTerminal) throws InvalidArgumentException,
+			PlatformException;
 
-	public abstract void removeObserver(ProviderObserver paramProviderObserver);
+	public abstract void addProviderListener(
+			ProviderListener paramProviderListener)
+			throws ResourceUnavailableException, MethodNotSupportedException;
+
+	public abstract ProviderListener[] getProviderListeners();
 
 	public abstract void removeProviderListener(
 			ProviderListener paramProviderListener);
-
-	public abstract void shutdown();
 }

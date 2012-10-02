@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 
 public class ThreadDump extends Thread {
@@ -13,39 +12,55 @@ public class ThreadDump extends Thread {
 
 	private static Logger log = Logger.getLogger(ThreadDump.class);
 
-	public static void dumpJavaThreadsByAPI() {
-		final Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();
-		ThreadDump.log.info(Integer.valueOf(map.size()));
+	public ThreadDump() {
+		super("JTAPI ThreadDump thread#" + ++counter);
+	}
 
-		final Set<Thread> keySet = map.keySet();
-		final Thread[] threads = new Thread[keySet.size()];
+	public static void main(String[] args) {
+		dumpJavaThreadsByAPI();
+	}
+
+	public void run() {
+		try {
+			dumpJavaThreadsByAPI();
+		} catch (Exception ex) {
+			log.error("Exception when doing thread dump:" + ex.getMessage(), ex);
+		}
+	}
+
+	public static void dumpJavaThreadsByAPI() {
+		Map<?, ?> map = Thread.getAllStackTraces();
+		log.info(Integer.valueOf(map.size()));
+
+		Set<?> keySet = map.keySet();
+		Thread[] threads = new Thread[keySet.size()];
 		keySet.toArray(threads);
 
-		for (int i = 0; i < threads.length; ++i) {
-			final Thread t = threads[i];
-			final String daemon = t.isDaemon() ? "Daemon" : "";
-			final String alive = t.isAlive() ? "Alive" : "Dead";
-			final String interrupted = t.isInterrupted() ? "Interrupted" : "";
-			final String heading = t.getName() + ": " + daemon + " prio="
+		for (int i = 0; i < threads.length; i++) {
+			Thread t = threads[i];
+			String daemon = t.isDaemon() ? "Daemon" : "";
+			String alive = t.isAlive() ? "Alive" : "Dead";
+			String interrupted = t.isInterrupted() ? "Interrupted" : "";
+			String heading = t.getName() + ": " + daemon + " prio="
 					+ t.getPriority() + " tid=" + t.getId() + " state="
 					+ t.getState() + " " + alive + " " + interrupted;
-			ThreadDump.log.info(heading);
-			final StackTraceElement[] stes = map.get(t);
-			for (int j = 0; j < stes.length; ++j) {
-				final StackTraceElement ste = stes[j];
-				final String line = ste.getClassName() + "."
-						+ ste.getMethodName() + "(" + ste.getFileName() + ":"
-						+ ste.getLineNumber() + ")";
+			log.info(heading);
+			StackTraceElement[] stes = (StackTraceElement[]) map.get(t);
+			for (int j = 0; j < stes.length; j++) {
+				StackTraceElement ste = stes[j];
+				String line = ste.getClassName() + "." + ste.getMethodName()
+						+ "(" + ste.getFileName() + ":" + ste.getLineNumber()
+						+ ")";
 
-				ThreadDump.log.info("\t at " + line);
+				log.info("\t at " + line);
 			}
 		}
 	}
 
 	public static void dumpJavaThreadsBySignal() {
-		final Runtime rt = Runtime.getRuntime();
+		Runtime rt = Runtime.getRuntime();
 		try {
-			final String[] cmd = { "bash", "-c", "echo $PPID" };
+			String[] cmd = { "bash", "-c", "echo $PPID" };
 			Process p = rt.exec(cmd);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -53,32 +68,14 @@ public class ThreadDump extends Thread {
 
 			String line = null;
 			if ((line = br.readLine()) != null) {
-				ThreadDump.log.info("The parent PID is " + line);
+				log.info("The parent PID is " + line);
 
 				p = rt.exec("kill -QUIT " + line);
 				br = new BufferedReader(new InputStreamReader(
 						p.getInputStream()));
 			}
-		} catch (final IOException e) {
-			ThreadDump.log.error(e.getMessage(), e);
-		}
-	}
-
-	public static void main(final String[] args) {
-		ThreadDump.dumpJavaThreadsByAPI();
-	}
-
-	public ThreadDump() {
-		super("JTAPI ThreadDump thread#" + ++ThreadDump.counter);
-	}
-
-	@Override
-	public void run() {
-		try {
-			ThreadDump.dumpJavaThreadsByAPI();
-		} catch (final Exception ex) {
-			ThreadDump.log.error(
-					"Exception when doing thread dump:" + ex.getMessage(), ex);
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
 		}
 	}
 }

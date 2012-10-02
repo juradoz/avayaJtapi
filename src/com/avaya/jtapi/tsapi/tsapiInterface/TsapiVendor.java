@@ -4,8 +4,8 @@ public final class TsapiVendor {
 	public String name;
 	public String versions;
 
-	public TsapiVendor(final String _name, final String _versions) {
-		name = _name;
-		versions = _versions;
+	public TsapiVendor(String _name, String _versions) {
+		this.name = _name;
+		this.versions = _versions;
 	}
 }

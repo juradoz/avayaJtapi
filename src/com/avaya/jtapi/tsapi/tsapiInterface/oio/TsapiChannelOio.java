@@ -1,5 +1,10 @@
 package com.avaya.jtapi.tsapi.tsapiInterface.oio;
 
+import com.avaya.jtapi.tsapi.TsapiPlatformException;
+import com.avaya.jtapi.tsapi.tsapiInterface.TsapiChannel;
+import com.avaya.jtapi.tsapi.tsapiInterface.TsapiChannelReadHandler;
+import com.avaya.jtapi.tsapi.tsapiInterface.streams.IntelByteArrayInputStream;
+import com.avaya.jtapi.tsapi.tsapiInterface.streams.IntelSocketInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,56 +12,65 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import javax.net.SocketFactory;
-
 import org.apache.log4j.Logger;
 
-import com.avaya.jtapi.tsapi.TsapiPlatformException;
-import com.avaya.jtapi.tsapi.tsapiInterface.TsapiChannel;
-import com.avaya.jtapi.tsapi.tsapiInterface.TsapiChannelReadHandler;
-import com.avaya.jtapi.tsapi.tsapiInterface.streams.IntelByteArrayInputStream;
-import com.avaya.jtapi.tsapi.tsapiInterface.streams.IntelSocketInputStream;
-
 public class TsapiChannelOio implements TsapiChannel {
-	private class OioChannelThread extends Thread {
-		private boolean keepRunning = true;
+	private static Logger log = Logger.getLogger(TsapiChannelOio.class);
+	private OioChannelThread thread;
+	private TsapiChannelReadHandler handler;
+	private Socket sock;
+	private IntelSocketInputStream in;
+	private OutputStream out;
+	private static GenericBrowser browser;
 
-		public OioChannelThread(final String name) {
-			super(name);
-		}
+	public TsapiChannelOio(InetSocketAddress addr, SocketFactory sf)
+			throws IOException {
+		log.info("browser: " + browser.getName());
 
-		@Override
-		public void run() {
-			while (keepRunning)
-				try {
-					final int msgLen = in.readInt();
-					final byte[] msgBuf = new byte[msgLen];
-					in.readFully(msgBuf);
-					final IntelByteArrayInputStream msg = new IntelByteArrayInputStream(
-							msgBuf);
-					handler.handleRead(msg);
-				} catch (final IOException e) {
-					handler.handleException(e);
-				}
-		}
+		this.sock = trySocket(addr, sf);
+		this.in = new IntelSocketInputStream(this.sock.getInputStream());
+		this.out = this.sock.getOutputStream();
+		this.thread = new OioChannelThread("GetEventThread");
+		this.thread.start();
+	}
 
-		public void stopRunning() {
-			keepRunning = false;
+	public void write(ByteArrayOutputStream msg) throws IOException {
+		msg.writeTo(this.out);
+	}
+
+	public void setReadHandler(TsapiChannelReadHandler _handler) {
+		this.handler = _handler;
+	}
+
+	public void close() {
+		try {
+			this.thread.stopRunning();
+			this.out.flush();
+			this.sock.close();
+		} catch (IOException e) {
+			log.error("Exception when closing TsapiChannel: " + e);
 		}
 	}
 
-	private static Logger log = Logger.getLogger(TsapiChannelOio.class);
-	private final OioChannelThread thread;
-	private TsapiChannelReadHandler handler;
-	private final Socket sock;
-	private final IntelSocketInputStream in;
-	private final OutputStream out;
+	public InetSocketAddress getInetSocketAddress() {
+		return (InetSocketAddress) this.sock.getLocalSocketAddress();
+	}
 
-	private static GenericBrowser browser;
+	public static InputStream getProperties() {
+		return browser.findProperties();
+	}
 
-	static {
-		TsapiChannelOio.determineBrowser();
+	private static Socket trySocket(InetSocketAddress addr, SocketFactory sf) {
+		try {
+			return browser.trySocket(addr, sf);
+		} catch (UnknownHostException e) {
+			throw new TsapiPlatformException(4, 0, "address <" + addr
+					+ "> not found");
+		} catch (IOException e) {
+		}
+		throw new TsapiPlatformException(4, 0, "connection to address <" + addr
+				+ "> timed out");
 	}
 
 	private static void determineBrowser() {
@@ -65,78 +79,52 @@ public class TsapiChannelOio implements TsapiChannel {
 
 			Class.forName("netscape.security.AppletSecurityException");
 			Class.forName("netscape.applet.AppletClassLoader");
-			TsapiChannelOio.browser = (GenericBrowser) Class.forName(
+			browser = (GenericBrowser) Class.forName(
 					"com.avaya.jtapi.tsapi.NsBr").newInstance();
 			return;
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			try {
 				Class.forName("com.ms.security.PermissionID");
-				TsapiChannelOio.browser = (GenericBrowser) Class.forName(
+				browser = (GenericBrowser) Class.forName(
 						"com.avaya.jtapi.tsapi.IeBr").newInstance();
 				return;
-			} catch (final Exception e2) {
-				TsapiChannelOio.browser = new GenericBrowser();
+			} catch (Exception e1) {
+				browser = new GenericBrowser();
 			}
 		}
 	}
 
 	public static GenericBrowser getBrowser() {
-		return TsapiChannelOio.browser;
+		return browser;
 	}
 
-	public static InputStream getProperties() {
-		return TsapiChannelOio.browser.findProperties();
+	static {
+		determineBrowser();
 	}
 
-	private static Socket trySocket(final InetSocketAddress addr,
-			final SocketFactory sf) {
-		try {
-			return TsapiChannelOio.browser.trySocket(addr, sf);
-		} catch (final UnknownHostException e) {
-			throw new TsapiPlatformException(4, 0, "address <" + addr
-					+ "> not found");
-		} catch (final IOException e) {
-			throw new TsapiPlatformException(4, 0, "connection to address <"
-					+ addr + "> timed out");
+	private class OioChannelThread extends Thread {
+		private boolean keepRunning = true;
+
+		public OioChannelThread(String name) {
+			super();
 		}
-	}
 
-	public TsapiChannelOio(final InetSocketAddress addr, final SocketFactory sf)
-			throws IOException {
-		TsapiChannelOio.log.info("browser: "
-				+ TsapiChannelOio.browser.getName());
-
-		sock = TsapiChannelOio.trySocket(addr, sf);
-		in = new IntelSocketInputStream(sock.getInputStream());
-		out = sock.getOutputStream();
-		thread = new OioChannelThread("GetEventThread");
-		thread.start();
-	}
-
-	@Override
-	public void close() {
-		try {
-			thread.stopRunning();
-			out.flush();
-			sock.close();
-		} catch (final IOException e) {
-			TsapiChannelOio.log.error("Exception when closing TsapiChannel: "
-					+ e);
+		public void run() {
+			while (this.keepRunning)
+				try {
+					int msgLen = TsapiChannelOio.this.in.readInt();
+					byte[] msgBuf = new byte[msgLen];
+					TsapiChannelOio.this.in.readFully(msgBuf);
+					IntelByteArrayInputStream msg = new IntelByteArrayInputStream(
+							msgBuf);
+					TsapiChannelOio.this.handler.handleRead(msg);
+				} catch (IOException e) {
+					TsapiChannelOio.this.handler.handleException(e);
+				}
 		}
-	}
 
-	@Override
-	public InetSocketAddress getInetSocketAddress() {
-		return (InetSocketAddress) sock.getLocalSocketAddress();
-	}
-
-	@Override
-	public void setReadHandler(final TsapiChannelReadHandler _handler) {
-		handler = _handler;
-	}
-
-	@Override
-	public void write(final ByteArrayOutputStream msg) throws IOException {
-		msg.writeTo(out);
+		public void stopRunning() {
+			this.keepRunning = false;
+		}
 	}
 }

@@ -1,57 +1,56 @@
 package com.avaya.jtapi.tsapi.impl.events.conn;
 
+import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 import javax.telephony.Address;
 import javax.telephony.MetaEvent;
 import javax.telephony.Terminal;
 import javax.telephony.callcontrol.CallControlConnectionEvent;
 
-import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
-
 public class CallControlConnectionEventImpl extends ConnectionEventImpl
 		implements CallControlConnectionEvent {
-	private final String digits;
-	private final int numInQueue;
+	private String digits;
+	private int numInQueue;
 
-	public CallControlConnectionEventImpl(final CallEventParams params,
-			final MetaEvent event, final int eventId, final int numInQueue,
-			final String digits) {
+	public CallControlConnectionEventImpl(CallEventParams params,
+			MetaEvent event, int eventId, int numInQueue, String digits) {
 		super(params, event, eventId);
 		this.numInQueue = numInQueue;
 		this.digits = digits;
 	}
 
-	@Override
-	public int getCallControlCause() {
-		return callEventParams.getCause();
-	}
-
-	@Override
-	public Address getCalledAddress() {
-		return callEventParams.getCalledAddress();
-	}
-
-	@Override
-	public Address getCallingAddress() {
-		return callEventParams.getCallingAddress();
-	}
-
-	@Override
-	public Terminal getCallingTerminal() {
-		return callEventParams.getCallingTerminal();
-	}
-
-	@Override
 	public String getDigits() {
-		return digits;
+		return this.digits;
 	}
 
-	@Override
-	public Address getLastRedirectedAddress() {
-		return callEventParams.getLastRedirectionAddress();
-	}
-
-	@Override
 	public int getNumberInQueue() {
-		return numInQueue;
+		return this.numInQueue;
+	}
+
+	public Address getCalledAddress() {
+		return this.callEventParams.getCalledAddress();
+	}
+
+	public Address getCallingAddress() {
+		return this.callEventParams.getCallingAddress();
+	}
+
+	public Terminal getCallingTerminal() {
+		return this.callEventParams.getCallingTerminal();
+	}
+
+	public Address getLastRedirectedAddress() {
+		return this.callEventParams.getLastRedirectionAddress();
+	}
+
+	public int getCallControlCause() {
+		int cause = this.callEventParams.getCause();
+		if ((cause == 101) || (cause == 202) || (cause == 203)
+				|| (cause == 204) || (cause == 205) || (cause == 206)
+				|| (cause == 207) || (cause == 208) || (cause == 209)
+				|| (cause == 210) || (cause == 211) || (cause == 212)
+				|| (cause == 213) || (cause == 214)) {
+			return cause;
+		}
+		return 100;
 	}
 }

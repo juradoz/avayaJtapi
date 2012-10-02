@@ -1,9 +1,5 @@
 package com.avaya.jtapi.tsapi.impl.core;
 
-import java.util.Vector;
-
-import org.apache.log4j.Logger;
-
 import com.avaya.jtapi.tsapi.ITsapiException;
 import com.avaya.jtapi.tsapi.LucentAgentStateInfoEx;
 import com.avaya.jtapi.tsapi.LucentV5AgentStateInfo;
@@ -19,10 +15,12 @@ import com.avaya.jtapi.tsapi.csta1.LucentV6SetAgentState;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiAddressMonitor;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiTerminalMonitor;
 import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
+import java.util.Vector;
+import org.apache.log4j.Logger;
 
 public final class TSAgent {
 	private static Logger log = Logger.getLogger(TSAgent.class);
-	private final TSProviderImpl provider;
+	private TSProviderImpl provider;
 	TSDevice agentDevice;
 	private int state;
 	private int lucentWorkMode;
@@ -32,106 +30,141 @@ public final class TSAgent {
 	private int pendingReasonCode;
 	private String agentID;
 	private TSDevice acdDevice;
-	private final String passwd;
-	private final TSAgentKey agentKey;
+	private String passwd;
+	private TSAgentKey agentKey;
 	boolean constructed = false;
 	private Vector<TSDevice> skillsVector;
 	private int refCount = 0;
+	private ParentAgent parentAgent;
 
-	TSAgent(final TSProviderImpl _provider, final TSAgentKey _agentKey,
-			final String _passwd) {
-		constructed = false;
-		provider = _provider;
-		passwd = _passwd;
-		agentKey = _agentKey;
-		lucentWorkMode = -1;
-		state = 0;
-		workMode = 0;
-		reasonCode = 0;
-		pendingState = 0;
-		pendingReasonCode = 0;
-
-		TSAgent.log.info("constructing TSAgent with agentKey=" + agentKey
-				+ " for " + provider);
+	void dump(String indent) {
+		log.trace(indent + "***** AGENT DUMP *****");
+		log.trace(indent + "TSAgent: " + this);
+		log.trace(indent + "TSAgent ID: " + this.agentID);
+		log.trace(indent + "TSAgent key: " + this.agentKey);
+		log.trace(indent + "TSAgent state: " + this.state);
+		log.trace(indent + "TSAgent workMode: " + this.workMode);
+		log.trace(indent + "TSAgent agentDevice: " + this.agentDevice);
+		log.trace(indent + "TSAgent acdDevice: " + this.acdDevice);
+		log.trace(indent + "***** AGENT DUMP END *****");
 	}
 
-	void addToSkillsVector(final String acdDeviceID) {
-		final TSDevice skillDevice = provider.createDevice(acdDeviceID);
-		if (skillsVector.contains(skillDevice))
-			return;
-		sendAgentSnapshot(skillDevice);
-		skillsVector.addElement(provider.createDevice(acdDeviceID));
-		skillDevice.addToACDVector(this);
+	public TSProviderImpl getTSProviderImpl() {
+		return this.provider;
 	}
 
-	private LucentSetAgentState createLucentSetAgentState(final int workMode) {
-		return createLucentSetAgentState(workMode, 0, false);
+	Vector<TsapiTerminalMonitor> getTerminalObservers() {
+		return this.agentDevice.getTerminalObservers();
 	}
 
-	private LucentSetAgentState createLucentSetAgentState(final int workMode,
-			final int reasonCode) {
-		return createLucentSetAgentState(workMode, reasonCode, false);
+	void updateState(int _state, int _workMode, int _reasonCode,
+			Vector<TSEvent> eventList) {
+		updateState(_state, _workMode, _reasonCode, 0, 0, eventList);
 	}
 
-	private LucentSetAgentState createLucentSetAgentState(final int workMode,
-			final int reasonCode, final boolean enablePending) {
-		if (provider.isLucentV6())
-			return new LucentV6SetAgentState((short) workMode, reasonCode,
-					enablePending);
-		if (provider.isLucentV5())
-			return new LucentV5SetAgentState((short) workMode, reasonCode);
-		return new LucentSetAgentState((short) workMode);
+	void updateState(int _state, int _workMode, int _reasonCode,
+			int _pendingState, int _pendingReasonCode, Vector<TSEvent> eventList) {
+		updateState(_state, _workMode, _reasonCode, _pendingState,
+				_pendingReasonCode, -1, eventList);
 	}
 
-	synchronized void delete() {
-		TSAgent.log.info("Agent object=" + this + "being deleted" + " for "
-				+ provider);
+	void updateState(int _state, int _workMode, int _reasonCode,
+			int _pendingState, int _pendingReasonCode, int _lucentworkmode,
+			Vector<TSEvent> eventList) {
+		boolean stateChange = false;
+		synchronized (this) {
+			if (((this.state == _state) && (this.workMode == _workMode)
+					&& (this.reasonCode == _reasonCode)
+					&& (this.pendingState == _pendingState)
+					&& (this.pendingReasonCode == _pendingReasonCode) && (this.lucentWorkMode == _lucentworkmode))
+					|| (this.state == 2)) {
+				return;
+			}
 
-		if (agentKey == null)
-			return;
-		provider.deleteAgentFromHash(agentKey);
-		provider.addAgentToSaveHash(this);
-	}
-
-	void dump(final String indent) {
-		TSAgent.log.trace(indent + "***** AGENT DUMP *****");
-		TSAgent.log.trace(indent + "TSAgent: " + this);
-		TSAgent.log.trace(indent + "TSAgent ID: " + agentID);
-		TSAgent.log.trace(indent + "TSAgent key: " + agentKey);
-		TSAgent.log.trace(indent + "TSAgent state: " + state);
-		TSAgent.log.trace(indent + "TSAgent workMode: " + workMode);
-		TSAgent.log.trace(indent + "TSAgent agentDevice: " + agentDevice);
-		TSAgent.log.trace(indent + "TSAgent acdDevice: " + acdDevice);
-		TSAgent.log.trace(indent + "***** AGENT DUMP END *****");
-	}
-
-	synchronized void finishConstruction() {
-		agentDevice = provider.createDevice(agentKey.agentDeviceID);
-		if (agentKey.acdDeviceID != null) {
-			acdDevice = provider.createDevice(agentKey.acdDeviceID);
-			acdDevice.addToACDVector(this);
+			if (this.state != _state) {
+				stateChange = true;
+			}
+			this.state = _state;
+			this.workMode = _workMode;
 		}
-		if (agentKey.agentID != null)
-			agentID = agentKey.agentID;
-		agentDevice.addToAgentTermVector(this);
-		skillsVector = new Vector<TSDevice>();
-		constructed = true;
-		super.notifyAll();
+
+		this.reasonCode = _reasonCode;
+		this.pendingState = _pendingState;
+		this.pendingReasonCode = _pendingReasonCode;
+		this.lucentWorkMode = _lucentworkmode;
+
+		if (this.parentAgent == null) {
+			updateParentAgent();
+		}
+
+		if (stateChange) {
+			Vector<TSEvent> localEventList = new Vector<TSEvent>();
+
+			getEvent(this.state, localEventList);
+			if (eventList == null) {
+				if (localEventList.size() > 0) {
+					Vector<?> observers = null;
+					if (this.acdDevice != null) {
+						observers = this.acdDevice.getAddressObservers();
+						for (int j = 0; j < observers.size(); j++) {
+							TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+									.elementAt(j);
+							callback.deliverEvents(localEventList, false);
+						}
+
+					} else {
+						for (int i = 0; i < this.skillsVector.size(); i++) {
+							TSDevice skillDevice = (TSDevice) this.skillsVector
+									.elementAt(i);
+							observers = skillDevice.getAddressObservers();
+							for (int j = 0; j < localEventList.size(); j++) {
+								TSEvent ev = (TSEvent) localEventList
+										.elementAt(j);
+								Object tsTarget = ev.getEventTarget();
+								if ((tsTarget instanceof TSAgent)) {
+									ev.setSkillDevice(skillDevice);
+								}
+							}
+							for (int j = 0; j < observers.size(); j++) {
+								TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+										.elementAt(j);
+								callback.deliverEvents(localEventList, false);
+							}
+						}
+					}
+
+					Vector<?> tObservers = getTerminalObservers();
+					for (int j = 0; j < tObservers.size(); j++) {
+						TsapiTerminalMonitor callback = (TsapiTerminalMonitor) tObservers
+								.elementAt(j);
+						callback.deliverEvents(localEventList, false);
+					}
+				}
+
+				this.parentAgent.deliverEventsToOtherSkills(this,
+						localEventList, this.acdDevice);
+			} else {
+				for (int i = 0; i < localEventList.size(); i++) {
+					eventList.addElement(localEventList.elementAt(i));
+				}
+			}
+		}
+
+		if (this.state == 2) {
+			this.agentDevice.removeFromAgentTermVector(this);
+			if (this.acdDevice != null) {
+				this.acdDevice.removeFromACDVector(this);
+			} else {
+				for (int i = 0; i < this.skillsVector.size(); i++) {
+					((TSDevice) this.skillsVector.elementAt(i))
+							.removeFromACDVector(this);
+				}
+			}
+			delete();
+		}
 	}
 
-	TSDevice getACDDeviceID() {
-		return acdDevice;
-	}
-
-	public String getAgentID() {
-		return agentID;
-	}
-
-	TSAgentKey getAgentKey() {
-		return agentKey;
-	}
-
-	void getEvent(final int state, final Vector<TSEvent> localEventList) {
+	void getEvent(int state, Vector<TSEvent> localEventList) {
 		switch (state) {
 		case 1:
 			localEventList.addElement(new TSEvent(40, this));
@@ -160,147 +193,52 @@ public final class TSAgent {
 		case 7:
 			localEventList.addElement(new TSEvent(46, this));
 			localEventList.addElement(new TSEvent(53, this));
+			break;
 		}
 	}
 
-	int getInternalState() {
-		return state;
-	}
-
-	private String getMyCustomString() {
-		return "[" + agentKey + "]";
-	}
-
-	Vector<TSDevice> getSkillsVector() {
-		return skillsVector;
-	}
-
-	void getSnapshot(final Vector<TSEvent> eventList) {
-		if (eventList == null)
-			return;
-		getEvent(state, eventList);
-	}
-
-	public int getState() {
-		if (state == 2 || monitorIsSet()
-				&& provider.getCapabilities().getReadyEvent() != 0)
-			return state;
-		if (provider.getCapabilities().getQueryAgentState() != 0) {
-			CSTAPrivate priv = null;
-
-			if (provider.isLucent() && acdDevice != null) {
-				final LucentQueryAgentState lqas = new LucentQueryAgentState(
-						acdDevice.getName());
-				priv = lqas.makeTsapiPrivate();
-			}
-
-			final ConfHandler handler = new QueryAgentStateConfHandler(this);
-			try {
-				provider.tsapi.queryAgentState(agentDevice.getName(), priv,
-						handler);
-			} catch (final TsapiPlatformException e) {
-				throw e;
-			} catch (final Exception e) {
-				if (e instanceof ITsapiException)
-					throw new TsapiPlatformException(
-							((ITsapiException) e).getErrorType(),
-							((ITsapiException) e).getErrorCode(),
-							"queryAgentState failure");
-				throw new TsapiPlatformException(4, 0,
-						"queryAgentState failure");
-			}
-			return state;
+	private LucentSetAgentState createLucentSetAgentState(int workMode,
+			int reasonCode, boolean enablePending) {
+		if (this.provider.isLucentV6())
+			return new LucentV6SetAgentState((short) workMode, reasonCode,
+					enablePending);
+		if (this.provider.isLucentV5()) {
+			return new LucentV5SetAgentState((short) workMode, reasonCode);
 		}
-
-		return state;
+		return new LucentSetAgentState((short) workMode);
 	}
 
-	public LucentAgentStateInfoEx getStateInfo() {
-		getState();
-
-		if (provider.isLucentV5()) {
-			if (provider.isLucentV6())
-				return new LucentV6AgentStateInfoEx(state, workMode,
-						reasonCode, pendingState, pendingReasonCode,
-						lucentWorkMode);
-			return new LucentV5AgentStateInfo(state, workMode, reasonCode);
-		}
-
-		return new LucentAgentStateInfoEx(state, workMode);
+	private LucentSetAgentState createLucentSetAgentState(int workMode,
+			int reasonCode) {
+		return createLucentSetAgentState(workMode, reasonCode, false);
 	}
 
-	Vector<TsapiTerminalMonitor> getTerminalObservers() {
-		return agentDevice.getTerminalObservers();
+	private LucentSetAgentState createLucentSetAgentState(int workMode) {
+		return createLucentSetAgentState(workMode, 0, false);
 	}
 
-	public TSDevice getTSACDDevice() {
-		return acdDevice;
-	}
-
-	public TSDevice getTSAgentDevice() {
-		return agentDevice;
-	}
-
-	public TSProviderImpl getTSProviderImpl() {
-		return provider;
-	}
-
-	boolean isReferenced() {
-		return refCount > 0;
-	}
-
-	boolean monitorIsSet() {
-		if (acdDevice != null) {
-			if (acdDevice.getAddressObservers().size() > 0)
-				return true;
-		} else
-			for (int i = 0; i < skillsVector.size(); ++i)
-				if (skillsVector.elementAt(i).getAddressObservers().size() > 0)
-					return true;
-		return agentDevice.getTerminalObservers().size() > 0;
-	}
-
-	public void referenced() {
-		refCount += 1;
-	}
-
-	void sendAgentSnapshot(final TSDevice skillDevice) {
-		final Vector<TSEvent> localEventList = new Vector<TSEvent>();
-		getEvent(state, localEventList);
-
-		for (int i = 0; i < localEventList.size(); ++i) {
-			final TSEvent ev = localEventList.elementAt(i);
-			ev.setSkillDevice(skillDevice);
-		}
-		final Vector<TsapiAddressMonitor> observers = skillDevice
-				.getAddressObservers();
-
-		for (int j = 0; j < observers.size(); ++j) {
-			final TsapiAddressMonitor callback = observers.elementAt(j);
-			callback.deliverEvents(localEventList, true);
-		}
-	}
-
-	void setState(final int _state, final int _workMode, final int _reasonCode)
+	void setState(int _state, int _workMode, int _reasonCode)
 			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
 		setState(_state, _workMode, _reasonCode, false);
 	}
 
-	public boolean setState(final int _state, final int _workMode,
-			final int _reasonCode, final boolean _enablePending)
-			throws TsapiInvalidArgumentException, TsapiInvalidStateException {
+	public boolean setState(int _state, int _workMode, int _reasonCode,
+			boolean _enablePending) throws TsapiInvalidArgumentException,
+			TsapiInvalidStateException {
 		int effectivePendingReasonCode = 0;
 
-		if (state == _state && workMode == _workMode
-				&& reasonCode == _reasonCode || state == 2)
+		if (((this.state == _state) && (this.workMode == _workMode) && (this.reasonCode == _reasonCode))
+				|| (this.state == 2)) {
 			return false;
+		}
 
-		if (_state != 1 && _state != 2 && _state != 4 && _state != 3
-				&& _state != 6 && _state != 5)
+		if ((_state != 1) && (_state != 2) && (_state != 4) && (_state != 3)
+				&& (_state != 6) && (_state != 5)) {
 			throw new TsapiInvalidArgumentException(3, 0, "state not valid");
+		}
 
 		CSTAPrivate reqPriv = null;
-		if (provider.isLucent()) {
+		if (this.provider.isLucent()) {
 			LucentSetAgentState lsas = null;
 
 			if (_state == 3) {
@@ -309,153 +247,316 @@ public final class TSAgent {
 
 				effectivePendingReasonCode = _reasonCode;
 			}
-			if (_state == 4 && _workMode != 0)
+			if ((_state == 4) && (_workMode != 0)) {
 				if (_workMode == 1)
 					lsas = createLucentSetAgentState(3);
 				else if (_workMode == 2)
 					lsas = createLucentSetAgentState(4);
-			if (_state == 5)
+			}
+			if (_state == 5) {
 				lsas = createLucentSetAgentState(-1, 0, _enablePending);
-			if (_state == 2 && provider.isLucentV5())
+			}
+			if ((_state == 2) && (this.provider.isLucentV5())) {
 				lsas = createLucentSetAgentState(-1, _reasonCode);
-			if (lsas != null)
+			}
+			if (lsas != null) {
 				reqPriv = lsas.makeTsapiPrivate();
-		}
-		if (acdDevice != null)
-			agentDevice.setTSAgent(acdDevice.getName(), _state, agentID,
-					passwd, reqPriv);
-		else
-			agentDevice.setTSAgent(null, _state, agentID, passwd, reqPriv);
-		if (agentDevice.wereChangesHeldPending())
-			updateState(state, workMode, reasonCode, _state,
-					effectivePendingReasonCode, null);
-		else
-			updateState(_state, _workMode, _reasonCode, null);
-
-		return agentDevice.wereChangesHeldPending();
-	}
-
-	@Override
-	public String toString() {
-		return "TSAgent" + getMyCustomString() + "@"
-				+ Integer.toHexString(super.hashCode());
-	}
-
-	public void unreferenced() {
-		if (isReferenced())
-			refCount -= 1;
-
-		if (isReferenced() || agentDevice == null)
-			return;
-		agentDevice.testDelete();
-	}
-
-	void updateState(final int _state, final int _workMode,
-			final int _reasonCode, final int _pendingState,
-			final int _pendingReasonCode, final int _lucentworkmode,
-			final Vector<TSEvent> eventList) {
-		boolean stateChange = false;
-		synchronized (this) {
-			if (state == _state && workMode == _workMode
-					&& reasonCode == _reasonCode
-					&& pendingState == _pendingState
-					&& pendingReasonCode == _pendingReasonCode
-					&& lucentWorkMode == _lucentworkmode || state == 2)
-				return;
-
-			if (state != _state)
-				stateChange = true;
-			state = _state;
-			workMode = _workMode;
-		}
-
-		reasonCode = _reasonCode;
-		pendingState = _pendingState;
-		pendingReasonCode = _pendingReasonCode;
-		lucentWorkMode = _lucentworkmode;
-
-		if (stateChange) {
-			final Vector<TSEvent> localEventList = new Vector<TSEvent>();
-
-			getEvent(state, localEventList);
-			if (eventList == null) {
-				if (localEventList.size() > 0) {
-					Vector<TsapiAddressMonitor> observers = null;
-					if (acdDevice != null) {
-						observers = acdDevice.getAddressObservers();
-						for (int j = 0; j < observers.size(); ++j) {
-							final TsapiAddressMonitor callback = observers
-									.elementAt(j);
-							callback.deliverEvents(localEventList, false);
-						}
-
-					} else
-						for (int i = 0; i < skillsVector.size(); ++i) {
-							final TSDevice skillDevice = skillsVector
-									.elementAt(i);
-							observers = skillDevice.getAddressObservers();
-							for (int j = 0; j < localEventList.size(); ++j) {
-								final TSEvent ev = localEventList.elementAt(j);
-								final Object tsTarget = ev.getEventTarget();
-								if (!(tsTarget instanceof TSAgent))
-									continue;
-								ev.setSkillDevice(skillDevice);
-							}
-
-							for (int j = 0; j < observers.size(); ++j) {
-								final TsapiAddressMonitor callback = observers
-										.elementAt(j);
-								callback.deliverEvents(localEventList, false);
-							}
-						}
-
-					final Vector<TsapiTerminalMonitor> tObservers = getTerminalObservers();
-					for (int j = 0; j < tObservers.size(); ++j) {
-						final TsapiTerminalMonitor callback = tObservers
-								.elementAt(j);
-						callback.deliverEvents(localEventList, false);
-					}
-				}
-			} else {
-				int i;
-				for (i = 0; i < localEventList.size(); ++i)
-					eventList.addElement(localEventList.elementAt(i));
 			}
 		}
+		if (this.acdDevice != null)
+			this.agentDevice.setTSAgent(this.acdDevice.getName(), _state,
+					this.agentID, this.passwd, reqPriv);
+		else {
+			this.agentDevice.setTSAgent(null, _state, this.agentID,
+					this.passwd, reqPriv);
+		}
 
-		if (state != 2)
+		if ((_state == 2) && (monitorIsSet())) {
+			return this.agentDevice.wereChangesHeldPending();
+		}
+
+		if (this.agentDevice.wereChangesHeldPending()) {
+			updateState(this.state, this.workMode, this.reasonCode, _state,
+					effectivePendingReasonCode, null);
+		} else {
+			updateState(_state, _workMode, _reasonCode, null);
+		}
+
+		return this.agentDevice.wereChangesHeldPending();
+	}
+
+	int getInternalState() {
+		return this.state;
+	}
+
+	void copyAgentState(TSAgent agent) {
+		this.state = agent.state;
+		this.workMode = agent.workMode;
+		this.lucentWorkMode = agent.lucentWorkMode;
+		this.reasonCode = agent.reasonCode;
+		this.pendingState = agent.pendingState;
+		this.pendingReasonCode = agent.pendingReasonCode;
+	}
+
+	void updateAgentState() {
+		this.state = this.parentAgent.getState();
+		this.workMode = this.parentAgent.getWorkMode();
+		this.lucentWorkMode = this.parentAgent.getLucentWorkMode();
+		this.reasonCode = this.parentAgent.getReasonCode();
+		this.pendingState = this.parentAgent.getPendingState();
+		this.pendingReasonCode = this.parentAgent.getPendingReasonCode();
+	}
+
+	public int getState() {
+		if ((this.state == 2)
+				|| ((monitorIsSet()) && (this.provider.getCapabilities()
+						.getReadyEvent() != 0))) {
+			return this.state;
+		}
+		if (this.provider.getCapabilities().getQueryAgentState() != 0) {
+			CSTAPrivate priv = null;
+
+			if ((this.provider.isLucent()) && (this.acdDevice != null)) {
+				LucentQueryAgentState lqas = new LucentQueryAgentState(
+						this.acdDevice.getName());
+				priv = lqas.makeTsapiPrivate();
+			}
+
+			ConfHandler handler = new QueryAgentStateConfHandler(this);
+			try {
+				this.provider.tsapi.queryAgentState(this.agentDevice.getName(),
+						priv, handler);
+			} catch (TsapiPlatformException e) {
+				throw e;
+			} catch (Exception e) {
+				if ((e instanceof ITsapiException)) {
+					throw new TsapiPlatformException(
+							((ITsapiException) e).getErrorType(),
+							((ITsapiException) e).getErrorCode(),
+							"queryAgentState failure");
+				}
+				throw new TsapiPlatformException(4, 0,
+						"queryAgentState failure");
+			}
+			return this.state;
+		}
+
+		return this.state;
+	}
+
+	boolean monitorIsSet() {
+		if (this.acdDevice != null) {
+			if (this.acdDevice.getAddressObservers().size() > 0) {
+				return true;
+			}
+		} else {
+			for (int i = 0; i < this.skillsVector.size(); i++) {
+				if (((TSDevice) this.skillsVector.elementAt(i))
+						.getAddressObservers().size() > 0)
+					return true;
+			}
+		}
+		if (this.agentDevice.getTerminalObservers().size() > 0)
+			return true;
+		return false;
+	}
+
+	void getSnapshot(Vector<TSEvent> eventList, boolean isTerminalSnapshot) {
+		if (eventList == null) {
 			return;
-		agentDevice.removeFromAgentTermVector(this);
-		if (acdDevice != null)
-			acdDevice.removeFromACDVector(this);
-		else
-			for (int i = 0; i < skillsVector.size(); ++i)
-				skillsVector.elementAt(i).removeFromACDVector(this);
-		delete();
+		}
+		updateAgentState();
+		if (!isTerminalSnapshot)
+			getEvent(this.state, eventList);
 	}
 
-	void updateState(final int _state, final int _workMode,
-			final int _reasonCode, final int _pendingState,
-			final int _pendingReasonCode, final Vector<TSEvent> eventList) {
-		updateState(_state, _workMode, _reasonCode, _pendingState,
-				_pendingReasonCode, -1, eventList);
+	public LucentAgentStateInfoEx getStateInfo() {
+		getState();
+
+		if (this.provider.isLucentV5()) {
+			if (this.provider.isLucentV6()) {
+				return new LucentV6AgentStateInfoEx(this.state, this.workMode,
+						this.reasonCode, this.pendingState,
+						this.pendingReasonCode, this.lucentWorkMode);
+			}
+			return new LucentV5AgentStateInfo(this.state, this.workMode,
+					this.reasonCode);
+		}
+
+		return new LucentAgentStateInfoEx(this.state, this.workMode);
 	}
 
-	void updateState(final int _state, final int _workMode,
-			final int _reasonCode, final Vector<TSEvent> eventList) {
-		updateState(_state, _workMode, _reasonCode, 0, 0, eventList);
+	public TSDevice getTSAgentDevice() {
+		return this.agentDevice;
+	}
+
+	public TSDevice getTSACDDevice() {
+		return this.acdDevice;
+	}
+
+	public String getAgentID() {
+		return this.agentID;
+	}
+
+	TSAgentKey getAgentKey() {
+		return this.agentKey;
+	}
+
+	TSAgent(TSProviderImpl _provider, TSAgentKey _agentKey, String _passwd) {
+		this.constructed = false;
+		this.provider = _provider;
+		this.passwd = _passwd;
+		this.agentKey = _agentKey;
+		this.lucentWorkMode = -1;
+		this.state = 0;
+		this.workMode = 0;
+		this.reasonCode = 0;
+		this.pendingState = 0;
+		this.pendingReasonCode = 0;
+
+		log.info("constructing TSAgent with agentKey=" + this.agentKey
+				+ " for " + this.provider);
+	}
+
+	synchronized void finishConstruction() {
+		this.agentDevice = this.provider
+				.createDevice(this.agentKey.agentDeviceID);
+		if (this.agentKey.acdDeviceID != null) {
+			this.acdDevice = this.provider
+					.createDevice(this.agentKey.acdDeviceID);
+			this.acdDevice.addToACDVector(this);
+		}
+		if (this.agentKey.agentID != null)
+			this.agentID = this.agentKey.agentID;
+		this.agentDevice.addToAgentTermVector(this);
+		this.skillsVector = new Vector<TSDevice>();
+		this.constructed = true;
+
+		if (this.parentAgent == null) {
+			updateParentAgent();
+		}
+		notifyAll();
 	}
 
 	synchronized void waitForConstruction() {
-		if (constructed)
-			return;
-		try {
-			super.wait(TSProviderImpl.DEFAULT_TIMEOUT);
-		} catch (final InterruptedException e) {
+		if (!this.constructed) {
+			try {
+				wait(TSProviderImpl.DEFAULT_TIMEOUT);
+			} catch (InterruptedException e) {
+			}
+			if (!this.constructed) {
+				throw new TsapiPlatformException(4, 0,
+						"could not finish agent construction");
+			}
 		}
-		if (constructed)
-			return;
-		throw new TsapiPlatformException(4, 0,
-				"could not finish agent construction");
+	}
+
+	TSDevice getACDDeviceID() {
+		return this.acdDevice;
+	}
+
+	void addToSkillsVector(String acdDeviceID) {
+		TSDevice skillDevice = this.provider.createDevice(acdDeviceID);
+		if (!this.skillsVector.contains(skillDevice)) {
+			sendAgentSnapshot(skillDevice);
+			this.skillsVector.addElement(this.provider
+					.createDevice(acdDeviceID));
+			skillDevice.addToACDVector(this);
+		}
+	}
+
+	Vector<TSDevice> getSkillsVector() {
+		return this.skillsVector;
+	}
+
+	void sendAgentSnapshot(TSDevice skillDevice) {
+		Vector<TSEvent> localEventList = new Vector<TSEvent>();
+		getEvent(this.state, localEventList);
+
+		for (int i = 0; i < localEventList.size(); i++) {
+			TSEvent ev = (TSEvent) localEventList.elementAt(i);
+			ev.setSkillDevice(skillDevice);
+		}
+		Vector<?> observers = skillDevice.getAddressObservers();
+
+		for (int j = 0; j < observers.size(); j++) {
+			TsapiAddressMonitor callback = (TsapiAddressMonitor) observers
+					.elementAt(j);
+			callback.deliverEvents(localEventList, true);
+		}
+	}
+
+	synchronized void delete() {
+		log.info("Agent object=" + this + "being deleted" + " for "
+				+ this.provider);
+
+		if (this.agentKey != null) {
+			this.provider.deleteAgentFromHash(this.agentKey);
+			this.provider.addAgentToSaveHash(this);
+		}
+	}
+
+	public String toString() {
+		return "TSAgent" + getMyCustomString() + "@"
+				+ Integer.toHexString(hashCode());
+	}
+
+	private String getMyCustomString() {
+		return "[" + this.agentKey + "]";
+	}
+
+	public void referenced() {
+		this.refCount += 1;
+	}
+
+	public void unreferenced() {
+		if (isReferenced()) {
+			this.refCount -= 1;
+		}
+
+		if (!isReferenced()) {
+			if (this.agentDevice != null) {
+				this.agentDevice.testDelete();
+			}
+		}
+	}
+
+	boolean isReferenced() {
+		return this.refCount > 0;
+	}
+
+	void updateParentAgent() {
+		if (this.parentAgent == null) {
+			TSAgentKey parentAgentKey = new TSAgentKey(
+					this.agentKey.agentDeviceID, null, this.agentKey.agentID);
+			log.info("ParentAgent Object " + parentAgentKey
+					+ " being created for provider " + this.provider);
+			this.parentAgent = this.provider.createParentAgent(parentAgentKey);
+			this.parentAgent.addSkill(this.acdDevice);
+		}
+	}
+
+	public ParentAgent getParentAgent() {
+		return this.parentAgent;
+	}
+
+	public int getLucentWorkMode() {
+		return this.lucentWorkMode;
+	}
+
+	public int getWorkMode() {
+		return this.workMode;
+	}
+
+	public int getReasonCode() {
+		return this.reasonCode;
+	}
+
+	public int getPendingState() {
+		return this.pendingState;
+	}
+
+	public int getPendingReasonCode() {
+		return this.pendingReasonCode;
 	}
 }

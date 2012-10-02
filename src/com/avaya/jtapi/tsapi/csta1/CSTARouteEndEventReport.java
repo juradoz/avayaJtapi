@@ -5,81 +5,74 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-
 public final class CSTARouteEndEventReport extends CSTAEventReport {
 	int routeRegisterReqID;
 	int routingCrossRefID;
 	short cause;
 	public static final int PDU = 87;
 
-	public static CSTARouteEndEventReport decode(final InputStream in) {
-		final CSTARouteEndEventReport _this = new CSTARouteEndEventReport();
+	public static CSTARouteEndEventReport decode(InputStream in) {
+		CSTARouteEndEventReport _this = new CSTARouteEndEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		routeRegisterReqID = ASNInteger.decode(memberStream);
-		routingCrossRefID = ASNInteger.decode(memberStream);
-		cause = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.routeRegisterReqID = RouteRegisterReqID.decode(memberStream);
+		this.routingCrossRefID = RoutingCrossRefID.decode(memberStream);
+		this.cause = CSTAUniversalFailure.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNInteger.encode(routeRegisterReqID, memberStream);
-		ASNInteger.encode(routingCrossRefID, memberStream);
-		ASNEnumerated.encode(cause, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		RouteRegisterReqID.encode(this.routeRegisterReqID, memberStream);
+		RoutingCrossRefID.encode(this.routingCrossRefID, memberStream);
+		CSTAUniversalFailure.encode(this.cause, memberStream);
 	}
 
-	public short getCause() {
-		return cause;
-	}
-
-	@Override
-	public int getPDU() {
-		return 87;
-	}
-
-	public int getRouteRegisterReqID() {
-		return routeRegisterReqID;
-	}
-
-	public int getRoutingCrossRefID() {
-		return routingCrossRefID;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteEndEventReport ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
-				indent));
-		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
-				indent));
-		lines.addAll(CSTAUniversalFailure.print(cause, "cause", indent));
+		lines.addAll(RouteRegisterReqID.print(this.routeRegisterReqID,
+				"routeRegisterReqID", indent));
+		lines.addAll(RoutingCrossRefID.print(this.routingCrossRefID,
+				"routingCrossRefID", indent));
+		lines.addAll(CSTAUniversalFailure.print(this.cause, "cause", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCause(final short cause) {
+	public int getPDU() {
+		return 87;
+	}
+
+	public short getCause() {
+		return this.cause;
+	}
+
+	public int getRouteRegisterReqID() {
+		return this.routeRegisterReqID;
+	}
+
+	public int getRoutingCrossRefID() {
+		return this.routingCrossRefID;
+	}
+
+	public void setCause(short cause) {
 		this.cause = cause;
 	}
 
-	public void setRouteRegisterReqID(final int routeRegisterReqID) {
+	public void setRouteRegisterReqID(int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(final int routingCrossRefID) {
+	public void setRoutingCrossRefID(int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }

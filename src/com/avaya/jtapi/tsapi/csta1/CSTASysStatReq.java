@@ -1,43 +1,38 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNNull;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNNull;
-
 public class CSTASysStatReq extends CSTARequest {
 	public static final int PDU = 98;
 
-	public static CSTASysStatReq decode(final InputStream in) {
-		final CSTASysStatReq _this = new CSTASysStatReq();
-		_this.doDecode(in);
-		return _this;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		ASNNull.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNNull.encode(memberStream);
-	}
-
-	@Override
 	public int getPDU() {
 		return 98;
 	}
 
-	@Override
+	public void encodeMembers(OutputStream memberStream) {
+		ASNNull.encode(memberStream);
+	}
+
+	public static CSTASysStatReq decode(InputStream in) {
+		CSTASysStatReq _this = new CSTASysStatReq();
+		_this.doDecode(in);
+		return _this;
+	}
+
+	public void decodeMembers(InputStream memberStream) {
+		ASNNull.decode(memberStream);
+	}
+
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatReq ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
 		lines.addAll(ASNNull.print(indent));
 

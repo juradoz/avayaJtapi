@@ -13,13 +13,12 @@ public abstract interface AgentTerminal extends Terminal {
 			String paramString2) throws InvalidArgumentException,
 			InvalidStateException, ResourceUnavailableException;
 
-	public abstract Agent[] getAgents();
-
 	public abstract void removeAgent(Agent paramAgent)
 			throws InvalidArgumentException, InvalidStateException;
 
+	public abstract Agent[] getAgents();
+
 	/** @deprecated */
-	@Deprecated
 	public abstract void setAgents(Agent[] paramArrayOfAgent)
 			throws MethodNotSupportedException;
 }

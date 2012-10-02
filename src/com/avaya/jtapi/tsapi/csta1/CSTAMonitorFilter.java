@@ -1,34 +1,67 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNBitString;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTAMonitorFilter extends ASNSequence {
-	public static CSTAMonitorFilter decode(final InputStream in) {
-		final CSTAMonitorFilter _this = new CSTAMonitorFilter();
+	int call;
+	int feature;
+	int agent;
+	int maintenance;
+	int privateFilter;
+
+	public CSTAMonitorFilter() {
+	}
+
+	public CSTAMonitorFilter(int _call, int _feature, int _agent,
+			int _maintenance, int _privateFilter) {
+		this.call = _call;
+		this.feature = _feature;
+		this.agent = _agent;
+		this.maintenance = _maintenance;
+		this.privateFilter = _privateFilter;
+	}
+
+	public static CSTAMonitorFilter decode(InputStream in) {
+		CSTAMonitorFilter _this = new CSTAMonitorFilter();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public static Collection<String> print(final CSTAMonitorFilter _this,
-			final String name, final String _indent) {
-		final Collection<String> lines = new ArrayList<String>();
+	public void decodeMembers(InputStream memberStream) {
+		this.call = CSTACallFilter.decode(memberStream);
+		this.feature = CSTAFeatureFilter.decode(memberStream);
+		this.agent = CSTAAgentFilter.decode(memberStream);
+		this.maintenance = CSTAMaintenanceFilter.decode(memberStream);
+		this.privateFilter = ASNInteger.decode(memberStream);
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		CSTACallFilter.encode(this.call, memberStream);
+		CSTAFeatureFilter.encode(this.feature, memberStream);
+		CSTAAgentFilter.encode(this.agent, memberStream);
+		CSTAMaintenanceFilter.encode(this.maintenance, memberStream);
+		ASNInteger.encode(this.privateFilter, memberStream);
+	}
+
+	public static Collection<String> print(CSTAMonitorFilter _this,
+			String name, String _indent) {
+		Collection<String> lines = new ArrayList<String>();
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null)
+		if (name != null) {
 			lines.add(_indent + name);
+		}
 		lines.add(_indent + "{");
 
-		final String indent = _indent + "  ";
+		String indent = _indent + "  ";
 
 		lines.addAll(CSTACallFilter.print(_this.call, "call", indent));
 		lines.addAll(CSTAFeatureFilter.print(_this.feature, "feature", indent));
@@ -42,61 +75,23 @@ public final class CSTAMonitorFilter extends ASNSequence {
 		return lines;
 	}
 
-	int call;
-	int feature;
-	int agent;
-
-	int maintenance;
-
-	int privateFilter;
-
-	public CSTAMonitorFilter() {
-	}
-
-	public CSTAMonitorFilter(final int _call, final int _feature,
-			final int _agent, final int _maintenance, final int _privateFilter) {
-		call = _call;
-		feature = _feature;
-		agent = _agent;
-		maintenance = _maintenance;
-		privateFilter = _privateFilter;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		call = ASNBitString.decode(memberStream);
-		feature = ASNBitString.decode(memberStream);
-		agent = ASNBitString.decode(memberStream);
-		maintenance = ASNBitString.decode(memberStream);
-		privateFilter = ASNInteger.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTACallFilter.encode(call, memberStream);
-		CSTAFeatureFilter.encode(feature, memberStream);
-		CSTAAgentFilter.encode(agent, memberStream);
-		CSTAMaintenanceFilter.encode(maintenance, memberStream);
-		ASNInteger.encode(privateFilter, memberStream);
-	}
-
 	public int getAgent() {
-		return agent;
+		return this.agent;
 	}
 
 	public int getCall() {
-		return call;
+		return this.call;
 	}
 
 	public int getFeature() {
-		return feature;
+		return this.feature;
 	}
 
 	public int getMaintenance() {
-		return maintenance;
+		return this.maintenance;
 	}
 
 	public int getPrivateFilter() {
-		return privateFilter;
+		return this.privateFilter;
 	}
 }

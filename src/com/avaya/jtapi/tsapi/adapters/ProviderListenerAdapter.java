@@ -4,19 +4,15 @@ import javax.telephony.ProviderEvent;
 import javax.telephony.ProviderListener;
 
 public abstract class ProviderListenerAdapter implements ProviderListener {
-	@Override
-	public void providerEventTransmissionEnded(final ProviderEvent event) {
+	public void providerEventTransmissionEnded(ProviderEvent event) {
 	}
 
-	@Override
-	public void providerInService(final ProviderEvent event) {
+	public void providerInService(ProviderEvent event) {
 	}
 
-	@Override
-	public void providerOutOfService(final ProviderEvent event) {
+	public void providerOutOfService(ProviderEvent event) {
 	}
 
-	@Override
-	public void providerShutdown(final ProviderEvent event) {
+	public void providerShutdown(ProviderEvent event) {
 	}
 }

@@ -1,10 +1,5 @@
 package com.avaya.jtapi.tsapi.impl;
 
-import java.util.Vector;
-
-import javax.telephony.CallObserver;
-import javax.telephony.callcenter.ACDAddress;
-
 import com.avaya.jtapi.tsapi.ITsapiACDManagerAddress;
 import com.avaya.jtapi.tsapi.TsapiInvalidArgumentException;
 import com.avaya.jtapi.tsapi.TsapiMethodNotSupportedException;
@@ -15,117 +10,169 @@ import com.avaya.jtapi.tsapi.impl.core.TSDevice;
 import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
+import java.util.Vector;
+import javax.telephony.CallListener;
+import javax.telephony.CallObserver;
+import javax.telephony.callcenter.ACDAddress;
 
 @SuppressWarnings("deprecation")
-class TsapiACDManagerAddress extends TsapiAddress implements
+class TsapiACDManagerAddress extends TsapiCallCenterAddress implements
 		ITsapiACDManagerAddress {
-	TsapiACDManagerAddress(final TSDevice _tsDevice) {
-		super(_tsDevice);
-		TsapiTrace.traceConstruction(this, TsapiACDManagerAddress.class);
-	}
-
-	TsapiACDManagerAddress(final TSProviderImpl TSProviderImpl,
-			final String number) throws TsapiInvalidArgumentException {
-		super(TSProviderImpl, number);
-		TsapiTrace.traceConstruction(this, TsapiACDManagerAddress.class);
-	}
-
-	public final void addPredictiveCallObserver(final CallObserver observer)
-			throws TsapiMethodNotSupportedException,
-			TsapiResourceUnavailableException {
-		TsapiTrace.traceEntry(
-				"addPredictiveCallObserver[CallObserver observer]", this);
+	public final ACDAddress[] getACDAddresses()
+			throws TsapiMethodNotSupportedException {
+		TsapiTrace.traceEntry("getACDAddresses[]", this);
 		try {
-			final TSProviderImpl prov = tsDevice.getTSProviderImpl();
+			Vector<?> tsACDDevices = this.tsDevice.getTSACDDevices();
 
-			if (prov == null)
+			if (tsACDDevices == null) {
+				TsapiTrace.traceExit("getACDAddresses[]", this);
+				return null;
+			}
+
+			synchronized (tsACDDevices) {
+				if (tsACDDevices.size() == 0) {
+					TsapiTrace.traceExit("getACDAddresses[]", this);
+					return null;
+				}
+
+				ACDAddress[] tsapiAddress = new ACDAddress[tsACDDevices.size()];
+				for (int i = 0; i < tsACDDevices.size(); i++) {
+					tsapiAddress[i] = ((ACDAddress) TsapiCreateObject
+							.getTsapiObject(
+									(TSDevice) tsACDDevices.elementAt(i), true));
+				}
+				TsapiTrace.traceExit("getACDAddresses[]", this);
+				return tsapiAddress;
+			}
+		} finally {
+			this.privData = null;
+		}
+	}
+
+	private LucentMonitorCallsViaDevice createLucentMonitorCallsViaDevice() {
+		TsapiTrace.traceEntry("createLucentMonitorCallsViaDevice[]", this);
+		TSProviderImpl TSProviderImpl = this.tsDevice.getTSProviderImpl();
+
+		if (TSProviderImpl != null) {
+			if ((TSProviderImpl.isLucentV7())
+					&& (TSProviderImpl.getMonitorCallsViaDevice())) {
+				LucentMonitorCallsViaDevice lmcvd = new LucentMonitorCallsViaDevice(
+						true, 0);
+				TsapiTrace.traceExit("createLucentMonitorCallsViaDevice[]",
+						this);
+				return lmcvd;
+			}
+		}
+		TsapiTrace.traceExit("createLucentMonitorCallsViaDevice[]", this);
+		return null;
+	}
+
+	private void addPredictiveCallEventMonitor(CallObserver observer,
+			CallListener listener) throws TsapiMethodNotSupportedException,
+			TsapiResourceUnavailableException {
+		TsapiTrace
+				.traceEntry(
+						"addPredictiveCallEventMonitor[CallObserver observer, CallListener listener]",
+						this);
+		try {
+			TSProviderImpl prov = this.tsDevice.getTSProviderImpl();
+
+			if (prov == null) {
 				throw new TsapiPlatformException(4, 0,
 						"could not locate provider");
+			}
 
-			final Vector<TsapiCallMonitor> observers = prov
-					.getCallMonitorThreads();
+			Vector<?> observers = prov.getCallMonitorThreads();
 
 			TsapiCallMonitor obs = null;
 			TsapiCallMonitor obsToUse = null;
 
 			synchronized (observers) {
-				for (int i = 0; i < observers.size(); ++i) {
-					obs = observers.elementAt(i);
-					if (obs.getObserver() != observer)
-						continue;
-					obsToUse = obs;
-					break;
+				for (int i = 0; i < observers.size(); i++) {
+					obs = (TsapiCallMonitor) observers.elementAt(i);
+					if (observer != null) {
+						if (obs.getObserver() == observer) {
+							obsToUse = obs;
+							break;
+						}
+					} else if (listener != null) {
+						if (obs.getListener() == listener) {
+							obsToUse = obs;
+							break;
+						}
+					}
 				}
 
 				if (obsToUse == null) {
-					obsToUse = new TsapiCallMonitor(prov, observer);
+					if (observer != null)
+						obsToUse = new TsapiCallMonitor(prov, observer);
+					else if (listener != null)
+						obsToUse = new TsapiCallMonitor(prov, listener);
+					if (obsToUse == null) {
+						throw new TsapiPlatformException(4, 0,
+								"could not allocate Monitor wrapper");
+					}
+
 				}
 
 			}
 
-			final LucentMonitorCallsViaDevice lmcvd = createLucentMonitorCallsViaDevice();
-			privData = lmcvd.makeTsapiPrivate();
-			tsDevice.addAddressCallMonitor(obsToUse, true, true, privData);
+			LucentMonitorCallsViaDevice lmcvd = createLucentMonitorCallsViaDevice();
+			if (lmcvd != null)
+				this.privData = lmcvd.makeTsapiPrivate();
+			this.tsDevice.addAddressCallMonitor(obsToUse, true, true,
+					this.privData);
 		} finally {
-			privData = null;
+			this.privData = null;
 		}
+		TsapiTrace
+				.traceExit(
+						"addPredictiveCallEventMonitor(CallObserver observer, CallListener listener)",
+						this);
+	}
+
+	public final void addPredictiveCallObserver(CallObserver observer)
+			throws TsapiMethodNotSupportedException,
+			TsapiResourceUnavailableException {
+		TsapiTrace.traceEntry(
+				"addPredictiveCallObserver[CallObserver observer]", this);
+		addPredictiveCallEventMonitor(observer, null);
 		TsapiTrace.traceExit(
 				"addPredictiveCallObserver[CallObserver observer]", this);
 	}
 
-	private LucentMonitorCallsViaDevice createLucentMonitorCallsViaDevice() {
-		TsapiTrace.traceEntry("createLucentMonitorCallsViaDevice[]", this);
-		final TSProviderImpl TSProviderImpl = tsDevice.getTSProviderImpl();
-
-		if (TSProviderImpl != null && TSProviderImpl.isLucentV7()
-				&& TSProviderImpl.getMonitorCallsViaDevice()) {
-			final LucentMonitorCallsViaDevice lmcvd = new LucentMonitorCallsViaDevice(
-					true, 0);
-			TsapiTrace.traceExit("createLucentMonitorCallsViaDevice[]", this);
-			return lmcvd;
-		}
-
-		TsapiTrace.traceExit("createLucentMonitorCallsViaDevice[]", this);
-		return null;
+	public final void addPredictiveCallListener(CallListener listener)
+			throws TsapiMethodNotSupportedException,
+			TsapiResourceUnavailableException {
+		TsapiTrace.traceEntry(
+				"addPredictiveCallListener[CallListener listener]", this);
+		addPredictiveCallEventMonitor(null, listener);
+		TsapiTrace.traceExit(
+				"addPredictiveCallListener[CallListener listener]", this);
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof TsapiACDManagerAddress)
-			return tsDevice.equals(((TsapiACDManagerAddress) obj).tsDevice);
+	public boolean equals(Object obj) {
+		if ((obj instanceof TsapiACDManagerAddress)) {
+			return this.tsDevice
+					.equals(((TsapiACDManagerAddress) obj).tsDevice);
+		}
 
 		return false;
 	}
 
-	@Override
+	TsapiACDManagerAddress(TSProviderImpl TSProviderImpl, String number)
+			throws TsapiInvalidArgumentException {
+		super(TSProviderImpl, number);
+		TsapiTrace.traceConstruction(this, TsapiACDManagerAddress.class);
+	}
+
+	TsapiACDManagerAddress(TSDevice _tsDevice) {
+		super(_tsDevice);
+		TsapiTrace.traceConstruction(this, TsapiACDManagerAddress.class);
+	}
+
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, TsapiACDManagerAddress.class);
-	}
-
-	@Override
-	public final javax.telephony.callcenter.ACDAddress[] getACDAddresses()
-			throws TsapiMethodNotSupportedException {
-		try {
-			final Vector<TSDevice> tsACDDevices = tsDevice.getTSACDDevices();
-			if (tsACDDevices == null)
-				privData = null;
-			synchronized (tsACDDevices) {
-				if (tsACDDevices.size() == 0) {
-					privData = null;
-					return null;
-				}
-				final ACDAddress[] tsapiAddress = new ACDAddress[tsACDDevices
-						.size()];
-				for (int i = 0; i < tsACDDevices.size(); ++i)
-					tsapiAddress[i] = (ACDAddress) TsapiCreateObject
-							.getTsapiObject(tsACDDevices.elementAt(i), true);
-
-				privData = null;
-				return tsapiAddress;
-			}
-		} finally {
-			privData = null;
-		}
 	}
 }

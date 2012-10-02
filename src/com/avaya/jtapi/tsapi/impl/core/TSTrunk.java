@@ -1,7 +1,6 @@
 package com.avaya.jtapi.tsapi.impl.core;
 
 import java.util.Vector;
-
 import org.apache.log4j.Logger;
 
 public final class TSTrunk {
@@ -15,151 +14,158 @@ public final class TSTrunk {
 	int type;
 	TSConnection connection;
 
-	TSTrunk(final TSProviderImpl _provider, final String _name, final int _type) {
-		provider = _provider;
-		name = _name;
-		type = _type;
-		state = 0;
-
-		if (name == null)
-			groupName = memberName = null;
-		else {
-			final int colonPos = name.indexOf(':');
-			if (colonPos <= 0 || colonPos >= name.length() - 1)
-				groupName = memberName = null;
-			else {
-				groupName = name.substring(0, colonPos - 1);
-				memberName = name.substring(colonPos + 1);
-			}
-		}
-		provider.addTrunkToHash(name, this);
-		TSTrunk.log.info("Trunk object= " + this + " being created with name "
-				+ name + " (group:member = " + getGroupAndMember() + ") for "
-				+ provider);
-	}
-
-	synchronized void delete() {
-		TSTrunk.log.info("Trunk object= " + this + " being deleted" + " for "
-				+ provider);
-
-		provider.deleteTrunkFromHash(name);
-	}
-
-	void dump(final String indent) {
-		TSTrunk.log.trace(indent + "***** TRUNK DUMP *****");
-		TSTrunk.log.trace(indent + "TSTrunk: " + this);
-		TSTrunk.log.trace(indent + "TSTrunk name: " + name);
-		TSTrunk.log.trace(indent + "TSTrunk state: " + state);
-		TSTrunk.log.trace(indent + "TSTrunk call: " + call);
-		TSTrunk.log.trace(indent + "TSTrunk groupName: " + groupName);
-		TSTrunk.log.trace(indent + "TSTrunk memberName: " + memberName);
-		TSTrunk.log.trace(indent + "***** TRUNK DUMP END *****");
-	}
-
-	String getGroupAndMember() {
-		String g_m;
-		if (groupName == null)
-			g_m = "-:";
-		else
-			g_m = groupName + ":";
-		if (memberName == null)
-			g_m = g_m + "-";
-		else
-			g_m = g_m + memberName;
-		return g_m;
-	}
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public String getMemberName() {
-		return memberName;
+	void dump(String indent) {
+		log.trace(indent + "***** TRUNK DUMP *****");
+		log.trace(indent + "TSTrunk: " + this);
+		log.trace(indent + "TSTrunk name: " + this.name);
+		log.trace(indent + "TSTrunk state: " + this.state);
+		log.trace(indent + "TSTrunk call: " + this.call);
+		log.trace(indent + "TSTrunk groupName: " + this.groupName);
+		log.trace(indent + "TSTrunk memberName: " + this.memberName);
+		log.trace(indent + "***** TRUNK DUMP END *****");
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
+	}
+
+	public String getGroupName() {
+		return this.groupName;
+	}
+
+	public String getMemberName() {
+		return this.memberName;
+	}
+
+	public void setGroupName(String _name) {
+		if ((_name != null) && (_name != "")) {
+			this.groupName = _name;
+		}
+	}
+
+	public void setMemberName(String _name) {
+		if ((_name != null) && (_name != "")) {
+			this.memberName = _name;
+		}
 	}
 
 	public int getState() {
-		return state;
-	}
-
-	public TSCall getTSCall() {
-		return call;
-	}
-
-	public TSConnection getTSConnection() {
-		return connection;
-	}
-
-	public TSProviderImpl getTSProviderImpl() {
-		return provider;
+		return this.state;
 	}
 
 	public int getType() {
-		return type;
+		return this.type;
 	}
 
-	boolean setCall(final TSCall _call, final Vector<TSEvent> eventList) {
-		synchronized (this) {
-			if (call == _call)
-				return false;
+	public synchronized TSCall getTSCall() {
+		return this.call;
+	}
 
-			if (call != null)
-				call.removeTrunk(this, null);
-			call = _call;
+	public TSProviderImpl getTSProviderImpl() {
+		return this.provider;
+	}
+
+	boolean setCall(TSCall _call, Vector<TSEvent> eventList) {
+		synchronized (this) {
+			if (this.call == _call) {
+				return false;
+			}
+
+			if (this.call != null) {
+				this.call.removeTrunk(this, null);
+			}
+			this.call = _call;
 		}
 		setState(2, eventList);
 
-		provider.addTrunkToHash(name, this);
+		this.provider.addTrunkToHash(this.name, this);
 
 		return true;
 	}
 
-	public void setGroupName(final String _name) {
-		if (_name == null || _name == "")
-			return;
-		groupName = _name;
+	void unsetCall(Vector<TSEvent> eventList) {
+		setState(1, eventList);
 	}
 
-	public void setMemberName(final String _name) {
-		if (_name == null || _name == "")
-			return;
-		memberName = _name;
+	TSTrunk(TSProviderImpl _provider, String _name, int _type) {
+		this.provider = _provider;
+		this.name = _name;
+		this.type = _type;
+		this.state = 0;
+
+		if (this.name == null) {
+			this.groupName = (this.memberName = null);
+		} else {
+			int colonPos = this.name.indexOf(':');
+			if ((colonPos <= 0) || (colonPos >= this.name.length() - 1)) {
+				this.groupName = (this.memberName = null);
+			} else {
+				this.groupName = this.name.substring(0, colonPos - 1);
+				this.memberName = this.name.substring(colonPos + 1);
+			}
+		}
+		this.provider.addTrunkToHash(this.name, this);
+		log.info("Trunk object= " + this + " being created with name "
+				+ this.name + " (group:member = " + getGroupAndMember()
+				+ ") for " + this.provider);
 	}
 
-	void setState(final int _state, final Vector<TSEvent> eventList) {
+	String getGroupAndMember() {
+		String g_m;
+		if (this.groupName == null) {
+			g_m = "-:";
+		} else {
+			g_m = this.groupName + ":";
+		}
+		if (this.memberName == null) {
+			g_m = g_m + "-";
+		} else {
+			g_m = g_m + this.memberName;
+		}
+		return g_m;
+	}
+
+	void setState(int _state, Vector<TSEvent> eventList) {
 		synchronized (this) {
-			if (state == _state)
+			if (this.state == _state) {
 				return;
+			}
 
-			state = _state;
+			this.state = _state;
 		}
 
-		switch (state) {
+		switch (this.state) {
 		case 2:
-			if (eventList == null)
-				return;
-			eventList.addElement(new TSEvent(54, this));
+			if (eventList != null) {
+				eventList.addElement(new TSEvent(54, this));
+			}
 			break;
 		case 1:
-			if (eventList != null)
+			if (eventList != null) {
 				eventList.addElement(new TSEvent(55, this));
+			}
 
 			delete();
+			break;
 		}
 	}
 
-	public void setTSConnection(final TSConnection _conn) {
-		connection = _conn;
+	void setType(int _type) {
+		this.type = _type;
 	}
 
-	void setType(final int _type) {
-		type = _type;
+	synchronized void delete() {
+		log.info("Trunk object= " + this + " being deleted" + " for "
+				+ this.provider);
+
+		this.provider.deleteTrunkFromHash(this.name);
 	}
 
-	void unsetCall(final Vector<TSEvent> eventList) {
-		setState(1, eventList);
+	public void setTSConnection(TSConnection _conn) {
+		this.connection = _conn;
+	}
+
+	public TSConnection getTSConnection() {
+		return this.connection;
 	}
 }

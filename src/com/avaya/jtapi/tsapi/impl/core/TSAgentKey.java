@@ -5,40 +5,39 @@ final class TSAgentKey {
 	String acdDeviceID;
 	String agentID;
 
-	TSAgentKey(final String _agentDeviceID, final String _acdDeviceID,
-			final String _agentID) {
-		agentDeviceID = _agentDeviceID;
-		acdDeviceID = _acdDeviceID;
-		agentID = _agentID;
+	TSAgentKey(String _agentDeviceID, String _acdDeviceID, String _agentID) {
+		this.agentDeviceID = _agentDeviceID;
+		this.acdDeviceID = _acdDeviceID;
+		this.agentID = _agentID;
 	}
 
-	@Override
-	public boolean equals(final Object anObject) {
-		if (anObject instanceof TSAgentKey) {
-			final TSAgentKey anotherAgentKey = (TSAgentKey) anObject;
+	public int hashCode() {
+		return this.agentDeviceID.hashCode();
+	}
+
+	public boolean equals(Object anObject) {
+		if ((anObject instanceof TSAgentKey)) {
+			TSAgentKey anotherAgentKey = (TSAgentKey) anObject;
 
 			boolean acdDeviceIDMatch = true;
 			boolean agentIDMatch = true;
-			if (acdDeviceID != null && anotherAgentKey.acdDeviceID != null)
-				acdDeviceIDMatch = acdDeviceID
+			if ((this.acdDeviceID != null)
+					&& (anotherAgentKey.acdDeviceID != null)) {
+				acdDeviceIDMatch = this.acdDeviceID
 						.equals(anotherAgentKey.acdDeviceID);
-			if (agentID != null && anotherAgentKey.agentID != null)
-				agentIDMatch = agentID.equals(anotherAgentKey.agentID);
-			return agentDeviceID.equals(anotherAgentKey.agentDeviceID)
-					&& acdDeviceIDMatch && agentIDMatch;
+			}
+			if ((this.agentID != null) && (anotherAgentKey.agentID != null)) {
+				agentIDMatch = this.agentID.equals(anotherAgentKey.agentID);
+			}
+			return (this.agentDeviceID.equals(anotherAgentKey.agentDeviceID))
+					&& (acdDeviceIDMatch) && (agentIDMatch);
 		}
 
 		return false;
 	}
 
-	@Override
-	public int hashCode() {
-		return agentDeviceID.hashCode();
-	}
-
-	@Override
 	public String toString() {
-		return "TSAgentKey(" + agentDeviceID + "," + acdDeviceID + ","
-				+ agentID + ")";
+		return "TSAgentKey(" + this.agentDeviceID + "," + this.acdDeviceID
+				+ "," + this.agentID + ")";
 	}
 }

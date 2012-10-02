@@ -1,10 +1,8 @@
 package com.avaya.jtapi.tsapi.impl.core;
 
-import java.util.Vector;
-
-import org.apache.log4j.Logger;
-
 import com.avaya.jtapi.tsapi.impl.monitor.TsapiCallMonitor;
+import java.util.Vector;
+import org.apache.log4j.Logger;
 
 final class XferConfSnapshotCallConfHandler implements
 		SnapshotCallExtraConfHandler {
@@ -16,61 +14,61 @@ final class XferConfSnapshotCallConfHandler implements
 	Object privateData;
 	Vector<TSConnection> snapConnections;
 
-	XferConfSnapshotCallConfHandler(final TSCall _call, final int _jtapiCause,
-			final Object _privateData,
-			final Vector<TSConnection> _snapConnections) {
+	XferConfSnapshotCallConfHandler(TSCall _call, int _jtapiCause,
+			Object _privateData, Vector<TSConnection> _snapConnections) {
 		this(null, _call, _jtapiCause, _privateData, _snapConnections);
 	}
 
-	XferConfSnapshotCallConfHandler(final TSEventHandler _eventHandler,
-			final TSCall _call, final int _jtapiCause,
-			final Object _privateData,
-			final Vector<TSConnection> _snapConnections) {
-		eventHandler = _eventHandler;
-		call = _call;
-		jtapiCause = _jtapiCause;
-		privateData = _privateData;
+	XferConfSnapshotCallConfHandler(TSEventHandler _eventHandler, TSCall _call,
+			int _jtapiCause, Object _privateData,
+			Vector<TSConnection> _snapConnections) {
+		this.eventHandler = _eventHandler;
+		this.call = _call;
+		this.jtapiCause = _jtapiCause;
+		this.privateData = _privateData;
 
-		snapConnections = _snapConnections;
+		this.snapConnections = _snapConnections;
 	}
 
-	@Override
-	public Object handleConf(final boolean rc,
-			final Vector<TSEvent> _eventList, final Object _privateData) {
-		if (call.getNeedRedoSnapshotCall()) {
-			call.setNeedRedoSnapshotCall(false);
-			XferConfSnapshotCallConfHandler.log.info("redo snapshot call");
-			call.doSnapshot(snapConnections.elementAt(0).getConnID(), this,
-					false);
+	public Object handleConf(boolean rc, Vector<TSEvent> _eventList,
+			Object _privateData) {
+		if (this.call.getNeedRedoSnapshotCall()) {
+			this.call.setNeedRedoSnapshotCall(false);
+			log.info("redo snapshot call");
+			this.call.doSnapshot(((TSConnection) this.snapConnections
+					.elementAt(0)).getConnID(), this, false);
 			return null;
 		}
 
-		call.setSnapshotCallConfPending(false);
+		this.call.setSnapshotCallConfPending(false);
 
-		call.setNeedSnapshot(false);
+		this.call.setNeedSnapshot(false);
 
-		final Vector<TSEvent> eventList = new Vector<TSEvent>();
+		Vector<TSEvent> eventList = new Vector<TSEvent>();
 
-		if (rc)
-			for (int i = 0; i < snapConnections.size(); ++i) {
-				final TSConnection conn = snapConnections.elementAt(i);
+		if (rc) {
+			for (int i = 0; i < this.snapConnections.size(); i++) {
+				TSConnection conn = (TSConnection) this.snapConnections
+						.elementAt(i);
 				conn.getSnapshot(eventList, false);
 			}
-		else
-			return privateData;
+		} else {
+			return this.privateData;
+		}
 
-		if (eventHandler != null)
-			eventHandler.doCallMonitors(call, eventList, jtapiCause,
-					privateData);
-		else if (eventList.size() > 0) {
-			final Vector<TsapiCallMonitor> observers = call.getObservers();
-			for (int j = 0; j < observers.size(); ++j) {
-				final TsapiCallMonitor callback = observers.elementAt(j);
+		if (this.eventHandler != null) {
+			this.eventHandler.doCallMonitors(this.call, eventList,
+					this.jtapiCause, this.privateData);
+		} else if (eventList.size() > 0) {
+			Vector<?> observers = this.call.getObservers();
+			for (int j = 0; j < observers.size(); j++) {
+				TsapiCallMonitor callback = (TsapiCallMonitor) observers
+						.elementAt(j);
 
-				callback.deliverEvents(eventList, jtapiCause, true);
+				callback.deliverEvents(eventList, this.jtapiCause, true);
 			}
 		}
 
-		return privateData;
+		return this.privateData;
 	}
 }

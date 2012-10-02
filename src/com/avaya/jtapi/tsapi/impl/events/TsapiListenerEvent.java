@@ -10,48 +10,44 @@ public abstract class TsapiListenerEvent implements PrivateDataEvent {
 	private final MetaEvent metaEvent;
 	private final Object privateData;
 
-	public TsapiListenerEvent(final int eventId, final int _cause,
-			final MetaEvent metaEvent, final Object source,
-			final Object privateData) {
-		cause = _cause;
+	public final int getCause() {
+		if ((this.cause == 101) || (this.cause == 102) || (this.cause == 103)
+				|| (this.cause == 104) || (this.cause == 105)
+				|| (this.cause == 106) || (this.cause == 107)
+				|| (this.cause == 108) || (this.cause == 109)
+				|| (this.cause == 110)) {
+			return this.cause;
+		}
+		return 100;
+	}
+
+	public TsapiListenerEvent(int eventId, int _cause, MetaEvent metaEvent,
+			Object source, Object privateData) {
+		this.cause = _cause;
 		this.metaEvent = metaEvent;
 		this.eventId = eventId;
 		this.source = source;
 		this.privateData = privateData;
 	}
 
-	@Override
-	public final int getCause() {
-		if (cause == 101 || cause == 102 || cause == 103 || cause == 104
-				|| cause == 105 || cause == 106 || cause == 107 || cause == 108
-				|| cause == 109 || cause == 110)
-			return cause;
-		return 100;
-	}
-
-	@Override
-	public int getID() {
-		return eventId;
-	}
-
-	@Override
 	public MetaEvent getMetaEvent() {
-		return metaEvent;
+		return this.metaEvent;
 	}
 
-	@Override
-	public Object getPrivateData() {
-		return privateData;
-	}
-
-	@Override
 	public Object getSource() {
-		return source;
+		return this.source;
 	}
 
-	@Override
+	public int getID() {
+		return this.eventId;
+	}
+
+	public Object getPrivateData() {
+		return this.privateData;
+	}
+
 	public String toString() {
-		return "cause=" + cause + ";eventId=" + eventId + ";source=" + source
-				+ ";metaEvent=" + metaEvent;
+		return "cause=" + this.cause + ";eventId=" + this.eventId + ";source="
+				+ this.source + ";metaEvent=" + this.metaEvent;
 	}
 }

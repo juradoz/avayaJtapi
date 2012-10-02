@@ -1,15 +1,14 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 public final class CSTAMonitorType extends ASNEnumerated {
 	public static final short MT_CALL = 0;
 	public static final short MT_DEVICE = 1;
 
-	public static Collection<String> print(final short value,
-			final String name, final String indent) {
+	public static Collection<String> print(short value, String name,
+			String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -22,6 +21,6 @@ public final class CSTAMonitorType extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

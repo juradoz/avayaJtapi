@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public abstract interface TsapiChannel {
-	public abstract void close();
-
-	public abstract InetSocketAddress getInetSocketAddress();
+	public abstract void write(ByteArrayOutputStream paramByteArrayOutputStream)
+			throws IOException;
 
 	public abstract void setReadHandler(
 			TsapiChannelReadHandler paramTsapiChannelReadHandler);
 
-	public abstract void write(ByteArrayOutputStream paramByteArrayOutputStream)
-			throws IOException;
+	public abstract InetSocketAddress getInetSocketAddress();
+
+	public abstract void close();
 }

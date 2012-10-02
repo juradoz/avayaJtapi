@@ -22,22 +22,16 @@ public abstract interface CallControlConnection extends Connection {
 	public static final int UNKNOWN = 91;
 
 	/** @deprecated */
-	@Deprecated
 	public static final int OFFERING = 81;
+
+	public abstract int getCallControlState();
 
 	public abstract void accept() throws InvalidStateException,
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
-	public abstract void addToAddress(String paramString)
-			throws InvalidStateException, MethodNotSupportedException,
-			PrivilegeViolationException, ResourceUnavailableException;
-
-	public abstract int getCallControlState();
-
-	public abstract Connection park(String paramString)
-			throws InvalidStateException, MethodNotSupportedException,
-			PrivilegeViolationException, InvalidPartyException,
+	public abstract void reject() throws InvalidStateException,
+			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
 	public abstract Connection redirect(String paramString)
@@ -45,7 +39,12 @@ public abstract interface CallControlConnection extends Connection {
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
-	public abstract void reject() throws InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException,
+	public abstract void addToAddress(String paramString)
+			throws InvalidStateException, MethodNotSupportedException,
+			PrivilegeViolationException, ResourceUnavailableException;
+
+	public abstract Connection park(String paramString)
+			throws InvalidStateException, MethodNotSupportedException,
+			PrivilegeViolationException, InvalidPartyException,
 			ResourceUnavailableException;
 }

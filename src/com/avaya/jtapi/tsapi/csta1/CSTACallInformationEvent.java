@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class CSTACallInformationEvent extends CSTAUnsolicited {
 	CSTAConnectionID connection;
 	CSTAExtendedDeviceID device;
@@ -13,57 +11,55 @@ public final class CSTACallInformationEvent extends CSTAUnsolicited {
 	String authorisationCode;
 	static final int PDU = 68;
 
-	public static CSTACallInformationEvent decode(final InputStream in) {
-		final CSTACallInformationEvent _this = new CSTACallInformationEvent();
+	public static CSTACallInformationEvent decode(InputStream in) {
+		CSTACallInformationEvent _this = new CSTACallInformationEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		connection = CSTAConnectionID.decode(memberStream);
-		device = CSTAExtendedDeviceID.decode(memberStream);
-		accountInfo = ASNIA5String.decode(memberStream);
-		authorisationCode = ASNIA5String.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.connection = CSTAConnectionID.decode(memberStream);
+		this.device = CSTAExtendedDeviceID.decode(memberStream);
+		this.accountInfo = AccountInfo.decode(memberStream);
+		this.authorisationCode = AuthCode.decode(memberStream);
 	}
 
-	public String getAccountInfo() {
-		return accountInfo;
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("CSTACallInformationEvent ::=");
+		lines.add("{");
+
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAConnectionID.print(this.connection, "connection",
+				indent));
+		lines.addAll(CSTAExtendedDeviceID.print(this.device, "device", indent));
+		lines.addAll(AccountInfo.print(this.accountInfo, "accountInfo", indent));
+		lines.addAll(AuthCode.print(this.authorisationCode,
+				"authorisationCode", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	public String getAuthorisationCode() {
-		return authorisationCode;
-	}
-
-	public CSTAConnectionID getConnection() {
-		return connection;
-	}
-
-	public CSTAExtendedDeviceID getDevice() {
-		return device;
-	}
-
-	@Override
 	public int getPDU() {
 		return 68;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("CSTACallInformationEvent ::=");
-		lines.add("{");
+	public String getAccountInfo() {
+		return this.accountInfo;
+	}
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAConnectionID.print(connection, "connection", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(device, "device", indent));
-		lines.addAll(ASNIA5String.print(accountInfo, "accountInfo", indent));
-		lines.addAll(ASNIA5String.print(authorisationCode, "authorisationCode",
-				indent));
+	public String getAuthorisationCode() {
+		return this.authorisationCode;
+	}
 
-		lines.add("}");
-		return lines;
+	public CSTAConnectionID getConnection() {
+		return this.connection;
+	}
+
+	public CSTAExtendedDeviceID getDevice() {
+		return this.device;
 	}
 }

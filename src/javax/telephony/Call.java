@@ -8,11 +8,11 @@ public abstract interface Call {
 	public static final int ACTIVE = 33;
 	public static final int INVALID = 34;
 
-	public abstract void addCallListener(CallListener paramCallListener)
-			throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract Connection[] getConnections();
 
-	public abstract void addObserver(CallObserver paramCallObserver)
-			throws ResourceUnavailableException, MethodNotSupportedException;
+	public abstract Provider getProvider();
+
+	public abstract int getState();
 
 	public abstract Connection[] connect(Terminal paramTerminal,
 			Address paramAddress, String paramString)
@@ -20,26 +20,25 @@ public abstract interface Call {
 			InvalidPartyException, InvalidArgumentException,
 			InvalidStateException, MethodNotSupportedException;
 
-	/** @deprecated */
-	@Deprecated
-	public abstract CallCapabilities getCallCapabilities(
-			Terminal paramTerminal, Address paramAddress)
-			throws InvalidArgumentException, PlatformException;
+	public abstract void addObserver(CallObserver paramCallObserver)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-	public abstract CallListener[] getCallListeners();
+	public abstract CallObserver[] getObservers();
+
+	public abstract void removeObserver(CallObserver paramCallObserver);
 
 	public abstract CallCapabilities getCapabilities(Terminal paramTerminal,
 			Address paramAddress) throws InvalidArgumentException;
 
-	public abstract Connection[] getConnections();
+	/** @deprecated */
+	public abstract CallCapabilities getCallCapabilities(
+			Terminal paramTerminal, Address paramAddress)
+			throws InvalidArgumentException, PlatformException;
 
-	public abstract CallObserver[] getObservers();
+	public abstract void addCallListener(CallListener paramCallListener)
+			throws ResourceUnavailableException, MethodNotSupportedException;
 
-	public abstract Provider getProvider();
-
-	public abstract int getState();
+	public abstract CallListener[] getCallListeners();
 
 	public abstract void removeCallListener(CallListener paramCallListener);
-
-	public abstract void removeObserver(CallObserver paramCallObserver);
 }

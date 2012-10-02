@@ -7,12 +7,11 @@ public final class TsapiRouteCallbackEndedEvent implements
 		RouteCallbackEndedEvent {
 	private RouteAddress routeAddress = null;
 
-	public TsapiRouteCallbackEndedEvent(final RouteAddress routeAddress) {
-		this.routeAddress = routeAddress;
+	public RouteAddress getRouteAddress() {
+		return this.routeAddress;
 	}
 
-	@Override
-	public RouteAddress getRouteAddress() {
-		return routeAddress;
+	public TsapiRouteCallbackEndedEvent(RouteAddress routeAddress) {
+		this.routeAddress = routeAddress;
 	}
 }

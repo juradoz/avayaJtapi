@@ -1,13 +1,11 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.log4j.Logger;
-
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public abstract class LucentPrivateData extends ASNSequence {
 	private static Logger log = Logger.getLogger(LucentPrivateData.class);
@@ -15,21 +13,29 @@ public abstract class LucentPrivateData extends ASNSequence {
 	public static final String AVAYA_VENDOR_STRING = "ECS";
 	public static final int ENC_DIS_HI = 0;
 	public static final int ENC_DIS_LO = 2;
+	int tsType;
 
-	public static LucentPrivateData create(final CSTAPrivate priv,
-			final int tsType) {
+	public static boolean isAvayaVendor(String vendor_name) {
+		if ("ECS".equals(vendor_name))
+			return true;
+		if ("AT&T Definity G3".equals(vendor_name))
+			return true;
+		return false;
+	}
+
+	public static LucentPrivateData create(CSTAPrivate priv, int tsType) {
 		LucentPrivateData lpriv = null;
 
 		if (priv != null) {
-			final ByteArrayInputStream decodeStream = new ByteArrayInputStream(
+			ByteArrayInputStream decodeStream = new ByteArrayInputStream(
 					priv.data);
 
-			if (decodeStream.read() != LucentPrivateData.ENC_DIS_LO
-					|| decodeStream.read() != LucentPrivateData.ENC_DIS_HI)
+			if ((decodeStream.read() != 2) || (decodeStream.read() != 0)) {
 				return null;
+			}
 
 			int pdunum = decodeStream.read() << 0;
-			pdunum += decodeStream.read() << 8;
+			pdunum += (decodeStream.read() << 8);
 
 			switch (pdunum) {
 			case 26:
@@ -63,7 +69,7 @@ public abstract class LucentPrivateData extends ASNSequence {
 				lpriv = LucentQueryAgentStateConfEvent.decode(decodeStream);
 				break;
 			case 88:
-				lpriv = LucentQueryAgentStateConfEvent.decode(decodeStream);
+				lpriv = LucentV5QueryAgentStateConfEvent.decode(decodeStream);
 				break;
 			case 19:
 				lpriv = LucentCallClassifierInfo.decode(decodeStream);
@@ -90,7 +96,7 @@ public abstract class LucentPrivateData extends ASNSequence {
 				lpriv = LucentMonitorCallConfEvent.decode(decodeStream);
 				break;
 			case 94:
-				lpriv = LucentMonitorCallConfEvent.decode(decodeStream);
+				lpriv = LucentV5MonitorCallConfEvent.decode(decodeStream);
 				break;
 			case 34:
 				lpriv = LucentCallClearedEvent.decode(decodeStream);
@@ -313,6 +319,26 @@ public abstract class LucentPrivateData extends ASNSequence {
 			case 73:
 				lpriv = LucentLinkStatusEvent.decode(decodeStream);
 				break;
+			case 145:
+				lpriv = LucentV9OriginatedEvent.decode(decodeStream);
+				break;
+			case 146:
+				lpriv = LucentV9HeldEvent.decode(decodeStream);
+				break;
+			case 147:
+				lpriv = LucentV9ServiceInitiatedEvent.decode(decodeStream);
+				break;
+			case 148:
+				lpriv = LucentV9SingleStepTransferCallConfEvent
+						.decode(decodeStream);
+				break;
+			case 150:
+				lpriv = LucentV10QueryStationStatus.decode(decodeStream);
+				break;
+			case 151:
+				lpriv = LucentV10QueryStationStatusConfEvent
+						.decode(decodeStream);
+				break;
 			case 10:
 			case 16:
 			case 18:
@@ -357,62 +383,59 @@ public abstract class LucentPrivateData extends ASNSequence {
 			case 122:
 			case 123:
 			case 126:
+			case 144:
+			case 149:
 			default:
-				LucentPrivateData.log.info(" data PDU " + pdunum
-						+ " not decoded");
+				log.info(" data PDU " + pdunum + " not decoded");
 				return null;
 			}
 
 			lpriv.tsType = tsType;
 
-			if (LucentPrivateData.log.isDebugEnabled())
-				for (final String str : lpriv.print())
-					LucentPrivateData.log.debug(str);
+			if (log.isDebugEnabled()) {
+				for (String str : lpriv.print()) {
+					log.debug(str);
+				}
+			}
 		}
 		return lpriv;
 	}
 
-	public static boolean isAvayaVendor(final String vendor_name) {
-		if (LucentPrivateData.AVAYA_VENDOR_STRING.equals(vendor_name))
-			return true;
-		return LucentPrivateData.LUCENT_VENDOR_STRING.equals(vendor_name);
+	public void encodeLookahead(LucentLookaheadInfo lookInfo,
+			OutputStream memberStream) {
+		LucentLookaheadInfo.encode(lookInfo, memberStream);
 	}
 
-	int tsType;
-
-	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
+	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
 		return LucentLookaheadInfo.decode(memberStream);
 	}
 
-	public LucentOriginalCallInfo decodeOCI(final InputStream memberStream) {
+	public void encodeOCI(LucentOriginalCallInfo callInfo,
+			OutputStream memberStream) {
+		LucentOriginalCallInfo.encode(callInfo, memberStream);
+	}
+
+	public LucentOriginalCallInfo decodeOCI(InputStream memberStream) {
 		return LucentOriginalCallInfo.decode(memberStream);
 	}
 
-	public void encodeLookahead(final LucentLookaheadInfo lookInfo,
-			final OutputStream memberStream) {
-		ASNSequence.encode(lookInfo, memberStream);
-	}
-
-	public void encodeOCI(final LucentOriginalCallInfo callInfo,
-			final OutputStream memberStream) {
-		ASNSequence.encode(callInfo, memberStream);
-	}
-
 	public CSTAPrivate makeTsapiPrivate() {
-		if (LucentPrivateData.log.isDebugEnabled())
-			for (final String str : print())
-				LucentPrivateData.log.debug(str);
-		final ByteArrayOutputStream encodeStream = new ByteArrayOutputStream();
-		final int pdunum = getPDU();
+		if (log.isDebugEnabled()) {
+			for (String str : print()) {
+				log.debug(str);
+			}
+		}
+		ByteArrayOutputStream encodeStream = new ByteArrayOutputStream();
+		int pdunum = getPDU();
 
-		encodeStream.write(LucentPrivateData.ENC_DIS_LO);
-		encodeStream.write(LucentPrivateData.ENC_DIS_HI);
+		encodeStream.write(2);
+		encodeStream.write(0);
 
 		encodeStream.write(pdunum >> 0 & 0xFF);
 		encodeStream.write(pdunum >> 8 & 0xFF);
 		try {
 			encode(encodeStream);
-		} catch (final Exception e) {
+		} catch (Exception e) {
 		}
 		return new CSTAPrivate(encodeStream.toByteArray(), true);
 	}

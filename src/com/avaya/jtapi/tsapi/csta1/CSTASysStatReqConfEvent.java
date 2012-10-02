@@ -5,51 +5,45 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public class CSTASysStatReqConfEvent extends CSTAConfirmation {
 	public static final int PDU = 99;
+	private short systemStatus;
 
-	public static CSTASysStatReqConfEvent decode(final InputStream in) {
-		final CSTASysStatReqConfEvent _this = new CSTASysStatReqConfEvent();
+	public int getPDU() {
+		return 99;
+	}
+
+	public static CSTASysStatReqConfEvent decode(InputStream in) {
+		CSTASysStatReqConfEvent _this = new CSTASysStatReqConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	private short systemStatus;
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		systemStatus = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.systemStatus = SystemStatus.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(systemStatus, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		SystemStatus.encode(this.systemStatus, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 99;
-	}
-
-	public short getSystemStatus() {
-		return systemStatus;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTASysStatReqConfEvent ::=");
 		lines.add("{");
-		final String indent = "  ";
-		lines.addAll(SystemStatus.print(systemStatus, "systemStatus", indent));
+		String indent = "  ";
+		lines.addAll(SystemStatus.print(this.systemStatus, "systemStatus",
+				indent));
 		lines.add("}");
 		return lines;
 	}
 
-	public void setSystemStatus(final short systemStatus) {
+	public short getSystemStatus() {
+		return this.systemStatus;
+	}
+
+	public void setSystemStatus(short systemStatus) {
 		this.systemStatus = systemStatus;
 	}
 }

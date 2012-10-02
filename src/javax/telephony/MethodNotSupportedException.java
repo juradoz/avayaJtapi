@@ -6,7 +6,7 @@ public class MethodNotSupportedException extends Exception {
 	public MethodNotSupportedException() {
 	}
 
-	public MethodNotSupportedException(final String s) {
+	public MethodNotSupportedException(String s) {
 		super(s);
 	}
 }

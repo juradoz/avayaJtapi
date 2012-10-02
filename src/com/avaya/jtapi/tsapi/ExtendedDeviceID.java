@@ -30,28 +30,27 @@ public final class ExtendedDeviceID {
 	ExtendedDeviceID() {
 	}
 
-	public ExtendedDeviceID(final String _deviceID, final short _deviceIDType,
-			final short _deviceIDStatus) {
-		deviceID = _deviceID;
-		deviceIDType = _deviceIDType;
-		deviceIDStatus = _deviceIDStatus;
+	public ExtendedDeviceID(String _deviceID, short _deviceIDType,
+			short _deviceIDStatus) {
+		this.deviceID = _deviceID;
+		this.deviceIDType = _deviceIDType;
+		this.deviceIDStatus = _deviceIDStatus;
+	}
+
+	public String toString() {
+		return "ExtendedDeviceID(" + this.deviceID + "," + this.deviceIDType
+				+ "," + this.deviceIDStatus + ")";
 	}
 
 	public String getDeviceID() {
-		return deviceID;
+		return this.deviceID;
 	}
 
 	public short getDeviceIDStatus() {
-		return deviceIDStatus;
+		return this.deviceIDStatus;
 	}
 
 	public short getDeviceIDType() {
-		return deviceIDType;
-	}
-
-	@Override
-	public String toString() {
-		return "ExtendedDeviceID(" + deviceID + "," + deviceIDType + ","
-				+ deviceIDStatus + ")";
+		return this.deviceIDType;
 	}
 }

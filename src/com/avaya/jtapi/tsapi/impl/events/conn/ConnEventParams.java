@@ -1,21 +1,16 @@
 package com.avaya.jtapi.tsapi.impl.events.conn;
 
+import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 import javax.telephony.Connection;
 
-import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
-
 public class ConnEventParams extends CallEventParams {
-	private Connection connection;
-
-	public ConnEventParams() {
-		connection = null;
-	}
+	private Connection connection = null;
 
 	public Connection getConnection() {
-		return connection;
+		return this.connection;
 	}
 
-	public void setConnection(final Connection connection) {
+	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}
 }

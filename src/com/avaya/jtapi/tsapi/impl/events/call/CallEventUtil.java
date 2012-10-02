@@ -3,8 +3,8 @@ package com.avaya.jtapi.tsapi.impl.events.call;
 import javax.telephony.MetaEvent;
 
 public class CallEventUtil {
-	public static MetaEvent[] getListenerMetaObject(final int cause,
-			final CallEventParams callParams, final boolean isSnapshot) {
+	public static MetaEvent[] getListenerMetaObject(int cause,
+			CallEventParams callParams, boolean isSnapshot) {
 		int metaEventId = 210;
 		boolean isMultiCallMeta = false;
 		MetaEvent[] metaEventPair = null;

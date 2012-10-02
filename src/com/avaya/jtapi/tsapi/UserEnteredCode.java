@@ -16,39 +16,39 @@ public final class UserEnteredCode {
 	String collectVDN_asn;
 	ACDManagerAddress collectVDN;
 
-	public ACDManagerAddress getCollectVDN() {
-		return collectVDN;
-	}
-
-	public String getDigits() {
-		return data;
+	public short getType() {
+		return this.type;
 	}
 
 	public short getIndicator() {
-		return indicator;
+		return this.indicator;
 	}
 
-	public short getType() {
-		return type;
+	public String getDigits() {
+		return this.data;
 	}
 
-	public void setCollectVDN(final ACDManagerAddress _collectVDN) {
-		collectVDN = _collectVDN;
+	public ACDManagerAddress getCollectVDN() {
+		return this.collectVDN;
 	}
 
-	public void setCollectVDN_asn(final String _collectVDN_asn) {
-		collectVDN_asn = _collectVDN_asn;
+	public void setCollectVDN(ACDManagerAddress _collectVDN) {
+		this.collectVDN = _collectVDN;
 	}
 
-	public void setData(final String _data) {
-		data = _data;
+	public void setCollectVDN_asn(String _collectVDN_asn) {
+		this.collectVDN_asn = _collectVDN_asn;
 	}
 
-	public void setIndicator(final short _indicator) {
-		indicator = _indicator;
+	public void setData(String _data) {
+		this.data = _data;
 	}
 
-	public void setType(final short _type) {
-		type = _type;
+	public void setIndicator(short _indicator) {
+		this.indicator = _indicator;
+	}
+
+	public void setType(short _type) {
+		this.type = _type;
 	}
 }

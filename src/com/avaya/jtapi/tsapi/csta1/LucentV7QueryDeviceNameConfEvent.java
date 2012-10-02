@@ -7,24 +7,21 @@ public final class LucentV7QueryDeviceNameConfEvent extends
 		LucentV5QueryDeviceNameConfEvent {
 	public static final int PDU = 125;
 
-	public static LucentQueryDeviceNameConfEvent decode(final InputStream in) {
-		final LucentV7QueryDeviceNameConfEvent _this = new LucentV7QueryDeviceNameConfEvent();
+	public static LucentQueryDeviceNameConfEvent decode(InputStream in) {
+		LucentV7QueryDeviceNameConfEvent _this = new LucentV7QueryDeviceNameConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
+	public void decodeMembers(InputStream memberStream) {
 		super.decodeMembers(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
+	public void encodeMembers(OutputStream memberStream) {
 		super.encodeMembers(memberStream);
 	}
 
-	@Override
 	public int getPDU() {
 		return 125;
 	}

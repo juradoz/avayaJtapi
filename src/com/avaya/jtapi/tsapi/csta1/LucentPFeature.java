@@ -1,35 +1,41 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Random;
 
-import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
-
 class LucentPFeature extends LucentPrivateData {
-	byte[] value;
+	byte[] value = new byte[32];
 	static final int PDU = 120;
 
-	LucentPFeature() {
-		value = new byte[32];
+	public void encodeMembers(OutputStream memberStream) {
+		Random r = new Random();
+		r.nextBytes(this.value);
+		ASNOctetString.encode(this.value, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		final Random r = new Random();
-		r.nextBytes(value);
-		ASNOctetString.encode(value, memberStream);
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+
+		lines.add("LucentPFeature ::=");
+		lines.add("{");
+
+		String indent = "   ";
+		lines.add(new StringBuilder()
+				.append(indent)
+				.append("value ")
+				.append(this.value != null ? Arrays
+						.asList(new byte[][] { this.value }) : "<null>")
+				.toString());
+
+		lines.add("}");
+		return lines;
 	}
 
-	@Override
 	public int getPDU() {
 		return 120;
 	}
-
-	@Override
-	public Collection<String> print() {
-		return Collections.emptyList();
-	}
-
 }

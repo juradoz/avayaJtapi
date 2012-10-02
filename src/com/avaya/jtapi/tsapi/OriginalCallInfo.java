@@ -7,17 +7,17 @@ public abstract interface OriginalCallInfo {
 	public static final short OR_TRANSFERRED = 3;
 	public static final short OR_NEW_CALL = 4;
 
-	public abstract ITsapiAddress getCalledDevice();
+	public abstract short getReason();
 
 	public abstract ITsapiAddress getCallingDevice();
 
-	public abstract LookaheadInfo getLookaheadInfo();
-
-	public abstract short getReason();
+	public abstract ITsapiAddress getCalledDevice();
 
 	public abstract TsapiTrunk getTrunk();
 
-	public abstract UserEnteredCode getUserEnteredCode();
-
 	public abstract UserToUserInfo getUserToUserInfo();
+
+	public abstract LookaheadInfo getLookaheadInfo();
+
+	public abstract UserEnteredCode getUserEnteredCode();
 }

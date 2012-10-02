@@ -5,49 +5,39 @@ import com.avaya.jtapi.tsapi.V5OriginalCallInfo;
 public class V5OriginalCallInfoImpl extends OriginalCallInfoImpl implements
 		V5OriginalCallInfo {
 	private String ucid;
-	int callOriginatorType;
-	private boolean hasCallOriginatorType;
-	private boolean flexibleBilling;
+	int callOriginatorType = -1;
+	private boolean hasCallOriginatorType = false;
+	private boolean flexibleBilling = false;
 
-	public V5OriginalCallInfoImpl() {
-		callOriginatorType = -1;
-		hasCallOriginatorType = false;
-		flexibleBilling = false;
-	}
-
-	@Override
-	public boolean canSetBillRate() {
-		return flexibleBilling;
-	}
-
-	@Override
-	public int getCallOriginatorType() {
-		return callOriginatorType;
-	}
-
-	@Override
 	public String getUCID() {
-		return ucid;
+		return this.ucid;
 	}
 
-	@Override
-	public boolean hasCallOriginatorType() {
-		return hasCallOriginatorType;
-	}
-
-	public void setCallOriginatorType(final int callOriginatorType) {
+	public void setCallOriginatorType(int callOriginatorType) {
 		this.callOriginatorType = callOriginatorType;
 	}
 
-	public void setFlexibleBilling(final boolean _flexibleBilling) {
-		flexibleBilling = _flexibleBilling;
+	public int getCallOriginatorType() {
+		return this.callOriginatorType;
 	}
 
-	public void setHasCallOriginatorType(final boolean hasCallOriginatorType) {
+	public void setHasCallOriginatorType(boolean hasCallOriginatorType) {
 		this.hasCallOriginatorType = hasCallOriginatorType;
 	}
 
-	public void setUCID(final String ucid) {
+	public boolean hasCallOriginatorType() {
+		return this.hasCallOriginatorType;
+	}
+
+	public boolean canSetBillRate() {
+		return this.flexibleBilling;
+	}
+
+	public void setUCID(String ucid) {
 		this.ucid = ucid;
+	}
+
+	public void setFlexibleBilling(boolean _flexibleBilling) {
+		this.flexibleBilling = _flexibleBilling;
 	}
 }

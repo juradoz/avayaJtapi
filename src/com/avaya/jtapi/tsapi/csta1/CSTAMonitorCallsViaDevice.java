@@ -5,70 +5,62 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTAMonitorCallsViaDevice extends CSTARequest {
-	public static CSTAMonitorCallsViaDevice decode(final InputStream in) {
-		final CSTAMonitorCallsViaDevice _this = new CSTAMonitorCallsViaDevice();
+	String deviceID;
+	CSTAMonitorFilter monitorFilter;
+	public static final int PDU = 113;
+
+	public CSTAMonitorCallsViaDevice(String _deviceID,
+			CSTAMonitorFilter _monitorFilter) {
+		this.deviceID = _deviceID;
+		this.monitorFilter = _monitorFilter;
+	}
+
+	public CSTAMonitorCallsViaDevice() {
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.deviceID, memberStream);
+		CSTAMonitorFilter.encode(this.monitorFilter, memberStream);
+	}
+
+	public static CSTAMonitorCallsViaDevice decode(InputStream in) {
+		CSTAMonitorCallsViaDevice _this = new CSTAMonitorCallsViaDevice();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	String deviceID;
-	CSTAMonitorFilter monitorFilter;
-
-	public static final int PDU = 113;
-
-	public CSTAMonitorCallsViaDevice() {
+	public void decodeMembers(InputStream memberStream) {
+		this.deviceID = DeviceID.decode(memberStream);
+		this.monitorFilter = CSTAMonitorFilter.decode(memberStream);
 	}
 
-	public CSTAMonitorCallsViaDevice(final String _deviceID,
-			final CSTAMonitorFilter _monitorFilter) {
-		deviceID = _deviceID;
-		monitorFilter = _monitorFilter;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		deviceID = ASNIA5String.decode(memberStream);
-		monitorFilter = CSTAMonitorFilter.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(deviceID, memberStream);
-		ASNSequence.encode(monitorFilter, memberStream);
-	}
-
-	public String getDeviceID() {
-		return deviceID;
-	}
-
-	public CSTAMonitorFilter getMonitorFilter() {
-		return monitorFilter;
-	}
-
-	@Override
-	public int getPDU() {
-		return 113;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAMonitorCallsViaDevice ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(deviceID, "deviceID", indent));
-		lines.addAll(CSTAMonitorFilter.print(monitorFilter, "monitorFilter",
-				indent));
+		lines.addAll(DeviceID.print(this.deviceID, "deviceID", indent));
+		lines.addAll(CSTAMonitorFilter.print(this.monitorFilter,
+				"monitorFilter", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 113;
+	}
+
+	public String getDeviceID() {
+		return this.deviceID;
+	}
+
+	public CSTAMonitorFilter getMonitorFilter() {
+		return this.monitorFilter;
 	}
 }

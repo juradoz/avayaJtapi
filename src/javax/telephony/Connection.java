@@ -11,23 +11,22 @@ public abstract interface Connection {
 	public static final int FAILED = 53;
 	public static final int UNKNOWN = 54;
 
+	public abstract int getState();
+
+	public abstract Call getCall();
+
+	public abstract Address getAddress();
+
+	public abstract TerminalConnection[] getTerminalConnections();
+
 	public abstract void disconnect() throws PrivilegeViolationException,
 			ResourceUnavailableException, MethodNotSupportedException,
 			InvalidStateException;
 
-	public abstract Address getAddress();
-
-	public abstract Call getCall();
-
 	public abstract ConnectionCapabilities getCapabilities();
 
 	/** @deprecated */
-	@Deprecated
 	public abstract ConnectionCapabilities getConnectionCapabilities(
 			Terminal paramTerminal, Address paramAddress)
 			throws InvalidArgumentException, PlatformException;
-
-	public abstract int getState();
-
-	public abstract TerminalConnection[] getTerminalConnections();
 }

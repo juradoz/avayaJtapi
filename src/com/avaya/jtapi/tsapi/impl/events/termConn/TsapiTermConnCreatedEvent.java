@@ -4,12 +4,11 @@ import javax.telephony.events.TermConnCreatedEv;
 
 public final class TsapiTermConnCreatedEvent extends TsapiTermConnEvent
 		implements TermConnCreatedEv {
-	public TsapiTermConnCreatedEvent(final TermConnEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public int getID() {
 		return 116;
+	}
+
+	public TsapiTermConnCreatedEvent(TermConnEventParams params) {
+		super(params);
 	}
 }

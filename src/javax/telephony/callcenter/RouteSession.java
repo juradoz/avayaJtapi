@@ -18,15 +18,15 @@ public abstract interface RouteSession {
 	public static final int ERROR_RESOURCE_BUSY = 2;
 	public static final int ERROR_RESOURCE_OUT_OF_SERVICE = 3;
 
-	public abstract void endRoute(int paramInt)
-			throws MethodNotSupportedException;
-
-	public abstract int getCause();
-
 	public abstract RouteAddress getRouteAddress();
-
-	public abstract int getState();
 
 	public abstract void selectRoute(String[] paramArrayOfString)
 			throws MethodNotSupportedException;
+
+	public abstract void endRoute(int paramInt)
+			throws MethodNotSupportedException;
+
+	public abstract int getState();
+
+	public abstract int getCause();
 }

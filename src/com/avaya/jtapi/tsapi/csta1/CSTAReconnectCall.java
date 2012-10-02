@@ -10,60 +10,57 @@ public final class CSTAReconnectCall extends CSTARequest {
 	CSTAConnectionID heldCall;
 	public static final int PDU = 39;
 
-	public static CSTAReconnectCall decode(final InputStream in) {
-		final CSTAReconnectCall _this = new CSTAReconnectCall();
-		_this.doDecode(in);
-
-		return _this;
+	public CSTAReconnectCall(CSTAConnectionID _activeCall,
+			CSTAConnectionID _heldCall) {
+		this.activeCall = _activeCall;
+		this.heldCall = _heldCall;
 	}
 
 	protected CSTAReconnectCall() {
 	}
 
-	public CSTAReconnectCall(final CSTAConnectionID _activeCall,
-			final CSTAConnectionID _heldCall) {
-		activeCall = _activeCall;
-		heldCall = _heldCall;
+	public static CSTAReconnectCall decode(InputStream in) {
+		CSTAReconnectCall _this = new CSTAReconnectCall();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		activeCall = CSTAConnectionID.decode(memberStream);
-		heldCall = CSTAConnectionID.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.activeCall = CSTAConnectionID.decode(memberStream);
+		this.heldCall = CSTAConnectionID.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(activeCall, memberStream);
-		CSTAConnectionID.encode(heldCall, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.activeCall, memberStream);
+		CSTAConnectionID.encode(this.heldCall, memberStream);
 	}
 
-	public CSTAConnectionID getActiveCall() {
-		return activeCall;
-	}
-
-	public CSTAConnectionID getHeldCall() {
-		return heldCall;
-	}
-
-	@Override
-	public int getPDU() {
-		return 39;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAReconnectCall ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
-		lines.addAll(CSTAConnectionID.print(heldCall, "heldCall", indent));
+		lines.addAll(CSTAConnectionID.print(this.activeCall, "activeCall",
+				indent));
+		lines.addAll(CSTAConnectionID.print(this.heldCall, "heldCall", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 39;
+	}
+
+	public CSTAConnectionID getActiveCall() {
+		return this.activeCall;
+	}
+
+	public CSTAConnectionID getHeldCall() {
+		return this.heldCall;
 	}
 }

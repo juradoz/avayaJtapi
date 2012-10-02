@@ -1,11 +1,9 @@
 package com.avaya.jtapi.tsapi.impl.core;
 
-import java.util.Vector;
-
-import org.apache.log4j.Logger;
-
 import com.avaya.jtapi.tsapi.csta1.CSTAConnectionID;
 import com.avaya.jtapi.tsapi.csta1.CSTAExtendedDeviceID;
+import java.util.Vector;
+import org.apache.log4j.Logger;
 
 final class UnsolicitedSnapshotCallConfHandler implements
 		SnapshotCallExtraConfHandler {
@@ -13,7 +11,7 @@ final class UnsolicitedSnapshotCallConfHandler implements
 			.getLogger(UnsolicitedSnapshotCallConfHandler.class);
 	TSEventHandler eventHandler;
 	int eventType;
-	int cause;
+	short cause;
 	CSTAExtendedDeviceID subjectDeviceID;
 	TSDevice subjectDevice;
 	CSTAConnectionID connID;
@@ -25,228 +23,245 @@ final class UnsolicitedSnapshotCallConfHandler implements
 	int connState;
 	int termConnState;
 	TSDevice connectionDevice;
+	short csta3Cause;
 
-	UnsolicitedSnapshotCallConfHandler(final TSEventHandler _eventHandler,
-			final int _eventType, final int _cause,
-			final CSTAExtendedDeviceID _subjectDeviceID,
-			final TSDevice _subjectDevice, final CSTAConnectionID _connID,
-			final TSCall _call, final Object _privateData,
-			final CSTAExtendedDeviceID _callingDeviceID,
-			final CSTAExtendedDeviceID _calledDeviceID,
-			final CSTAExtendedDeviceID _lastRedirectionDeviceID,
-			final int _connState, final int _termConnState,
-			final TSDevice _connectionDevice) {
-		eventHandler = _eventHandler;
-		eventType = _eventType;
-		cause = _cause;
-		subjectDeviceID = _subjectDeviceID;
-		subjectDevice = _subjectDevice;
-		connID = _connID;
-		call = _call;
-		privateData = _privateData;
-		callingDeviceID = _callingDeviceID;
-		calledDeviceID = _calledDeviceID;
-		lastRedirectionDeviceID = _lastRedirectionDeviceID;
-		connState = _connState;
-		termConnState = _termConnState;
-		connectionDevice = _connectionDevice;
+	UnsolicitedSnapshotCallConfHandler(TSEventHandler _eventHandler,
+			int _eventType, short _cause, short _csta3Cause,
+			CSTAExtendedDeviceID _subjectDeviceID, TSDevice _subjectDevice,
+			CSTAConnectionID _connID, TSCall _call, Object _privateData,
+			CSTAExtendedDeviceID _callingDeviceID,
+			CSTAExtendedDeviceID _calledDeviceID,
+			CSTAExtendedDeviceID _lastRedirectionDeviceID, int _connState,
+			int _termConnState, TSDevice _connectionDevice) {
+		this.eventHandler = _eventHandler;
+		this.eventType = _eventType;
+		this.cause = _cause;
+		this.csta3Cause = _csta3Cause;
+		this.subjectDeviceID = _subjectDeviceID;
+		this.subjectDevice = _subjectDevice;
+		this.connID = _connID;
+		this.call = _call;
+		this.privateData = _privateData;
+		this.callingDeviceID = _callingDeviceID;
+		this.calledDeviceID = _calledDeviceID;
+		this.lastRedirectionDeviceID = _lastRedirectionDeviceID;
+		this.connState = _connState;
+		this.termConnState = _termConnState;
+		this.connectionDevice = _connectionDevice;
 	}
 
-	@Override
-	public Object handleConf(final boolean rc, Vector<TSEvent> eventList,
-			final Object _privateData) {
-		if (call.getTSState() == 34)
-			return null;
-
-		if (call.getNeedRedoSnapshotCall()) {
-			call.setNeedRedoSnapshotCall(false);
-			UnsolicitedSnapshotCallConfHandler.log.info("redo snapshot call");
-			call.doSnapshot(connID, this, false);
+	public Object handleConf(boolean rc, Vector<TSEvent> eventList,
+			Object _privateData) {
+		if (this.call.getTSState() == 34) {
 			return null;
 		}
 
-		call.setSnapshotCallConfPending(false);
+		if (this.call.getNeedRedoSnapshotCall()) {
+			this.call.setNeedRedoSnapshotCall(false);
+			log.info("redo snapshot call");
+			this.call.doSnapshot(this.connID, this, false);
+			return null;
+		}
 
-		UnsolicitedSnapshotCallConfHandler.log
-				.debug("UnsolicitedSnapshotCallConfHandler " + this
-						+ " handling conf for call " + call + ", eventType "
-						+ eventType + ", subjectDevice " + subjectDevice
-						+ ", connID " + connID + ", rc " + rc + ", cause "
-						+ cause + ", privateData " + privateData
-						+ ", provider " + call.getTSProviderImpl());
+		this.call.setSnapshotCallConfPending(false);
 
-		if (privateData == null)
-			privateData = _privateData;
+		log.debug("UnsolicitedSnapshotCallConfHandler " + this
+				+ " handling conf for call " + this.call + ", eventType "
+				+ this.eventType + ", subjectDevice " + this.subjectDevice
+				+ ", connID " + this.connID + ", rc " + rc + ", cause "
+				+ this.cause + ", privateData " + this.privateData
+				+ ", provider " + this.call.getTSProviderImpl());
 
-		if (eventList == null)
+		if (this.privateData == null) {
+			this.privateData = _privateData;
+		}
+
+		if (eventList == null) {
 			eventList = new Vector<TSEvent>();
+		}
 		TSConnection connection;
 		int oldConnState;
 		int oldTermConnState;
 		if (rc) {
-			if (eventList.size() == 0)
-				call.getSnapshot(eventList);
+			if (eventList.size() == 0) {
+				this.call.getSnapshot(eventList);
+			}
 
-			connection = eventHandler.provider.createTerminalConnection(connID,
-					subjectDevice, null, connectionDevice);
+			connection = this.eventHandler.provider
+					.createTerminalConnection(this.connID, this.subjectDevice,
+							null, this.connectionDevice);
 			oldConnState = connection.getCallControlConnState();
 			oldTermConnState = connection.getCallControlTermConnState();
 
-			final boolean isTermConn = connection.isTerminalConnection();
+			boolean isTermConn = connection.isTerminalConnection();
 			TSConnection connToCheck = null;
 			TSConnection tcToCheck = null;
 
 			if (isTermConn) {
 				connToCheck = connection.getTSConn();
 				tcToCheck = connection;
-			} else
+			} else {
 				connToCheck = connection;
+			}
 
 			TSEvent nEv = null;
 
 			boolean foundConn = false;
 			boolean foundTC = false;
 
-			for (int j = 0; j < eventList.size(); ++j) {
-				nEv = eventList.elementAt(j);
+			for (int j = 0; j < eventList.size(); j++) {
+				nEv = (TSEvent) eventList.elementAt(j);
 
-				if (connToCheck != nEv.getEventTarget()
-						|| nEv.getEventType() != 6)
-					continue;
-				foundConn = true;
-				if (connState != 83 || oldConnState == 83
-						|| connToCheck.getCallControlConnState() == 83)
-					break;
-
-				UnsolicitedSnapshotCallConfHandler.log
-						.debug("adding ConnAlertingEv to events derived from SnapshotCallConf for call "
-								+ call);
-
-				if (j + 1 >= eventList.size()) {
-					eventList.addElement(new TSEvent(9, connToCheck));
-					eventList.addElement(new TSEvent(26, connToCheck));
-					break;
-				}
-
-				eventList.insertElementAt(new TSEvent(9, connToCheck), j + 1);
-				eventList.insertElementAt(new TSEvent(26, connToCheck), j + 1);
-				break;
-			}
-
-			if (isTermConn)
-				for (int j = 0; j < eventList.size(); ++j) {
-					nEv = eventList.elementAt(j);
-
-					if (tcToCheck != nEv.getEventTarget()
-							|| nEv.getEventType() != 13)
-						continue;
-					foundTC = true;
-					if (termConnState != 97 || oldTermConnState == 97
-							|| tcToCheck.getCallControlTermConnState() == 97)
+				if ((connToCheck == nEv.getEventTarget())
+						&& (nEv.getEventType() == 6)) {
+					foundConn = true;
+					if ((this.connState != 83) || (oldConnState == 83)
+							|| (connToCheck.getCallControlConnState() == 83)) {
 						break;
+					}
+					log.debug("adding ConnAlertingEv to events derived from SnapshotCallConf for call "
+							+ this.call);
 
 					if (j + 1 >= eventList.size()) {
-						eventList.addElement(new TSEvent(15, tcToCheck));
-						eventList.addElement(new TSEvent(35, tcToCheck));
+						eventList.addElement(new TSEvent(9, connToCheck));
+						eventList.addElement(new TSEvent(26, connToCheck));
 						break;
 					}
 
-					eventList
-							.insertElementAt(new TSEvent(15, tcToCheck), j + 1);
-					eventList
-							.insertElementAt(new TSEvent(35, tcToCheck), j + 1);
+					eventList.insertElementAt(new TSEvent(9, connToCheck),
+							j + 1);
+					eventList.insertElementAt(new TSEvent(26, connToCheck),
+							j + 1);
 					break;
 				}
+
+			}
+
+			if (isTermConn) {
+				for (int j = 0; j < eventList.size(); j++) {
+					nEv = (TSEvent) eventList.elementAt(j);
+
+					if ((tcToCheck == nEv.getEventTarget())
+							&& (nEv.getEventType() == 13)) {
+						foundTC = true;
+						if ((this.termConnState != 97)
+								|| (oldTermConnState == 97)
+								|| (tcToCheck.getCallControlTermConnState() == 97)) {
+							break;
+						}
+						if (j + 1 >= eventList.size()) {
+							eventList.addElement(new TSEvent(15, tcToCheck));
+							eventList.addElement(new TSEvent(35, tcToCheck));
+							break;
+						}
+
+						eventList.insertElementAt(new TSEvent(15, tcToCheck),
+								j + 1);
+						eventList.insertElementAt(new TSEvent(35, tcToCheck),
+								j + 1);
+						break;
+					}
+
+				}
+
+			}
 
 			if (isTermConn) {
 				if (!foundConn) {
-					connToCheck.setConnectionState(connState, null);
-					if (!foundTC)
-						tcToCheck.setTermConnState(termConnState, null);
-					final Vector<TSEvent> snapEventList = new Vector<TSEvent>();
+					connToCheck.setConnectionState(this.connState, null);
+					if (!foundTC) {
+						tcToCheck.setTermConnState(this.termConnState, null);
+					}
+					Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 					connToCheck.getSnapshot(snapEventList);
 					int index = 0;
-					if (eventList.size() == 0)
+					if (eventList.size() == 0) {
 						eventList = snapEventList;
-					else {
-						if (eventList.elementAt(0).getEventType() == 4)
-							++index;
-						for (int i = 0; i < snapEventList.size(); ++i) {
+					} else {
+						if (((TSEvent) eventList.elementAt(0)).getEventType() == 4) {
+							index++;
+						}
+						for (int i = 0; i < snapEventList.size(); i++) {
 							eventList.insertElementAt(
 									snapEventList.elementAt(i), index);
-							++index;
+							index++;
 						}
 					}
 				} else if (!foundTC) {
-					tcToCheck.setTermConnState(termConnState, null);
-					final Vector<TSEvent> snapEventList = new Vector<TSEvent>();
+					tcToCheck.setTermConnState(this.termConnState, null);
+					Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 					tcToCheck.getSnapshot(snapEventList);
 					int index = 0;
-					if (eventList.size() == 0)
+					if (eventList.size() == 0) {
 						eventList = snapEventList;
-					else {
-						if (eventList.elementAt(0).getEventType() == 4)
-							++index;
-						for (int i = 0; i < snapEventList.size(); ++i) {
+					} else {
+						if (((TSEvent) eventList.elementAt(0)).getEventType() == 4) {
+							index++;
+						}
+						for (int i = 0; i < snapEventList.size(); i++) {
 							eventList.insertElementAt(
 									snapEventList.elementAt(i), index);
-							++index;
+							index++;
 						}
 					}
 				}
 			} else if (!foundConn) {
-				connToCheck.setConnectionState(connState, null);
-				final Vector<TSEvent> snapEventList = new Vector<TSEvent>();
+				connToCheck.setConnectionState(this.connState, null);
+				Vector<TSEvent> snapEventList = new Vector<TSEvent>();
 				connToCheck.getSnapshot(snapEventList);
 				int index = 0;
-				if (eventList.size() == 0)
+				if (eventList.size() == 0) {
 					eventList = snapEventList;
-				else {
-					if (eventList.elementAt(0).getEventType() == 4)
-						++index;
-					for (int i = 0; i < snapEventList.size(); ++i) {
+				} else {
+					if (((TSEvent) eventList.elementAt(0)).getEventType() == 4) {
+						index++;
+					}
+					for (int i = 0; i < snapEventList.size(); i++) {
 						eventList.insertElementAt(snapEventList.elementAt(i),
 								index);
-						++index;
+						index++;
 					}
 
 				}
 
 			}
 
-			for (int j = 0; j < eventList.size(); ++j) {
-				nEv = eventList.elementAt(j);
+			for (int j = 0; j < eventList.size(); j++) {
+				nEv = (TSEvent) eventList.elementAt(j);
 
-				if (connToCheck != nEv.getEventTarget()
-						|| !shouldOverrideConnEventCSTACauseValue(nEv))
-					continue;
-
-				UnsolicitedSnapshotCallConfHandler.log
-						.debug("overriding cause for TSEvent " + nEv + " ("
+				if (connToCheck == nEv.getEventTarget()) {
+					if (shouldOverrideConnEventCSTACauseValue(nEv)) {
+						log.debug("overriding cause for TSEvent " + nEv + " ("
 								+ nEv.getEventType() + ","
 								+ nEv.getEventTarget() + " from eventType "
-								+ eventType + " with new cause " + cause);
+								+ this.eventType + " with new cause "
+								+ this.cause);
 
-				nEv.setSnapshotCstaCause((short) cause);
+						nEv.setSnapshotCstaCause(this.cause);
+						nEv.setSnapshotCsta3Cause(this.csta3Cause);
+					}
+				}
 			}
 		} else {
-			connection = eventHandler.provider.createTerminalConnection(connID,
-					subjectDevice, eventList, connectionDevice);
+			connection = this.eventHandler.provider.createTerminalConnection(
+					this.connID, this.subjectDevice, eventList,
+					this.connectionDevice);
 			oldConnState = connection.getCallControlConnState();
 			oldTermConnState = connection.getCallControlTermConnState();
-			connection.setConnectionState(connState, eventList);
-			connection.setTermConnState(termConnState, eventList);
+			connection.setConnectionState(this.connState, eventList);
+			connection.setTermConnState(this.termConnState, eventList);
 		}
 
-		eventHandler.finishConnEvents(null, eventType, cause, 110,
-				subjectDeviceID, subjectDevice, connection, call, privateData,
-				callingDeviceID, calledDeviceID, lastRedirectionDeviceID,
-				connState, oldConnState, oldTermConnState, eventList);
+		this.eventHandler.finishConnEvents(null, this.eventType, this.cause,
+				110, this.subjectDeviceID, this.subjectDevice, connection,
+				this.call, this.privateData, this.callingDeviceID,
+				this.calledDeviceID, this.lastRedirectionDeviceID,
+				this.connState, oldConnState, oldTermConnState, eventList);
 
-		return privateData;
+		return this.privateData;
 	}
 
-	boolean shouldOverrideConnEventCSTACauseValue(final TSEvent eventToModify) {
+	boolean shouldOverrideConnEventCSTACauseValue(TSEvent eventToModify) {
 		boolean result = false;
 
 		switch (eventToModify.getEventType()) {
@@ -256,26 +271,26 @@ final class UnsolicitedSnapshotCallConfHandler implements
 		case 9:
 		case 23:
 		case 26:
-			result = eventType == 57;
+			result = this.eventType == 57;
 			break;
 		case 10:
 		case 27:
-			result = eventType == 56;
+			result = this.eventType == 56;
 			break;
 		case 7:
 		case 21:
-			result = eventType == 59;
+			result = this.eventType == 59;
 			break;
 		case 11:
 		case 24:
 		case 28:
-			result = eventType == 60;
+			result = this.eventType == 60;
 			break;
 		case 22:
-			result = eventType == 62;
+			result = this.eventType == 62;
 			break;
 		case 25:
-			result = eventType == 64;
+			result = this.eventType == 64;
 			break;
 		case 8:
 		case 12:

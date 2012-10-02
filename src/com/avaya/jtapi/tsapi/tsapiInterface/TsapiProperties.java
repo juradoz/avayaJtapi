@@ -61,4 +61,12 @@ public abstract interface TsapiProperties {
 	public static final String REFRESH_INTERVAL_FOR_TSAPI_PRO = "propertyRefreshRate";
 	public static final int DEFAULT_REFRESH_INTERVAL_FOR_TSAPI_PRO = 100;
 	public static final int DEFAULT_PORT = 450;
+	public static final String DISABLE_SIMULATION_FOR_CSTA_ORIGINATED_EVENT = "disableSimulationForCSTAOriginatedEvent";
+	public static final String DEFAULT_DISABLE_SIMULATION_FOR_CSTA_ORIGINATED_EVENT = "false";
+	public static final boolean DEFAULT_ENABLE_DELAY_IN_TERMCONN_DROP_ON_CSTAFAILED = false;
+	public static final String ENABLE_DELAY_IN_TERMCONN_DROP_ON_CSTAFAILED = "enableDelayInTermConnDropOnCstaFailed";
+	public static final long DEFAULT_TIMEOUT_FOR_DELAY_IN_TERM_CONN_DROP_ON_CSTA_FAILED = 2L;
+	public static final String TIMEOUT_FOR_DELAY_IN_TERM_CONN_DROP_ON_CSTA_FAILED = "timeoutForDelayInTermConnDropOnCstaFailed";
+	public static final String DISABLE_TERM_CONN_DROP_ON_CSTA_FAILED = "disableTermConnDropOnCstaFailed";
+	public static final boolean DEFAULT_DISABLE_TERM_CONN_DROP_ON_CSTA_FAILED = false;
 }

@@ -5,27 +5,21 @@ import javax.telephony.TerminalConnectionListener;
 
 public class TerminalConnectionListenerAdapter extends
 		ConnectionListenerAdapter implements TerminalConnectionListener {
-	@Override
-	public void terminalConnectionActive(final TerminalConnectionEvent event) {
+	public void terminalConnectionActive(TerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionCreated(final TerminalConnectionEvent event) {
+	public void terminalConnectionCreated(TerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionDropped(final TerminalConnectionEvent event) {
+	public void terminalConnectionDropped(TerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionPassive(final TerminalConnectionEvent event) {
+	public void terminalConnectionPassive(TerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionRinging(final TerminalConnectionEvent event) {
+	public void terminalConnectionRinging(TerminalConnectionEvent event) {
 	}
 
-	@Override
-	public void terminalConnectionUnknown(final TerminalConnectionEvent event) {
+	public void terminalConnectionUnknown(TerminalConnectionEvent event) {
 	}
 }

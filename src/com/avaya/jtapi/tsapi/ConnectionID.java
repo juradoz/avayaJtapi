@@ -10,53 +10,51 @@ public final class ConnectionID {
 	ConnectionID() {
 	}
 
-	public ConnectionID(final int _callID, final String _deviceID,
-			final short _devIDType) {
-		callID = _callID;
-		deviceID = _deviceID;
-		devIDType = _devIDType;
+	public ConnectionID(int _callID, String _deviceID, short _devIDType) {
+		this.callID = _callID;
+		this.deviceID = _deviceID;
+		this.devIDType = _devIDType;
 	}
 
-	@Override
-	public boolean equals(final Object anObject) {
-		if (anObject instanceof ConnectionID) {
-			final ConnectionID anotherConnID = (ConnectionID) anObject;
-			if (deviceID == null)
-				return callID == anotherConnID.callID
-						&& devIDType == anotherConnID.devIDType
-						&& anotherConnID.deviceID == null;
+	public int hashCode() {
+		if (this.deviceID == null) {
+			return this.callID + (this.devIDType << 31);
+		}
 
-			return callID == anotherConnID.callID
-					&& devIDType == anotherConnID.devIDType
-					&& deviceID.equals(anotherConnID.deviceID);
+		return this.callID + this.deviceID.hashCode() + (this.devIDType << 31);
+	}
+
+	public boolean equals(Object anObject) {
+		if ((anObject instanceof ConnectionID)) {
+			ConnectionID anotherConnID = (ConnectionID) anObject;
+			if (this.deviceID == null) {
+				return (this.callID == anotherConnID.callID)
+						&& (this.devIDType == anotherConnID.devIDType)
+						&& (anotherConnID.deviceID == null);
+			}
+
+			return (this.callID == anotherConnID.callID)
+					&& (this.devIDType == anotherConnID.devIDType)
+					&& (this.deviceID.equals(anotherConnID.deviceID));
 		}
 
 		return false;
 	}
 
-	public int getCallID() {
-		return callID;
+	public String toString() {
+		return "ConnectionID(" + this.callID + "," + this.deviceID + ","
+				+ this.devIDType + ")";
 	}
 
 	public String getDeviceID() {
-		return deviceID;
+		return this.deviceID;
+	}
+
+	public int getCallID() {
+		return this.callID;
 	}
 
 	public int getDevIDType() {
-		return devIDType;
-	}
-
-	@Override
-	public int hashCode() {
-		if (deviceID == null)
-			return callID + (devIDType << 31);
-
-		return callID + deviceID.hashCode() + (devIDType << 31);
-	}
-
-	@Override
-	public String toString() {
-		return "ConnectionID(" + callID + "," + deviceID + "," + devIDType
-				+ ")";
+		return this.devIDType;
 	}
 }

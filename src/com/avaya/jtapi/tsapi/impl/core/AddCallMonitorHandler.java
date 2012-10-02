@@ -6,20 +6,20 @@ final class AddCallMonitorHandler implements SnapshotCallExtraConfHandler {
 	TSCall call;
 	int monitorCrossRefID;
 
-	AddCallMonitorHandler(final TSCall _call, final int _monitorCrossRefID) {
-		call = _call;
-		monitorCrossRefID = _monitorCrossRefID;
+	AddCallMonitorHandler(TSCall _call, int _monitorCrossRefID) {
+		this.call = _call;
+		this.monitorCrossRefID = _monitorCrossRefID;
 	}
 
-	@Override
-	public Object handleConf(final boolean rc, final Vector<TSEvent> eventList,
-			final Object privateData) {
-		call.monitorCrossRefID = monitorCrossRefID;
-		call.getTSProviderImpl().addMonitor(monitorCrossRefID, call);
+	public Object handleConf(boolean rc, Vector<TSEvent> eventList,
+			Object privateData) {
+		this.call.monitorCrossRefID = this.monitorCrossRefID;
+		this.call.getTSProviderImpl().addMonitor(this.monitorCrossRefID,
+				this.call);
 
-		if (call.internalDeviceMonitor != null) {
-			call.internalDeviceMonitor.removeInternalMonitor(call);
-			call.internalDeviceMonitor = null;
+		if (this.call.internalDeviceMonitor != null) {
+			this.call.internalDeviceMonitor.removeInternalMonitor(this.call);
+			this.call.internalDeviceMonitor = null;
 		}
 		return null;
 	}

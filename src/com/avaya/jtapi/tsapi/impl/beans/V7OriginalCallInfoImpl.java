@@ -7,17 +7,15 @@ public final class V7OriginalCallInfoImpl extends V5OriginalCallInfoImpl
 		implements V7OriginalCallInfo {
 	private V7DeviceHistoryEntry[] deviceHistory;
 
-	@Override
 	public V7DeviceHistoryEntry[] getDeviceHistory() {
-		return deviceHistory;
+		return this.deviceHistory;
 	}
 
-	@Override
 	public boolean hasDeviceHistory() {
-		return deviceHistory != null;
+		return this.deviceHistory != null;
 	}
 
-	public void setDeviceHistory(final V7DeviceHistoryEntry[] _deviceHistory) {
-		deviceHistory = _deviceHistory;
+	public void setDeviceHistory(V7DeviceHistoryEntry[] _deviceHistory) {
+		this.deviceHistory = _deviceHistory;
 	}
 }

@@ -6,29 +6,29 @@ public class ProviderUnavailableException extends RuntimeException {
 	public static final int CAUSE_NOT_IN_SERVICE = 161;
 	public static final int CAUSE_INVALID_SERVICE = 162;
 	public static final int CAUSE_INVALID_ARGUMENT = 163;
-	private final int _cause;
+	private int _cause;
 
 	public ProviderUnavailableException() {
-		_cause = 160;
+		this._cause = 160;
 	}
 
-	public ProviderUnavailableException(final int cause) {
-		_cause = cause;
+	public ProviderUnavailableException(int cause) {
+		this._cause = cause;
 	}
 
-	public ProviderUnavailableException(final int cause, final String s) {
+	public ProviderUnavailableException(String s) {
 		super(s);
 
-		_cause = cause;
+		this._cause = 160;
 	}
 
-	public ProviderUnavailableException(final String s) {
+	public ProviderUnavailableException(int cause, String s) {
 		super(s);
 
-		_cause = 160;
+		this._cause = cause;
 	}
 
 	public int getReason() {
-		return _cause;
+		return this._cause;
 	}
 }

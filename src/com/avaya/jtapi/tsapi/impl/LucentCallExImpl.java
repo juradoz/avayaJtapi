@@ -7,44 +7,40 @@ import com.avaya.jtapi.tsapi.impl.core.TSProviderImpl;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class LucentCallExImpl extends LucentCallImpl implements LucentCallEx {
-	LucentCallExImpl(final LucentProviderImpl _provider) {
-		super(_provider, 0);
-		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
-	}
-
-	LucentCallExImpl(final LucentProviderImpl _provider,
-			final CSTAConnectionID connID) {
-		super(_provider, connID);
-		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
-	}
-
-	LucentCallExImpl(final LucentProviderImpl _provider, final int callID) {
-		super(_provider, callID);
-		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
-	}
-
-	LucentCallExImpl(final TSCall _tscall) {
-		super(_tscall);
-		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
-	}
-
-	LucentCallExImpl(final TSProviderImpl _provider,
-			final CSTAConnectionID connID) {
-		super(_provider, connID);
-		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof LucentCallExImpl) {
-			tsCall = tsCall.getHandOff();
-			return tsCall.equals(((LucentCallExImpl) obj).tsCall);
+	public boolean equals(Object obj) {
+		if ((obj instanceof LucentCallExImpl)) {
+			this.tsCall = this.tsCall.getHandOff();
+			return this.tsCall.equals(((LucentCallExImpl) obj).tsCall);
 		}
 
 		return false;
 	}
 
-	@Override
+	LucentCallExImpl(LucentProviderImpl _provider) {
+		super(_provider, 0);
+		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
+	}
+
+	LucentCallExImpl(LucentProviderImpl _provider, CSTAConnectionID connID) {
+		super(_provider, connID);
+		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
+	}
+
+	LucentCallExImpl(LucentProviderImpl _provider, int callID) {
+		super(_provider, callID);
+		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
+	}
+
+	LucentCallExImpl(TSProviderImpl _provider, CSTAConnectionID connID) {
+		super(_provider, connID);
+		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
+	}
+
+	LucentCallExImpl(TSCall _tscall) {
+		super(_tscall);
+		TsapiTrace.traceConstruction(this, LucentCallExImpl.class);
+	}
+
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, LucentCallExImpl.class);

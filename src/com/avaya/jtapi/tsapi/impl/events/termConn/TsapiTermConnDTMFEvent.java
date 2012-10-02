@@ -5,27 +5,23 @@ import javax.telephony.TerminalConnection;
 import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 import com.avaya.jtapi.tsapi.impl.events.call.TsapiCallEvent;
 
-public final class TsapiTermConnDTMFEvent extends TsapiCallEvent
+public final class TsapiTermConnDTMFEvent extends TsapiCallEvent {
+	private char character;
 
-{
-	private final char character;
-
-	public TsapiTermConnDTMFEvent(final CallEventParams params,
-			final char _character) {
-		super(params, 3);
-		character = _character;
-	}
-
-	public char getDtmfDigit() {
-		return character;
-	}
-
-	@Override
 	public int getID() {
 		return 401;
 	}
 
+	public char getDtmfDigit() {
+		return this.character;
+	}
+
 	public TerminalConnection getTerminalConnection() {
 		return null;
+	}
+
+	public TsapiTermConnDTMFEvent(CallEventParams params, char _character) {
+		super(params, 3);
+		this.character = _character;
 	}
 }

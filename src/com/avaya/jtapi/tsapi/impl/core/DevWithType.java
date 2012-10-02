@@ -4,24 +4,28 @@ final class DevWithType {
 	TSDevice device;
 	boolean isTerminal;
 
-	DevWithType(final TSDevice _device, final boolean _isTerminal) {
-		device = _device;
-		isTerminal = _isTerminal;
+	DevWithType(TSDevice _device, boolean _isTerminal) {
+		this.device = _device;
+		this.isTerminal = _isTerminal;
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof DevWithType)
-			return device == ((DevWithType) obj).device
-					&& isTerminal == ((DevWithType) obj).isTerminal;
+	public int hashCode() {
+		if (this.isTerminal) {
+			return this.device.hashCode() + 1;
+		}
+		return this.device.hashCode();
+	}
+
+	public boolean equals(Object obj) {
+		if ((obj instanceof DevWithType)) {
+			if ((this.device == ((DevWithType) obj).device)
+					&& (this.isTerminal == ((DevWithType) obj).isTerminal)) {
+				return true;
+			}
+
+			return false;
+		}
 
 		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		if (isTerminal)
-			return device.hashCode() + 1;
-		return device.hashCode();
 	}
 }

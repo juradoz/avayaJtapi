@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
@@ -79,6 +79,7 @@ import com.avaya.jtapi.tsapi.csta1.CSTASysStatStart;
 import com.avaya.jtapi.tsapi.csta1.CSTASysStatStop;
 import com.avaya.jtapi.tsapi.csta1.CSTATSProvider;
 import com.avaya.jtapi.tsapi.csta1.CSTATransferCall;
+import com.avaya.jtapi.tsapi.impl.core.JtapiProperties;
 import com.avaya.jtapi.tsapi.tsapiInterface.oio.TsapiChannelOio;
 import com.avaya.jtapi.tsapi.util.JTAPILoggingAdapter;
 import com.avaya.jtapi.tsapi.util.JtapiUtils;
@@ -86,625 +87,17 @@ import com.avaya.jtapi.tsapi.util.PerfStatisticsCollector;
 
 public class Tsapi {
 	private static Logger log;
-	private static Properties saveJtapiProperties = new Properties();
-	static {
-		Tsapi.log = Logger.getLogger(Tsapi.class);
-		Tsapi.useTLinkIP = false;
-		Tsapi.maxTcpSocketWait = 20;
-		Tsapi.alternateTraceFile = null;
-		Tsapi.refreshIntervalForTsapiPro = 100;
-
-		Tsapi.prePopulateJtapiProperties();
-
-		Tsapi.servers = new Vector<InetSocketAddress>();
-		try {
-			if (System.getProperty("com.avaya.jtapi.tsapi.servers") != null) {
-				final Collection<InetSocketAddress> serverEntries = JtapiUtils
-						.parseTelephonyServerEntry(
-								System.getProperty(
-										"com.avaya.jtapi.tsapi.servers").trim(),
-								450);
-
-				for (final Object server : serverEntries)
-					Tsapi.addServer((InetSocketAddress) server);
-			}
-
-			final Properties prop = new Properties();
-
-			final InputStream in = TsapiChannelOio.getProperties();
-
-			prop.load(in);
-
-			Tsapi.initClass(null, prop);
-
-			Tsapi.saveJtapiProperties.putAll(prop);
-
-			Tsapi.displayProperties(System.getProperties(),
-					Tsapi.saveJtapiProperties);
-
-			in.close();
-
-			TsapiChannelOio.getBrowser().setStartUp(false);
-		} catch (final Exception e) {
-			try {
-				if (JtapiUtils.isLog4jConfigured()) {
-					Tsapi.log.error("failed to find/open tsapi.pro file:");
-					Tsapi.log.error(e.getMessage(), e);
-				} else {
-					System.out.println("failed to find/open tsapi.pro file:"
-							+ e.getMessage());
-					e.printStackTrace();
-				}
-				final String hostname = TsapiChannelOio.getBrowser()
-						.getCodeBaseServer();
-
-				final InetSocketAddress addr = new InetSocketAddress(hostname,
-						450);
-				final Properties prop = new Properties();
-				Tsapi.initClass(addr, prop);
-			} catch (final Exception e1) {
-				try {
-					if (JtapiUtils.isLog4jConfigured()) {
-						Tsapi.log.error("failed to find codebase server:");
-						Tsapi.log.error(e1.getMessage(), e1);
-					} else {
-						System.out.println("failed to find codebase server:"
-								+ e.getMessage());
-						e.printStackTrace();
-					}
-
-					final String hostname = InetAddress.getLocalHost()
-							.getHostName();
-					final InetSocketAddress addr = new InetSocketAddress(
-							hostname, 450);
-					final Properties prop = new Properties();
-					Tsapi.initClass(addr, prop);
-				} catch (final Exception e2) {
-					if (JtapiUtils.isLog4jConfigured())
-						Tsapi.log.error("enumServers: " + e2);
-					else
-						System.out.println("enumServers: " + e2);
-				}
-			}
-		}
-		Tsapi.showImplementationVersion();
-	}
-
-	@SuppressWarnings("rawtypes")
-	private static void displayProperties(final Properties systemProperties,
-			final Properties jtapiProperties) {
-		Set list = null;
-		if (systemProperties != null) {
-			list = systemProperties.entrySet();
-			Tsapi.log.info("System properties dump ");
-			for (final Object entry : list) {
-				final String key = (String) ((Entry) entry).getKey();
-
-				if (!key.startsWith("com.avaya.jtapi.tsapi."))
-					Tsapi.print(key, (String) ((Entry) entry).getValue());
-			}
-		}
-
-		Tsapi.log.info("Jtapi properties dump ");
-		list = jtapiProperties.entrySet();
-		for (final Object entry : list) {
-			final Object key = ((Entry) entry).getKey();
-			Object value = ((Entry) entry).getValue();
-			if (key.equals("traceFileSize") || key.equals("errorFileSize"))
-				value = value + "M";
-			else if (key.equals("maxWaitForSocket")
-					|| key.equals("propertyRefreshRate")
-					|| key.equals("callCompletionTimeout")
-					|| key.equals("callCleanupRate"))
-				value = value + " seconds";
-			else if (key.equals("debugLevel"))
-				try {
-					final int intValue = Integer.parseInt((String) value);
-					if (intValue < 0 || intValue > 7)
-						value = "<INVALID>";
-				} catch (final Exception e) {
-				}
-			Tsapi.print((String) key, value);
-		}
-	}
-
-	public static int getAuditDumpInterval() {
-		return Tsapi.auditDumpInterval;
-	}
-
-	public static int getAuditObjectAgeThreshold() {
-		return Tsapi.auditObjectAgeThreshold;
-	}
-
-	public static int getCallCleanupRate() {
-		return Tsapi.callCleanupRate;
-	}
-
-	public static int getCallCompletionTimeout() {
-		return Tsapi.callCompletionTimeout;
-	}
-
-	public static int getGetServicesTimeout() {
-		return Tsapi.getServicesTimeout;
-	}
-
-	private static int getIntegerProperty(final String tsapiProperty,
-			final Properties props, final String defaultValue,
-			final int currentValue) {
-		int returnValue = currentValue;
-
-		final String propertyValue = props.getProperty(tsapiProperty,
-				defaultValue);
-		try {
-			returnValue = Integer.parseInt(propertyValue);
-			if (returnValue != currentValue)
-				Tsapi.log.info("Property \"" + tsapiProperty + "\" set to "
-						+ returnValue);
-		} catch (final NumberFormatException ee) {
-			if (JtapiUtils.isLog4jConfigured()) {
-				Tsapi.log.error("Invalid integer value " + propertyValue
-						+ " given for property " + tsapiProperty);
-				Tsapi.log.error(ee.getMessage(), ee);
-			} else {
-				System.out.println("Invalid integer value " + propertyValue
-						+ " given for property " + tsapiProperty);
-				ee.printStackTrace();
-			}
-		}
-
-		return returnValue;
-	}
-
-	public static int getMaxTcpSocketWait() {
-		return Tsapi.maxTcpSocketWait;
-	}
-
-	public static int getMaxThreadPoolSize() {
-		return Tsapi.maxThreadPoolSize;
-	}
-
-	public static int getRefreshIntervalForTsapiPro() {
-		return Tsapi.refreshIntervalForTsapiPro;
-	}
-
-	public static String[] getServices() {
-		String[] services = new String[0];
-		if (Tsapi.sessionFac != null) {
-			Tsapi.validate(Tsapi.servers);
-			final Vector<ACSNameAddr> serv = Tsapi.sessionFac.enumServices(
-					Tsapi.servers, Tsapi.useTLinkIP);
-			services = new String[serv.size()];
-
-			for (int i = 0; i < serv.size(); ++i)
-				services[i] = ((ACSNameAddr) serv.elementAt(i)).getServerName();
-		}
-		return services;
-	}
-
-	public static boolean getTSDevicePerformanceOptimization() {
-		return Tsapi.tsDevicePerformanceOptimization;
-	}
-
-	private static boolean handleVolatileConfigurationUpdate(
-			final String tsapiProperty, final Properties prop)
-			throws IOException {
-		if (tsapiProperty.equalsIgnoreCase("debugLevel"))
-			JTAPILoggingAdapter.setTraceLoggerLevel(prop
-					.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("getServicesTimeout")) {
-			final int value = Tsapi.getIntegerProperty("getServicesTimeout",
-					prop, "10", Tsapi.getServicesTimeout);
-
-			Tsapi.getServicesTimeout = value * 1000;
-		} else if (tsapiProperty.equalsIgnoreCase("callCleanupRate")) {
-			final int value = Tsapi.getIntegerProperty("callCleanupRate", prop,
-					"100", Tsapi.callCleanupRate);
-			int roundedOfValue = 0;
-			if (value < 10) {
-				roundedOfValue = 10;
-				if (JtapiUtils.isLog4jConfigured())
-					Tsapi.log
-							.info("value specified for property: callCleanupRate is "
-									+ value
-									+ ". Rounding up to multiple of 10. Final value = "
-									+ roundedOfValue);
-				else
-					System.out
-							.println("value specified for property: callCleanupRate is "
-									+ value
-									+ ". Rounding up to multiple of 10. Final value = "
-									+ roundedOfValue);
-			} else if (value % 10 != 0) {
-				if (value % 10 < 5)
-					roundedOfValue = value - value % 10;
-				else
-					roundedOfValue = value - value % 10 + 10;
-				if (JtapiUtils.isLog4jConfigured())
-					Tsapi.log
-							.info("value specified for property: callCleanupRate is "
-									+ value
-									+ ". Rounding up to multiple of 10. Final value = "
-									+ roundedOfValue);
-				else
-					System.out
-							.println("value specified for property: callCleanupRate is "
-									+ value
-									+ ". Rounding up to multiple of 10. Final value = "
-									+ roundedOfValue);
-			} else
-				roundedOfValue = value;
-			if (value != roundedOfValue)
-				prop.setProperty(tsapiProperty,
-						Integer.toString(roundedOfValue));
-			Tsapi.callCleanupRate = roundedOfValue;
-		} else if (tsapiProperty.equalsIgnoreCase("callCompletionTimeout")) {
-			final int value = Tsapi.getIntegerProperty("callCompletionTimeout",
-					prop, "15", Tsapi.callCompletionTimeout / 1000);
-			Tsapi.callCompletionTimeout = value * 1000;
-		} else if (tsapiProperty.equalsIgnoreCase("enableAuditDump")) {
-			final String propertyValue = prop.getProperty("enableAuditDump");
-			if (propertyValue == null
-					|| !propertyValue
-							.equalsIgnoreCase(Boolean.FALSE.toString())
-					&& !propertyValue.equalsIgnoreCase(Boolean.TRUE.toString())) {
-				if (JtapiUtils.isLog4jConfigured())
-					Tsapi.log
-							.error("Need to provide either \"true\" or \"false\" value for property: enableAuditDump");
-				else
-					System.out
-							.println("Need to provide either \"true\" or \"false\" value for property: enableAuditDump");
-			} else
-				Tsapi.isEnableAuditDump = Boolean.parseBoolean(propertyValue);
-
-		} else if (tsapiProperty.equalsIgnoreCase("auditDumpInterval"))
-			Tsapi.auditDumpInterval = Tsapi.getIntegerProperty(
-					"auditDumpInterval", prop, "3", Tsapi.auditDumpInterval);
-		else if (tsapiProperty.equalsIgnoreCase("auditObjectAgeThreshold"))
-			Tsapi.auditObjectAgeThreshold = Tsapi.getIntegerProperty(
-					"auditObjectAgeThreshold", prop, "60",
-					Tsapi.auditObjectAgeThreshold);
-		else if (tsapiProperty.equalsIgnoreCase("propertyRefreshRate")) {
-			final int newValue = Integer.parseInt(prop.getProperty(
-					tsapiProperty, "100"));
-			if (Tsapi.refreshIntervalForTsapiPro != newValue) {
-				Tsapi.refreshIntervalForTsapiPro = newValue;
-				Tsapi.refreshPeriodChanged = true;
-			} else
-				Tsapi.refreshPeriodChanged = false;
-
-		} else if (tsapiProperty.equalsIgnoreCase("altTraceFile")) {
-			JTAPILoggingAdapter
-					.setAltTraceFile(prop.getProperty(tsapiProperty));
-
-			String newTraceFile = Tsapi.alternateTraceFile;
-			try {
-				newTraceFile = prop.getProperty(tsapiProperty, "");
-			} catch (final Exception re) {
-			}
-
-			if (!newTraceFile.equals(Tsapi.alternateTraceFile))
-				Tsapi.alternateTraceFile = newTraceFile;
-		} else if (tsapiProperty.equalsIgnoreCase("traceFileCount"))
-			JTAPILoggingAdapter.setTraceFileCount(prop
-					.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("traceFileSize"))
-			JTAPILoggingAdapter.setTraceFileSize(prop
-					.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("errorFile"))
-			JTAPILoggingAdapter.setErrorFile(prop.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("errorFileCount"))
-			JTAPILoggingAdapter.setErrorFileCount(prop
-					.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("errorFileSize"))
-			JTAPILoggingAdapter.setErrorFileSize(prop
-					.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("perfFile"))
-			JTAPILoggingAdapter.setPerfFile(prop.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("perfFileCount"))
-			JTAPILoggingAdapter.setPerfFileCount(prop
-					.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("perfFileSize"))
-			JTAPILoggingAdapter
-					.setPerfFileSize(prop.getProperty(tsapiProperty));
-		else if (tsapiProperty.equalsIgnoreCase("performanceWindow"))
-			PerfStatisticsCollector.setPerformanceWindow(Integer.parseInt(prop
-					.getProperty(tsapiProperty)));
-		else if (tsapiProperty
-				.equalsIgnoreCase("unsolicitedHandlingTimeThreshold"))
-			PerfStatisticsCollector.setUnsolicitedHandlingTimeThreshold(Long
-					.parseLong(prop.getProperty(tsapiProperty)));
-		else if (tsapiProperty
-				.equalsIgnoreCase("serviceRequestTurnaroundTimeThreshold"))
-			PerfStatisticsCollector
-					.setServiceRequestTurnaroundTimeThreshold(Long
-							.parseLong(prop.getProperty(tsapiProperty)));
-		else if (tsapiProperty.equalsIgnoreCase("queueLengthThreshold"))
-			PerfStatisticsCollector.setQueueLengthThreshold(Long.parseLong(prop
-					.getProperty(tsapiProperty)));
-		else if (tsapiProperty.equalsIgnoreCase("messageLatencyThreshold"))
-			PerfStatisticsCollector.setMessageLatencyThreshold(Long
-					.parseLong(prop.getProperty(tsapiProperty)));
-		else if (tsapiProperty.equalsIgnoreCase("maxThreadPoolSize"))
-			try {
-				Tsapi.maxThreadPoolSize = Integer.parseInt(prop.getProperty(
-						tsapiProperty, "20"));
-			} catch (final Exception e) {
-				if (JtapiUtils.isLog4jConfigured())
-					Tsapi.log.error("Invalid value encountered for "
-							+ tsapiProperty + ". Setting to default value", e);
-				else
-					System.out.println("Invalid value encountered for "
-							+ tsapiProperty + ". Setting to default value."
-							+ e.getMessage());
-			}
-		else if (tsapiProperty
-				.equalsIgnoreCase("tsDevicePerformanceOptimization")) {
-			final String propertyValue = prop.getProperty(tsapiProperty,
-					"false");
-
-			Tsapi.tsDevicePerformanceOptimization = Boolean.valueOf(
-					propertyValue).booleanValue();
-		} else if (tsapiProperty
-				.equalsIgnoreCase("handleCstaEventTimeThreshold")) {
-			int threshold;
-			try {
-				threshold = Integer.parseInt(prop.getProperty(tsapiProperty,
-						"250"));
-			} catch (final Exception re) {
-				threshold = Integer.parseInt("250");
-			}
-
-			if (threshold < 0) {
-				if (JtapiUtils.isLog4jConfigured())
-					Tsapi.log
-							.info("Requested setting for property \"handleCstaEventTimeThreshold\" ("
-									+ threshold + ") is invalid.");
-				else
-					System.out
-							.println("Requested setting for property \"handleCstaEventTimeThreshold\" ("
-									+ threshold + ") is invalid.");
-				threshold = Integer.parseInt("250");
-			}
-
-			CSTATSProvider.setHandleCSTAEventTimeThreshold(threshold);
-		} else
-			return false;
-
-		return true;
-	}
-
-	private static void initClass(final InetSocketAddress address,
-			final Properties prop) throws IOException {
-		final Enumeration<?> eprop = prop.propertyNames();
-
-		while (eprop.hasMoreElements()) {
-			final String tsapiProperty = (String) eprop.nextElement();
-
-			if (tsapiProperty.startsWith("["))
-				prop.remove(tsapiProperty);
-			else if (!Tsapi.handleVolatileConfigurationUpdate(tsapiProperty,
-					prop))
-				if (tsapiProperty.equalsIgnoreCase("useTlinkIP"))
-					try {
-						final int temp = Integer.parseInt(prop.getProperty(
-								tsapiProperty, "0"));
-						if (temp == 1)
-							Tsapi.useTLinkIP = true;
-
-					} catch (final Exception re) {
-					}
-				else if (tsapiProperty
-						.equalsIgnoreCase("enable_PreserveRedirectedVDNs"))
-					try {
-						final int temp = Integer.parseInt(prop.getProperty(
-								tsapiProperty, "0"));
-						Tsapi.patch_enable_PreserveRedirectedVDNAsUNKNOWN = temp > 0;
-					} catch (final Exception re) {
-						Tsapi.patch_enable_PreserveRedirectedVDNAsUNKNOWN = false;
-					}
-				else if (tsapiProperty.equalsIgnoreCase("maxWaitForSocket"))
-					try {
-						Tsapi.maxTcpSocketWait = Integer.parseInt(prop
-								.getProperty(tsapiProperty, "0"));
-					} catch (final Exception re) {
-						Tsapi.maxTcpSocketWait = 0;
-					}
-				else if (!tsapiProperty.equalsIgnoreCase("trustStoreLocation")
-						&& !tsapiProperty
-								.equalsIgnoreCase("trustStorePassword"))
-					if (!tsapiProperty
-							.equalsIgnoreCase("verifyServerCertificate"))
-						if (tsapiProperty.regionMatches(true, 0, "Alternates",
-								0, 10)) {
-							final String valueString = prop
-									.getProperty(tsapiProperty);
-							if (valueString == null) {
-								if (JtapiUtils.isLog4jConfigured())
-									Tsapi.log.info("Error parsing property \""
-											+ tsapiProperty + "\"; "
-											+ "could not read property value.");
-								else
-									System.out
-											.println("Error parsing property \""
-													+ tsapiProperty
-													+ "\"; "
-													+ "could not read property value.");
-							} else {
-								final TsapiAlternateTlinkEntriesList alternateTlinkEntriesList = TsapiAlternateTlinkEntriesList
-										.Instance();
-								try {
-									alternateTlinkEntriesList
-											.addAlternateTlinkEntry(
-													tsapiProperty, valueString);
-								} catch (final TsapiPropertiesException e) {
-									if (JtapiUtils.isLog4jConfigured())
-										Tsapi.log.error(e.getMessage(), e);
-									else
-										System.out.println(e.getMessage());
-								}
-							}
-						} else {
-							String hostname;
-							try {
-								hostname = tsapiProperty.trim();
-							} catch (final NoSuchElementException e) {
-								if (JtapiUtils.isLog4jConfigured())
-									Tsapi.log.error(e.getMessage(), e);
-								else
-									System.out.println(e.getMessage());
-								continue;
-							}
-
-							int port;
-							try {
-								port = Integer.parseInt(prop.getProperty(
-										tsapiProperty, Integer.toString(450))
-										.trim());
-							} catch (final Exception re2) {
-								if (JtapiUtils.isLog4jConfigured())
-									Tsapi.log
-											.error("Invalid name value pair in : "
-													+ tsapiProperty);
-								else
-									System.out
-											.println("Invalid name value pair in : "
-													+ tsapiProperty);
-								port = 450;
-							}
-
-							final InetSocketAddress addr = new InetSocketAddress(
-									hostname, port);
-							Tsapi.servers.addElement(addr);
-						}
-		}
-		JTAPILoggingAdapter.initializeLogging();
-
-		Tsapi.log = Logger.getLogger(Tsapi.class);
-
-		Tsapi.sessionFac = TsapiSessionFactory.getTsapiSessionFactory(prop);
-	}
-
-	public static boolean isEnableAuditDump() {
-		return Tsapi.isEnableAuditDump;
-	}
-
-	public static boolean isPatch_enable_PreserveRedirectedVDNAsUNKNOWN() {
-		return Tsapi.patch_enable_PreserveRedirectedVDNAsUNKNOWN;
-	}
-
-	public static boolean isRefreshPeriodChanged() {
-		return Tsapi.refreshPeriodChanged;
-	}
-
-	private static void prePopulateJtapiProperties() {
-		Tsapi.saveJtapiProperties.put("altTraceFile", "");
-		Tsapi.saveJtapiProperties.put("traceFileCount", Integer.valueOf(10));
-		Tsapi.saveJtapiProperties.put("traceFileSize", Integer.valueOf(50));
-		Tsapi.saveJtapiProperties.put("errorFile", "");
-		Tsapi.saveJtapiProperties.put("errorFileCount", Integer.valueOf(10));
-		Tsapi.saveJtapiProperties.put("errorFileSize", Integer.valueOf(50));
-		Tsapi.saveJtapiProperties.put("debugLevel", "0");
-		Tsapi.saveJtapiProperties.put("maxWaitForSocket", "20");
-		Tsapi.saveJtapiProperties.put("propertyRefreshRate",
-				Integer.valueOf(100));
-
-		String value = "";
-		final ClassLoader loader = ClassLoader.getSystemClassLoader();
-		if (loader != null) {
-			final URL url = loader.getResource("avayaprca.jks");
-			if (url != null)
-				value = url.getFile();
-		}
-		Tsapi.saveJtapiProperties.put("trustStoreLocation", value);
-
-		Tsapi.saveJtapiProperties.put("trustStorePassword", "password");
-		Tsapi.saveJtapiProperties.put("verifyServerCertificate", "false");
-		Tsapi.saveJtapiProperties.put("useTlinkIP", "0");
-		Tsapi.saveJtapiProperties.put("tsDevicePerformanceOptimization",
-				"false");
-		Tsapi.saveJtapiProperties.put("maxThreadPoolSize", "20");
-		Tsapi.saveJtapiProperties.put("callCleanupRate", "100");
-		Tsapi.saveJtapiProperties.put("enableAuditDump", "false");
-		Tsapi.saveJtapiProperties.put("getServicesTimeout", "10");
-		Tsapi.saveJtapiProperties.put("callCompletionTimeout", "15");
-	}
-
-	private static void print(final String key, final Object value) {
-		if (key.toLowerCase().indexOf("password") == -1)
-			Tsapi.log.info(key + "=" + value);
-		else
-			Tsapi.log.info(key + "=****");
-	}
-
-	public static void setCallCleanupRate(final int callCleanupRate) {
-		Tsapi.callCleanupRate = callCleanupRate;
-	}
-
-	public static void setCallCompletionTimeout(final int callCompletionTimeout) {
-		Tsapi.callCompletionTimeout = callCompletionTimeout;
-	}
-
-	static void showImplementationVersion() {
-		Tsapi.log.info("JTAPI Package Version: 5.2.0.483");
-	}
-
-	public static void updateVolatileConfigurationValues() {
-		try {
-			final Properties prop = new Properties();
-
-			final InputStream in = TsapiChannelOio.getProperties();
-
-			if (in == null)
-				return;
-			prop.load(in);
-			in.close();
-
-			if (prop.equals(Tsapi.saveJtapiProperties))
-				return;
-
-			Tsapi.prePopulateJtapiProperties();
-
-			final Enumeration<?> eprop = prop.propertyNames();
-
-			Tsapi.isEnableAuditDump = false;
-
-			Tsapi.getServicesTimeout = Integer.parseInt("10") * 1000;
-
-			Tsapi.callCleanupRate = Integer.parseInt("100");
-
-			Tsapi.callCompletionTimeout = Integer.parseInt("15") * 1000;
-
-			while (eprop.hasMoreElements())
-				Tsapi.handleVolatileConfigurationUpdate(
-						(String) eprop.nextElement(), prop);
-			Tsapi.saveJtapiProperties.putAll(prop);
-
-			JTAPILoggingAdapter.updateLoggingProperties();
-
-			Tsapi.displayProperties(null, Tsapi.saveJtapiProperties);
-		} catch (final Exception e) {
-			Tsapi.log.error(e.getMessage(), e);
-		}
-	}
-
 	private TsapiUnsolicitedHandler evtHandler;
-
 	protected boolean inService;
+	private static Properties saveJtapiProperties = new Properties();
 
 	private TsapiSession session = null;
-
-	private static TsapiSessionFactory sessionFac;
-
+	private static TsapiSessionFactory sessionFac = null;
 	private static int refreshIntervalForTsapiPro;
-
 	private static boolean refreshPeriodChanged = false;
-
 	private static boolean useTLinkIP;
-
 	private static String alternateTraceFile;
-
 	private static int maxTcpSocketWait;
-
 	private static int getServicesTimeout = Integer.parseInt("10") * 1000;
 
 	private static int callCleanupRate = Integer.parseInt("100");
@@ -722,16 +115,63 @@ public class Tsapi {
 
 	private static boolean patch_enable_PreserveRedirectedVDNAsUNKNOWN = false;
 
-	protected static Vector<InetSocketAddress> servers;
+	private static boolean disableSimulationForCSTAOriginatedEvent = Boolean
+			.valueOf("false").booleanValue();
 
+	private static boolean enableDelayInTermConnDropOnCstaFailed = false;
+
+	private static long timeoutForDelayInTermConnDropOnCstaFailed = 2L;
+
+	private static boolean disableTermConnDropOnCstaFailed = false;
+	protected static Vector<InetSocketAddress> servers;
 	private static int maxThreadPoolSize = Integer.parseInt("20");
 
-	public static void addServer(final InetSocketAddress address) {
-		Tsapi.servers.add(address);
+	protected Tsapi() {
 	}
 
-	private static void validate(final Vector<InetSocketAddress> tServers) {
-		if (tServers == null || tServers.size() == 0)
+	public Tsapi(String tlink, String login, String passwd,
+			Vector<TsapiVendor> vendors, TsapiUnsolicitedHandler handler) {
+	}
+
+	public void init(String tlink, String login, String passwd,
+			Vector<TsapiVendor> vendors, TsapiUnsolicitedHandler handler) {
+		this.evtHandler = handler;
+		try {
+			sessionFac.setDebugID(this.evtHandler.toString());
+			validate(servers);
+			ACSNameAddr nameAddr = sessionFac.findTlink(tlink, servers,
+					useTLinkIP);
+
+			tlink = nameAddr.getServerName();
+			InetSocketAddress addr = nameAddr.createInetSocketAddress();
+
+			this.session = sessionFac.getTsapiSession(addr, tlink);
+			this.session.setHandler(this.evtHandler);
+
+			this.session.startSession(tlink, login, passwd, vendors, 10000);
+		} catch (TsapiPlatformException e) {
+			log.error("Tsapi<init>: " + e);
+
+			if (this.session != null) {
+				this.session.close();
+			}
+
+			throw e;
+		} catch (Exception e) {
+			log.error("Tsapi<init>: " + e);
+
+			if (this.session != null) {
+				this.session.close();
+			}
+
+			throw new TsapiPlatformException(4, 0, "initialization failed");
+		}
+
+		this.inService = true;
+	}
+
+	private static void validate(Vector<InetSocketAddress> tServers) {
+		if ((tServers == null) || (tServers.size() == 0))
 			throw new TsapiPlatformException(
 					4,
 					0,
@@ -744,583 +184,1183 @@ public class Tsapi {
 							+ " system property");
 	}
 
-	protected Tsapi() {
+	public static void addServer(InetSocketAddress address) {
+		if (!servers.contains(address))
+			servers.add(address);
 	}
 
-	public Tsapi(final String tlink, final String login, final String passwd,
-			final Vector<TsapiVendor> vendors,
-			final TsapiUnsolicitedHandler handler) {
+	public String getVendor() {
+		return this.session.getTheVendor();
 	}
 
-	public void alternateCall(final CSTAConnectionID activeCall,
-			final CSTAConnectionID otherCall, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAAlternateCall(activeCall, otherCall);
-		session.send(req, priv, handler);
+	public byte[] getVendorVersion() {
+		return this.session.getVendorVersion();
 	}
 
-	public void answerCall(final CSTAConnectionID alertingCall,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAAnswerCall(alertingCall);
-		session.send(req, priv, handler);
+	public String getServerID() {
+		return this.session.getServerID();
 	}
 
-	public void callCompletion(final short feature,
-			final CSTAConnectionID call, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTACallCompletion(feature, call);
-		session.send(req, priv, handler);
-	}
-
-	public void cancelRouteCallback(final int routeRegisterReqID,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTARouteRegisterCancel(routeRegisterReqID);
-		session.send(req, priv, handler);
-	}
-
-	public void clearCall(final CSTAConnectionID call, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAClearCall(call);
-		session.send(req, priv, handler);
-	}
-
-	public void clearConnection(final CSTAConnectionID connection,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAClearConnection(connection);
-		session.send(req, priv, handler);
-	}
-
-	public void conferenceCall(final CSTAConnectionID heldCall,
-			final CSTAConnectionID activeCall, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAConferenceCall(heldCall, activeCall);
-		session.send(req, priv, handler);
-	}
-
-	public void consultationCall(final CSTAConnectionID activeCall,
-			final String calledDevice, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAConsultationCall(activeCall,
-				calledDevice);
-		session.send(req, priv, handler);
-	}
-
-	public void CSTAEscapeService(final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAEscapeSvc();
-		session.send(req, priv, handler);
-	}
-
-	public CSTAEvent CSTAQueryCallMonitor() throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryCallMonitor();
-		return session.send(req, null);
-	}
-
-	public void CSTASendPrivateEvent(final CSTAPrivate priv)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASendPrivateEv();
-
-		session.sendAsync(req, priv);
-	}
-
-	public void deflectCall(final CSTAConnectionID deflectCall,
-			final String calledDevice, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTADeflectCall(deflectCall, calledDevice);
-		session.send(req, priv, handler);
-	}
-
-	public void disableHeartbeat() {
-		session.disableHeartbeat();
+	public boolean heartbeatIsEnabled() {
+		return this.session.heartbeatIsEnabled();
 	}
 
 	public void enableHeartbeat() {
-		session.enableHeartbeat();
+		this.session.enableHeartbeat();
+	}
+
+	public void disableHeartbeat() {
+		this.session.disableHeartbeat();
+	}
+
+	public void setHeartbeatTimeoutListener(
+			ITsapiHeartbeatTimeoutListener listener) {
+		this.session.setHeartbeatTimeoutListener(listener);
+	}
+
+	static void showImplementationVersion() {
+		log.info("JTAPI Package Version: 6.2.0.54");
+	}
+
+	private static void prePopulateJtapiProperties() {
+		saveJtapiProperties.put("altTraceFile", "");
+		saveJtapiProperties.put("traceFileCount", Integer.valueOf(10));
+		saveJtapiProperties.put("traceFileSize", Integer.valueOf(50));
+		saveJtapiProperties.put("errorFile", "");
+		saveJtapiProperties.put("errorFileCount", Integer.valueOf(10));
+		saveJtapiProperties.put("errorFileSize", Integer.valueOf(50));
+		saveJtapiProperties.put("debugLevel", "0");
+		saveJtapiProperties.put("maxWaitForSocket", "20");
+		saveJtapiProperties.put("propertyRefreshRate", Integer.valueOf(100));
+
+		String value = "";
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		if (loader != null) {
+			URL url = loader.getResource("avayaprca.jks");
+			if (url != null)
+				value = url.getFile();
+		}
+		saveJtapiProperties.put("trustStoreLocation", value);
+
+		saveJtapiProperties.put("trustStorePassword", "password");
+		saveJtapiProperties.put("verifyServerCertificate", "false");
+		saveJtapiProperties.put("useTlinkIP", "0");
+		saveJtapiProperties.put("tsDevicePerformanceOptimization", "false");
+		saveJtapiProperties.put("maxThreadPoolSize", "20");
+		saveJtapiProperties.put("callCleanupRate", "100");
+		saveJtapiProperties.put("enableAuditDump", "false");
+		saveJtapiProperties.put("getServicesTimeout", "10");
+		saveJtapiProperties.put("callCompletionTimeout", "15");
+		saveJtapiProperties.put("disableSimulationForCSTAOriginatedEvent",
+				"false");
+		saveJtapiProperties.put("enableDelayInTermConnDropOnCstaFailed",
+				Boolean.valueOf(false));
+		saveJtapiProperties.put("timeoutForDelayInTermConnDropOnCstaFailed",
+				Long.valueOf(2L));
+		saveJtapiProperties.put("disableTermConnDropOnCstaFailed",
+				"disableTermConnDropOnCstaFailed");
+	}
+
+	private static void initClass(InetSocketAddress address, Properties prop)
+			throws IOException {
+		Enumeration<?> eprop = prop.propertyNames();
+
+		while (eprop.hasMoreElements()) {
+			String tsapiProperty = (String) eprop.nextElement();
+
+			if (tsapiProperty.startsWith("[")) {
+				prop.remove(tsapiProperty);
+			} else if (!handleVolatileConfigurationUpdate(tsapiProperty, prop)) {
+				if (tsapiProperty.equalsIgnoreCase("useTlinkIP")) {
+					try {
+						int temp = Integer.parseInt(prop.getProperty(
+								tsapiProperty, "0"));
+						if (temp == 1) {
+							useTLinkIP = true;
+						}
+
+					} catch (Exception re) {
+					}
+
+				} else if (tsapiProperty
+						.equalsIgnoreCase("enable_PreserveRedirectedVDNs")) {
+					try {
+						int temp = Integer.parseInt(prop.getProperty(
+								tsapiProperty, "0"));
+						patch_enable_PreserveRedirectedVDNAsUNKNOWN = temp > 0;
+					} catch (Exception re) {
+						patch_enable_PreserveRedirectedVDNAsUNKNOWN = false;
+					}
+
+				} else if (tsapiProperty.equalsIgnoreCase("maxWaitForSocket")) {
+					try {
+						maxTcpSocketWait = Integer.parseInt(prop.getProperty(
+								tsapiProperty, "0"));
+					} catch (Exception re) {
+						maxTcpSocketWait = 0;
+					}
+				} else if ((!tsapiProperty
+						.equalsIgnoreCase("trustStoreLocation"))
+						&& (!tsapiProperty
+								.equalsIgnoreCase("trustStorePassword"))
+						&& (!tsapiProperty
+								.equalsIgnoreCase("verifyServerCertificate"))) {
+					if (tsapiProperty.regionMatches(true, 0, "Alternates", 0,
+							10)) {
+						String valueString = prop.getProperty(tsapiProperty);
+						if (valueString == null) {
+							if (JtapiUtils.isLog4jConfigured())
+								log.info("Error parsing property \""
+										+ tsapiProperty + "\"; "
+										+ "could not read property value.");
+							else
+								System.out.println("Error parsing property \""
+										+ tsapiProperty + "\"; "
+										+ "could not read property value.");
+						} else {
+							TsapiAlternateTlinkEntriesList alternateTlinkEntriesList = TsapiAlternateTlinkEntriesList
+									.Instance();
+							try {
+								alternateTlinkEntriesList
+										.addAlternateTlinkEntry(tsapiProperty,
+												valueString);
+							} catch (TsapiPropertiesException e) {
+								if (JtapiUtils.isLog4jConfigured())
+									log.error(e.getMessage(), e);
+								else {
+									System.out.println(e.getMessage());
+								}
+							}
+						}
+					} else {
+						String hostname;
+						try {
+							hostname = tsapiProperty.trim();
+							int port;
+							try {
+								port = Integer.parseInt(prop.getProperty(
+										tsapiProperty, Integer.toString(450))
+										.trim());
+							} catch (Exception re2) {
+								if (JtapiUtils.isLog4jConfigured()) {
+									log.error("Invalid name value pair in : "
+											+ tsapiProperty);
+								} else {
+									System.out
+									.println("Invalid name value pair in : "
+											+ tsapiProperty);
+								}
+								port = 450;
+							}
+							
+							InetSocketAddress addr = new InetSocketAddress(
+									hostname, port);
+							servers.addElement(addr);
+						} catch (NoSuchElementException e) {
+							if (JtapiUtils.isLog4jConfigured())
+								log.error(e.getMessage(), e);
+							else
+								System.out.println(e.getMessage());
+						}
+						continue;
+					}
+				}
+			}
+		}
+		JTAPILoggingAdapter.initializeLogging();
+
+		log = Logger.getLogger(Tsapi.class);
+
+		sessionFac = TsapiSessionFactory.getTsapiSessionFactory(prop);
+	}
+
+	private static void displayProperties(Properties systemProperties,
+			Properties jtapiProperties) {
+		Set<Map.Entry<Object, Object>> list = null;
+		if (systemProperties != null) {
+			list = systemProperties.entrySet();
+			log.info("System properties dump ");
+			for (Map.Entry<Object, Object> entry : list) {
+				String key = (String) entry.getKey();
+
+				if (!key.startsWith("com.avaya.jtapi.tsapi.")) {
+					print(key, (String) entry.getValue());
+				}
+			}
+		}
+
+		log.info("Jtapi properties dump ");
+		list = jtapiProperties.entrySet();
+		for (Map.Entry<Object, Object> entry : list) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			if ((key.equals("traceFileSize")) || (key.equals("errorFileSize"))) {
+				value = value + "M";
+			} else if ((key.equals("maxWaitForSocket"))
+					|| (key.equals("propertyRefreshRate"))
+					|| (key.equals("callCompletionTimeout"))
+					|| (key.equals("callCleanupRate"))) {
+				value = value + " seconds";
+			} else if (key.equals("debugLevel")) {
+				try {
+					int intValue = Integer.parseInt((String) value);
+					if ((intValue < 0) || (intValue > 7)) {
+						value = "<INVALID>";
+					}
+				} catch (Exception e) {
+				}
+			}
+			print((String) key, value);
+		}
+	}
+
+	private static void print(String key, Object value) {
+		if (key.toLowerCase().indexOf("password") == -1) {
+			log.info(key + "=" + value);
+		} else
+			log.info(key + "=****");
+	}
+
+	private static int getIntegerProperty(String tsapiProperty,
+			Properties props, String defaultValue, int currentValue) {
+		int returnValue = currentValue;
+
+		String propertyValue = props.getProperty(tsapiProperty, defaultValue);
+		try {
+			returnValue = Integer.parseInt(propertyValue);
+			if (returnValue != currentValue) {
+				log.info("Property \"" + tsapiProperty + "\" set to "
+						+ returnValue);
+			}
+		} catch (NumberFormatException ee) {
+			if (JtapiUtils.isLog4jConfigured()) {
+				log.error("Invalid integer value " + propertyValue
+						+ " given for property " + tsapiProperty);
+				log.error(ee.getMessage(), ee);
+			} else {
+				System.out.println("Invalid integer value " + propertyValue
+						+ " given for property " + tsapiProperty);
+				ee.printStackTrace();
+			}
+		}
+
+		return returnValue;
+	}
+
+	private static boolean handleVolatileConfigurationUpdate(
+			String tsapiProperty, Properties prop) throws IOException {
+		if (tsapiProperty.equalsIgnoreCase("debugLevel")) {
+			JTAPILoggingAdapter.setTraceLoggerLevel(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("getServicesTimeout")) {
+			int value = getIntegerProperty("getServicesTimeout", prop, "10",
+					getServicesTimeout);
+
+			getServicesTimeout = value * 1000;
+		} else if (tsapiProperty.equalsIgnoreCase("callCleanupRate")) {
+			int value = getIntegerProperty("callCleanupRate", prop, "100",
+					callCleanupRate);
+			int roundedOfValue = 0;
+			if (value < 10) {
+				roundedOfValue = 10;
+				if (JtapiUtils.isLog4jConfigured())
+					log.info("value specified for property: callCleanupRate is "
+							+ value
+							+ ". Rounding up to multiple of 10. Final value = "
+							+ roundedOfValue);
+				else
+					System.out
+							.println("value specified for property: callCleanupRate is "
+									+ value
+									+ ". Rounding up to multiple of 10. Final value = "
+									+ roundedOfValue);
+			} else if (value % 10 != 0) {
+				if (value % 10 < 5)
+					roundedOfValue = value - value % 10;
+				else
+					roundedOfValue = value - value % 10 + 10;
+				if (JtapiUtils.isLog4jConfigured())
+					log.info("value specified for property: callCleanupRate is "
+							+ value
+							+ ". Rounding up to multiple of 10. Final value = "
+							+ roundedOfValue);
+				else
+					System.out
+							.println("value specified for property: callCleanupRate is "
+									+ value
+									+ ". Rounding up to multiple of 10. Final value = "
+									+ roundedOfValue);
+			} else {
+				roundedOfValue = value;
+			}
+			if (value != roundedOfValue)
+				prop.setProperty(tsapiProperty,
+						Integer.toString(roundedOfValue));
+			callCleanupRate = roundedOfValue;
+		} else if (tsapiProperty.equalsIgnoreCase("callCompletionTimeout")) {
+			int value = getIntegerProperty("callCompletionTimeout", prop, "15",
+					callCompletionTimeout / 1000);
+			callCompletionTimeout = value * 1000;
+		} else if (tsapiProperty.equalsIgnoreCase("enableAuditDump")) {
+			String propertyValue = prop.getProperty("enableAuditDump");
+			if ((propertyValue == null)
+					|| ((!propertyValue.equalsIgnoreCase(Boolean.FALSE
+							.toString())) && (!propertyValue
+							.equalsIgnoreCase(Boolean.TRUE.toString())))) {
+				if (JtapiUtils.isLog4jConfigured())
+					log.error("Need to provide either \"true\" or \"false\" value for property: enableAuditDump");
+				else
+					System.out
+							.println("Need to provide either \"true\" or \"false\" value for property: enableAuditDump");
+			} else
+				isEnableAuditDump = Boolean.parseBoolean(propertyValue);
+
+		} else if (tsapiProperty.equalsIgnoreCase("auditDumpInterval")) {
+			auditDumpInterval = getIntegerProperty("auditDumpInterval", prop,
+					"3", auditDumpInterval);
+		} else if (tsapiProperty.equalsIgnoreCase("auditObjectAgeThreshold")) {
+			auditObjectAgeThreshold = getIntegerProperty(
+					"auditObjectAgeThreshold", prop, "60",
+					auditObjectAgeThreshold);
+		} else if (tsapiProperty.equalsIgnoreCase("propertyRefreshRate")) {
+			int newValue = Integer.parseInt(prop.getProperty(tsapiProperty,
+					"100"));
+			if (refreshIntervalForTsapiPro != newValue) {
+				refreshIntervalForTsapiPro = newValue;
+				refreshPeriodChanged = true;
+			} else {
+				refreshPeriodChanged = false;
+			}
+		} else if (tsapiProperty
+				.equalsIgnoreCase("enableDelayInTermConnDropOnCstaFailed")) {
+			enableDelayInTermConnDropOnCstaFailed = Boolean.valueOf(
+					prop.getProperty(tsapiProperty)).booleanValue();
+		} else if (tsapiProperty
+				.equalsIgnoreCase("timeoutForDelayInTermConnDropOnCstaFailed")) {
+			timeoutForDelayInTermConnDropOnCstaFailed = Long.parseLong(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty
+				.equalsIgnoreCase("disableTermConnDropOnCstaFailed")) {
+			disableTermConnDropOnCstaFailed = Boolean.valueOf(
+					prop.getProperty(tsapiProperty)).booleanValue();
+		} else if (tsapiProperty.equalsIgnoreCase("altTraceFile")) {
+			JTAPILoggingAdapter
+					.setAltTraceFile(prop.getProperty(tsapiProperty));
+
+			String newTraceFile = alternateTraceFile;
+			try {
+				newTraceFile = prop.getProperty(tsapiProperty, "");
+			} catch (Exception re) {
+			}
+
+			if (!newTraceFile.equals(alternateTraceFile)) {
+				alternateTraceFile = newTraceFile;
+			}
+		} else if (tsapiProperty.equalsIgnoreCase("traceFileCount")) {
+			JTAPILoggingAdapter.setTraceFileCount(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("traceFileSize")) {
+			JTAPILoggingAdapter.setTraceFileSize(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("errorFile")) {
+			JTAPILoggingAdapter.setErrorFile(prop.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("errorFileCount")) {
+			JTAPILoggingAdapter.setErrorFileCount(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("errorFileSize")) {
+			JTAPILoggingAdapter.setErrorFileSize(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("perfFile")) {
+			JTAPILoggingAdapter.setPerfFile(prop.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("perfFileCount")) {
+			JTAPILoggingAdapter.setPerfFileCount(prop
+					.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("perfFileSize")) {
+			JTAPILoggingAdapter
+					.setPerfFileSize(prop.getProperty(tsapiProperty));
+		} else if (tsapiProperty.equalsIgnoreCase("performanceWindow")) {
+			PerfStatisticsCollector.setPerformanceWindow(Integer.parseInt(prop
+					.getProperty(tsapiProperty)));
+		} else if (tsapiProperty
+				.equalsIgnoreCase("unsolicitedHandlingTimeThreshold")) {
+			PerfStatisticsCollector.setUnsolicitedHandlingTimeThreshold(Long
+					.parseLong(prop.getProperty(tsapiProperty)));
+		} else if (tsapiProperty
+				.equalsIgnoreCase("serviceRequestTurnaroundTimeThreshold")) {
+			PerfStatisticsCollector
+					.setServiceRequestTurnaroundTimeThreshold(Long
+							.parseLong(prop.getProperty(tsapiProperty)));
+		} else if (tsapiProperty.equalsIgnoreCase("queueLengthThreshold")) {
+			PerfStatisticsCollector.setQueueLengthThreshold(Long.parseLong(prop
+					.getProperty(tsapiProperty)));
+		} else if (tsapiProperty.equalsIgnoreCase("messageLatencyThreshold")) {
+			PerfStatisticsCollector.setMessageLatencyThreshold(Long
+					.parseLong(prop.getProperty(tsapiProperty)));
+		} else if (tsapiProperty.equalsIgnoreCase("maxThreadPoolSize")) {
+			try {
+				maxThreadPoolSize = Integer.parseInt(prop.getProperty(
+						tsapiProperty, "20"));
+			} catch (Exception e) {
+				if (JtapiUtils.isLog4jConfigured())
+					log.error("Invalid value encountered for " + tsapiProperty
+							+ ". Setting to default value", e);
+				else {
+					System.out.println("Invalid value encountered for "
+							+ tsapiProperty + ". Setting to default value."
+							+ e.getMessage());
+				}
+			}
+		} else if (tsapiProperty
+				.equalsIgnoreCase("tsDevicePerformanceOptimization")) {
+			String propertyValue = prop.getProperty(tsapiProperty, "false");
+
+			tsDevicePerformanceOptimization = Boolean.valueOf(propertyValue)
+					.booleanValue();
+		} else if (tsapiProperty
+				.equalsIgnoreCase("handleCstaEventTimeThreshold")) {
+			int threshold;
+			try {
+				threshold = Integer.parseInt(prop.getProperty(tsapiProperty,
+						"250"));
+			} catch (Exception re) {
+				threshold = Integer.parseInt("250");
+			}
+
+			if (threshold < 0) {
+				if (JtapiUtils.isLog4jConfigured())
+					log.info("Requested setting for property \"handleCstaEventTimeThreshold\" ("
+							+ threshold + ") is invalid.");
+				else {
+					System.out
+							.println("Requested setting for property \"handleCstaEventTimeThreshold\" ("
+									+ threshold + ") is invalid.");
+				}
+				threshold = Integer.parseInt("250");
+			}
+
+			CSTATSProvider.setHandleCSTAEventTimeThreshold(threshold);
+		} else if (tsapiProperty
+				.equalsIgnoreCase("disableSimulationForCSTAOriginatedEvent")) {
+			String propertyValue = prop
+					.getProperty("disableSimulationForCSTAOriginatedEvent");
+			if ((propertyValue == null)
+					|| ((!propertyValue.equalsIgnoreCase(Boolean.FALSE
+							.toString())) && (!propertyValue
+							.equalsIgnoreCase(Boolean.TRUE.toString())))) {
+				if (JtapiUtils.isLog4jConfigured())
+					log.error("Need to provide either \"true\" or \"false\" value for property: disableSimulationForCSTAOriginatedEvent");
+				else
+					System.out
+							.println("Need to provide either \"true\" or \"false\" value for property: disableSimulationForCSTAOriginatedEvent");
+			} else
+				disableSimulationForCSTAOriginatedEvent = Boolean
+						.parseBoolean(propertyValue);
+
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	public static void updateVolatileConfigurationValues() {
+		try {
+			Properties prop = new JtapiProperties();
+
+			InputStream in = TsapiChannelOio.getProperties();
+
+			if (in == null) {
+				return;
+			}
+			prop.load(in);
+			in.close();
+
+			if (prop.equals(saveJtapiProperties)) {
+				return;
+			}
+
+			prePopulateJtapiProperties();
+
+			Enumeration<?> eprop = prop.propertyNames();
+
+			isEnableAuditDump = false;
+
+			getServicesTimeout = Integer.parseInt("10") * 1000;
+
+			callCleanupRate = Integer.parseInt("100");
+
+			callCompletionTimeout = Integer.parseInt("15") * 1000;
+
+			while (eprop.hasMoreElements()) {
+				handleVolatileConfigurationUpdate((String) eprop.nextElement(),
+						prop);
+			}
+			saveJtapiProperties.putAll(prop);
+
+			JTAPILoggingAdapter.updateLoggingProperties();
+
+			displayProperties(null, saveJtapiProperties);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	public synchronized void shutdown() {
+		log.info("tsapi.shutdown() called (inService = " + this.inService + ")"
+				+ " for " + this.evtHandler);
+
+		if (!this.inService) {
+			return;
+		}
+		this.inService = false;
+		this.session.close();
+	}
+
+	public static int getRefreshIntervalForTsapiPro() {
+		return refreshIntervalForTsapiPro;
+	}
+
+	public static boolean isEnableDelayInTermConnDropOnCstaFailed() {
+		return enableDelayInTermConnDropOnCstaFailed;
+	}
+
+	public static long getTimeoutForDelayInTermConnDropOnCstaFailed() {
+		return timeoutForDelayInTermConnDropOnCstaFailed;
+	}
+
+	public static boolean isDisableTermConnDropOnCstaFailed() {
+		return disableTermConnDropOnCstaFailed;
+	}
+
+	public static String[] getServices() {
+		String[] services = new String[0];
+		if (sessionFac != null) {
+			validate(servers);
+			Vector<?> serv = sessionFac.enumServices(servers, useTLinkIP);
+			services = new String[serv.size()];
+
+			for (int i = 0; i < serv.size(); i++) {
+				services[i] = ((ACSNameAddr) serv.elementAt(i)).getServerName();
+			}
+		}
+		return services;
 	}
 
 	public CSTAEvent getApiCaps() throws TsapiInvalidStateException,
 			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAGetAPICaps();
-		return session.send(req, null);
+		TsapiRequest req = new CSTAGetAPICaps();
+		return this.session.send(req, null);
 	}
 
-	public CSTAEvent getDeviceList(final int index, final short level)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAGetDeviceList(index, level);
-		return session.send(req, null);
-	}
-
-	public String getServerID() {
-		return session.getServerID();
-	}
-
-	public String getVendor() {
-		return session.getTheVendor();
-	}
-
-	public byte[] getVendorVersion() {
-		return session.getVendorVersion();
-	}
-
-	public void groupPickupCall(final String pickupDevice,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAGroupPickupCall(null, pickupDevice);
-		session.send(req, priv, handler);
-	}
-
-	public boolean heartbeatIsEnabled() {
-		return session.heartbeatIsEnabled();
-	}
-
-	public void holdCall(final CSTAConnectionID activeCall,
-			final boolean reservation, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
+	public CSTAEvent CSTAQueryCallMonitor() throws TsapiInvalidStateException,
 			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAHoldCall(activeCall, reservation);
-		session.send(req, priv, handler);
+		TsapiRequest req = new CSTAQueryCallMonitor();
+		return this.session.send(req, null);
 	}
 
-	public void init(String tlink, final String login, final String passwd,
-			final Vector<TsapiVendor> vendors,
-			final TsapiUnsolicitedHandler handler) {
-		evtHandler = handler;
-		try {
-			Tsapi.sessionFac.setDebugID(evtHandler.toString());
-			Tsapi.validate(Tsapi.servers);
-			final ACSNameAddr nameAddr = Tsapi.sessionFac.findTlink(tlink,
-					Tsapi.servers, Tsapi.useTLinkIP);
+	public CSTAEvent getDeviceList(int index, short level)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAGetDeviceList(index, level);
+		return this.session.send(req, null);
+	}
 
-			tlink = nameAddr.getServerName();
-			final InetSocketAddress addr = nameAddr.createInetSocketAddress();
+	public CSTAEvent queryDeviceInfo(String device, CSTAPrivate priv)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAQueryDeviceInfo(device);
+		return this.session.send(req, priv);
+	}
 
-			session = Tsapi.sessionFac.getTsapiSession(addr, tlink);
-			session.setHandler(evtHandler);
+	public void queryDeviceInfoAsync(String device, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAQueryDeviceInfo(device);
+		this.session.sendAsync(req, priv, handler);
+	}
 
-			session.startSession(tlink, login, passwd, vendors, 10000);
-		} catch (final TsapiPlatformException e) {
-			Tsapi.log.error("Tsapi<init>: " + e);
+	public CSTAEvent monitorCall(CSTAConnectionID call,
+			CSTAMonitorFilter monitorFilter, CSTAPrivate priv)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAMonitorCall(call, monitorFilter);
+		return this.session.send(req, priv);
+	}
 
-			if (session != null)
-				session.close();
+	public CSTAEvent monitorDevice(String deviceID,
+			CSTAMonitorFilter monitorFilter, CSTAPrivate priv)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAMonitorDevice(deviceID, monitorFilter);
+		return this.session.send(req, priv);
+	}
 
-			throw e;
-		} catch (final Exception e) {
-			Tsapi.log.error("Tsapi<init>: " + e);
+	public CSTAEvent monitorCallsViaDevice(String deviceID,
+			CSTAMonitorFilter monitorFilter, CSTAPrivate priv)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAMonitorCallsViaDevice(deviceID,
+				monitorFilter);
+		return this.session.send(req, priv);
+	}
 
-			if (session != null)
-				session.close();
+	public void monitorStop(int monitorCrossRefID, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAMonitorStop(monitorCrossRefID);
+		if (handler != null)
+			this.session.sendAsync(req, priv, handler);
+		else
+			this.session.send(req, priv);
+	}
 
-			throw new TsapiPlatformException(4, 0, "initialization failed");
+	public void answerCall(CSTAConnectionID alertingCall, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAAnswerCall(alertingCall);
+		this.session.send(req, priv, handler);
+	}
+
+	public void clearCall(CSTAConnectionID call, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAClearCall(call);
+		this.session.send(req, priv, handler);
+	}
+
+	public void clearConnection(CSTAConnectionID connection, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAClearConnection(connection);
+		this.session.send(req, priv, handler);
+	}
+
+	public void conferenceCall(CSTAConnectionID heldCall,
+			CSTAConnectionID activeCall, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAConferenceCall(heldCall, activeCall);
+		this.session.send(req, priv, handler);
+	}
+
+	public void holdCall(CSTAConnectionID activeCall, boolean reservation,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAHoldCall(activeCall, reservation);
+		this.session.send(req, priv, handler);
+	}
+
+	public void makeCall(String callingDevice, String calledDevice,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAMakeCall(callingDevice, calledDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void retrieveCall(CSTAConnectionID heldCall, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTARetrieveCall(heldCall);
+		this.session.send(req, priv, handler);
+	}
+
+	public void setAgentState(String agentDevice, short agentMode,
+			String agentID, String acdGroup, String agentPassword,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTASetAgentState(agentDevice, agentMode,
+				agentID, acdGroup, agentPassword);
+		this.session.send(req, priv, handler);
+	}
+
+	public void queryAgentState(String agentDevice, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAQueryAgentState(agentDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void registerRouteCallback(String routingDevice, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTARouteRegisterReq(routingDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void cancelRouteCallback(int routeRegisterReqID, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTARouteRegisterCancel(routeRegisterReqID);
+		this.session.send(req, priv, handler);
+	}
+
+	public void queryFwd(String device, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAQueryFwd(device);
+		this.session.send(req, priv, handler);
+	}
+
+	public void queryDoNotDisturb(String device, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAQueryDnd(device);
+		this.session.send(req, priv, handler);
+	}
+
+	public void queryMsgWaitingInd(String device, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAQueryMwi(device);
+		this.session.send(req, priv, handler);
+	}
+
+	public void setFwd(String device, short forwardingType,
+			boolean forwardingOn, String forwardingDestination,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		CSTAForwardingInfo forward = new CSTAForwardingInfo(forwardingType,
+				forwardingOn, forwardingDestination);
+		TsapiRequest req = new CSTASetFwd(device, forward);
+		this.session.send(req, priv, handler);
+	}
+
+	public void setDnd(String device, boolean doNotDisturb, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTASetDnd(device, doNotDisturb);
+		this.session.send(req, priv, handler);
+	}
+
+	public void setMsgWaitingInd(String device, boolean messages,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTASetMwi(device, messages);
+		this.session.send(req, priv, handler);
+	}
+
+	public void callCompletion(short feature, CSTAConnectionID call,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTACallCompletion(feature, call);
+		this.session.send(req, priv, handler);
+	}
+
+	public void transferCall(CSTAConnectionID heldCall,
+			CSTAConnectionID activeCall, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTATransferCall(heldCall, activeCall);
+		this.session.send(req, priv, handler);
+	}
+
+	public void reconnectCall(CSTAConnectionID activeCall,
+			CSTAConnectionID heldCall, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAReconnectCall(activeCall, heldCall);
+		this.session.send(req, priv, handler);
+	}
+
+	public void pickupCall(CSTAConnectionID deflectCall, String calledDevice,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAPickupCall(deflectCall, calledDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void makePredictiveCall(String callingDevice, String calledDevice,
+			short allocationState, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAMakePredictiveCall(callingDevice,
+				calledDevice, allocationState);
+
+		this.session.send(req, priv, handler);
+	}
+
+	public void groupPickupCall(String pickupDevice, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAGroupPickupCall(null, pickupDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void deflectCall(CSTAConnectionID deflectCall, String calledDevice,
+			CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTADeflectCall(deflectCall, calledDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void consultationCall(CSTAConnectionID activeCall,
+			String calledDevice, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAConsultationCall(activeCall, calledDevice);
+		this.session.send(req, priv, handler);
+	}
+
+	public void alternateCall(CSTAConnectionID activeCall,
+			CSTAConnectionID otherCall, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAAlternateCall(activeCall, otherCall);
+		this.session.send(req, priv, handler);
+	}
+
+	public void CSTAEscapeService(CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTAEscapeSvc();
+		this.session.send(req, priv, handler);
+	}
+
+	public void snapshotDevice(String snapshotObj, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTASnapshotDevice(snapshotObj);
+		this.session.send(req, priv, handler);
+	}
+
+	public void snapshotCall(CSTAConnectionID snapshotObj, CSTAPrivate priv,
+			ConfHandler handler) {
+		TsapiRequest req = new CSTASnapshotCall(snapshotObj);
+
+		this.session.sendAsync(req, priv, handler);
+	}
+
+	public void selectRoute(int routeRegisterReqID, int routingCrossRefID,
+			String routeSelected, int remainRetry, String isdnSetupMessage,
+			boolean routeUsedReq, CSTAPrivate priv) {
+		byte[] isdnBuf = isdnSetupMessage.getBytes();
+		TsapiRequest req;
+		if (this.session.getApiVersion().equals("1")) {
+			req = new CSTARouteSelectRequest(routeRegisterReqID,
+					routingCrossRefID, routeSelected, remainRetry, isdnBuf,
+					routeUsedReq);
+		} else {
+			req = new CSTARouteSelectRequestInv(routeRegisterReqID,
+					routingCrossRefID, routeSelected, remainRetry, isdnBuf,
+					routeUsedReq);
 		}
 
-		inService = true;
+		this.session.sendAsync(req, priv);
+	}
+
+	public void routeEnd(int routeRegisterReqID, int routingCrossRefID,
+			short errorValue, CSTAPrivate priv) {
+		TsapiRequest req;
+		if (this.session.getApiVersion().equals("1")) {
+			req = new CSTARouteEndRequest(routeRegisterReqID,
+					routingCrossRefID, errorValue);
+		} else {
+			req = new CSTARouteEndRequestInv(routeRegisterReqID,
+					routingCrossRefID, errorValue);
+		}
+
+		this.session.sendAsync(req, priv);
+	}
+
+	public void CSTASendPrivateEvent(CSTAPrivate priv)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTASendPrivateEv();
+
+		this.session.sendAsync(req, priv);
+	}
+
+	public void setHeartbeatInterval(short heartbeatInterval, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidStateException,
+			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new ACSSetHeartbeatInterval(heartbeatInterval);
+
+		this.session.send(req, priv, handler);
+	}
+
+	public void setClientHeartbeatInterval(short heartbeatInterval) {
+		this.session.setClientHeartbeatInterval(heartbeatInterval);
+	}
+
+	public static boolean isPatch_enable_PreserveRedirectedVDNAsUNKNOWN() {
+		return patch_enable_PreserveRedirectedVDNAsUNKNOWN;
+	}
+
+	public static boolean isDisableSimulationForCSTAOriginatedEvent() {
+		return disableSimulationForCSTAOriginatedEvent;
+	}
+
+	public static int getMaxTcpSocketWait() {
+		return maxTcpSocketWait;
 	}
 
 	public boolean isInService() {
-		return inService;
+		return this.inService;
 	}
 
-	public void makeCall(final String callingDevice, final String calledDevice,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAMakeCall(callingDevice, calledDevice);
-		session.send(req, priv, handler);
+	public static int getGetServicesTimeout() {
+		return getServicesTimeout;
 	}
 
-	public void makePredictiveCall(final String callingDevice,
-			final String calledDevice, final short allocationState,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAMakePredictiveCall(callingDevice,
-				calledDevice, allocationState);
-
-		session.send(req, priv, handler);
+	public static int getCallCleanupRate() {
+		return callCleanupRate;
 	}
 
-	public CSTAEvent monitorCall(final CSTAConnectionID call,
-			final CSTAMonitorFilter monitorFilter, final CSTAPrivate priv)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAMonitorCall(call, monitorFilter);
-		return session.send(req, priv);
+	public static void setCallCleanupRate(int callCleanupRate) {
+		Tsapi.callCleanupRate = callCleanupRate;
 	}
 
-	public CSTAEvent monitorCallsViaDevice(final String deviceID,
-			final CSTAMonitorFilter monitorFilter, final CSTAPrivate priv)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAMonitorCallsViaDevice(deviceID,
-				monitorFilter);
-		return session.send(req, priv);
+	public static int getCallCompletionTimeout() {
+		return callCompletionTimeout;
 	}
 
-	public CSTAEvent monitorDevice(final String deviceID,
-			final CSTAMonitorFilter monitorFilter, final CSTAPrivate priv)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAMonitorDevice(deviceID, monitorFilter);
-		return session.send(req, priv);
+	public static void setCallCompletionTimeout(int callCompletionTimeout) {
+		Tsapi.callCompletionTimeout = callCompletionTimeout;
 	}
 
-	public void monitorStop(final int monitorCrossRefID,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAMonitorStop(monitorCrossRefID);
-		if (handler != null)
-			session.sendAsync(req, priv, handler);
-		else
-			session.send(req, priv);
+	public static boolean isEnableAuditDump() {
+		return isEnableAuditDump;
 	}
 
-	public void pickupCall(final CSTAConnectionID deflectCall,
-			final String calledDevice, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAPickupCall(deflectCall, calledDevice);
-		session.send(req, priv, handler);
+	public static int getAuditDumpInterval() {
+		return auditDumpInterval;
 	}
 
-	public void queryAgentState(final String agentDevice,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryAgentState(agentDevice);
-		session.send(req, priv, handler);
+	public static int getAuditObjectAgeThreshold() {
+		return auditObjectAgeThreshold;
 	}
 
-	public CSTAEvent queryDeviceInfo(final String device, final CSTAPrivate priv)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryDeviceInfo(device);
-		return session.send(req, priv);
+	public static boolean getTSDevicePerformanceOptimization() {
+		return tsDevicePerformanceOptimization;
 	}
 
-	public void queryDeviceInfoAsync(final String device,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryDeviceInfo(device);
-		session.sendAsync(req, priv, handler);
-	}
-
-	public void queryDoNotDisturb(final String device, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryDnd(device);
-		session.send(req, priv, handler);
-	}
-
-	public void queryFwd(final String device, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryFwd(device);
-		session.send(req, priv, handler);
-	}
-
-	public void queryMsgWaitingInd(final String device, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAQueryMwi(device);
-		session.send(req, priv, handler);
-	}
-
-	public void reconnectCall(final CSTAConnectionID activeCall,
-			final CSTAConnectionID heldCall, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTAReconnectCall(activeCall, heldCall);
-		session.send(req, priv, handler);
-	}
-
-	public void registerRouteCallback(final String routingDevice,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTARouteRegisterReq(routingDevice);
-		session.send(req, priv, handler);
-	}
-
-	public void requestPrivileges(final CSTAPrivate priv,
-			final ConfHandler handler) {
-		final TsapiRequest req = new ACSRequestPrivileges();
+	public void requestPrivileges(CSTAPrivate priv, ConfHandler handler) {
+		TsapiRequest req = new ACSRequestPrivileges();
 		try {
-			session.send(req, priv, handler);
-		} catch (final Exception e) {
-			if (e instanceof ITsapiException)
+			this.session.send(req, priv, handler);
+		} catch (Exception e) {
+			if ((e instanceof ITsapiException)) {
 				throw new TsapiPlatformException(
 						((ITsapiException) e).getErrorType(),
 						((ITsapiException) e).getErrorCode(),
 						"requestPrivileges failure: " + e);
+			}
 
 			throw new TsapiPlatformException(4, 0,
 					"request privileges unexpected exception " + e);
 		}
 	}
 
-	public void requestSystemStatus(final CSTAPrivate priv,
-			final ConfHandler handler)
-			throws TsapiProviderUnavailableException,
-			TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASysStatReq();
-		session.send(req, priv, handler);
-	}
-
-	public void retrieveCall(final CSTAConnectionID heldCall,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTARetrieveCall(heldCall);
-		session.send(req, priv, handler);
-	}
-
-	public void routeEnd(final int routeRegisterReqID,
-			final int routingCrossRefID, final short errorValue,
-			final CSTAPrivate priv) {
-		TsapiRequest req;
-		if (session.getApiVersion().equals("1"))
-			req = new CSTARouteEndRequest(routeRegisterReqID,
-					routingCrossRefID, errorValue);
-		else
-			req = new CSTARouteEndRequestInv(routeRegisterReqID,
-					routingCrossRefID, errorValue);
-
-		session.sendAsync(req, priv);
-	}
-
-	public void selectRoute(final int routeRegisterReqID,
-			final int routingCrossRefID, final String routeSelected,
-			final int remainRetry, final String isdnSetupMessage,
-			final boolean routeUsedReq, final CSTAPrivate priv) {
-		final byte[] isdnBuf = isdnSetupMessage.getBytes();
-		TsapiRequest req;
-		if (session.getApiVersion().equals("1"))
-			req = new CSTARouteSelectRequest(routeRegisterReqID,
-					routingCrossRefID, routeSelected, remainRetry, isdnBuf,
-					routeUsedReq);
-		else
-			req = new CSTARouteSelectRequestInv(routeRegisterReqID,
-					routingCrossRefID, routeSelected, remainRetry, isdnBuf,
-					routeUsedReq);
-
-		session.sendAsync(req, priv);
-	}
-
-	public void setAgentState(final String agentDevice, final short agentMode,
-			final String agentID, final String acdGroup,
-			final String agentPassword, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASetAgentState(agentDevice, agentMode,
-				agentID, acdGroup, agentPassword);
-		session.send(req, priv, handler);
-	}
-
-	public void setClientHeartbeatInterval(final short heartbeatInterval) {
-		session.setClientHeartbeatInterval(heartbeatInterval);
-	}
-
-	public void setDnd(final String device, final boolean doNotDisturb,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASetDnd(device, doNotDisturb);
-		session.send(req, priv, handler);
-	}
-
-	public void setFwd(final String device, final short forwardingType,
-			final boolean forwardingOn, final String forwardingDestination,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final CSTAForwardingInfo forward = new CSTAForwardingInfo(
-				forwardingType, forwardingOn, forwardingDestination);
-		final TsapiRequest req = new CSTASetFwd(device, forward);
-		session.send(req, priv, handler);
-	}
-
-	public void setHeartbeatInterval(final short heartbeatInterval,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new ACSSetHeartbeatInterval(heartbeatInterval);
-
-		session.send(req, priv, handler);
-	}
-
-	public void setHeartbeatTimeoutListener(
-			final ITsapiHeartbeatTimeoutListener listener) {
-		session.setHeartbeatTimeoutListener(listener);
-	}
-
-	public void setMsgWaitingInd(final String device, final boolean messages,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASetMwi(device, messages);
-		session.send(req, priv, handler);
-	}
-
-	public void setPrivileges(final String xmlData, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidArgumentException {
+	public void setPrivileges(String xmlData, CSTAPrivate priv,
+			ConfHandler handler) throws TsapiInvalidArgumentException,
+			TsapiPlatformException {
 		try {
-			final TsapiRequest req = new ACSSetPrivileges(xmlData);
-
-			session.send(req, priv, handler);
-		} catch (final Exception e) {
-			if (e instanceof TsapiInvalidArgumentException)
+			TsapiRequest req = new ACSSetPrivileges(xmlData);
+			this.session.send(req, priv, handler);
+		} catch (Exception e) {
+			if ((e instanceof TsapiInvalidArgumentException)) {
 				throw new TsapiInvalidArgumentException(
 						((ITsapiException) e).getErrorType(),
 						((ITsapiException) e).getErrorCode(),
 						"setPrivileges failure: " + e);
+			}
 
-			if (!(e instanceof ITsapiException))
-				return;
-			throw new TsapiPlatformException(
-					((ITsapiException) e).getErrorType(),
-					((ITsapiException) e).getErrorCode(),
-					"setPrivileges unexpected exception: " + e);
+			if ((e instanceof ITsapiException))
+				throw new TsapiPlatformException(
+						((ITsapiException) e).getErrorType(),
+						((ITsapiException) e).getErrorCode(),
+						"setPrivileges unexpected exception: " + e);
 		}
 	}
 
-	public synchronized void shutdown() {
-		Tsapi.log.info("tsapi.shutdown() called (inService = " + inService
-				+ ")" + " for " + evtHandler);
-
-		if (!inService)
-			return;
-		inService = false;
-		session.close();
+	public static boolean isRefreshPeriodChanged() {
+		return refreshPeriodChanged;
 	}
 
-	public void snapshotCall(final CSTAConnectionID snapshotObj,
-			final CSTAPrivate priv, final ConfHandler handler) {
-		final TsapiRequest req = new CSTASnapshotCall(snapshotObj);
-
-		session.sendAsync(req, priv, handler);
+	public static int getMaxThreadPoolSize() {
+		return maxThreadPoolSize;
 	}
 
-	public void snapshotDevice(final String snapshotObj,
-			final CSTAPrivate priv, final ConfHandler handler)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASnapshotDevice(snapshotObj);
-		session.send(req, priv, handler);
+	public void startSystemStatusMonitoring(CSTAPrivate priv,
+			ConfHandler handler) throws TsapiProviderUnavailableException,
+			TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
+			TsapiResourceUnavailableException {
+		TsapiRequest req = new CSTASysStatStart();
+		this.session.send(req, priv, handler);
 	}
 
-	public void startSystemStatusMonitoring(final CSTAPrivate priv,
-			final ConfHandler handler)
+	public void startSystemStatusMonitoring(CSTAPrivate priv,
+			ConfHandler handler, int filter)
 			throws TsapiProviderUnavailableException,
 			TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASysStatStart();
-		session.send(req, priv, handler);
+		TsapiRequest req = new CSTASysStatStart(filter);
+		this.session.send(req, priv, handler);
 	}
 
-	public void startSystemStatusMonitoring(final CSTAPrivate priv,
-			final ConfHandler handler, final int filter)
+	public void stopSystemStatusMonitoring(CSTAPrivate priv, ConfHandler handler)
 			throws TsapiProviderUnavailableException,
 			TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASysStatStart(filter);
-		session.send(req, priv, handler);
+		TsapiRequest req = new CSTASysStatStop();
+		this.session.send(req, priv, handler);
 	}
 
-	public void stopSystemStatusMonitoring(final CSTAPrivate priv,
-			final ConfHandler handler)
+	public void requestSystemStatus(CSTAPrivate priv, ConfHandler handler)
 			throws TsapiProviderUnavailableException,
 			TsapiInvalidStateException, TsapiInvalidArgumentException,
 			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
 			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTASysStatStop();
-		session.send(req, priv, handler);
+		TsapiRequest req = new CSTASysStatReq();
+		this.session.send(req, priv, handler);
 	}
 
-	public void transferCall(final CSTAConnectionID heldCall,
-			final CSTAConnectionID activeCall, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		final TsapiRequest req = new CSTATransferCall(heldCall, activeCall);
-		session.send(req, priv, handler);
+	static {
+		log = Logger.getLogger(Tsapi.class);
+		useTLinkIP = false;
+		maxTcpSocketWait = 20;
+		alternateTraceFile = null;
+		refreshIntervalForTsapiPro = 100;
+
+		prePopulateJtapiProperties();
+
+		servers = new Vector<InetSocketAddress>();
+		try {
+			if (System.getProperty("com.avaya.jtapi.tsapi.servers") != null) {
+				Collection<InetSocketAddress> serverEntries = JtapiUtils
+						.parseTelephonyServerEntry(
+								System.getProperty(
+										"com.avaya.jtapi.tsapi.servers").trim(),
+								450);
+
+				for (InetSocketAddress server : serverEntries) {
+					addServer(server);
+				}
+			}
+
+			Properties prop = new Properties();
+
+			InputStream in = TsapiChannelOio.getProperties();
+
+			prop.load(in);
+
+			initClass(null, prop);
+
+			saveJtapiProperties.putAll(prop);
+
+			displayProperties(System.getProperties(), saveJtapiProperties);
+
+			in.close();
+
+			TsapiChannelOio.getBrowser().setStartUp(false);
+		} catch (Exception e) {
+			try {
+				if (JtapiUtils.isLog4jConfigured()) {
+					log.error("failed to find/open tsapi.pro file:");
+					log.error(e.getMessage(), e);
+				} else {
+					System.out.println("failed to find/open tsapi.pro file:"
+							+ e.getMessage());
+					e.printStackTrace();
+				}
+				String hostname = TsapiChannelOio.getBrowser()
+						.getCodeBaseServer();
+
+				InetSocketAddress addr = new InetSocketAddress(hostname, 450);
+				Properties prop = new Properties();
+				initClass(addr, prop);
+			} catch (Exception e1) {
+				try {
+					if (JtapiUtils.isLog4jConfigured()) {
+						log.error("failed to find codebase server:");
+						log.error(e1.getMessage(), e1);
+					} else {
+						System.out.println("failed to find codebase server:"
+								+ e.getMessage());
+						e.printStackTrace();
+					}
+
+					String hostname = InetAddress.getLocalHost().getHostName();
+					InetSocketAddress addr = new InetSocketAddress(hostname,
+							450);
+					Properties prop = new Properties();
+					initClass(addr, prop);
+				} catch (Exception e2) {
+					if (JtapiUtils.isLog4jConfigured())
+						log.error("enumServers: " + e2);
+					else {
+						System.out.println("enumServers: " + e2);
+					}
+				}
+			}
+		}
+		showImplementationVersion();
 	}
 }

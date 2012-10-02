@@ -5,67 +5,61 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class CSTAConsultationCall extends CSTARequest {
-	public static CSTAConsultationCall decode(final InputStream in) {
-		final CSTAConsultationCall _this = new CSTAConsultationCall();
+	CSTAConnectionID activeCall;
+	String calledDevice;
+	public static final int PDU = 13;
+
+	public CSTAConsultationCall(CSTAConnectionID _activeCall,
+			String _calledDevice) {
+		this.activeCall = _activeCall;
+		this.calledDevice = _calledDevice;
+	}
+
+	public CSTAConsultationCall() {
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.activeCall, memberStream);
+		DeviceID.encode(this.calledDevice, memberStream);
+	}
+
+	public static CSTAConsultationCall decode(InputStream in) {
+		CSTAConsultationCall _this = new CSTAConsultationCall();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	CSTAConnectionID activeCall;
-	String calledDevice;
-
-	public static final int PDU = 13;
-
-	public CSTAConsultationCall() {
+	public void decodeMembers(InputStream memberStream) {
+		this.activeCall = CSTAConnectionID.decode(memberStream);
+		this.calledDevice = DeviceID.decode(memberStream);
 	}
 
-	public CSTAConsultationCall(final CSTAConnectionID _activeCall,
-			final String _calledDevice) {
-		activeCall = _activeCall;
-		calledDevice = _calledDevice;
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("CSTAConsultationCall ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(CSTAConnectionID.print(this.activeCall, "activeCall",
+				indent));
+		lines.addAll(DeviceID.print(this.calledDevice, "calledDevice", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		activeCall = CSTAConnectionID.decode(memberStream);
-		calledDevice = ASNIA5String.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(activeCall, memberStream);
-		ASNIA5String.encode(calledDevice, memberStream);
-	}
-
-	public CSTAConnectionID getActiveCall() {
-		return activeCall;
-	}
-
-	public String getCalledDevice() {
-		return calledDevice;
-	}
-
-	@Override
 	public int getPDU() {
 		return 13;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("CSTAConsultationCall ::=");
-		lines.add("{");
+	public CSTAConnectionID getActiveCall() {
+		return this.activeCall;
+	}
 
-		final String indent = "  ";
-
-		lines.addAll(CSTAConnectionID.print(activeCall, "activeCall", indent));
-		lines.addAll(ASNIA5String.print(calledDevice, "calledDevice", indent));
-
-		lines.add("}");
-		return lines;
+	public String getCalledDevice() {
+		return this.calledDevice;
 	}
 }

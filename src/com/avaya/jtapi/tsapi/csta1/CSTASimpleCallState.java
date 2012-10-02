@@ -1,8 +1,7 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 public final class CSTASimpleCallState extends ASNEnumerated {
 	static final short CALL_NULL = 0;
@@ -20,8 +19,7 @@ public final class CSTASimpleCallState extends ASNEnumerated {
 	static final short CALL_FAILED = 99;
 	static final short CALL_FAILED_HELD = 100;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case 0:
@@ -70,6 +68,6 @@ public final class CSTASimpleCallState extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

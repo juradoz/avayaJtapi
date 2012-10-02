@@ -6,19 +6,17 @@ public final class TsapiCallObservationEndedEvent extends TsapiCallEvent
 		implements CallObservationEndedEv {
 	Object observed;
 
-	public TsapiCallObservationEndedEvent(final CallEventParams params,
-			final Object _observed) {
-		super(params);
-		observed = _observed;
-	}
-
-	@Override
-	public Object getEndedObject() {
-		return observed;
-	}
-
-	@Override
 	public int getID() {
 		return 103;
+	}
+
+	public Object getEndedObject() {
+		return this.observed;
+	}
+
+	public TsapiCallObservationEndedEvent(CallEventParams params,
+			Object _observed) {
+		super(params);
+		this.observed = _observed;
 	}
 }

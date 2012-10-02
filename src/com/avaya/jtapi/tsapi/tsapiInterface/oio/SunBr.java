@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.net.SocketPermission;
 import java.net.UnknownHostException;
 import java.security.AccessController;
-
 import javax.net.SocketFactory;
 
 final class SunBr extends GenericBrowser {
@@ -15,13 +14,7 @@ final class SunBr extends GenericBrowser {
 		super("Sun JVM");
 	}
 
-	@Override
-	InputStream findProperties() {
-		return super.findProperties();
-	}
-
-	@Override
-	Socket trySocket(final InetSocketAddress addr, final SocketFactory sf)
+	Socket trySocket(InetSocketAddress addr, SocketFactory sf)
 			throws UnknownHostException, IOException {
 		System.out.println("in SunBr  checkPermission\n");
 		AccessController.checkPermission(new SocketPermission(addr.getAddress()
@@ -29,5 +22,9 @@ final class SunBr extends GenericBrowser {
 
 		System.out.println("in SunBr  trySocket\n");
 		return super.trySocket(addr, sf);
+	}
+
+	InputStream findProperties() {
+		return super.findProperties();
 	}
 }

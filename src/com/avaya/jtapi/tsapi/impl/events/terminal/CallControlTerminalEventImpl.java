@@ -1,32 +1,29 @@
 package com.avaya.jtapi.tsapi.impl.events.terminal;
 
+import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallControlEvent;
 import javax.telephony.Terminal;
 import javax.telephony.callcontrol.CallControlTerminalEvent;
 
-import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallControlEvent;
-
 public class CallControlTerminalEventImpl extends TsapiListenerCallControlEvent
 		implements CallControlTerminalEvent {
-	private final Terminal terminal;
+	private Terminal terminal;
 	private boolean state = false;
 
 	public CallControlTerminalEventImpl(
-			final TerminalEventParams terminalEventParams, final boolean state) {
+			TerminalEventParams terminalEventParams, boolean state) {
 		super(terminalEventParams.getEventId(), terminalEventParams.getCause(),
 				terminalEventParams.getMetaEvent(), terminalEventParams
 						.getSource(), terminalEventParams.getPrivateData());
 
-		terminal = terminalEventParams.getTerminal();
+		this.terminal = terminalEventParams.getTerminal();
 		this.state = state;
 	}
 
-	@Override
-	public boolean getDoNotDisturbState() {
-		return state;
+	public Terminal getTerminal() {
+		return this.terminal;
 	}
 
-	@Override
-	public Terminal getTerminal() {
-		return terminal;
+	public boolean getDoNotDisturbState() {
+		return this.state;
 	}
 }

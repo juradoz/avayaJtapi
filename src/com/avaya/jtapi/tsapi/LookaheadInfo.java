@@ -16,51 +16,51 @@ public class LookaheadInfo {
 	int seconds;
 	String sourceVDN;
 
-	public int getHours() {
-		return hours;
-	}
-
-	public int getMinutes() {
-		return minutes;
+	public short getType() {
+		return this.type;
 	}
 
 	public short getPriority() {
-		return priority;
+		return this.priority;
+	}
+
+	public int getHours() {
+		return this.hours;
+	}
+
+	public int getMinutes() {
+		return this.minutes;
 	}
 
 	public int getSeconds() {
-		return seconds;
+		return this.seconds;
 	}
 
 	public String getSourceVDN() {
-		return sourceVDN;
+		return this.sourceVDN;
 	}
 
-	public short getType() {
-		return type;
+	public void setType(short type) {
+		this.type = type;
 	}
 
-	public void setHours(final int hours) {
-		this.hours = hours;
-	}
-
-	public void setMinutes(final int minutes) {
-		this.minutes = minutes;
-	}
-
-	public void setPriority(final short priority) {
+	public void setPriority(short priority) {
 		this.priority = priority;
 	}
 
-	public void setSeconds(final int seconds) {
+	public void setHours(int hours) {
+		this.hours = hours;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+
+	public void setSeconds(int seconds) {
 		this.seconds = seconds;
 	}
 
-	public void setSourceVDN(final String sourceVDN) {
+	public void setSourceVDN(String sourceVDN) {
 		this.sourceVDN = sourceVDN;
-	}
-
-	public void setType(final short type) {
-		this.type = type;
 	}
 }

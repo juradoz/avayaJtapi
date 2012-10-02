@@ -1,25 +1,22 @@
 package com.avaya.jtapi.tsapi.impl.events.conn;
 
-import javax.telephony.callcontrol.events.CallCtlConnDialingEv;
-
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
+import javax.telephony.callcontrol.events.CallCtlConnDialingEv;
 
 @SuppressWarnings("deprecation")
 public class TsapiConnDialingEvent extends TsapiCallCtlConnEvent implements
 		CallCtlConnDialingEv, ITsapiCallInfo {
-	private final String dialedDigits = null;
+	private String dialedDigits = null;
 
-	public TsapiConnDialingEvent(final ConnEventParams params) {
-		super(params);
-	}
-
-	@Override
-	public final String getDigits() {
-		return dialedDigits;
-	}
-
-	@Override
 	public final int getID() {
 		return 204;
+	}
+
+	public final String getDigits() {
+		return this.dialedDigits;
+	}
+
+	public TsapiConnDialingEvent(ConnEventParams params) {
+		super(params);
 	}
 }

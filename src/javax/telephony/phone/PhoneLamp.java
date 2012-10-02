@@ -10,11 +10,11 @@ public abstract interface PhoneLamp extends Component {
 	public static final int LAMPMODE_BROKENFLUTTER = 4;
 	public static final int LAMPMODE_WINK = 5;
 
-	public abstract PhoneButton getAssociatedPhoneButton();
-
-	public abstract int getMode();
-
 	public abstract int[] getSupportedModes();
 
 	public abstract void setMode(int paramInt) throws InvalidArgumentException;
+
+	public abstract int getMode();
+
+	public abstract PhoneButton getAssociatedPhoneButton();
 }

@@ -1,22 +1,20 @@
 package com.avaya.jtapi.tsapi.impl.events.terminal;
 
+import com.avaya.jtapi.tsapi.impl.events.TsapiListenerEvent;
 import javax.telephony.Terminal;
 import javax.telephony.TerminalEvent;
 
-import com.avaya.jtapi.tsapi.impl.events.TsapiListenerEvent;
-
 public class TerminalEventImpl extends TsapiListenerEvent implements
 		TerminalEvent {
-	private final Terminal terminal;
+	private Terminal terminal;
 
-	public TerminalEventImpl(final int eventId, final int _cause,
-			final Terminal _device, final Object privateData) {
+	public TerminalEventImpl(int eventId, int _cause, Terminal _device,
+			Object privateData) {
 		super(eventId, _cause, null, _device, privateData);
-		terminal = _device;
+		this.terminal = _device;
 	}
 
-	@Override
 	public Terminal getTerminal() {
-		return terminal;
+		return this.terminal;
 	}
 }

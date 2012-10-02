@@ -2,43 +2,37 @@ package com.avaya.jtapi.tsapi;
 
 import javax.telephony.Provider;
 import javax.telephony.ProviderUnavailableException;
-
 import org.apache.log4j.Logger;
 
 public class TsapiPeer implements ITsapiPeer {
-	public static final String VERSION = "5.2.0.483";
+	public static final String VERSION = "6.2.0.54";
 	ITsapiPeer impl = null;
 	Logger logger = Logger.getLogger(TsapiPeer.class);
 
-	@SuppressWarnings("rawtypes")
 	public TsapiPeer() {
 		try {
-			final Class implClass = Class
+			Class<?> implClass = Class
 					.forName("com.avaya.jtapi.tsapi.impl.TsapiPeerImpl");
-			impl = (ITsapiPeer) implClass.newInstance();
-		} catch (final Exception e) {
-			logger.error(e.getMessage(), e);
+			this.impl = ((ITsapiPeer) implClass.newInstance());
+		} catch (Exception e) {
+			this.logger.error(e.getMessage(), e);
 		}
 	}
 
-	@Override
-	public void addVendor(final String vendorName, final String versions) {
-		impl.addVendor(vendorName, versions);
+	public void addVendor(String vendorName, String versions) {
+		this.impl.addVendor(vendorName, versions);
 	}
 
-	@Override
 	public String getName() {
-		return super.getClass().getName();
+		return getClass().getName();
 	}
 
-	@Override
-	public Provider getProvider(final String providerString)
+	public Provider getProvider(String providerString)
 			throws ProviderUnavailableException {
-		return impl.getProvider(providerString);
+		return this.impl.getProvider(providerString);
 	}
 
-	@Override
 	public String[] getServices() {
-		return impl.getServices();
+		return this.impl.getServices();
 	}
 }

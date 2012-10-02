@@ -1,48 +1,44 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 
 public class LucentMonitorCallsViaDevice extends LucentPrivateData {
 	boolean flowPredictiveCallEvents;
 	int privateFilter;
 	static final int PDU = 144;
 
-	public LucentMonitorCallsViaDevice(final boolean _flowPredictiveCallEvents,
-			final int _privateFilter) {
-		flowPredictiveCallEvents = _flowPredictiveCallEvents;
-		privateFilter = _privateFilter;
+	public LucentMonitorCallsViaDevice(boolean _flowPredictiveCallEvents,
+			int _privateFilter) {
+		this.flowPredictiveCallEvents = _flowPredictiveCallEvents;
+		this.privateFilter = _privateFilter;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		LucentPrivateFilter.encode(privateFilter, memberStream);
-		ASNBoolean.encode(flowPredictiveCallEvents, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentPrivateFilter.encode(this.privateFilter, memberStream);
+		ASNBoolean.encode(this.flowPredictiveCallEvents, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 144;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentMonitorCallsViaDevice ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentPrivateFilter.print(privateFilter, "privateFilter",
-				indent));
-		lines.addAll(ASNBoolean.print(flowPredictiveCallEvents,
+		lines.addAll(LucentPrivateFilter.print(this.privateFilter,
+				"privateFilter", indent));
+		lines.addAll(ASNBoolean.print(this.flowPredictiveCallEvents,
 				"flowPredictiveCallEvents", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 144;
 	}
 }

@@ -6,23 +6,18 @@ import javax.telephony.callcenter.Agent;
 import javax.telephony.events.TermEv;
 
 /** @deprecated */
-@Deprecated
 public abstract interface AgentTermEv extends CallCentEv, TermEv {
-	/** @deprecated */
-	@Deprecated
-	public abstract ACDAddress getACDAddress();
-
 	public abstract Agent getAgent();
 
 	/** @deprecated */
-	@Deprecated
-	public abstract Address getAgentAddress();
+	public abstract ACDAddress getACDAddress();
 
 	/** @deprecated */
-	@Deprecated
 	public abstract String getAgentID();
 
 	/** @deprecated */
-	@Deprecated
 	public abstract int getState();
+
+	/** @deprecated */
+	public abstract Address getAgentAddress();
 }

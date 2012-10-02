@@ -9,49 +9,45 @@ public class LucentDivertedEvent extends LucentPrivateData {
 	private LucentDeviceHistoryEntry[] deviceHistory;
 	static final int PDU = 135;
 
-	static LucentDivertedEvent decode(final InputStream in) {
-		final LucentDivertedEvent _this = new LucentDivertedEvent();
+	static LucentDivertedEvent decode(InputStream in) {
+		LucentDivertedEvent _this = new LucentDivertedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		deviceHistory = CSTADeviceHistoryData.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.deviceHistory = CSTADeviceHistoryData.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTADeviceHistoryData.encode(deviceHistory, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTADeviceHistoryData.encode(this.deviceHistory, memberStream);
 	}
 
-	public LucentDeviceHistoryEntry[] getDeviceHistory() {
-		return deviceHistory;
-	}
-
-	@Override
-	public int getPDU() {
-		return 135;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentDivertedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
+		lines.addAll(CSTADeviceHistoryData.print(this.deviceHistory,
 				"deviceHistory", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDeviceHistory(final LucentDeviceHistoryEntry[] deviceHistory) {
+	public int getPDU() {
+		return 135;
+	}
+
+	public LucentDeviceHistoryEntry[] getDeviceHistory() {
+		return this.deviceHistory;
+	}
+
+	public void setDeviceHistory(LucentDeviceHistoryEntry[] deviceHistory) {
 		this.deviceHistory = deviceHistory;
 	}
 }

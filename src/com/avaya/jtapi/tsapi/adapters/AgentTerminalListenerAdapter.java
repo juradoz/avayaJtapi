@@ -5,35 +5,27 @@ import javax.telephony.callcenter.AgentTerminalListener;
 
 public abstract class AgentTerminalListenerAdapter extends
 		TerminalListenerAdapter implements AgentTerminalListener {
-	@Override
-	public void agentTerminalBusy(final AgentTerminalEvent event) {
+	public void agentTerminalBusy(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalLoggedOff(final AgentTerminalEvent event) {
+	public void agentTerminalLoggedOff(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalLoggedOn(final AgentTerminalEvent event) {
+	public void agentTerminalLoggedOn(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalNotReady(final AgentTerminalEvent event) {
+	public void agentTerminalNotReady(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalReady(final AgentTerminalEvent event) {
+	public void agentTerminalReady(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalUnknown(final AgentTerminalEvent event) {
+	public void agentTerminalUnknown(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalWorkNotReady(final AgentTerminalEvent event) {
+	public void agentTerminalWorkNotReady(AgentTerminalEvent event) {
 	}
 
-	@Override
-	public void agentTerminalWorkReady(final AgentTerminalEvent event) {
+	public void agentTerminalWorkReady(AgentTerminalEvent event) {
 	}
 }

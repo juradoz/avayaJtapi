@@ -1,9 +1,8 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBitString;
 import java.io.OutputStream;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBitString;
 
 public final class CSTAAgentFilter extends ASNBitString {
 	static final int AF_LOGGED_ON = -2147483648;
@@ -14,27 +13,32 @@ public final class CSTAAgentFilter extends ASNBitString {
 	static final int AF_WORK_READY = 67108864;
 	static final int numBits = 6;
 
-	static void encode(final int bits, final OutputStream out) {
-		ASNBitString.encode(bits, 6, out);
+	static void encode(int bits, OutputStream out) {
+		encode(bits, 6, out);
 	}
 
-	static Collection<String> print(final int bits, final String name,
-			final String indent) {
+	static Collection<String> print(int bits, String name, String indent) {
 		String str = " ";
 
-		if ((bits & 0x80000000) != 0)
+		if ((bits & 0x80000000) != 0) {
 			str = str + "AF_LOGGED_ON ";
-		if ((bits & 0x40000000) != 0)
+		}
+		if ((bits & 0x40000000) != 0) {
 			str = str + "AF_LOGGED_OFF ";
-		if ((bits & 0x20000000) != 0)
+		}
+		if ((bits & 0x20000000) != 0) {
 			str = str + "AF_NOT_READY ";
-		if ((bits & 0x10000000) != 0)
+		}
+		if ((bits & 0x10000000) != 0) {
 			str = str + "AF_READY ";
-		if ((bits & 0x8000000) != 0)
+		}
+		if ((bits & 0x8000000) != 0) {
 			str = str + "AF_WORK_NOT_READY ";
-		if ((bits & 0x4000000) != 0)
+		}
+		if ((bits & 0x4000000) != 0) {
 			str = str + "AF_WORK_READY ";
+		}
 
-		return ASNBitString.print(bits, str, name, indent);
+		return print(bits, str, name, indent);
 	}
 }

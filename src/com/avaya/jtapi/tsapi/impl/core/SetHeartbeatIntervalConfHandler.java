@@ -7,17 +7,18 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class SetHeartbeatIntervalConfHandler implements ConfHandler {
 	TSProviderImpl provider;
 
-	SetHeartbeatIntervalConfHandler(final TSProviderImpl provider) {
+	SetHeartbeatIntervalConfHandler(TSProviderImpl provider) {
 		this.provider = provider;
 	}
 
-	@Override
-	public void handleConf(final CSTAEvent event) {
-		if (event == null
-				|| !(event.getEvent() instanceof ACSSetHeartbeatIntervalConfEvent))
+	public void handleConf(CSTAEvent event) {
+		if ((event == null)
+				|| (!(event.getEvent() instanceof ACSSetHeartbeatIntervalConfEvent))) {
 			return;
+		}
 
-		provider.setClientHeartbeatInterval(((ACSSetHeartbeatIntervalConfEvent) event
-				.getEvent()).getHeartbeatInterval());
+		this.provider
+				.setClientHeartbeatInterval(((ACSSetHeartbeatIntervalConfEvent) event
+						.getEvent()).getHeartbeatInterval());
 	}
 }

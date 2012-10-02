@@ -7,60 +7,51 @@ import com.avaya.jtapi.tsapi.LucentChargeAdviceEvent;
 import com.avaya.jtapi.tsapi.TsapiTrunk;
 
 public class LucentChargeAdviceEventImpl implements LucentChargeAdviceEvent {
-	private final short chargeType;
-	private final int charge;
-	private final short error;
-	private final LucentCall call;
-	private final ITsapiAddress calledDevice;
-	private final ITsapiAddress chargingDevice;
-	private final TsapiTrunk trunk;
+	private short chargeType;
+	private int charge;
+	private short error;
+	private LucentCall call;
+	private ITsapiAddress calledDevice;
+	private ITsapiAddress chargingDevice;
+	private TsapiTrunk trunk;
 
-	public LucentChargeAdviceEventImpl(final short _chargeType,
-			final int _charge, final LucentCall _call,
-			final ITsapiAddress _calledDevice,
-			final ITsapiAddress _chargingDevice, final short _error,
-			final TsapiTrunk _trunk) {
-		chargeType = _chargeType;
-		charge = _charge;
-		call = _call;
-		calledDevice = _calledDevice;
-		chargingDevice = _chargingDevice;
-		error = _error;
-		trunk = _trunk;
+	public LucentChargeAdviceEventImpl(short _chargeType, int _charge,
+			LucentCall _call, ITsapiAddress _calledDevice,
+			ITsapiAddress _chargingDevice, short _error, TsapiTrunk _trunk) {
+		this.chargeType = _chargeType;
+		this.charge = _charge;
+		this.call = _call;
+		this.calledDevice = _calledDevice;
+		this.chargingDevice = _chargingDevice;
+		this.error = _error;
+		this.trunk = _trunk;
 	}
 
-	@Override
 	public final LucentCall getCall() {
-		return call;
+		return this.call;
 	}
 
-	@Override
 	public final LucentAddress getCalledAddress() {
-		return (LucentAddress) calledDevice;
+		return (LucentAddress) this.calledDevice;
 	}
 
-	@Override
-	public final int getCharge() {
-		return charge;
-	}
-
-	@Override
-	public final short getChargeError() {
-		return error;
-	}
-
-	@Override
-	public final short getChargeType() {
-		return chargeType;
-	}
-
-	@Override
 	public final LucentAddress getChargingAddress() {
-		return (LucentAddress) chargingDevice;
+		return (LucentAddress) this.chargingDevice;
 	}
 
-	@Override
 	public final TsapiTrunk getTrunk() {
-		return trunk;
+		return this.trunk;
+	}
+
+	public final int getCharge() {
+		return this.charge;
+	}
+
+	public final short getChargeType() {
+		return this.chargeType;
+	}
+
+	public final short getChargeError() {
+		return this.error;
 	}
 }

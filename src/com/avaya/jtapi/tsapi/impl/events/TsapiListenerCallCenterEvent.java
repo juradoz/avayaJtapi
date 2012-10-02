@@ -5,16 +5,15 @@ import javax.telephony.callcenter.CallCenterEvent;
 
 public abstract class TsapiListenerCallCenterEvent extends TsapiListenerEvent
 		implements CallCenterEvent {
-	public TsapiListenerCallCenterEvent(final int eventId, final int _cause,
-			final MetaEvent metaEvent, final Object source,
-			final Object privateData) {
+	public TsapiListenerCallCenterEvent(int eventId, int _cause,
+			MetaEvent metaEvent, Object source, Object privateData) {
 		super(eventId, _cause, metaEvent, source, privateData);
 	}
 
-	@Override
 	public int getCallCenterCause() {
-		if (cause == 101 || cause == 302)
-			return cause;
+		if ((this.cause == 101) || (this.cause == 302)) {
+			return this.cause;
+		}
 		return 100;
 	}
 }

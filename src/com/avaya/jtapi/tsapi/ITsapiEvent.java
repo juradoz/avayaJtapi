@@ -9,15 +9,15 @@ public abstract interface ITsapiEvent {
 	public static final int PRIVATE_EVENT = 5;
 	public static final int NUM_PACKAGES = 8;
 
-	public abstract int getCallCenterCause();
+	public abstract int getCause();
+
+	public abstract Object getPrivateData();
 
 	public abstract int getCallControlCause();
 
-	public abstract int getCause();
-
-	public abstract int getEventPackage();
+	public abstract int getCallCenterCause();
 
 	public abstract int getMediaCause();
 
-	public abstract Object getPrivateData();
+	public abstract int getEventPackage();
 }

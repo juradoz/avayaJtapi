@@ -5,69 +5,63 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public class LucentTransferredEvent extends LucentPrivateData {
 	LucentOriginalCallInfo originalCallInfo;
 	CSTAExtendedDeviceID distributingDevice_asn;
 	static final int PDU = 62;
 
-	public static LucentTransferredEvent decode(final InputStream in) {
-		final LucentTransferredEvent _this = new LucentTransferredEvent();
+	public static LucentTransferredEvent decode(InputStream in) {
+		LucentTransferredEvent _this = new LucentTransferredEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		originalCallInfo = decodeOCI(memberStream);
-		distributingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		encodeOCI(this.originalCallInfo, memberStream);
+		CSTAExtendedDeviceID.encode(this.distributingDevice_asn, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		encodeOCI(originalCallInfo, memberStream);
-		ASNSequence.encode(distributingDevice_asn, memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.originalCallInfo = decodeOCI(memberStream);
+		this.distributingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
 	}
 
-	public CSTAExtendedDeviceID getDistributingDevice_asn() {
-		return distributingDevice_asn;
-	}
-
-	public LucentOriginalCallInfo getOriginalCallInfo() {
-		return originalCallInfo;
-	}
-
-	@Override
-	public int getPDU() {
-		return 62;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentTransferredEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentOriginalCallInfo.print(originalCallInfo,
+		lines.addAll(LucentOriginalCallInfo.print(this.originalCallInfo,
 				"originalCallInfo", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(distributingDevice_asn,
+		lines.addAll(CSTAExtendedDeviceID.print(this.distributingDevice_asn,
 				"distributingDevice", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDistributingDevice_asn(
-			final CSTAExtendedDeviceID _distributingDevice_asn) {
-		distributingDevice_asn = _distributingDevice_asn;
+	public int getPDU() {
+		return 62;
 	}
 
-	public void setOriginalCallInfo(final LucentOriginalCallInfo _info) {
-		originalCallInfo = _info;
+	public CSTAExtendedDeviceID getDistributingDevice_asn() {
+		return this.distributingDevice_asn;
+	}
+
+	public void setDistributingDevice_asn(
+			CSTAExtendedDeviceID _distributingDevice_asn) {
+		this.distributingDevice_asn = _distributingDevice_asn;
+	}
+
+	public LucentOriginalCallInfo getOriginalCallInfo() {
+		return this.originalCallInfo;
+	}
+
+	public void setOriginalCallInfo(LucentOriginalCallInfo _info) {
+		this.originalCallInfo = _info;
 	}
 }

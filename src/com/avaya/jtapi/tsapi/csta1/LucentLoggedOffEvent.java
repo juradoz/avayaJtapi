@@ -1,58 +1,53 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-
 public final class LucentLoggedOffEvent extends LucentPrivateData {
 	int reasonCode;
 	static final int PDU = 79;
 
-	static LucentLoggedOffEvent decode(final InputStream in) {
-		final LucentLoggedOffEvent _this = new LucentLoggedOffEvent();
+	static LucentLoggedOffEvent decode(InputStream in) {
+		LucentLoggedOffEvent _this = new LucentLoggedOffEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		reasonCode = ASNInteger.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.reasonCode = ASNInteger.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNInteger.encode(reasonCode, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ASNInteger.encode(this.reasonCode, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 79;
-	}
-
-	public int getReasonCode() {
-		return reasonCode;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentLoggedOffEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNInteger.print(reasonCode, "reasonCode", indent));
+		lines.addAll(ASNInteger.print(this.reasonCode, "reasonCode", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setReasonCode(final int reasonCode) {
+	public int getPDU() {
+		return 79;
+	}
+
+	public int getReasonCode() {
+		return this.reasonCode;
+	}
+
+	public void setReasonCode(int reasonCode) {
 		this.reasonCode = reasonCode;
 	}
 }

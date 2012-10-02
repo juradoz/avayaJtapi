@@ -1,14 +1,5 @@
 package com.avaya.jtapi.tsapi.tsapiInterface;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
-import java.util.Vector;
-
-import org.apache.log4j.Logger;
-
 import com.avaya.jtapi.tsapi.TSProvider;
 import com.avaya.jtapi.tsapi.TsapiInvalidArgumentException;
 import com.avaya.jtapi.tsapi.TsapiInvalidPartyException;
@@ -121,88 +112,546 @@ import com.avaya.jtapi.tsapi.csta1.CSTAWorkReadyEvent;
 import com.avaya.jtapi.tsapi.csta1.LucentPrivateData;
 import com.avaya.jtapi.tsapi.tsapiInterface.streams.IntelByteArrayInputStream;
 import com.avaya.jtapi.tsapi.tsapiInterface.streams.IntelByteArrayOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import java.util.Vector;
+import org.apache.log4j.Logger;
 
 public class TsapiSession implements TsapiChannelReadHandler {
 	private static Logger log = Logger.getLogger(TsapiSession.class);
-
-	private static CSTAPrivate getPrivate(final IntelByteArrayInputStream msg,
-			final int eventType) throws IOException {
-		final byte[] vendBuf = new byte[32];
-		msg.read(vendBuf);
-
-		int vendLen = 0;
-		while (vendBuf[vendLen] != 0)
-			++vendLen;
-		final int length = msg.readShort();
-		final byte[] data = new byte[length];
-		msg.read(data);
-
-		return new CSTAPrivate(new String(vendBuf, 0, vendLen), data, eventType);
-	}
-
-	public static void setTimeout(final int _timeout) {
-		TsapiSession.timeout = _timeout;
-	}
-
-	private final TsapiInvokeIDTable invokeTable;
-	private final TsapiChannel channel;
+	private TsapiInvokeIDTable invokeTable;
+	private TsapiChannel channel;
 	private TsapiEventHandler eventHandler;
 	private TSProvider provider;
 	private TsapiUnsolicitedHandler unsolicitedHandler;
-	private final TsapiHeartbeatStatus heartbeatStatus;
-	private final IntelByteArrayOutputStream out;
+	private TsapiHeartbeatStatus heartbeatStatus;
+	private IntelByteArrayOutputStream out;
 	private boolean inService = true;
-	private final String debugID;
-	private static final int AC_BLOCK_VER = 1;
-	private static final int AC_BLOCK_SIZE = 18;
-	private static final int DEFAULT_TIMEOUT = 60000;
-	private static int timeout = TsapiSession.DEFAULT_TIMEOUT;
+	private String debugID;
+	static final int AC_BLOCK_VER = 1;
+	static final int AC_BLOCK_SIZE = 18;
+	static final int DEFAULT_TIMEOUT = 60000;
+	private static int timeout = 60000;
 	private String theVendor;
 	private byte[] vendorVersion;
 	private String apiVersion;
-
 	private String switchName = "";
-
 	private String serverID = "";
+
+	private boolean readFromServerFailed = false;
 
 	private boolean requestingTrustedApplicationStatus = false;
 
-	public TsapiSession(final TsapiChannel _channel,
-			final boolean _asynchThread, final String _debugID) {
-		debugID = _debugID;
-		channel = _channel;
-		channel.setReadHandler(this);
+	private String privateDataVersions = "4-10";
 
-		invokeTable = new TsapiInvokeIDTable(debugID);
-		out = new IntelByteArrayOutputStream();
-		eventHandler = new TsapiEventDistributor(invokeTable, debugID);
-		heartbeatStatus = new TsapiHeartbeatStatus();
+	public TsapiSession(TsapiChannel _channel, boolean _asynchThread,
+			String _debugID) {
+		this.debugID = _debugID;
+		this.channel = _channel;
+		this.channel.setReadHandler(this);
+
+		this.invokeTable = new TsapiInvokeIDTable(this.debugID);
+		this.out = new IntelByteArrayOutputStream();
+		this.eventHandler = new TsapiEventDistributor(this.invokeTable,
+				this.debugID);
+		this.heartbeatStatus = new TsapiHeartbeatStatus();
 
 		if (_asynchThread)
-			eventHandler = new TsapiEventQueue(eventHandler, debugID);
+			this.eventHandler = new TsapiEventQueue(this.eventHandler,
+					this.debugID);
+	}
+
+	public void startSession(String tlink, String login, String passwd,
+			Vector<TsapiVendor> vendors, int timeout) {
+		try {
+			TsapiRequest req = new ACSKeyRequest(login);
+
+			byte[] kPriv = { -128, 1, 1, 1, 3, 1, 1 };
+
+			this.theVendor = "NT_TCP";
+			CSTAPrivate keyPriv = new CSTAPrivate("NT_TCP", kPriv, 0);
+
+			CSTAEvent event = send(req, keyPriv, timeout);
+
+			byte[] cryptPass = null;
+
+			if ((event.getEvent() instanceof ACSKeyReply)) {
+				ACSKeyReply reply = (ACSKeyReply) event.getEvent();
+
+				cryptPass = Crypt.scramblePassword(passwd, reply.getObjectID(),
+						reply.getKey());
+			} else if ((event.getEvent() instanceof ACSAuthReply)) {
+				ACSAuthReply reply = (ACSAuthReply) event.getEvent();
+
+				cryptPass = Crypt.scramblePassword(passwd, reply.getObjectID(),
+						reply.getKey());
+			} else if ((event.getEvent() instanceof ACSAuthReplyTwo)) {
+				ACSAuthReplyTwo reply = (ACSAuthReplyTwo) event.getEvent();
+
+				cryptPass = Crypt.encode(passwd, reply.getKey());
+			} else {
+				throw new TsapiPlatformException(4, 0,
+						"unexpected reply on key request to <"
+								+ this.channel.getInetSocketAddress() + ">");
+			}
+
+			req = new ACSOpenStream(
+					(short) (isRequestingTrustedApplicationStatus() ? 5 : 1),
+					tlink, login, cryptPass, "Jtapi Client", (short) 1,
+					"TS1:2", "AES6.2.0.54", "");
+
+			CSTAPrivate openPriv = null;
+
+			StringBuffer vendStr = new StringBuffer("#ECS#"
+					+ this.privateDataVersions + "#" + "AT&T Definity G3" + "#"
+					+ this.privateDataVersions);
+
+			if (vendors != null) {
+				Enumeration<TsapiVendor> vendEnum = vendors.elements();
+
+				while (vendEnum.hasMoreElements()) {
+					TsapiVendor vendor;
+					try {
+						vendor = (TsapiVendor) vendEnum.nextElement();
+						if (!LucentPrivateData.isAvayaVendor(vendor.name))
+							vendStr.append("#" + vendor.name + "#"
+									+ vendor.versions);
+					} catch (NoSuchElementException e) {
+						log.error(e.getMessage(), e);
+					}
+					continue;
+
+				}
+			}
+			vendStr.append("#");
+			byte[] buf = vendStr.toString().getBytes();
+			this.theVendor = "VERSION";
+			openPriv = new CSTAPrivate("VERSION", buf, 0);
+			openPriv.data[0] = 0;
+			openPriv.data[(openPriv.data.length - 1)] = 0;
+
+			event = send(req, openPriv, timeout);
+
+			if ((event.getEvent() instanceof ACSUniversalFailureConfEvent)) {
+				TSErrorMap
+						.throwACSException(((ACSUniversalFailureConfEvent) event
+								.getEvent()).getError());
+			} else if (!(event.getEvent() instanceof ACSOpenStreamConfEvent)) {
+				throw new TsapiPlatformException(4, 0,
+						"unexpected reply on open stream");
+			}
+
+			this.apiVersion = ((ACSOpenStreamConfEvent) event.getEvent())
+					.getApiVer();
+
+			if (event.getPrivData() != null) {
+				this.theVendor = ((CSTAPrivate) event.getPrivData()).vendor;
+				this.vendorVersion = ((CSTAPrivate) event.getPrivData()).data;
+			}
+		} catch (TsapiPlatformException e) {
+			log.error("Tsapi<init>: " + e);
+			throw e;
+		} catch (Exception e) {
+			log.error("Tsapi<init>: " + e);
+			throw new TsapiPlatformException(4, 0, "initialization failed");
+		}
+
+		storeServerID(tlink);
+
+		storeSwitchName(tlink);
+
+		this.inService = true;
 	}
 
 	public synchronized void close() {
-		if (!inService) {
-			channel.close();
+		if (!this.inService) {
+			this.channel.close();
 			return;
 		}
 
-		final TsapiRequest req = new ACSAbortStream();
 		try {
-			sendAsync(req, null);
-		} catch (final Exception e) {
-			TsapiSession.log.error("shutdown(): " + e);
+			if (!this.readFromServerFailed) {
+				TsapiRequest req = new ACSAbortStream();
+				sendAsync(req, null);
+			}
+		} catch (Exception e) {
+			log.error("shutdown(): " + e);
 		} finally {
-			inService = false;
-			invokeTable.shutdown();
-			eventHandler.close();
-			channel.close();
+			this.inService = false;
+			this.invokeTable.shutdown();
+			this.eventHandler.close();
+			this.channel.close();
 		}
 	}
 
-	private TsapiPDU decodePDU(final InputStream msg, final int eventClass,
-			final int eventType) {
+	public CSTAEvent send(TsapiRequest req, CSTAPrivate priv)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		return send(req, priv, true, null, timeout);
+	}
+
+	public CSTAEvent send(TsapiRequest req, CSTAPrivate priv, int timeout)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		return send(req, priv, true, null, timeout);
+	}
+
+	public void send(TsapiRequest req, CSTAPrivate priv, ConfHandler handler)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		send(req, priv, true, handler, timeout);
+	}
+
+	public void sendAsync(TsapiRequest req, CSTAPrivate priv,
+			ConfHandler handler) {
+		try {
+			send(req, priv, false, handler, timeout);
+		} catch (TsapiPlatformException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("sendAsync: " + e);
+		}
+	}
+
+	public void sendAsync(TsapiRequest req, CSTAPrivate priv) {
+		sendAsync(req, priv, null);
+	}
+
+	private CSTAEvent send(TsapiRequest req, CSTAPrivate priv, boolean sync,
+			ConfHandler handler, int timeout)
+			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
+			TsapiProviderUnavailableException, TsapiInvalidPartyException,
+			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
+		if (!this.inService) {
+			throw new TsapiUnableToSendException(4, 2, "client not in service");
+		}
+
+		TSInvokeID invokeID = this.invokeTable.allocTSInvokeID(handler);
+		req.setInvokeID(invokeID.getValue());
+
+		if (priv != null) {
+			priv.vendor = this.theVendor;
+		}
+		invokeID.setServiceRequestTurnaroundTime(System.currentTimeMillis());
+		try {
+			sendMsg(req, priv);
+		} catch (Exception e) {
+			log.error("send: " + e);
+			log.error(e.getMessage(), e);
+			throw new TsapiSocketException(4, 0, "send request failed");
+		}
+
+		if (sync) {
+			CSTAEvent conf = invokeID.waitForConf(timeout);
+
+			if (conf == null) {
+				throw new TsapiPlatformException(4, 0, "no conf event");
+			}
+
+			if ((conf.getEvent() instanceof CSTAUniversalFailureConfEvent)) {
+				TSErrorMap
+						.throwCSTAException(((CSTAUniversalFailureConfEvent) conf
+								.getEvent()).getError());
+			}
+			if ((conf.getEvent() instanceof ACSUniversalFailureConfEvent)) {
+				TSErrorMap
+						.throwACSException(((ACSUniversalFailureConfEvent) conf
+								.getEvent()).getError());
+			}
+			CSTAPrivate.translatePrivateData(conf, this.debugID);
+
+			return conf;
+		}
+		if (handler == null) {
+			this.invokeTable.deallocTSInvokeID(invokeID);
+		}
+
+		return null;
+	}
+
+	TSProvider getProvider() {
+		return this.provider;
+	}
+
+	public void setHandler(TsapiUnsolicitedHandler _handler) {
+		this.unsolicitedHandler = _handler;
+		this.eventHandler.setUnsolicitedHandler(this.unsolicitedHandler);
+	}
+
+	public TsapiUnsolicitedHandler getHandler() {
+		return this.unsolicitedHandler;
+	}
+
+	private void sendMsg(TsapiRequest req, CSTAPrivate priv) throws IOException {
+		synchronized (this.out) {
+			IntelByteArrayOutputStream acBlock = new IntelByteArrayOutputStream(
+					18);
+			IntelByteArrayOutputStream encodeStream = new IntelByteArrayOutputStream();
+			IntelByteArrayOutputStream privateData = new IntelByteArrayOutputStream(
+					priv != null ? 34 + priv.data.length : 0);
+
+			try {
+				log.info("Sent InvokeID " + req.getInvokeID() + " for "
+						+ this.debugID);
+				if (log.isDebugEnabled()) {
+					Collection<String> lines = req.print();
+					for (String line : lines)
+						log.debug(line);
+				}
+				try {
+					req.encode(encodeStream);
+				} catch (Exception e) {
+					log.error("encode: " + e);
+				}
+
+				if (priv != null) {
+					if (log.isDebugEnabled()) {
+						for (String str : priv.print()) {
+							log.debug(str);
+						}
+					}
+					int length = priv.vendor.length();
+					byte[] vendor = priv.vendor.getBytes();
+					for (int i = 0; i < 32; i++) {
+						privateData.write(i < length ? vendor[i] : 0);
+					}
+					privateData.writeShort(priv.data.length);
+					privateData.write(priv.data, 0, priv.data.length);
+				}
+
+				acBlock.writeShort(1);
+				acBlock.writeInt(req.getInvokeID());
+				acBlock.writeInt(0);
+				acBlock.writeShort(req.getPDUClass());
+				acBlock.writeShort(req.getPDU());
+				acBlock.writeShort(encodeStream.size());
+				acBlock.writeShort(privateData.size());
+
+				this.out.writeInt(acBlock.size() + encodeStream.size()
+						+ privateData.size());
+				acBlock.writeTo(this.out);
+				encodeStream.writeTo(this.out);
+				privateData.writeTo(this.out);
+
+				this.channel.write(this.out);
+				this.out.reset();
+			} finally {
+				privateData.close();
+				encodeStream.close();
+				acBlock.close();
+			}
+
+		}
+	}
+
+	public void handleRead(IntelByteArrayInputStream msg) {
+		try {
+			if (msg.readShort() != 1) {
+				throw new TsapiPlatformException(4, 0,
+						"message has wrong acBlock version");
+			}
+
+			int invokeID = msg.readInt();
+			int monitorCrossRefID = msg.readInt();
+			int eventClass = msg.readShort();
+			int eventType = msg.readShort();
+			msg.readShort();
+			int privLength = msg.readShort();
+
+			ACSEventHeader eventHeader = new ACSEventHeader(eventClass,
+					eventType);
+
+			TsapiPDU pdu = decodePDU(msg, eventClass, eventType);
+
+			if (pdu == null) {
+				return;
+			}
+
+			if ((pdu instanceof CSTAUnsolicited)) {
+				((CSTAUnsolicited) pdu).setMonitorCrossRefID(monitorCrossRefID);
+				log.info("Received monitorCrossRefID " + monitorCrossRefID
+						+ " for " + this.debugID);
+			} else if ((pdu instanceof CSTAConfirmation)) {
+				((CSTAConfirmation) pdu).setInvokeID(invokeID);
+				log.info("Received invokeID " + invokeID + " for "
+						+ this.debugID);
+			} else if ((pdu instanceof ACSConfirmation)) {
+				((ACSConfirmation) pdu).setInvokeID(invokeID);
+				log.info("Received invokeID " + invokeID + " for "
+						+ this.debugID);
+			}
+
+			if (log.isDebugEnabled()) {
+				Collection<String> lines = pdu.print();
+				for (String line : lines)
+					log.debug(line);
+			}
+			CSTAPrivate priv;
+			if (privLength > 0) {
+				priv = getPrivate(msg, eventType);
+
+				if (log.isDebugEnabled()) {
+					for (String str : priv.print()) {
+						log.debug(str);
+					}
+				}
+			} else {
+				priv = null;
+			}
+
+			if (this.eventHandler == null) {
+				log.error("TsapiSession: no eventHandler for session, discarding message.");
+
+				return;
+			}
+			processEvent(new CSTAEvent(eventHeader, pdu, priv));
+		} catch (Exception e) {
+			if (this.unsolicitedHandler == null) {
+				log.error("TsapiSession: no handler when Exception received, closing session. "
+						+ e);
+
+				log.error(e.getMessage(), e);
+				close();
+				return;
+			}
+			this.unsolicitedHandler.eventDistributorException(e);
+		}
+	}
+
+	private void processEvent(CSTAEvent event) {
+		if (heartbeatIsEnabled()) {
+			this.heartbeatStatus.receivedEvent();
+		}
+
+		switch (event.getEventHeader().getEventClass()) {
+		case 2:
+			ACSConfirmation acsConf = (ACSConfirmation) event.getEvent();
+			TSInvokeID invokeID = this.invokeTable.getTSInvokeID(acsConf
+					.getInvokeID());
+			if (invokeID != null) {
+				if ((invokeID.getConfHandler() != null)
+						&& (!(invokeID.getConfHandler() instanceof HandleConfOnCurrentThread))) {
+					this.eventHandler.handleEvent(event);
+				} else {
+					this.invokeTable.deallocTSInvokeID(invokeID);
+					invokeID.setConf(event);
+				}
+			}
+			break;
+		case 5:
+			switch (event.getEventHeader().getEventType()) {
+			case 38:
+			case 53:
+			case 90:
+			case 99:
+			case 101:
+			case 103:
+			case 114:
+			case 118:
+			case 125:
+			case 127:
+			case 129:
+				CSTAConfirmation cstaConf = (CSTAConfirmation) event.getEvent();
+				invokeID = this.invokeTable.getTSInvokeID(cstaConf
+						.getInvokeID());
+				if (invokeID != null) {
+					if ((invokeID.getConfHandler() != null)
+							&& (!(invokeID.getConfHandler() instanceof HandleConfOnCurrentThread))) {
+						this.eventHandler.handleEvent(event);
+					} else {
+						switch (event.getEventHeader().getEventType()) {
+						case 38:
+						case 90:
+							CSTAPrivate.translatePrivateData(event,
+									this.debugID);
+							break;
+						}
+
+						this.invokeTable.deallocTSInvokeID(invokeID);
+						invokeID.setConf(event);
+					}
+				}
+				break;
+			default:
+				this.eventHandler.handleEvent(event);
+			}
+			break;
+		case 1:
+		case 3:
+		case 4:
+		case 6:
+			this.eventHandler.handleEvent(event);
+			break;
+		default:
+			log.info("WARNING: event class "
+					+ event.getEventHeader().getEventClass()
+					+ " not implemented");
+		}
+	}
+
+	public void handleException(Exception e) {
+		if (this.unsolicitedHandler == null) {
+			log.error("Call Control: no handler for session");
+			log.error("Exception received: " + e);
+			log.error(e.getMessage(), e);
+			try {
+				close();
+			} catch (Exception e2) {
+			}
+			return;
+		}
+		if (this.inService) {
+			try {
+				if ((e instanceof EOFException)) {
+					this.readFromServerFailed = true;
+				}
+				TsapiSocketException tse = new TsapiSocketException(4, 0,
+						"read request failed");
+				tse.initCause(e);
+				this.unsolicitedHandler.eventDistributorException(tse);
+			} catch (Exception e1) {
+				try {
+					close();
+				} catch (Exception e2) {
+				}
+			}
+		} else
+			try {
+				close();
+			} catch (Exception e2) {
+			}
+	}
+
+	private static CSTAPrivate getPrivate(IntelByteArrayInputStream msg,
+			int eventType) throws IOException {
+		byte[] vendBuf = new byte[32];
+		int count = msg.read(vendBuf);
+		if (count != 32) {
+			log.error("expected 32bytes but read " + count + "bytes");
+		}
+
+		int vendLen = 0;
+		while (vendBuf[vendLen] != 0) {
+			vendLen++;
+		}
+		int length = msg.readShort();
+		byte[] data = new byte[length];
+		count = msg.read(data);
+		if (count != length) {
+			log.error("expected " + length + "bytes but read " + count
+					+ "bytes");
+		}
+		return new CSTAPrivate(new String(vendBuf, 0, vendLen), data, eventType);
+	}
+
+	private TsapiPDU decodePDU(InputStream msg, int eventClass, int eventType) {
 		switch (eventClass) {
 		case 1:
 		case 2:
@@ -452,505 +901,88 @@ public class TsapiSession implements TsapiChannelReadHandler {
 			case 126:
 			case 128:
 			}
+			break;
 		}
-		TsapiSession.log.info("got unknown event class " + eventClass
-				+ ", event type " + eventType + " for " + debugID);
+
+		log.info("got unknown event class " + eventClass + ", event type "
+				+ eventType + " for " + this.debugID);
 		return null;
 	}
 
-	public void disableHeartbeat() {
-		heartbeatStatus.disableHeartbeat();
+	private void storeServerID(String tLink) {
+		this.serverID = tLink.toUpperCase();
 	}
 
-	public void enableHeartbeat() {
-		heartbeatStatus.enableHeartbeat();
-	}
-
-	public String getApiVersion() {
-		return apiVersion;
-	}
-
-	public TsapiUnsolicitedHandler getHandler() {
-		return unsolicitedHandler;
-	}
-
-	TSProvider getProvider() {
-		return provider;
-	}
-
-	public synchronized String getServerID() {
-		return serverID;
-	}
-
-	public synchronized String getSwitchName() {
-		return switchName;
-	}
-
-	public String getTheVendor() {
-		return theVendor;
-	}
-
-	public byte[] getVendorVersion() {
-		return vendorVersion;
-	}
-
-	@Override
-	public void handleException(final Exception e) {
-		if (unsolicitedHandler == null) {
-			TsapiSession.log.error("Call Control: no handler for session");
-			TsapiSession.log.error("Exception received: " + e);
-			TsapiSession.log.error(e.getMessage(), e);
-			try {
-				close();
-			} catch (final Exception e2) {
-			}
-			return;
-		}
-		if (inService)
-			try {
-				final TsapiSocketException tse = new TsapiSocketException(4, 0,
-						"read request failed");
-				unsolicitedHandler.eventDistributorException(tse);
-			} catch (final Exception e1) {
-				try {
-					close();
-				} catch (final Exception e2) {
-				}
-			}
-		else
-			try {
-				close();
-			} catch (final Exception e2) {
-			}
-	}
-
-	@Override
-	public void handleRead(final IntelByteArrayInputStream msg) {
+	private void storeSwitchName(String tLink) {
+		String[] tokens = tLink.split("#");
 		try {
-			if (msg.readShort() != TsapiSession.AC_BLOCK_VER)
-				throw new TsapiPlatformException(4, 0,
-						"message has wrong acBlock version");
-
-			final int invokeID = msg.readInt();
-			final int monitorCrossRefID = msg.readInt();
-			final int eventClass = msg.readShort();
-			final int eventType = msg.readShort();
-			msg.readShort();
-			final int privLength = msg.readShort();
-
-			final ACSEventHeader eventHeader = new ACSEventHeader(eventClass,
-					eventType);
-
-			final TsapiPDU pdu = decodePDU(msg, eventClass, eventType);
-
-			if (pdu == null)
-				return;
-
-			if (pdu instanceof CSTAUnsolicited) {
-				((CSTAUnsolicited) pdu).setMonitorCrossRefID(monitorCrossRefID);
-				TsapiSession.log.info("Received monitorCrossRefID "
-						+ monitorCrossRefID + " for " + debugID);
-			} else if (pdu instanceof CSTAConfirmation) {
-				((CSTAConfirmation) pdu).setInvokeID(invokeID);
-				TsapiSession.log.info("Received invokeID " + invokeID + " for "
-						+ debugID);
-			} else if (pdu instanceof ACSConfirmation) {
-				((ACSConfirmation) pdu).setInvokeID(invokeID);
-				TsapiSession.log.info("Received invokeID " + invokeID + " for "
-						+ debugID);
-			}
-
-			if (TsapiSession.log.isDebugEnabled()) {
-				final Collection<String> lines = pdu.print();
-				for (final Object line : lines)
-					TsapiSession.log.debug(line);
-			}
-			CSTAPrivate priv;
-			if (privLength > 0) {
-				priv = TsapiSession.getPrivate(msg, eventType);
-
-				if (TsapiSession.log.isDebugEnabled())
-					for (final String str : priv.print())
-						TsapiSession.log.debug(str);
-			} else
-				priv = null;
-
-			if (eventHandler == null) {
-				TsapiSession.log
-						.error("TsapiSession: no eventHandler for session, discarding message.");
-
-				return;
-			}
-			processEvent(new CSTAEvent(eventHeader, pdu, priv));
-		} catch (final Exception e) {
-			if (unsolicitedHandler == null) {
-				TsapiSession.log
-						.error("TsapiSession: no handler when Exception received, closing session. "
-								+ e);
-
-				TsapiSession.log.error(e.getMessage(), e);
-				close();
-				return;
-			}
-			unsolicitedHandler.eventDistributorException(e);
+			this.switchName = tokens[1];
+		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 	}
 
-	public boolean heartbeatIsEnabled() {
-		return heartbeatStatus.heartbeatIsEnabled();
+	public void requestTimeOut(ConfHandler handler) {
+		this.invokeTable.requestTimeOut(handler);
 	}
 
 	public boolean isInService() {
-		return inService;
+		return this.inService;
+	}
+
+	public String getTheVendor() {
+		return this.theVendor;
+	}
+
+	public String getApiVersion() {
+		return this.apiVersion;
+	}
+
+	public byte[] getVendorVersion() {
+		return this.vendorVersion;
+	}
+
+	public synchronized String getServerID() {
+		return this.serverID;
+	}
+
+	public synchronized String getSwitchName() {
+		return this.switchName;
+	}
+
+	public boolean heartbeatIsEnabled() {
+		return this.heartbeatStatus.heartbeatIsEnabled();
+	}
+
+	public void enableHeartbeat() {
+		this.heartbeatStatus.enableHeartbeat();
+	}
+
+	public void disableHeartbeat() {
+		this.heartbeatStatus.disableHeartbeat();
+	}
+
+	public void setClientHeartbeatInterval(short heartbeatInterval) {
+		this.heartbeatStatus.setHeartbeatInterval(heartbeatInterval);
+	}
+
+	void setHeartbeatTimeoutListener(ITsapiHeartbeatTimeoutListener listener) {
+		this.heartbeatStatus.setHeartbeatTimeoutListener(listener);
 	}
 
 	public boolean isRequestingTrustedApplicationStatus() {
-		return requestingTrustedApplicationStatus;
+		return this.requestingTrustedApplicationStatus;
 	}
 
-	private void processEvent(final CSTAEvent event) {
-		if (heartbeatIsEnabled())
-			heartbeatStatus.receivedEvent();
-
-		switch (event.getEventHeader().getEventClass()) {
-		case 2:
-			final ACSConfirmation acsConf = (ACSConfirmation) event.getEvent();
-			TSInvokeID invokeID = invokeTable.getTSInvokeID(acsConf
-					.getInvokeID());
-			if (invokeID == null)
-				return;
-			if (invokeID.getConfHandler() != null
-					&& !(invokeID.getConfHandler() instanceof HandleConfOnCurrentThread)) {
-				eventHandler.handleEvent(event);
-				return;
-			}
-
-			invokeTable.deallocTSInvokeID(invokeID);
-			invokeID.setConf(event);
-			break;
-		case 5:
-			switch (event.getEventHeader().getEventType()) {
-			case 38:
-			case 53:
-			case 90:
-			case 99:
-			case 101:
-			case 103:
-			case 114:
-			case 118:
-			case 125:
-			case 127:
-			case 129:
-				final CSTAConfirmation cstaConf = (CSTAConfirmation) event
-						.getEvent();
-				invokeID = invokeTable.getTSInvokeID(cstaConf.getInvokeID());
-				if (invokeID == null)
-					return;
-				if (invokeID.getConfHandler() != null
-						&& !(invokeID.getConfHandler() instanceof HandleConfOnCurrentThread)) {
-					eventHandler.handleEvent(event);
-					return;
-				}
-
-				switch (event.getEventHeader().getEventType()) {
-				case 38:
-				case 90:
-					CSTAPrivate.translatePrivateData(event, debugID);
-				}
-
-				invokeTable.deallocTSInvokeID(invokeID);
-				invokeID.setConf(event);
-				break;
-			default:
-				eventHandler.handleEvent(event);
-			}
-			break;
-		case 1:
-		case 3:
-		case 4:
-		case 6:
-			eventHandler.handleEvent(event);
-			break;
-		default:
-			TsapiSession.log.info("WARNING: event class "
-					+ event.getEventHeader().getEventClass()
-					+ " not implemented");
-		}
-	}
-
-	public void requestTimeOut(final ConfHandler handler) {
-		invokeTable.requestTimeOut(handler);
-	}
-
-	public CSTAEvent send(final TsapiRequest req, final CSTAPrivate priv)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		return send(req, priv, true, null, TsapiSession.timeout);
-	}
-
-	private CSTAEvent send(final TsapiRequest req, final CSTAPrivate priv,
-			final boolean sync, final ConfHandler handler, final int timeout)
-			throws TsapiInvalidStateException, TsapiInvalidArgumentException,
-			TsapiProviderUnavailableException, TsapiInvalidPartyException,
-			TsapiPrivilegeViolationException, TsapiResourceUnavailableException {
-		if (!inService)
-			throw new TsapiUnableToSendException(4, 2, "client not in service");
-
-		final TSInvokeID invokeID = invokeTable.allocTSInvokeID(handler);
-		req.setInvokeID(invokeID.getValue());
-
-		if (priv != null)
-			priv.vendor = theVendor;
-		invokeID.setServiceRequestTurnaroundTime(System.currentTimeMillis());
-		try {
-			sendMsg(req, priv);
-		} catch (final Exception e) {
-			TsapiSession.log.error("send: " + e);
-			TsapiSession.log.error(e.getMessage(), e);
-			throw new TsapiSocketException(4, 0, "send request failed");
-		}
-
-		if (sync) {
-			final CSTAEvent conf = invokeID.waitForConf(timeout);
-
-			if (conf == null)
-				throw new TsapiPlatformException(4, 0, "no conf event");
-
-			if (conf.getEvent() instanceof CSTAUniversalFailureConfEvent)
-				TSErrorMap
-						.throwCSTAException(((CSTAUniversalFailureConfEvent) conf
-								.getEvent()).getError());
-			if (conf.getEvent() instanceof ACSUniversalFailureConfEvent)
-				TSErrorMap
-						.throwACSException(((ACSUniversalFailureConfEvent) conf
-								.getEvent()).getError());
-			CSTAPrivate.translatePrivateData(conf, debugID);
-
-			return conf;
-		}
-		if (handler == null)
-			invokeTable.deallocTSInvokeID(invokeID);
-
-		return null;
-	}
-
-	public void send(final TsapiRequest req, final CSTAPrivate priv,
-			final ConfHandler handler) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		send(req, priv, true, handler, TsapiSession.timeout);
-	}
-
-	public CSTAEvent send(final TsapiRequest req, final CSTAPrivate priv,
-			final int timeout) throws TsapiInvalidStateException,
-			TsapiInvalidArgumentException, TsapiProviderUnavailableException,
-			TsapiInvalidPartyException, TsapiPrivilegeViolationException,
-			TsapiResourceUnavailableException {
-		return send(req, priv, true, null, timeout);
-	}
-
-	public void sendAsync(final TsapiRequest req, final CSTAPrivate priv) {
-		sendAsync(req, priv, null);
-	}
-
-	public void sendAsync(final TsapiRequest req, final CSTAPrivate priv,
-			final ConfHandler handler) {
-		try {
-			send(req, priv, false, handler, TsapiSession.timeout);
-		} catch (final TsapiPlatformException e) {
-			throw e;
-		} catch (final Exception e) {
-			TsapiSession.log.error("sendAsync: " + e);
-		}
-	}
-
-	private void sendMsg(final TsapiRequest req, final CSTAPrivate priv)
-			throws IOException {
-		synchronized (out) {
-			final IntelByteArrayOutputStream acBlock = new IntelByteArrayOutputStream(
-					TsapiSession.AC_BLOCK_SIZE);
-			final IntelByteArrayOutputStream encodeStream = new IntelByteArrayOutputStream();
-			final IntelByteArrayOutputStream privateData = new IntelByteArrayOutputStream(
-					priv != null ? 34 + priv.data.length : 0);
-
-			TsapiSession.log.info("Sent InvokeID " + req.getInvokeID()
-					+ " for " + debugID);
-			if (TsapiSession.log.isDebugEnabled()) {
-				final Collection<String> lines = req.print();
-				for (final Object line : lines)
-					TsapiSession.log.debug(line);
-			}
-			try {
-				req.encode(encodeStream);
-			} catch (final Exception e) {
-				TsapiSession.log.error("encode: " + e);
-			}
-
-			if (priv != null) {
-				if (TsapiSession.log.isDebugEnabled())
-					for (final String str : priv.print())
-						TsapiSession.log.debug(str);
-				final int length = priv.vendor.length();
-				final byte[] vendor = priv.vendor.getBytes();
-				for (int i = 0; i < 32; ++i)
-					privateData.write(i < length ? vendor[i] : 0);
-				privateData.writeShort(priv.data.length);
-				privateData.write(priv.data, 0, priv.data.length);
-			}
-
-			acBlock.writeShort(1);
-			acBlock.writeInt(req.getInvokeID());
-			acBlock.writeInt(0);
-			acBlock.writeShort(req.getPDUClass());
-			acBlock.writeShort(req.getPDU());
-			acBlock.writeShort(encodeStream.size());
-			acBlock.writeShort(privateData.size());
-
-			out.writeInt(acBlock.size() + encodeStream.size()
-					+ privateData.size());
-			acBlock.writeTo(out);
-			encodeStream.writeTo(out);
-			privateData.writeTo(out);
-
-			channel.write(out);
-			out.reset();
-		}
-	}
-
-	public void setClientHeartbeatInterval(final short heartbeatInterval) {
-		heartbeatStatus.setHeartbeatInterval(heartbeatInterval);
-	}
-
-	public void setHandler(final TsapiUnsolicitedHandler _handler) {
-		unsolicitedHandler = _handler;
-		eventHandler.setUnsolicitedHandler(unsolicitedHandler);
-	}
-
-	void setHeartbeatTimeoutListener(
-			final ITsapiHeartbeatTimeoutListener listener) {
-		heartbeatStatus.setHeartbeatTimeoutListener(listener);
+	public void setRequestedPrivateDataVersions(String privateDataVersions) {
+		this.privateDataVersions = privateDataVersions;
 	}
 
 	public void setRequestingTrustedApplicationStatus(
-			final boolean requestingTrustedApplicationStatus) {
+			boolean requestingTrustedApplicationStatus) {
 		this.requestingTrustedApplicationStatus = requestingTrustedApplicationStatus;
 	}
 
-	public void startSession(final String tlink, final String login,
-			final String passwd, final Vector<TsapiVendor> vendors,
-			final int timeout) {
-		try {
-			TsapiRequest req = new ACSKeyRequest(login);
-
-			final byte[] kPriv = { -128, 1, 1, 1, 3, 1, 1 };
-
-			theVendor = "NT_TCP";
-			final CSTAPrivate keyPriv = new CSTAPrivate("NT_TCP", kPriv, 0);
-
-			CSTAEvent event = send(req, keyPriv, timeout);
-
-			byte[] cryptPass = null;
-
-			if (event.getEvent() instanceof ACSKeyReply) {
-				final ACSKeyReply reply = (ACSKeyReply) event.getEvent();
-
-				cryptPass = Crypt.scramblePassword(passwd, reply.getObjectID(),
-						reply.getKey());
-			} else if (event.getEvent() instanceof ACSAuthReply) {
-				final ACSAuthReply reply = (ACSAuthReply) event.getEvent();
-
-				cryptPass = Crypt.scramblePassword(passwd, reply.getObjectID(),
-						reply.getKey());
-			} else if (event.getEvent() instanceof ACSAuthReplyTwo) {
-				final ACSAuthReplyTwo reply = (ACSAuthReplyTwo) event
-						.getEvent();
-
-				cryptPass = Crypt.encode(passwd, reply.getKey());
-			} else
-				throw new TsapiPlatformException(4, 0,
-						"unexpected reply on key request to <"
-								+ channel.getInetSocketAddress() + ">");
-
-			req = new ACSOpenStream(
-					isRequestingTrustedApplicationStatus() ? (short) 5
-							: (short) 1, tlink, login, cryptPass,
-					"Jtapi Client", (short) 1, "TS1:2", "AES5.2.0.483", "");
-
-			CSTAPrivate openPriv = null;
-
-			final String version_range = "4-8";
-
-			final StringBuffer vendStr = new StringBuffer("#ECS#"
-					+ version_range + "#" + "AT&T Definity G3" + "#"
-					+ version_range);
-
-			if (vendors != null) {
-				final Enumeration<TsapiVendor> vendEnum = vendors.elements();
-
-				while (vendEnum.hasMoreElements()) {
-					TsapiVendor vendor;
-					try {
-						vendor = vendEnum.nextElement();
-					} catch (final NoSuchElementException e) {
-						TsapiSession.log.error(e.getMessage(), e);
-						continue;
-					}
-
-					if (!LucentPrivateData.isAvayaVendor(vendor.name))
-						;
-					vendStr.append("#" + vendor.name + "#" + vendor.versions);
-				}
-			}
-			vendStr.append("#");
-			final byte[] buf = vendStr.toString().getBytes();
-			theVendor = "VERSION";
-			openPriv = new CSTAPrivate("VERSION", buf, 0);
-			openPriv.data[0] = 0;
-			openPriv.data[(openPriv.data.length - 1)] = 0;
-
-			event = send(req, openPriv, timeout);
-
-			if (event.getEvent() instanceof ACSUniversalFailureConfEvent)
-				TSErrorMap
-						.throwACSException(((ACSUniversalFailureConfEvent) event
-								.getEvent()).getError());
-			else if (!(event.getEvent() instanceof ACSOpenStreamConfEvent))
-				throw new TsapiPlatformException(4, 0,
-						"unexpected reply on open stream");
-
-			apiVersion = ((ACSOpenStreamConfEvent) event.getEvent())
-					.getApiVer();
-
-			if (event.getPrivData() != null) {
-				theVendor = ((CSTAPrivate) event.getPrivData()).vendor;
-				vendorVersion = ((CSTAPrivate) event.getPrivData()).data;
-			}
-		} catch (final TsapiPlatformException e) {
-			TsapiSession.log.error("Tsapi<init>: " + e);
-			throw e;
-		} catch (final Exception e) {
-			TsapiSession.log.error("Tsapi<init>: " + e);
-			throw new TsapiPlatformException(4, 0, "initialization failed");
-		}
-
-		storeServerID(tlink);
-
-		storeSwitchName(tlink);
-
-		inService = true;
-	}
-
-	private void storeServerID(final String tLink) {
-		serverID = tLink.toUpperCase();
-	}
-
-	private void storeSwitchName(final String tLink) {
-		final String[] tokens = tLink.split("#");
-		try {
-			switchName = tokens[1];
-		} catch (final ArrayIndexOutOfBoundsException e) {
-		}
+	public static void setTimeout(int _timeout) {
+		timeout = _timeout;
 	}
 }

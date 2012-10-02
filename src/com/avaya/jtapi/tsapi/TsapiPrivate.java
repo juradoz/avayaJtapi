@@ -5,26 +5,26 @@ public final class TsapiPrivate {
 	public byte[] data;
 	public int tsType;
 
-	public TsapiPrivate(final byte[] _data) {
+	public TsapiPrivate(byte[] _data) {
 		this(_data, false);
 	}
 
-	public TsapiPrivate(final byte[] _data, final boolean waitForResponse) {
-		data = _data;
-		if (waitForResponse)
-			tsType = 89;
-		else
-			tsType = 95;
+	public TsapiPrivate(byte[] _data, boolean waitForResponse) {
+		this.data = _data;
+		if (waitForResponse) {
+			this.tsType = 89;
+		} else {
+			this.tsType = 95;
+		}
 	}
 
-	public TsapiPrivate(final String _vendor, final byte[] _data,
-			final int _tsType) {
-		vendor = _vendor;
-		data = _data;
-		tsType = _tsType;
+	public TsapiPrivate(String _vendor, byte[] _data, int _tsType) {
+		this.vendor = _vendor;
+		this.data = _data;
+		this.tsType = _tsType;
 	}
 
 	public byte[] getData() {
-		return data;
+		return this.data;
 	}
 }

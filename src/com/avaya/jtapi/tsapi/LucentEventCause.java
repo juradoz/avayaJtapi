@@ -36,9 +36,11 @@ public abstract interface LucentEventCause {
 	public static final short EC_TRANSFER = 32;
 	public static final short EC_TRUNKS_BUSY = 33;
 	public static final short EC_VOICE_UNIT_INITIATOR = 34;
+	public static final short EC_CONSULTATION = 37;
 	public static final short EC_NETWORK_SIGNAL = 46;
 	public static final short EC_SINGLE_STEP_TRANSFER = 52;
 	public static final short EC_ALERT_TIME_EXPIRED = 60;
+	public static final short EC_CONFERENCE = 63;
 	public static final short EC_DESTINATION_OUT_OF_ORDER = 65;
 	public static final short EC_NOT_SUPPORTED_BEARER_SERVICE = 80;
 	public static final short EC_UNASSIGNED_NUMBER = 81;

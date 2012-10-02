@@ -7,13 +7,12 @@ import javax.telephony.callcenter.events.ACDAddrLoggedOnEv;
 @SuppressWarnings("deprecation")
 public final class TsapiAddrLogOnEv extends TsapiACDAddrEv implements
 		ACDAddrLoggedOnEv {
-	public TsapiAddrLogOnEv(final Address _device, final Agent _agent,
-			final int _cause, final int _metaCode, final Object _privateData) {
-		super(_device, _agent, _cause, _metaCode, _privateData);
-	}
-
-	@Override
 	public int getID() {
 		return 302;
+	}
+
+	public TsapiAddrLogOnEv(Address _device, Agent _agent, int _cause,
+			int _metaCode, Object _privateData) {
+		super(_device, _agent, _cause, _metaCode, _privateData);
 	}
 }

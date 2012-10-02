@@ -5,13 +5,12 @@ import javax.telephony.events.ProvOutOfServiceEv;
 
 public final class TsapiProviderOutOfServiceEvent extends TsapiProvEvent
 		implements ProvOutOfServiceEv {
-	public TsapiProviderOutOfServiceEvent(final Provider _provider,
-			final int _cause, final int _metaCode, final Object _privateData) {
-		super(_provider, _cause, _metaCode, _privateData);
-	}
-
-	@Override
 	public int getID() {
 		return 113;
+	}
+
+	public TsapiProviderOutOfServiceEvent(Provider _provider, int _cause,
+			int _metaCode, Object _privateData) {
+		super(_provider, _cause, _metaCode, _privateData);
 	}
 }

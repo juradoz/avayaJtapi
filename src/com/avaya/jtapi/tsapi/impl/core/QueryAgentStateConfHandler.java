@@ -10,27 +10,27 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class QueryAgentStateConfHandler implements ConfHandler {
 	TSAgent agent;
 
-	QueryAgentStateConfHandler(final TSAgent _agent) {
-		agent = _agent;
+	QueryAgentStateConfHandler(TSAgent _agent) {
+		this.agent = _agent;
 	}
 
-	@Override
-	public void handleConf(final CSTAEvent event) {
-		if (event == null
-				|| !(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))
+	public void handleConf(CSTAEvent event) {
+		if ((event == null)
+				|| (!(event.getEvent() instanceof CSTAQueryAgentStateConfEvent))) {
 			return;
+		}
 
-		final CSTAQueryAgentStateConfEvent agentStateConf = (CSTAQueryAgentStateConfEvent) event
+		CSTAQueryAgentStateConfEvent agentStateConf = (CSTAQueryAgentStateConfEvent) event
 				.getEvent();
-		final int agentState = agentStateConf.getAgentState();
+		int agentState = agentStateConf.getAgentState();
 		int _workMode = 0;
 		int _lucentworkmode = -1;
 		int _reasonCode = 0;
 		int _pendingState = 0;
 		int _pendingReasonCode = 0;
 		boolean agentIsBusy = false;
-		if (event.getPrivData() instanceof LucentQueryAgentStateConfEvent) {
-			final short tsapiWorkMode = ((LucentQueryAgentStateConfEvent) event
+		if ((event.getPrivData() instanceof LucentQueryAgentStateConfEvent)) {
+			short tsapiWorkMode = ((LucentQueryAgentStateConfEvent) event
 					.getPrivData()).getWorkMode();
 
 			_lucentworkmode = tsapiWorkMode;
@@ -39,53 +39,62 @@ final class QueryAgentStateConfHandler implements ConfHandler {
 				_workMode = 1;
 			else if (tsapiWorkMode == 4)
 				_workMode = 2;
-			final short talkState = ((LucentQueryAgentStateConfEvent) event
+			short talkState = ((LucentQueryAgentStateConfEvent) event
 					.getPrivData()).getTalkState();
-			if (talkState == 0)
+			if (talkState == 0) {
 				agentIsBusy = true;
-			if (event.getPrivData() instanceof LucentV5QueryAgentStateConfEvent) {
+			}
+			if ((event.getPrivData() instanceof LucentV5QueryAgentStateConfEvent)) {
 				_reasonCode = ((LucentV5QueryAgentStateConfEvent) event
 						.getPrivData()).getReasonCode();
-				if (event.getPrivData() instanceof LucentV6QueryAgentStateConfEvent) {
-					final int pendingWorkMode = ((LucentV6QueryAgentStateConfEvent) event
+				if ((event.getPrivData() instanceof LucentV6QueryAgentStateConfEvent)) {
+					int pendingWorkMode = ((LucentV6QueryAgentStateConfEvent) event
 							.getPrivData()).getPendingWorkMode();
-					if (pendingWorkMode == 1)
+					if (pendingWorkMode == 1) {
 						_pendingState = 3;
-					else if (pendingWorkMode == 2)
+					} else if (pendingWorkMode == 2) {
 						_pendingState = 5;
+					}
 					_pendingReasonCode = ((LucentV6QueryAgentStateConfEvent) event
 							.getPrivData()).getPendingReasonCode();
 				}
 			}
 		}
-		if (agentIsBusy)
-			agent.updateState(7, _workMode, _reasonCode, _pendingState,
+		if (agentIsBusy) {
+			this.agent.updateState(7, _workMode, _reasonCode, _pendingState,
 					_pendingReasonCode, _lucentworkmode, null);
-		else
+		} else {
 			switch (agentState) {
 			case 0:
-				agent.updateState(3, _workMode, _reasonCode, _pendingState,
-						_pendingReasonCode, _lucentworkmode, null);
+				this.agent.updateState(3, _workMode, _reasonCode,
+						_pendingState, _pendingReasonCode, _lucentworkmode,
+						null);
 				break;
 			case 1:
-				agent.updateState(2, _workMode, _reasonCode, _pendingState,
-						_pendingReasonCode, _lucentworkmode, null);
+				this.agent.updateState(2, _workMode, _reasonCode,
+						_pendingState, _pendingReasonCode, _lucentworkmode,
+						null);
 				break;
 			case 2:
-				agent.updateState(4, _workMode, _reasonCode, _pendingState,
-						_pendingReasonCode, _lucentworkmode, null);
+				this.agent.updateState(4, _workMode, _reasonCode,
+						_pendingState, _pendingReasonCode, _lucentworkmode,
+						null);
 				break;
 			case 3:
-				agent.updateState(5, _workMode, _reasonCode, _pendingState,
-						_pendingReasonCode, _lucentworkmode, null);
+				this.agent.updateState(5, _workMode, _reasonCode,
+						_pendingState, _pendingReasonCode, _lucentworkmode,
+						null);
 				break;
 			case 4:
-				agent.updateState(6, _workMode, _reasonCode, _pendingState,
-						_pendingReasonCode, _lucentworkmode, null);
+				this.agent.updateState(6, _workMode, _reasonCode,
+						_pendingState, _pendingReasonCode, _lucentworkmode,
+						null);
 				break;
 			default:
-				agent.updateState(0, _workMode, _reasonCode, _pendingState,
-						_pendingReasonCode, _lucentworkmode, null);
+				this.agent.updateState(0, _workMode, _reasonCode,
+						_pendingState, _pendingReasonCode, _lucentworkmode,
+						null);
 			}
+		}
 	}
 }

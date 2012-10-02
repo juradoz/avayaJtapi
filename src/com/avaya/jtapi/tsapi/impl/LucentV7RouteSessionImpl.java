@@ -7,21 +7,20 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 final class LucentV7RouteSessionImpl extends LucentRouteSessionImpl implements
 		LucentV7RouteSession, LucentV7CallInfo {
-	LucentV7RouteSessionImpl(final TSRouteSession _tsRouteSession) {
-		super(_tsRouteSession);
-		TsapiTrace.traceConstruction(this, LucentV7RouteSessionImpl.class);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof LucentV7RouteSessionImpl)
-			return tsRouteSession
+	public boolean equals(Object obj) {
+		if ((obj instanceof LucentV7RouteSessionImpl)) {
+			return this.tsRouteSession
 					.equals(((LucentV7RouteSessionImpl) obj).tsRouteSession);
+		}
 
 		return false;
 	}
 
-	@Override
+	LucentV7RouteSessionImpl(TSRouteSession _tsRouteSession) {
+		super(_tsRouteSession);
+		TsapiTrace.traceConstruction(this, LucentV7RouteSessionImpl.class);
+	}
+
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, LucentV7RouteSessionImpl.class);

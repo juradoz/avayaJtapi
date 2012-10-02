@@ -4,12 +4,11 @@ import javax.telephony.events.ConnUnknownEv;
 
 public final class TsapiConnUnknownEvent extends TsapiConnEvent implements
 		ConnUnknownEv {
-	public TsapiConnUnknownEvent(final ConnEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public int getID() {
 		return 110;
+	}
+
+	public TsapiConnUnknownEvent(ConnEventParams params) {
+		super(params);
 	}
 }

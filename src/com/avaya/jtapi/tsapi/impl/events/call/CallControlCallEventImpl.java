@@ -7,33 +7,36 @@ import javax.telephony.callcontrol.CallControlCallEvent;
 
 public class CallControlCallEventImpl extends CallEventImpl implements
 		CallControlCallEvent {
-	public CallControlCallEventImpl(final CallEventParams params,
-			final MetaEvent event, final int eventId) {
+	public CallControlCallEventImpl(CallEventParams params, MetaEvent event,
+			int eventId) {
 		super(params, event, eventId);
 	}
 
-	@Override
-	public int getCallControlCause() {
-		return callEventParams.getCause();
-	}
-
-	@Override
 	public Address getCalledAddress() {
-		return callEventParams.getCalledAddress();
+		return this.callEventParams.getCalledAddress();
 	}
 
-	@Override
 	public Address getCallingAddress() {
-		return callEventParams.getCallingAddress();
+		return this.callEventParams.getCallingAddress();
 	}
 
-	@Override
 	public Terminal getCallingTerminal() {
-		return callEventParams.getCallingTerminal();
+		return this.callEventParams.getCallingTerminal();
 	}
 
-	@Override
 	public Address getLastRedirectedAddress() {
-		return callEventParams.getLastRedirectionAddress();
+		return this.callEventParams.getLastRedirectionAddress();
+	}
+
+	public int getCallControlCause() {
+		int cause = this.callEventParams.getCause();
+		if ((cause == 101) || (cause == 202) || (cause == 203)
+				|| (cause == 204) || (cause == 205) || (cause == 206)
+				|| (cause == 207) || (cause == 208) || (cause == 209)
+				|| (cause == 210) || (cause == 211) || (cause == 212)
+				|| (cause == 213) || (cause == 214)) {
+			return cause;
+		}
+		return 100;
 	}
 }

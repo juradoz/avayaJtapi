@@ -8,30 +8,27 @@ public final class TsapiProviderUnavailableException extends
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiProviderUnavailableException(final int _errorType,
-			final int _errorCode) {
-		errorCode = _errorCode;
-		errorType = _errorType;
-	}
-
-	public TsapiProviderUnavailableException(final int _errorType,
-			final int _errorCode, final String s) {
-		super(s);
-		errorCode = _errorCode;
-		errorType = _errorType;
-	}
-
-	public TsapiProviderUnavailableException(final int cause, final String s) {
-		super(cause, s);
-	}
-
-	@Override
-	public int getErrorCode() {
-		return errorCode;
-	}
-
-	@Override
 	public int getErrorType() {
-		return errorType;
+		return this.errorType;
+	}
+
+	public int getErrorCode() {
+		return this.errorCode;
+	}
+
+	public TsapiProviderUnavailableException(int _errorType, int _errorCode) {
+		this.errorCode = _errorCode;
+		this.errorType = _errorType;
+	}
+
+	public TsapiProviderUnavailableException(int _errorType, int _errorCode,
+			String s) {
+		super(s);
+		this.errorCode = _errorCode;
+		this.errorType = _errorType;
+	}
+
+	public TsapiProviderUnavailableException(int cause, String s) {
+		super(cause, s);
 	}
 }

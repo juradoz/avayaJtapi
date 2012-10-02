@@ -11,21 +11,21 @@ public abstract interface ComponentGroup {
 	public static final int PHONE_SET = 4;
 	public static final int OTHER = 5;
 
+	public abstract int getType();
+
+	public abstract String getDescription();
+
+	public abstract Component[] getComponents();
+
 	public abstract boolean activate();
+
+	public abstract boolean deactivate();
 
 	public abstract boolean activate(Address paramAddress)
 			throws InvalidArgumentException;
-
-	public abstract boolean deactivate();
 
 	public abstract boolean deactivate(Address paramAddress)
 			throws InvalidArgumentException;
 
 	public abstract ComponentGroupCapabilities getCapabilities();
-
-	public abstract Component[] getComponents();
-
-	public abstract String getDescription();
-
-	public abstract int getType();
 }

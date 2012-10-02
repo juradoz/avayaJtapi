@@ -1,72 +1,69 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
-
 public final class LucentTrunkInfoList extends ASNSequenceOf {
-	public static CSTATrunkInfo[] decode(final InputStream in) {
-		final LucentTrunkInfoList _this = new LucentTrunkInfoList();
-		_this.doDecode(in);
-		return _this.array;
-	}
-
-	public static void encode(final CSTATrunkInfo[] _array,
-			final OutputStream out) {
-		final LucentTrunkInfoList _this = new LucentTrunkInfoList(_array);
-		_this.doEncode(_array.length, out);
-	}
-
-	public static Collection<String> print(final CSTATrunkInfo[] array,
-			final String name, final String _indent) {
-		final Collection<String> lines = new ArrayList<String>();
-
-		if (array == null) {
-			lines.add(_indent + name + " <null>");
-			return lines;
-		}
-		if (name != null)
-			lines.add(_indent + name);
-		lines.add(_indent + "{");
-
-		final String indent = _indent + "  ";
-
-		for (int i = 0; i < array.length; ++i)
-			lines.addAll(CSTATrunkInfo.print(array[i], null, indent));
-		lines.add(_indent + "}");
-		return lines;
-	}
-
 	CSTATrunkInfo[] array;
 
 	public LucentTrunkInfoList() {
 	}
 
-	public LucentTrunkInfoList(final CSTATrunkInfo[] _array) {
-		array = _array;
+	public LucentTrunkInfoList(CSTATrunkInfo[] _array) {
+		this.array = _array;
 	}
 
-	@Override
-	public Object decodeMember(final InputStream memberStream) {
+	public static CSTATrunkInfo[] decode(InputStream in) {
+		LucentTrunkInfoList _this = new LucentTrunkInfoList();
+		_this.doDecode(in);
+		return _this.array;
+	}
+
+	public void doDecode(InputStream in) {
+		super.doDecode(in);
+
+		this.array = new CSTATrunkInfo[this.vec.size()];
+
+		for (int i = 0; i < this.array.length; i++) {
+			this.array[i] = ((CSTATrunkInfo) this.vec.elementAt(i));
+		}
+	}
+
+	public Object decodeMember(InputStream memberStream) {
 		return CSTATrunkInfo.decode(memberStream);
 	}
 
-	@Override
-	public void doDecode(final InputStream in) {
-		super.doDecode(in);
-
-		array = new CSTATrunkInfo[vec.size()];
-
-		for (int i = 0; i < array.length; ++i)
-			array[i] = (CSTATrunkInfo) vec.elementAt(i);
+	public static void encode(CSTATrunkInfo[] _array, OutputStream out) {
+		LucentTrunkInfoList _this = new LucentTrunkInfoList(_array);
+		_this.doEncode(_array.length, out);
 	}
 
-	@Override
-	public void encodeMember(final int idx, final OutputStream memberStream) {
-		ASNSequence.encode(array[idx], memberStream);
+	public void encodeMember(int idx, OutputStream memberStream) {
+		CSTATrunkInfo.encode(this.array[idx], memberStream);
+	}
+
+	public static Collection<String> print(CSTATrunkInfo[] array, String name,
+			String _indent) {
+		Collection<String> lines = new ArrayList<String>();
+
+		if (array == null) {
+			lines.add(_indent + name + " <null>");
+			return lines;
+		}
+		if (name != null) {
+			lines.add(_indent + name);
+		}
+		lines.add(_indent + "{");
+
+		String indent = _indent + "  ";
+
+		for (int i = 0; i < array.length; i++) {
+			lines.addAll(CSTATrunkInfo.print(array[i], null, indent));
+		}
+		lines.add(_indent + "}");
+		return lines;
 	}
 }

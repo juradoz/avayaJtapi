@@ -1,74 +1,71 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNSequenceOf;
-
 public final class CSTADeviceHistoryData extends ASNSequenceOf {
-	public static LucentDeviceHistoryEntry[] decode(final InputStream in) {
-		final CSTADeviceHistoryData _this = new CSTADeviceHistoryData();
-		_this.doDecode(in);
-		return _this.array;
-	}
-
-	static void encode(final LucentDeviceHistoryEntry[] array,
-			final OutputStream out) {
-		final CSTADeviceHistoryData _this = new CSTADeviceHistoryData(array);
-		_this.doEncode(array.length, out);
-	}
-
-	public static Collection<String> print(
-			final LucentDeviceHistoryEntry[] array, final String name,
-			final String _indent) {
-		final Collection<String> lines = new ArrayList<String>();
-		if (array == null) {
-			lines.add(_indent + name + " <null>");
-			return lines;
-		}
-		if (name != null)
-			lines.add(_indent + name);
-		lines.add(_indent + "{");
-
-		final String indent = _indent + "  ";
-
-		for (int i = 0; i < array.length; ++i)
-			lines.addAll(LucentDeviceHistoryEntry.print(array[i], null, indent));
-		lines.add(_indent + "}");
-		return lines;
-	}
-
 	LucentDeviceHistoryEntry[] array;
 
 	CSTADeviceHistoryData() {
 	}
 
-	public CSTADeviceHistoryData(final LucentDeviceHistoryEntry[] _array) {
-		array = _array;
+	public CSTADeviceHistoryData(LucentDeviceHistoryEntry[] _array) {
+		this.array = _array;
 	}
 
-	@Override
-	public Object decodeMember(final InputStream memberStream) {
+	static void encode(LucentDeviceHistoryEntry[] array, OutputStream out) {
+		CSTADeviceHistoryData _this = new CSTADeviceHistoryData(array);
+		_this.doEncode(array.length, out);
+	}
+
+	public void encodeMember(int index, OutputStream memberStream) {
+		LucentDeviceHistoryEntry.encode(this.array[index], memberStream);
+	}
+
+	public static LucentDeviceHistoryEntry[] decode(InputStream in) {
+		CSTADeviceHistoryData _this = new CSTADeviceHistoryData();
+		_this.doDecode(in);
+		return _this.array;
+	}
+
+	public void doDecode(InputStream in) {
+		super.doDecode(in);
+
+		this.array = new LucentDeviceHistoryEntry[this.vec.size()];
+		for (int i = 0; i < this.array.length; i++) {
+			this.array[i] = ((LucentDeviceHistoryEntry) this.vec.elementAt(i));
+		}
+	}
+
+	public Object decodeMember(InputStream memberStream) {
 		return LucentDeviceHistoryEntry.decode(memberStream);
 	}
 
-	@Override
-	public void doDecode(final InputStream in) {
-		super.doDecode(in);
+	public static Collection<String> print(LucentDeviceHistoryEntry[] array,
+			String name, String _indent) {
+		Collection<String> lines = new ArrayList<String>();
+		if (array == null) {
+			lines.add(_indent + name + " <null>");
+			return lines;
+		}
+		if (name != null) {
+			lines.add(_indent + name);
+		}
+		lines.add(_indent + "{");
 
-		array = new LucentDeviceHistoryEntry[vec.size()];
-		for (int i = 0; i < array.length; ++i)
-			array[i] = (LucentDeviceHistoryEntry) vec.elementAt(i);
-	}
+		String indent = _indent + "  ";
 
-	@Override
-	public void encodeMember(final int index, final OutputStream memberStream) {
-		LucentDeviceHistoryEntry.encode(array[index], memberStream);
+		for (int i = 0; i < array.length; i++) {
+			lines.addAll(LucentDeviceHistoryEntry.print(array[i], null, indent));
+		}
+		lines.add(_indent + "}");
+		return lines;
 	}
 
 	public LucentDeviceHistoryEntry[] getArray() {
-		return array;
+		return this.array;
 	}
 }

@@ -17,7 +17,7 @@ public abstract interface Event {
 
 	public abstract int getID();
 
-	public abstract MetaEvent getMetaEvent();
-
 	public abstract Object getSource();
+
+	public abstract MetaEvent getMetaEvent();
 }

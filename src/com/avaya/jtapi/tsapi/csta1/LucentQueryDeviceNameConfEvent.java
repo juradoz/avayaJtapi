@@ -1,12 +1,10 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public class LucentQueryDeviceNameConfEvent extends LucentPrivateData {
 	short deviceType;
@@ -14,70 +12,67 @@ public class LucentQueryDeviceNameConfEvent extends LucentPrivateData {
 	String name;
 	static final int PDU = 50;
 
-	public static LucentQueryDeviceNameConfEvent decode(final InputStream in) {
-		final LucentQueryDeviceNameConfEvent _this = new LucentQueryDeviceNameConfEvent();
+	public static LucentQueryDeviceNameConfEvent decode(InputStream in) {
+		LucentQueryDeviceNameConfEvent _this = new LucentQueryDeviceNameConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		deviceType = ASNEnumerated.decode(memberStream);
-		device_asn = ASNIA5String.decode(memberStream);
-		name = ASNIA5String.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.deviceType = LucentDeviceType.decode(memberStream);
+		this.device_asn = DeviceID.decode(memberStream);
+		this.name = ASNIA5String.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(deviceType, memberStream);
-		ASNIA5String.encode(device_asn, memberStream);
-		ASNIA5String.encode(name, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentDeviceType.encode(this.deviceType, memberStream);
+		DeviceID.encode(this.device_asn, memberStream);
+		ASNIA5String.encode(this.name, memberStream);
 	}
 
-	public String getDevice_asn() {
-		return device_asn;
-	}
-
-	public short getDeviceType() {
-		return deviceType;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public int getPDU() {
-		return 50;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryDeviceNameConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentDeviceType.print(deviceType, "deviceType", indent));
-		lines.addAll(ASNIA5String.print(device_asn, "device", indent));
-		lines.addAll(ASNIA5String.print(name, "name", indent));
+		lines.addAll(LucentDeviceType.print(this.deviceType, "deviceType",
+				indent));
+		lines.addAll(DeviceID.print(this.device_asn, "device", indent));
+		lines.addAll(ASNIA5String.print(this.name, "name", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDevice_asn(final String device_asn) {
+	public int getPDU() {
+		return 50;
+	}
+
+	public String getDevice_asn() {
+		return this.device_asn;
+	}
+
+	public short getDeviceType() {
+		return this.deviceType;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setDevice_asn(String device_asn) {
 		this.device_asn = device_asn;
 	}
 
-	public void setDeviceType(final short deviceType) {
+	public void setDeviceType(short deviceType) {
 		this.deviceType = deviceType;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 }

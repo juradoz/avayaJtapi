@@ -1,33 +1,59 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-
 public final class LucentUserCollectCode extends LucentPrivateData {
-	public static void encode(LucentUserCollectCode _this,
-			final OutputStream out) {
-		if (_this == null)
+	short type;
+	int digitsToBeCollected;
+	int timeout;
+	CSTAConnectionID collectParty;
+	short specificEvent;
+
+	public LucentUserCollectCode() {
+		this.type = 0;
+	}
+
+	public LucentUserCollectCode(short _type, int _digitsToBeCollected,
+			int _timeout, CSTAConnectionID _collectParty, short _specificEvent) {
+		this.type = _type;
+		this.digitsToBeCollected = _digitsToBeCollected;
+		this.timeout = _timeout;
+		this.collectParty = _collectParty;
+		this.specificEvent = _specificEvent;
+	}
+
+	public static void encode(LucentUserCollectCode _this, OutputStream out) {
+		if (_this == null) {
 			_this = new LucentUserCollectCode();
+		}
 		_this.encode(out);
 	}
 
-	public static Collection<String> print(final LucentUserCollectCode _this,
-			final String name, final String _indent) {
-		final Collection<String> lines = new ArrayList<String>();
+	public void encodeMembers(OutputStream memberStream) {
+		CollectCodeType.encode(this.type, memberStream);
+		ASNInteger.encode(this.digitsToBeCollected, memberStream);
+		ASNInteger.encode(this.timeout, memberStream);
+		CSTAConnectionID.encode(this.collectParty, memberStream);
+		SpecificEvent.encode(this.specificEvent, memberStream);
+	}
+
+	public static Collection<String> print(LucentUserCollectCode _this,
+			String name, String _indent) {
+		Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null)
+		if (name != null) {
 			lines.add(_indent + name);
+		}
 		lines.add(_indent + "{");
 
-		final String indent = _indent + "  ";
+		String indent = _indent + "  ";
 
 		lines.addAll(CollectCodeType.print(_this.type, "type", indent));
 		lines.addAll(ASNInteger.print(_this.digitsToBeCollected,
@@ -40,36 +66,5 @@ public final class LucentUserCollectCode extends LucentPrivateData {
 
 		lines.add(_indent + "}");
 		return lines;
-	}
-
-	short type;
-	int digitsToBeCollected;
-	int timeout;
-
-	CSTAConnectionID collectParty;
-
-	short specificEvent;
-
-	public LucentUserCollectCode() {
-		type = 0;
-	}
-
-	public LucentUserCollectCode(final short _type,
-			final int _digitsToBeCollected, final int _timeout,
-			final CSTAConnectionID _collectParty, final short _specificEvent) {
-		type = _type;
-		digitsToBeCollected = _digitsToBeCollected;
-		timeout = _timeout;
-		collectParty = _collectParty;
-		specificEvent = _specificEvent;
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(type, memberStream);
-		ASNInteger.encode(digitsToBeCollected, memberStream);
-		ASNInteger.encode(timeout, memberStream);
-		CSTAConnectionID.encode(collectParty, memberStream);
-		ASNEnumerated.encode(specificEvent, memberStream);
 	}
 }

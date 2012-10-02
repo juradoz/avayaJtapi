@@ -6,51 +6,59 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
+import org.apache.log4j.Logger;
 
 public abstract class ASNSequenceOf extends ASN1 {
 	protected Vector<Object> vec;
+	private static Logger log = Logger.getLogger(ASNSequenceOf.class);
 
 	public ASNSequenceOf() {
-		vec = new Vector<Object>();
+		this.vec = new Vector<Object>();
 	}
 
-	public Object decodeMember(final InputStream in) {
-		return null;
-	}
-
-	public void doDecode(final InputStream in) {
+	public void doDecode(InputStream in) {
 		try {
-			if (in.read() != 48)
+			if (in.read() != 48) {
 				throw new ASN1Exception("Decoder: expected SEQUENCE tag");
-			final int length = ASN1.decodeLength(in);
+			}
+			int length = decodeLength(in);
 
-			final byte[] buf = new byte[length];
-			in.read(buf);
-			final ByteArrayInputStream memberStream = new ByteArrayInputStream(
-					buf);
+			byte[] buf = new byte[length];
+			int count = in.read(buf);
+			if ((length > 0) && (count != length)) {
+				log.error("expected " + length + "bytes but read " + count
+						+ "bytes");
+			}
+			ByteArrayInputStream memberStream = new ByteArrayInputStream(buf);
 
-			while (memberStream.available() > 0)
-				vec.addElement(decodeMember(memberStream));
-		} catch (final IOException e) {
+			while (memberStream.available() > 0) {
+				this.vec.addElement(decodeMember(memberStream));
+			}
+		} catch (IOException e) {
 			throw new ASN1Exception("Decoder: SEQUENCE OF got unexpected EOF");
 		}
 	}
 
-	public void doEncode(final int numElements, final OutputStream out) {
+	public void doEncode(int numElements, OutputStream out) {
 		try {
-			final ByteArrayOutputStream memberStream = new ByteArrayOutputStream();
+			ByteArrayOutputStream memberStream = new ByteArrayOutputStream();
 
-			for (int i = 0; i < numElements; ++i)
+			for (int i = 0; i < numElements; i++) {
 				encodeMember(i, memberStream);
+			}
 			out.write(48);
-			ASN1.encodeLength(out, memberStream.size());
+			encodeLength(out, memberStream.size());
 			memberStream.writeTo(out);
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			throw new ASN1Exception(
 					"Encoder: SEQUENCE OF got unexpected IO error");
 		}
 	}
 
-	public void encodeMember(final int index, final OutputStream out) {
+	public Object decodeMember(InputStream in) {
+		return null;
+	}
+
+	public void encodeMember(int index, OutputStream out) {
 	}
 }

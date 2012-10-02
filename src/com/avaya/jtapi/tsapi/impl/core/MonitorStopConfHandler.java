@@ -6,17 +6,16 @@ import com.avaya.jtapi.tsapi.tsapiInterface.ConfHandler;
 final class MonitorStopConfHandler implements ConfHandler {
 	TSDevice device;
 
-	MonitorStopConfHandler(final TSDevice _device) {
-		device = _device;
+	MonitorStopConfHandler(TSDevice _device) {
+		this.device = _device;
 	}
 
-	@Override
-	public void handleConf(final CSTAEvent event) {
-		if (device.monitorDeviceXRefID != 0) {
-			device.getTSProviderImpl()
-					.deleteMonitor(device.monitorDeviceXRefID);
-			device.monitorDeviceXRefID = 0;
+	public void handleConf(CSTAEvent event) {
+		if (this.device.monitorDeviceXRefID != 0) {
+			this.device.getTSProviderImpl().deleteMonitor(
+					this.device.monitorDeviceXRefID);
+			this.device.monitorDeviceXRefID = 0;
 		}
-		device.testDelete();
+		this.device.testDelete();
 	}
 }

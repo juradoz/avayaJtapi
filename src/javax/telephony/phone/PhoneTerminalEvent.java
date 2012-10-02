@@ -17,27 +17,27 @@ public abstract interface PhoneTerminalEvent extends Event, TerminalEvent {
 	public static final int PHONE_TERMINAL_SPEAKER_VOLUME_EVENT = 508;
 	public static final int PHONE_TERMINAL_BUTTON_PRESS_THRESHOLD_EXCEEDED_EVENT = 509;
 
-	public abstract Component getComponent();
+	public abstract int getPhoneCause();
 
 	public abstract ComponentGroup getComponentGroup();
 
-	public abstract String getDisplay(int paramInt1, int paramInt2);
-
-	public abstract int getGain();
-
-	public abstract int getHookSwitchState();
+	public abstract Component getComponent();
 
 	public abstract String getInfo();
 
-	public abstract int getMode();
-
 	public abstract String getOldInfo();
 
-	public abstract int getPhoneCause();
+	public abstract String getDisplay(int paramInt1, int paramInt2);
 
-	public abstract int getPressedDuration();
+	public abstract int getHookSwitchState();
+
+	public abstract int getMode();
+
+	public abstract int getGain();
 
 	public abstract int getRingerPattern();
 
 	public abstract int getVolume();
+
+	public abstract int getPressedDuration();
 }

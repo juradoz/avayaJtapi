@@ -8,27 +8,25 @@ public final class TsapiResourceUnavailableException extends
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiResourceUnavailableException(final int _errorType,
-			final int _errorCode, final int type) {
-		super(type);
-		errorType = _errorType;
-		errorCode = _errorCode;
-	}
-
-	public TsapiResourceUnavailableException(final int _errorType,
-			final int _errorCode, final int type, final String s) {
-		super(type, s);
-		errorType = _errorType;
-		errorCode = _errorCode;
-	}
-
-	@Override
-	public int getErrorCode() {
-		return errorCode;
-	}
-
-	@Override
 	public int getErrorType() {
-		return errorType;
+		return this.errorType;
+	}
+
+	public int getErrorCode() {
+		return this.errorCode;
+	}
+
+	public TsapiResourceUnavailableException(int _errorType, int _errorCode,
+			int type) {
+		super(type);
+		this.errorType = _errorType;
+		this.errorCode = _errorCode;
+	}
+
+	public TsapiResourceUnavailableException(int _errorType, int _errorCode,
+			int type, String s) {
+		super(type, s);
+		this.errorType = _errorType;
+		this.errorCode = _errorCode;
 	}
 }

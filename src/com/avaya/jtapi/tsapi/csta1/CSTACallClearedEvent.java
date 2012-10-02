@@ -5,78 +5,73 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public final class CSTACallClearedEvent extends CSTAUnsolicited {
 	CSTAConnectionID clearedCall;
 	short localConnectionInfo;
 	short cause;
 	public static final int PDU = 54;
 
-	public static CSTACallClearedEvent decode(final InputStream in) {
-		final CSTACallClearedEvent _this = new CSTACallClearedEvent();
+	public static CSTACallClearedEvent decode(InputStream in) {
+		CSTACallClearedEvent _this = new CSTACallClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		clearedCall = CSTAConnectionID.decode(memberStream);
-		localConnectionInfo = ASNEnumerated.decode(memberStream);
-		cause = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.clearedCall = CSTAConnectionID.decode(memberStream);
+		this.localConnectionInfo = LocalConnectionState.decode(memberStream);
+		this.cause = CSTAEventCause.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(clearedCall, memberStream);
-		ASNEnumerated.encode(localConnectionInfo, memberStream);
-		ASNEnumerated.encode(cause, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.clearedCall, memberStream);
+		LocalConnectionState.encode(this.localConnectionInfo, memberStream);
+		CSTAEventCause.encode(this.cause, memberStream);
 	}
 
-	public short getCause() {
-		return cause;
-	}
-
-	public CSTAConnectionID getClearedCall() {
-		return clearedCall;
-	}
-
-	public short getLocalConnectionInfo() {
-		return localConnectionInfo;
-	}
-
-	@Override
-	public int getPDU() {
-		return 54;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTACallClearedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAConnectionID.print(clearedCall, "clearedCall", indent));
-		lines.addAll(LocalConnectionState.print(localConnectionInfo,
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAConnectionID.print(this.clearedCall, "clearedCall",
+				indent));
+		lines.addAll(LocalConnectionState.print(this.localConnectionInfo,
 				"localConnectionInfo", indent));
-		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
+		lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCause(final short cause) {
+	public int getPDU() {
+		return 54;
+	}
+
+	public short getCause() {
+		return this.cause;
+	}
+
+	public CSTAConnectionID getClearedCall() {
+		return this.clearedCall;
+	}
+
+	public short getLocalConnectionInfo() {
+		return this.localConnectionInfo;
+	}
+
+	public void setCause(short cause) {
 		this.cause = cause;
 	}
 
-	public void setClearedCall(final CSTAConnectionID clearedCall) {
+	public void setClearedCall(CSTAConnectionID clearedCall) {
 		this.clearedCall = clearedCall;
 	}
 
-	public void setLocalConnectionInfo(final short localConnectionInfo) {
+	public void setLocalConnectionInfo(short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 }

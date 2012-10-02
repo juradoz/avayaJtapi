@@ -1,10 +1,9 @@
 package com.avaya.jtapi.tsapi.impl.events.addr;
 
+import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallControlEvent;
 import javax.telephony.Address;
 import javax.telephony.callcontrol.CallControlAddressEvent;
 import javax.telephony.callcontrol.CallControlForwarding;
-
-import com.avaya.jtapi.tsapi.impl.events.TsapiListenerCallControlEvent;
 
 public class CallControlAddressEventImpl extends TsapiListenerCallControlEvent
 		implements CallControlAddressEvent {
@@ -13,35 +12,32 @@ public class CallControlAddressEventImpl extends TsapiListenerCallControlEvent
 	int mwBits = 0;
 	Address address;
 
-	public CallControlAddressEventImpl(
-			final AddressEventParams addressEventParams, final Address address) {
+	public CallControlAddressEventImpl(AddressEventParams addressEventParams,
+			Address address) {
 		super(addressEventParams.getEventId(), addressEventParams.getCause(),
 				addressEventParams.getMetaEvent(), addressEventParams
 						.getSource(), addressEventParams.getPrivateData());
 
-		callControlForwarding = addressEventParams.getCallControlForwarding();
-		mwBits = addressEventParams.getMwBits();
-		doNotDisturbState = addressEventParams.isDoNotDisturbState();
+		this.callControlForwarding = addressEventParams
+				.getCallControlForwarding();
+		this.mwBits = addressEventParams.getMwBits();
+		this.doNotDisturbState = addressEventParams.isDoNotDisturbState();
 		this.address = address;
 	}
 
-	@Override
-	public Address getAddress() {
-		return address;
-	}
-
-	@Override
 	public boolean getDoNotDisturbState() {
-		return doNotDisturbState;
+		return this.doNotDisturbState;
 	}
 
-	@Override
 	public CallControlForwarding[] getForwarding() {
-		return callControlForwarding;
+		return this.callControlForwarding;
 	}
 
-	@Override
 	public boolean getMessageWaitingState() {
-		return mwBits != 0;
+		return this.mwBits != 0;
+	}
+
+	public Address getAddress() {
+		return this.address;
 	}
 }

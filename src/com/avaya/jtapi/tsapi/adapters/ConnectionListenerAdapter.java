@@ -5,31 +5,24 @@ import javax.telephony.ConnectionListener;
 
 public class ConnectionListenerAdapter extends CallListenerAdapter implements
 		ConnectionListener {
-	@Override
-	public void connectionAlerting(final ConnectionEvent event) {
+	public void connectionAlerting(ConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionConnected(final ConnectionEvent event) {
+	public void connectionConnected(ConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionCreated(final ConnectionEvent event) {
+	public void connectionCreated(ConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionDisconnected(final ConnectionEvent event) {
+	public void connectionDisconnected(ConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionFailed(final ConnectionEvent event) {
+	public void connectionFailed(ConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionInProgress(final ConnectionEvent event) {
+	public void connectionInProgress(ConnectionEvent event) {
 	}
 
-	@Override
-	public void connectionUnknown(final ConnectionEvent event) {
+	public void connectionUnknown(ConnectionEvent event) {
 	}
 }

@@ -10,64 +10,63 @@ public final class CSTAEvent {
 	long queuedTimeStamp;
 
 	CSTAEvent() {
-		eventHeader = null;
-		event = null;
-		privData = null;
+		this.eventHeader = null;
+		this.event = null;
+		this.privData = null;
 	}
 
-	CSTAEvent(final ACSEventHeader _eventHeader, final TsapiPDU _event) {
-		eventHeader = _eventHeader;
-		event = _event;
-		privData = null;
+	CSTAEvent(ACSEventHeader _eventHeader, TsapiPDU _event) {
+		this.eventHeader = _eventHeader;
+		this.event = _event;
+		this.privData = null;
 	}
 
-	public CSTAEvent(final ACSEventHeader _eventHeader, final TsapiPDU _event,
-			final CSTAPrivate _priv) {
-		eventHeader = _eventHeader;
-		event = _event;
-		privData = _priv;
+	public CSTAEvent(ACSEventHeader _eventHeader, TsapiPDU _event,
+			CSTAPrivate _priv) {
+		this.eventHeader = _eventHeader;
+		this.event = _event;
+		this.privData = _priv;
 	}
 
 	public TsapiPDU getEvent() {
-		return event;
+		return this.event;
 	}
 
 	public ACSEventHeader getEventHeader() {
-		return eventHeader;
+		return this.eventHeader;
+	}
+
+	public Object getPrivData() {
+		return this.privData;
+	}
+
+	public void setPrivData(Object privData) {
+		this.privData = privData;
+	}
+
+	public String toString() {
+		return "CSTAEvent[" + getMyCustomString() + "]@"
+				+ Integer.toHexString(hashCode());
 	}
 
 	private String getMyCustomString() {
 		String s;
-		if (event == null)
+		if (this.event == null) {
 			s = "-";
-		else {
-			s = event.getClass().getName();
-			final int i = s.lastIndexOf('.');
+		} else {
+			s = this.event.getClass().getName();
+			int i = s.lastIndexOf('.');
 
 			s = i >= 0 ? s.substring(i + 1) : s;
 		}
 		return s;
 	}
 
-	public Object getPrivData() {
-		return privData;
-	}
-
 	public long getQueuedTimeStamp() {
-		return queuedTimeStamp;
+		return this.queuedTimeStamp;
 	}
 
-	public void setPrivData(final Object privData) {
-		this.privData = privData;
-	}
-
-	public void setQueuedTimeStamp(final long queuedTimeStamp) {
+	public void setQueuedTimeStamp(long queuedTimeStamp) {
 		this.queuedTimeStamp = queuedTimeStamp;
-	}
-
-	@Override
-	public String toString() {
-		return "CSTAEvent[" + getMyCustomString() + "]@"
-				+ Integer.toHexString(super.hashCode());
 	}
 }

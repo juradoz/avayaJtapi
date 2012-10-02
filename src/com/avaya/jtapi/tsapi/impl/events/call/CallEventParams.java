@@ -1,13 +1,5 @@
 package com.avaya.jtapi.tsapi.impl.events.call;
 
-import java.util.ArrayList;
-
-import javax.telephony.Address;
-import javax.telephony.Call;
-import javax.telephony.Terminal;
-import javax.telephony.callcenter.ACDAddress;
-import javax.telephony.callcenter.CallCenterTrunk;
-
 import com.avaya.jtapi.tsapi.ITsapiAddress;
 import com.avaya.jtapi.tsapi.LookaheadInfo;
 import com.avaya.jtapi.tsapi.LucentCall;
@@ -16,235 +8,248 @@ import com.avaya.jtapi.tsapi.LucentV5CallInfo;
 import com.avaya.jtapi.tsapi.OriginalCallInfo;
 import com.avaya.jtapi.tsapi.UserEnteredCode;
 import com.avaya.jtapi.tsapi.UserToUserInfo;
+import java.util.ArrayList;
+import javax.telephony.Address;
+import javax.telephony.Call;
+import javax.telephony.Terminal;
+import javax.telephony.callcenter.ACDAddress;
+import javax.telephony.callcenter.CallCenterTrunk;
 
 public class CallEventParams {
-	private Call call;
-	private CallCenterTrunk trunk;
-	private CallCenterTrunk[] trunks;
-	private Address callingAddress;
-	private Terminal callingTerminal;
-	private Address calledAddress;
-	private Address lastRedirectionAddress;
+	private Call call = null;
+
+	private CallCenterTrunk trunk = null;
+	private CallCenterTrunk[] trunks = null;
+	private Address callingAddress = null;
+	private Terminal callingTerminal = null;
+	private Address calledAddress = null;
+	private Address lastRedirectionAddress = null;
 	private ArrayList<Call> oldCalls;
-	private int cause;
-	private int metaCode;
-	private short cstaCause;
-	private Object privateData;
+	private int cause = 0;
+	private int metaCode = 0;
+
+	private short cstaCause = -1;
+
+	private short csta3Cause = this.cstaCause;
+
+	private Object privateData = null;
 	private PrivateDataParams privDataParams;
 
-	public CallEventParams() {
-		call = null;
+	public ArrayList<Call> getOldCalls() {
+		return this.oldCalls;
+	}
 
-		trunk = null;
-		trunks = null;
-		callingAddress = null;
-		callingTerminal = null;
-		calledAddress = null;
-		lastRedirectionAddress = null;
-
-		cause = 0;
-		metaCode = 0;
-
-		cstaCause = -1;
-		privateData = null;
+	public void setOldCalls(ArrayList<Call> oldCalls) {
+		this.oldCalls = oldCalls;
 	}
 
 	public Call getCall() {
-		return call;
+		return this.call;
 	}
 
-	public Address getCalledAddress() {
-		return calledAddress;
+	public void setCall(Call call) {
+		this.call = call;
+	}
+
+	public CallCenterTrunk getTrunk() {
+		return this.trunk;
+	}
+
+	public void setTrunk(CallCenterTrunk trunk) {
+		this.trunk = trunk;
 	}
 
 	public Address getCallingAddress() {
-		return callingAddress;
+		return this.callingAddress;
+	}
+
+	public void setCallingAddress(Address callingAddress) {
+		this.callingAddress = callingAddress;
 	}
 
 	public Terminal getCallingTerminal() {
-		return callingTerminal;
+		return this.callingTerminal;
 	}
 
-	public int getCallOriginatorType() {
-		int cot = 0;
-		if (privDataParams != null)
-			cot = privDataParams.getCallOriginatorType();
-		else if (call instanceof LucentV5CallInfo)
-			cot = ((LucentV5CallInfo) call).getCallOriginatorType();
-		return cot;
+	public void setCallingTerminal(Terminal callingTerminal) {
+		this.callingTerminal = callingTerminal;
 	}
 
-	public int getCause() {
-		return cause;
+	public Address getCalledAddress() {
+		return this.calledAddress;
 	}
 
-	public short getCstaCause() {
-		return cstaCause;
-	}
-
-	public ITsapiAddress getDistributingDevice() {
-		ITsapiAddress address = null;
-		if (privDataParams != null)
-			address = privDataParams.getDistributingDevice();
-		else
-			address = (ITsapiAddress) ((LucentCall) call)
-					.getDistributingAddress();
-		return address;
+	public void setCalledAddress(Address calledAddress) {
+		this.calledAddress = calledAddress;
 	}
 
 	public Address getLastRedirectionAddress() {
-		return lastRedirectionAddress;
+		return this.lastRedirectionAddress;
 	}
 
-	public LookaheadInfo getLookaheadInfo() {
-		LookaheadInfo lai = null;
-		if (privDataParams != null)
-			lai = privDataParams.getLookaheadInfo();
-		else
-			lai = ((LucentCall) call).getLookaheadInfo();
-		return lai;
+	public void setLastRedirectionAddress(Address lastRedirectionAddress) {
+		this.lastRedirectionAddress = lastRedirectionAddress;
+	}
+
+	public int getCause() {
+		return this.cause;
+	}
+
+	public void setCause(int cause) {
+		this.cause = cause;
 	}
 
 	public int getMetaCode() {
-		return metaCode;
+		return this.metaCode;
 	}
 
-	public ArrayList<Call> getOldCalls() {
-		return oldCalls;
-	}
-
-	public OriginalCallInfo getOriginalCallInfo() {
-		OriginalCallInfo originalCallInfo = null;
-		if (privDataParams != null)
-			originalCallInfo = privDataParams.getOriginalCallInfo();
-		else
-			originalCallInfo = ((LucentCall) call).getOriginalCallInfo();
-		return originalCallInfo;
+	public void setMetaCode(int metaCode) {
+		this.metaCode = metaCode;
 	}
 
 	public Object getPrivateData() {
-		return privateData;
+		return this.privateData;
+	}
+
+	public void setPrivateData(Object privateData) {
+		this.privateData = privateData;
+		if ((privateData instanceof PrivateDataParams)) {
+			this.privDataParams = ((PrivateDataParams) privateData);
+			if (this.privDataParams.getTrunk() != null)
+				this.trunk = this.privDataParams.getTrunk();
+		}
+	}
+
+	public CallCenterTrunk[] getTrunks() {
+		return this.trunks;
+	}
+
+	public void setTrunks(CallCenterTrunk[] _trunks) {
+		this.trunks = _trunks;
+	}
+
+	public short getCstaCause() {
+		return this.cstaCause;
+	}
+
+	public void setCstaCause(short cstaCause) {
+		this.cstaCause = cstaCause;
+	}
+
+	public short getCsta3Cause() {
+		return this.csta3Cause;
+	}
+
+	public void setCsta3Cause(short csta3Cause) {
+		this.csta3Cause = csta3Cause;
 	}
 
 	public short getReason() {
 		short reason = 0;
-		if (privDataParams != null)
-			reason = privDataParams.getReason();
-		else
-			reason = ((LucentCall) call).getReason();
+		if (this.privDataParams != null) {
+			reason = this.privDataParams.getReason();
+		} else {
+			reason = ((LucentCall) this.call).getReason();
+		}
 		return reason;
 	}
 
-	public ACDAddress getSplit() {
-		ACDAddress address = null;
-		if (privDataParams != null)
-			address = privDataParams.getSplit();
-		else
-			address = ((LucentCall) call).getDeliveringACDAddress();
-		return address;
-	}
-
-	public CallCenterTrunk getTrunk() {
-		return trunk;
-	}
-
-	public CallCenterTrunk[] getTrunks() {
-		return trunks;
-	}
-
-	public String getUcid() {
-		String ucid = null;
-		if (privDataParams != null)
-			ucid = privDataParams.getUcid();
-		else if (call instanceof LucentV5Call)
-			ucid = ((LucentV5Call) call).getUCID();
-		return ucid;
-	}
-
-	public UserEnteredCode getUserEnteredCode() {
-		UserEnteredCode uec = null;
-		if (privDataParams != null)
-			uec = privDataParams.getUserEnteredCode();
-		else
-			uec = ((LucentCall) call).getUserEnteredCode();
-		return uec;
-	}
-
-	public UserToUserInfo getUserToUserInfo() {
-		UserToUserInfo uui = null;
-		if (privDataParams != null)
-			uui = privDataParams.getUserToUserInfo();
-		else
-			uui = ((LucentCall) call).getUserToUserInfo();
-		return uui;
+	public int getCallOriginatorType() {
+		int cot = 0;
+		if (this.privDataParams != null) {
+			cot = this.privDataParams.getCallOriginatorType();
+		} else if ((this.call instanceof LucentV5CallInfo)) {
+			cot = ((LucentV5CallInfo) this.call).getCallOriginatorType();
+		}
+		return cot;
 	}
 
 	public boolean hasCallOriginatorType() {
 		boolean has = false;
-		if (privDataParams != null)
-			has = privDataParams.hasCallOriginatorType();
-		else if (call instanceof LucentV5CallInfo)
-			has = ((LucentV5CallInfo) call).hasCallOriginatorType();
+		if (this.privDataParams != null) {
+			has = this.privDataParams.hasCallOriginatorType();
+		} else if ((this.call instanceof LucentV5CallInfo)) {
+			has = ((LucentV5CallInfo) this.call).hasCallOriginatorType();
+		}
 		return has;
+	}
+
+	public UserToUserInfo getUserToUserInfo() {
+		UserToUserInfo uui = null;
+		if (this.privDataParams != null) {
+			uui = this.privDataParams.getUserToUserInfo();
+		} else {
+			uui = ((LucentCall) this.call).getUserToUserInfo();
+		}
+		return uui;
+	}
+
+	public LookaheadInfo getLookaheadInfo() {
+		LookaheadInfo lai = null;
+		if (this.privDataParams != null) {
+			lai = this.privDataParams.getLookaheadInfo();
+		} else {
+			lai = ((LucentCall) this.call).getLookaheadInfo();
+		}
+		return lai;
+	}
+
+	public UserEnteredCode getUserEnteredCode() {
+		UserEnteredCode uec = null;
+		if (this.privDataParams != null) {
+			uec = this.privDataParams.getUserEnteredCode();
+		} else {
+			uec = ((LucentCall) this.call).getUserEnteredCode();
+		}
+		return uec;
+	}
+
+	public OriginalCallInfo getOriginalCallInfo() {
+		OriginalCallInfo originalCallInfo = null;
+		if (this.privDataParams != null) {
+			originalCallInfo = this.privDataParams.getOriginalCallInfo();
+		} else {
+			originalCallInfo = ((LucentCall) this.call).getOriginalCallInfo();
+		}
+		return originalCallInfo;
+	}
+
+	public String getUcid() {
+		String ucid = null;
+		if (this.privDataParams != null) {
+			ucid = this.privDataParams.getUcid();
+		} else if ((this.call instanceof LucentV5Call)) {
+			ucid = ((LucentV5Call) this.call).getUCID();
+		}
+		return ucid;
+	}
+
+	public ACDAddress getSplit() {
+		ACDAddress address = null;
+		if (this.privDataParams != null) {
+			address = this.privDataParams.getSplit();
+		} else {
+			address = ((LucentCall) this.call).getDeliveringACDAddress();
+		}
+		return address;
+	}
+
+	public ITsapiAddress getDistributingDevice() {
+		ITsapiAddress address = null;
+		if (this.privDataParams != null) {
+			address = this.privDataParams.getDistributingDevice();
+		} else {
+			address = (ITsapiAddress) ((LucentCall) this.call)
+					.getDistributingAddress();
+		}
+		return address;
 	}
 
 	public boolean isFlexibleBilling() {
 		boolean flexible = false;
-		if (privDataParams != null)
-			flexible = privDataParams.isFlexibleBilling();
-		return flexible;
-	}
-
-	public void setCall(final Call call) {
-		this.call = call;
-	}
-
-	public void setCalledAddress(final Address calledAddress) {
-		this.calledAddress = calledAddress;
-	}
-
-	public void setCallingAddress(final Address callingAddress) {
-		this.callingAddress = callingAddress;
-	}
-
-	public void setCallingTerminal(final Terminal callingTerminal) {
-		this.callingTerminal = callingTerminal;
-	}
-
-	public void setCause(final int cause) {
-		this.cause = cause;
-	}
-
-	public void setCstaCause(final short cstaCause) {
-		this.cstaCause = cstaCause;
-	}
-
-	public void setLastRedirectionAddress(final Address lastRedirectionAddress) {
-		this.lastRedirectionAddress = lastRedirectionAddress;
-	}
-
-	public void setMetaCode(final int metaCode) {
-		this.metaCode = metaCode;
-	}
-
-	public void setOldCalls(final ArrayList<Call> oldCalls) {
-		this.oldCalls = oldCalls;
-	}
-
-	public void setPrivateData(final Object privateData) {
-		this.privateData = privateData;
-		if (privateData instanceof PrivateDataParams) {
-			privDataParams = (PrivateDataParams) privateData;
-			if (privDataParams.getTrunk() != null)
-				trunk = privDataParams.getTrunk();
+		if (this.privDataParams != null) {
+			flexible = this.privDataParams.isFlexibleBilling();
 		}
-	}
-
-	public void setTrunk(final CallCenterTrunk trunk) {
-		this.trunk = trunk;
-	}
-
-	public void setTrunks(final CallCenterTrunk[] _trunks) {
-		trunks = _trunks;
+		return flexible;
 	}
 }

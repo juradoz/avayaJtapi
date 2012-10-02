@@ -5,9 +5,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTANetworkReachedEvent extends CSTAUnsolicited {
 	CSTAConnectionID connection;
 	CSTAExtendedDeviceID trunkUsed;
@@ -16,93 +13,91 @@ public final class CSTANetworkReachedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 62;
 
-	public static CSTANetworkReachedEvent decode(final InputStream in) {
-		final CSTANetworkReachedEvent _this = new CSTANetworkReachedEvent();
+	public static CSTANetworkReachedEvent decode(InputStream in) {
+		CSTANetworkReachedEvent _this = new CSTANetworkReachedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		connection = CSTAConnectionID.decode(memberStream);
-		trunkUsed = CSTAExtendedDeviceID.decode(memberStream);
-		calledDevice = CSTAExtendedDeviceID.decode(memberStream);
-		localConnectionInfo = ASNEnumerated.decode(memberStream);
-		cause = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.connection = CSTAConnectionID.decode(memberStream);
+		this.trunkUsed = CSTAExtendedDeviceID.decode(memberStream);
+		this.calledDevice = CSTAExtendedDeviceID.decode(memberStream);
+		this.localConnectionInfo = LocalConnectionState.decode(memberStream);
+		this.cause = CSTAEventCause.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(connection, memberStream);
-		ASNSequence.encode(trunkUsed, memberStream);
-		ASNSequence.encode(calledDevice, memberStream);
-		ASNEnumerated.encode(localConnectionInfo, memberStream);
-		ASNEnumerated.encode(cause, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.connection, memberStream);
+		CSTAExtendedDeviceID.encode(this.trunkUsed, memberStream);
+		CSTAExtendedDeviceID.encode(this.calledDevice, memberStream);
+		LocalConnectionState.encode(this.localConnectionInfo, memberStream);
+		CSTAEventCause.encode(this.cause, memberStream);
 	}
 
-	public CSTAExtendedDeviceID getCalledDevice() {
-		return calledDevice;
-	}
-
-	public short getCause() {
-		return cause;
-	}
-
-	public CSTAConnectionID getConnection() {
-		return connection;
-	}
-
-	public short getLocalConnectionInfo() {
-		return localConnectionInfo;
-	}
-
-	@Override
-	public int getPDU() {
-		return 62;
-	}
-
-	public CSTAExtendedDeviceID getTrunkUsed() {
-		return trunkUsed;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTANetworkReachedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAConnectionID.print(connection, "connection", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(trunkUsed, "trunkUsed", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(calledDevice, "calledDevice",
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAConnectionID.print(this.connection, "connection",
 				indent));
-		lines.addAll(LocalConnectionState.print(localConnectionInfo,
+		lines.addAll(CSTAExtendedDeviceID.print(this.trunkUsed, "trunkUsed",
+				indent));
+		lines.addAll(CSTAExtendedDeviceID.print(this.calledDevice,
+				"calledDevice", indent));
+		lines.addAll(LocalConnectionState.print(this.localConnectionInfo,
 				"localConnectionInfo", indent));
-		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
+		lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCalledDevice(final CSTAExtendedDeviceID calledDevice) {
+	public int getPDU() {
+		return 62;
+	}
+
+	public CSTAExtendedDeviceID getCalledDevice() {
+		return this.calledDevice;
+	}
+
+	public short getCause() {
+		return this.cause;
+	}
+
+	public CSTAConnectionID getConnection() {
+		return this.connection;
+	}
+
+	public short getLocalConnectionInfo() {
+		return this.localConnectionInfo;
+	}
+
+	public CSTAExtendedDeviceID getTrunkUsed() {
+		return this.trunkUsed;
+	}
+
+	public void setCalledDevice(CSTAExtendedDeviceID calledDevice) {
 		this.calledDevice = calledDevice;
 	}
 
-	public void setCause(final short cause) {
+	public void setCause(short cause) {
 		this.cause = cause;
 	}
 
-	public void setConnection(final CSTAConnectionID connection) {
+	public void setConnection(CSTAConnectionID connection) {
 		this.connection = connection;
 	}
 
-	public void setLocalConnectionInfo(final short localConnectionInfo) {
+	public void setLocalConnectionInfo(short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 
-	public void setTrunkUsed(final CSTAExtendedDeviceID trunkUsed) {
+	public void setTrunkUsed(CSTAExtendedDeviceID trunkUsed) {
 		this.trunkUsed = trunkUsed;
 	}
 }

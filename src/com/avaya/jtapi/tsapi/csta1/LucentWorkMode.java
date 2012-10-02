@@ -1,8 +1,7 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 public final class LucentWorkMode extends ASNEnumerated {
 	public static final short WM_NONE = -1;
@@ -11,8 +10,7 @@ public final class LucentWorkMode extends ASNEnumerated {
 	public static final short WM_AUTO_IN = 3;
 	public static final short WM_MANUAL_IN = 4;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -35,6 +33,6 @@ public final class LucentWorkMode extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

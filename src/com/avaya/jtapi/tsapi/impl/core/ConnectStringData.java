@@ -10,10 +10,8 @@ final class ConnectStringData {
 	public final Collection<InetSocketAddress> telephonyServers;
 	public final String url;
 
-	ConnectStringData(final String serverId, final String loginId,
-			final String password,
-			final Collection<InetSocketAddress> telephonyServers,
-			final String url) {
+	ConnectStringData(String serverId, String loginId, String password,
+			Collection<InetSocketAddress> telephonyServers, String url) {
 		this.serverId = serverId;
 		this.loginId = loginId;
 		this.password = password;
@@ -21,9 +19,8 @@ final class ConnectStringData {
 		this.url = url;
 	}
 
-	@Override
 	public String toString() {
-		return serverId + ";loginID=" + loginId + ";passwd=" + password
-				+ ";servers=" + telephonyServers;
+		return this.serverId + ";loginID=" + this.loginId + ";passwd="
+				+ this.password + ";servers=" + this.telephonyServers;
 	}
 }

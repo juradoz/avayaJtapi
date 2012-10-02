@@ -8,20 +8,17 @@ public class TsapiPlatformException extends PlatformException implements
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiPlatformException(final int _errorType, final int _errorCode,
-			final String s) {
-		super(s);
-		errorType = _errorType;
-		errorCode = _errorCode;
-	}
-
-	@Override
-	public int getErrorCode() {
-		return errorCode;
-	}
-
-	@Override
 	public int getErrorType() {
-		return errorType;
+		return this.errorType;
+	}
+
+	public int getErrorCode() {
+		return this.errorCode;
+	}
+
+	public TsapiPlatformException(int _errorType, int _errorCode, String s) {
+		super(s);
+		this.errorType = _errorType;
+		this.errorCode = _errorCode;
 	}
 }

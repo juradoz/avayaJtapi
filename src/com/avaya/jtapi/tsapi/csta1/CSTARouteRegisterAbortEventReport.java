@@ -5,55 +5,49 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-
 public final class CSTARouteRegisterAbortEventReport extends CSTAEventReport {
 	int routeRegisterReqID;
 	public static final int PDU = 82;
 
-	public static CSTARouteRegisterAbortEventReport decode(final InputStream in) {
-		final CSTARouteRegisterAbortEventReport _this = new CSTARouteRegisterAbortEventReport();
+	public static CSTARouteRegisterAbortEventReport decode(InputStream in) {
+		CSTARouteRegisterAbortEventReport _this = new CSTARouteRegisterAbortEventReport();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		routeRegisterReqID = ASNInteger.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.routeRegisterReqID = RouteRegisterReqID.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNInteger.encode(routeRegisterReqID, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		RouteRegisterReqID.encode(this.routeRegisterReqID, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 82;
-	}
-
-	public int getRouteRegisterReqID() {
-		return routeRegisterReqID;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRegisterAbortEventReport ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
-				indent));
+		lines.addAll(RouteRegisterReqID.print(this.routeRegisterReqID,
+				"routeRegisterReqID", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setRouteRegisterReqID(final int routeRegisterReqID) {
+	public int getPDU() {
+		return 82;
+	}
+
+	public int getRouteRegisterReqID() {
+		return this.routeRegisterReqID;
+	}
+
+	public void setRouteRegisterReqID(int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 }

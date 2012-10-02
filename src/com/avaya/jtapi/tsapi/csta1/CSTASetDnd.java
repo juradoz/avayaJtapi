@@ -1,71 +1,66 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public final class CSTASetDnd extends CSTARequest {
 	String device;
 	boolean doNotDisturb;
 	public static final int PDU = 45;
 
-	public static CSTASetDnd decode(final InputStream in) {
-		final CSTASetDnd _this = new CSTASetDnd();
+	public CSTASetDnd() {
+	}
+
+	public CSTASetDnd(String _device, boolean _doNotDisturb) {
+		this.device = _device;
+		this.doNotDisturb = _doNotDisturb;
+	}
+
+	public static CSTASetDnd decode(InputStream in) {
+		CSTASetDnd _this = new CSTASetDnd();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public CSTASetDnd() {
+	public void decodeMembers(InputStream memberStream) {
+		this.device = DeviceID.decode(memberStream);
+		this.doNotDisturb = ASNBoolean.decode(memberStream);
 	}
 
-	public CSTASetDnd(final String _device, final boolean _doNotDisturb) {
-		device = _device;
-		doNotDisturb = _doNotDisturb;
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
+		ASNBoolean.encode(this.doNotDisturb, memberStream);
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		device = ASNIA5String.decode(memberStream);
-		doNotDisturb = ASNBoolean.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
-		ASNBoolean.encode(doNotDisturb, memberStream);
-	}
-
-	public String getDevice() {
-		return device;
-	}
-
-	@Override
-	public int getPDU() {
-		return 45;
-	}
-
-	public boolean isDoNotDisturb() {
-		return doNotDisturb;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTASetDnd ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(device, "device", indent));
-		lines.addAll(ASNBoolean.print(doNotDisturb, "doNotDisturb", indent));
+		lines.addAll(DeviceID.print(this.device, "device", indent));
+		lines.addAll(ASNBoolean
+				.print(this.doNotDisturb, "doNotDisturb", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 45;
+	}
+
+	public String getDevice() {
+		return this.device;
+	}
+
+	public boolean isDoNotDisturb() {
+		return this.doNotDisturb;
 	}
 }

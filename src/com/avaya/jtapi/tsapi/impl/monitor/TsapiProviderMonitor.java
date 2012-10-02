@@ -1,20 +1,7 @@
 package com.avaya.jtapi.tsapi.impl.monitor;
 
-import java.util.Vector;
-
-import javax.telephony.Event;
-import javax.telephony.Provider;
-import javax.telephony.ProviderEvent;
-import javax.telephony.ProviderListener;
-import javax.telephony.ProviderObserver;
-import javax.telephony.events.ProvEv;
-import javax.telephony.privatedata.PrivateDataEvent;
-import javax.telephony.privatedata.PrivateDataProviderListener;
-import javax.telephony.privatedata.events.PrivateProvEv;
-
-import org.apache.log4j.Logger;
-
 import com.avaya.jtapi.tsapi.ITsapiEvent;
+import com.avaya.jtapi.tsapi.TSProvider;
 import com.avaya.jtapi.tsapi.impl.TsapiCreateObject;
 import com.avaya.jtapi.tsapi.impl.core.JtapiEventThreadManager;
 import com.avaya.jtapi.tsapi.impl.core.TSEvent;
@@ -30,6 +17,17 @@ import com.avaya.jtapi.tsapi.impl.events.provider.TsapiProviderInServiceEvent;
 import com.avaya.jtapi.tsapi.impl.events.provider.TsapiProviderOutOfServiceEvent;
 import com.avaya.jtapi.tsapi.impl.events.provider.TsapiProviderShutdownEvent;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
+import java.util.Vector;
+import javax.telephony.Event;
+import javax.telephony.Provider;
+import javax.telephony.ProviderEvent;
+import javax.telephony.ProviderListener;
+import javax.telephony.ProviderObserver;
+import javax.telephony.events.ProvEv;
+import javax.telephony.privatedata.PrivateDataEvent;
+import javax.telephony.privatedata.PrivateDataProviderListener;
+import javax.telephony.privatedata.events.PrivateProvEv;
+import org.apache.log4j.Logger;
 
 @SuppressWarnings("deprecation")
 public class TsapiProviderMonitor implements TsapiMonitor {
@@ -43,224 +41,159 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 	private final Object syncObject = new Object();
 	private final ProviderListener listener;
 
-	public TsapiProviderMonitor(final TSProviderImpl impl,
-			final ProviderListener _listener) {
-		listener = _listener;
-		observer = null;
-		provider = impl;
-		provider.addProviderMonitorThread(this);
+	public TsapiProviderMonitor(TSProviderImpl _provider,
+			ProviderObserver _observer) {
+		this.provider = _provider;
+		this.observer = _observer;
+
+		this.provider.addProviderMonitorThread(this);
+		this.listener = null;
 
 		deliverEvents(null, false);
 	}
 
-	public TsapiProviderMonitor(final TSProviderImpl _provider,
-			final ProviderObserver _observer) {
-		provider = _provider;
-		observer = _observer;
-
-		provider.addProviderMonitorThread(this);
-		listener = null;
+	public TsapiProviderMonitor(TSProviderImpl impl, ProviderListener _listener) {
+		this.listener = _listener;
+		this.observer = null;
+		this.provider = impl;
+		this.provider.addProviderMonitorThread(this);
 
 		deliverEvents(null, false);
 	}
 
-	private void addEv(final ProvEv event, final String tsEventLog) {
-		if (event instanceof PrivateProvEv
-				&& ((ITsapiEvent) event).getEventPackage() == 5) {
-			TsapiProviderMonitor.log.debug(tsEventLog + " for observer "
-					+ observer);
-
-			observerEventList.addElement(event);
-		} else if (((ITsapiEvent) event).getEventPackage() == 0) {
-			TsapiProviderMonitor.log.debug(tsEventLog + " for observer "
-					+ observer);
-
-			observerEventList.addElement(event);
-		} else
-			TsapiProviderMonitor.log.debug(tsEventLog + " ignored");
-	}
-
-	private void addEvent(final TsapiListenerEvent impl, final String tsEventLog) {
-		if (impl instanceof PrivateDataEvent
-				&& listener instanceof PrivateDataProviderListener)
-			listenerEventList.add(impl);
-		else if (impl instanceof ProviderEvent
-				&& listener instanceof ProviderListener)
-			listenerEventList.add(impl);
+	public Object getMonitor() {
+		if (this.listener != null) {
+			return this.listener;
+		}
+		return this.observer;
 	}
 
 	public synchronized void addReference() {
-		reference += 1L;
+		this.reference += 1L;
 	}
 
-	Provider createProvider(final TSProviderImpl tsProvider) {
-		if (tsProvider == null)
-			return null;
-		return (Provider) TsapiCreateObject.getTsapiObject(tsProvider, false);
-	}
-
-	private synchronized void deleteListenerReference(final int cause,
-			final Object privateData) {
-		String tsEventLog = null;
-		reference -= 1L;
-
-		TsapiProviderMonitor.log.debug("meta event BEGIN: cause (" + cause
-				+ ") metaCode (" + 136 + ")" + " for " + listener);
-		tsEventLog = "OBSERVATIONENDEDEVENT for " + provider;
-
-		final ProviderEventParams params = new ProviderEventParams(
-				createProvider(provider), 112, cause, null,
-				createProvider(provider), privateData);
-
-		addEvent(new ProviderEventImpl(params), tsEventLog);
-
-		if (privateData != null) {
-			tsEventLog = "PRIVATEEVENT for " + provider;
-			addEvent(new PrivateDataEventImpl(602, cause, null,
-					createProvider(provider), privateData), tsEventLog);
+	public void deleteReference(int cause, Object privateData) {
+		log.debug("Getting TsapiProviderMonitor lock to deliver deleteReference events for observer "
+				+ this.observer);
+		if (this.observer != null) {
+			deleteObserverReference(cause, privateData);
+		} else {
+			deleteListenerReference(cause, privateData);
 		}
-
-		TsapiProviderMonitor.log.debug("meta event END for " + listener
-				+ " eventList size=" + listenerEventList.size());
-
-		if (reference > 0L)
-			return;
-		provider.removeProviderMonitorThread(this);
+		JtapiEventThreadManager.execute(this);
 	}
 
-	private synchronized void deleteObserverReference(final int cause,
-			final Object privateData) {
+	private synchronized void deleteObserverReference(int cause,
+			Object privateData) {
 		String tsEventLog = null;
-		reference -= 1L;
+		this.reference -= 1L;
 
-		TsapiProviderMonitor.log.debug("meta event BEGIN: cause (" + cause
-				+ ") metaCode (" + 136 + ")" + " for " + observer);
-		tsEventLog = "OBSERVATIONENDEDEVENT for " + provider;
+		log.debug("meta event BEGIN: cause (" + cause + ") metaCode (" + 136
+				+ ")" + " for " + this.observer);
+		tsEventLog = "OBSERVATIONENDEDEVENT for " + this.provider;
 
-		synchronized (observerEventList) {
-			final int nextMetaEventIndex = observerEventList.size();
+		synchronized (this.observerEventList) {
+			int nextMetaEventIndex = this.observerEventList.size();
 
-			addEv(new TsapiProvObservationEndedEvent(createProvider(provider),
-					cause, privateData), tsEventLog);
+			addEv(new TsapiProvObservationEndedEvent(
+					createProvider(this.provider), cause, privateData),
+					tsEventLog);
 
-			((TsapiObserverEvent) observerEventList
+			((TsapiObserverEvent) this.observerEventList
 					.elementAt(nextMetaEventIndex)).setNewMetaEventFlag();
 		}
 
 		if (privateData != null) {
-			tsEventLog = "PRIVATEEVENT for " + provider;
-			addEv(new TsapiPrivateProviderEvent(createProvider(provider),
+			tsEventLog = "PRIVATEEVENT for " + this.provider;
+			addEv(new TsapiPrivateProviderEvent(createProvider(this.provider),
 					cause, 136, privateData), tsEventLog);
 		}
 
-		TsapiProviderMonitor.log.debug("meta event END for " + observer
-				+ " eventList size=" + observerEventList.size());
+		log.debug("meta event END for " + this.observer + " eventList size="
+				+ this.observerEventList.size());
 
-		if (reference > 0L)
-			return;
-		provider.removeProviderMonitorThread(this);
+		if (this.reference <= 0L) {
+			this.provider.removeProviderMonitorThread(this);
+		}
 	}
 
-	public void deleteReference(final int cause, final Object privateData) {
-		TsapiProviderMonitor.log
-				.debug("Getting TsapiProviderMonitor lock to deliver deleteReference events for observer "
-						+ observer);
-		if (observer != null)
-			deleteObserverReference(cause, privateData);
-		else
-			deleteListenerReference(cause, privateData);
-		JtapiEventThreadManager.execute(this);
+	private synchronized void deleteListenerReference(int cause,
+			Object privateData) {
+		String tsEventLog = null;
+		this.reference -= 1L;
+
+		log.debug("meta event BEGIN: cause (" + cause + ") metaCode (" + 136
+				+ ")" + " for " + this.listener);
+		tsEventLog = "OBSERVATIONENDEDEVENT for " + this.provider;
+
+		ProviderEventParams params = new ProviderEventParams(
+				createProvider(this.provider), 112, cause, null,
+				createProvider(this.provider), privateData);
+
+		addEvent(new ProviderEventImpl(params), tsEventLog);
+
+		if (privateData != null) {
+			tsEventLog = "PRIVATEEVENT for " + this.provider;
+			addEvent(new PrivateDataEventImpl(602, cause, null,
+					createProvider(this.provider), privateData), tsEventLog);
+		}
+
+		log.debug("meta event END for " + this.listener + " eventList size="
+				+ this.listenerEventList.size());
+
+		if (this.reference <= 0L) {
+			this.provider.removeProviderMonitorThread(this);
+		}
 	}
 
-	public void deliverEvents(final Vector<TSEvent> _eventList,
-			final boolean snapshot) {
-		TsapiProviderMonitor.log
-				.debug("Getting TsapiProviderMonitor lock to deliver events for observer "
-						+ observer);
-		if (_eventList == null || _eventList.size() == 0)
+	private void addEvent(TsapiListenerEvent impl, String tsEventLog) {
+		if (((impl instanceof PrivateDataEvent))
+				&& ((this.listener instanceof PrivateDataProviderListener))) {
+			this.listenerEventList.add(impl);
+		} else if (((impl instanceof ProviderEvent))
+				&& ((this.listener instanceof ProviderListener)))
+			this.listenerEventList.add(impl);
+	}
+
+	private void addEv(ProvEv event, String tsEventLog) {
+		if (((event instanceof PrivateProvEv))
+				&& (((ITsapiEvent) event).getEventPackage() == 5)) {
+			log.debug(tsEventLog + " for observer " + this.observer);
+
+			this.observerEventList.addElement(event);
+		} else if (((ITsapiEvent) event).getEventPackage() == 0) {
+			log.debug(tsEventLog + " for observer " + this.observer);
+
+			this.observerEventList.addElement(event);
+		} else {
+			log.debug(tsEventLog + " ignored");
+		}
+	}
+
+	public void deliverEvents(Vector<TSEvent> _eventList, boolean snapshot) {
+		log.debug("Getting TsapiProviderMonitor lock to deliver events for observer "
+				+ this.observer);
+		if ((_eventList == null) || (_eventList.size() == 0)) {
 			return;
+		}
 		synchronized (_eventList) {
-			if (observer != null)
+			if (this.observer != null) {
 				deliverObserverEvents(_eventList, snapshot);
-			else
+			} else {
 				deliverListenerEvents(_eventList, snapshot);
-			if (_eventList != null && _eventList.size() != 0)
+			}
+			if ((_eventList != null) && (_eventList.size() != 0))
 				JtapiEventThreadManager.execute(this);
 		}
 	}
 
-	protected synchronized void deliverListenerEvents(
-			final Vector<TSEvent> _eventList, final boolean snapshot) {
-		String tsEventLog = null;
-		if (_eventList == null)
-			return;
-		int cause;
-		if (snapshot)
-			cause = 110;
-		else
-			cause = 100;
-
-		Object privateData = null;
-
-		TsapiProviderMonitor.log.debug("meta event BEGIN: cause (" + cause
-				+ ") for " + listener);
-
-		for (int i = 0; i < _eventList.size(); ++i) {
-			final TSEvent ev = _eventList.elementAt(i);
-
-			privateData = ev.getPrivateData();
-			ProviderEventParams params = null;
-			switch (ev.getEventType()) {
-			case 1:
-				tsEventLog = "PROVIDERINSERVICEEVENT for "
-						+ ev.getEventTarget();
-
-				params = new ProviderEventParams(createProvider(provider), 111,
-						cause, null, createProvider(provider), privateData);
-
-				addEvent(new ProviderEventImpl(params), tsEventLog);
-				break;
-			case 2:
-				tsEventLog = "PROVIDEROUTOFSERVICEEVENT for "
-						+ ev.getEventTarget();
-
-				params = new ProviderEventParams(createProvider(provider), 113,
-						cause, null, createProvider(provider), privateData);
-
-				addEvent(new ProviderEventImpl(params), tsEventLog);
-				break;
-			case 3:
-				tsEventLog = "PROVIDERSHUTDOWNEVENT for " + ev.getEventTarget();
-
-				params = new ProviderEventParams(createProvider(provider), 114,
-						cause, null, createProvider(provider), privateData);
-
-				addEvent(new ProviderEventImpl(params), tsEventLog);
-				break;
-			case 9999:
-				tsEventLog = "PRIVATEEVENT for " + ev.getEventTarget();
-
-				addEvent(new PrivateDataEventImpl(602, cause, null,
-						createProvider(provider), privateData), tsEventLog);
-			}
-		}
-
-		final int size = listenerEventList.size();
-		TsapiProviderMonitor.log.debug("meta event END for " + listener
-				+ " eventList size=" + size);
-
-		if (size != 0)
-			return;
-		TsapiProviderMonitor.log.debug("no events to send to " + listener);
-	}
-
 	protected synchronized void deliverObserverEvents(
-			final Vector<TSEvent> _eventList, final boolean snapshot) {
+			Vector<TSEvent> _eventList, boolean snapshot) {
 		String tsEventLog = null;
 		if (_eventList == null)
 			return;
-		int cause;
 		int metaCode;
+		int cause;
 		if (snapshot) {
 			metaCode = 135;
 			cause = 110;
@@ -269,22 +202,22 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 			cause = 100;
 		}
 
-		final int nextMetaEventIndex = observerEventList.size();
+		int nextMetaEventIndex = this.observerEventList.size();
 
 		Object privateData = null;
 
-		TsapiProviderMonitor.log.debug("meta event BEGIN: cause (" + cause
-				+ ") metaCode (" + metaCode + ")" + " for " + observer);
+		log.debug("meta event BEGIN: cause (" + cause + ") metaCode ("
+				+ metaCode + ")" + " for " + this.observer);
 
-		for (int i = 0; i < _eventList.size(); ++i) {
-			final TSEvent ev = _eventList.elementAt(i);
+		for (int i = 0; i < _eventList.size(); i++) {
+			TSEvent ev = (TSEvent) _eventList.elementAt(i);
 
 			privateData = ev.getPrivateData();
 
 			switch (ev.getEventType()) {
 			case 1:
 				tsEventLog = "PROVIDERINSERVICEEVENT for "
-						+ ev.getEventTarget();
+						+ (TSProvider) ev.getEventTarget();
 
 				addEv(new TsapiProviderInServiceEvent(
 						createProvider((TSProviderImpl) ev.getEventTarget()),
@@ -293,7 +226,7 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 				break;
 			case 2:
 				tsEventLog = "PROVIDEROUTOFSERVICEEVENT for "
-						+ ev.getEventTarget();
+						+ (TSProvider) ev.getEventTarget();
 
 				addEv(new TsapiProviderOutOfServiceEvent(
 						createProvider((TSProviderImpl) ev.getEventTarget()),
@@ -301,7 +234,8 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 
 				break;
 			case 3:
-				tsEventLog = "PROVIDERSHUTDOWNEVENT for " + ev.getEventTarget();
+				tsEventLog = "PROVIDERSHUTDOWNEVENT for "
+						+ (TSProvider) ev.getEventTarget();
 
 				addEv(new TsapiProviderShutdownEvent(
 						createProvider((TSProviderImpl) ev.getEventTarget()),
@@ -309,7 +243,8 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 
 				break;
 			case 9999:
-				tsEventLog = "PRIVATEEVENT for " + ev.getEventTarget();
+				tsEventLog = "PRIVATEEVENT for "
+						+ (TSProvider) ev.getEventTarget();
 
 				addEv(new TsapiPrivateProviderEvent(
 						createProvider((TSProviderImpl) ev.getEventTarget()),
@@ -318,125 +253,184 @@ public class TsapiProviderMonitor implements TsapiMonitor {
 
 		}
 
-		synchronized (observerEventList) {
-			TsapiProviderMonitor.log.debug("meta event END for " + observer
-					+ " eventList size=" + observerEventList.size());
+		synchronized (this.observerEventList) {
+			log.debug("meta event END for " + this.observer
+					+ " eventList size=" + this.observerEventList.size());
 
-			if (observerEventList.size() == 0) {
-				TsapiProviderMonitor.log.debug("no events to send to "
-						+ observer);
+			if (this.observerEventList.size() == 0) {
+				log.debug("no events to send to " + this.observer);
 				return;
 			}
 
-			if (nextMetaEventIndex < observerEventList.size())
-				((TsapiObserverEvent) observerEventList
+			if (nextMetaEventIndex < this.observerEventList.size()) {
+				((TsapiObserverEvent) this.observerEventList
 						.elementAt(nextMetaEventIndex)).setNewMetaEventFlag();
+			}
 		}
 	}
 
-	public Object getMonitor() {
-		if (listener != null)
-			return listener;
-		return observer;
+	protected synchronized void deliverListenerEvents(
+			Vector<TSEvent> _eventList, boolean snapshot) {
+		String tsEventLog = null;
+		if (_eventList == null)
+			return;
+		int cause;
+		if (snapshot) {
+			cause = 110;
+		} else {
+			cause = 100;
+		}
+
+		Object privateData = null;
+
+		log.debug("meta event BEGIN: cause (" + cause + ") for "
+				+ this.listener);
+
+		for (int i = 0; i < _eventList.size(); i++) {
+			TSEvent ev = (TSEvent) _eventList.elementAt(i);
+
+			privateData = ev.getPrivateData();
+			ProviderEventParams params = null;
+			switch (ev.getEventType()) {
+			case 1:
+				tsEventLog = "PROVIDERINSERVICEEVENT for "
+						+ (TSProvider) ev.getEventTarget();
+
+				params = new ProviderEventParams(createProvider(this.provider),
+						111, cause, null, createProvider(this.provider),
+						privateData);
+
+				addEvent(new ProviderEventImpl(params), tsEventLog);
+				break;
+			case 2:
+				tsEventLog = "PROVIDEROUTOFSERVICEEVENT for "
+						+ (TSProvider) ev.getEventTarget();
+
+				params = new ProviderEventParams(createProvider(this.provider),
+						113, cause, null, createProvider(this.provider),
+						privateData);
+
+				addEvent(new ProviderEventImpl(params), tsEventLog);
+				break;
+			case 3:
+				tsEventLog = "PROVIDERSHUTDOWNEVENT for "
+						+ (TSProvider) ev.getEventTarget();
+
+				params = new ProviderEventParams(createProvider(this.provider),
+						114, cause, null, createProvider(this.provider),
+						privateData);
+
+				addEvent(new ProviderEventImpl(params), tsEventLog);
+				break;
+			case 9999:
+				tsEventLog = "PRIVATEEVENT for "
+						+ (TSProvider) ev.getEventTarget();
+
+				addEvent(new PrivateDataEventImpl(602, cause, null,
+						createProvider(this.provider), privateData), tsEventLog);
+			}
+		}
+
+		int size = this.listenerEventList.size();
+		log.debug("meta event END for " + this.listener + " eventList size="
+				+ size);
+
+		if (size == 0) {
+			log.debug("no events to send to " + this.listener);
+		}
+	}
+
+	Provider createProvider(TSProviderImpl tsProvider) {
+		if (tsProvider == null) {
+			return null;
+		}
+		return (Provider) TsapiCreateObject.getTsapiObject(tsProvider, false);
+	}
+
+	public void run() {
+		TsapiTrace.traceEntry("run[]", this);
+		synchronized (this.syncObject) {
+			if (this.listener != null) {
+				notifyListener();
+			} else {
+				notifyObserver();
+			}
+		}
+		TsapiTrace.traceExit("run[]", this);
 	}
 
 	private void notifyListener() {
 		Event[] eventArray = null;
-		synchronized (listenerEventList) {
-			TsapiProviderMonitor.log.debug("Got this for ProviderListener - "
-					+ listener);
-			eventArray = new Event[listenerEventList.size()];
-			listenerEventList.copyInto(eventArray);
-			listenerEventList.clear();
+		synchronized (this.listenerEventList) {
+			log.debug("Got this for ProviderListener - " + this.listener);
+			eventArray = new Event[this.listenerEventList.size()];
+			this.listenerEventList.copyInto(eventArray);
+			this.listenerEventList.clear();
 		}
-		TsapiProviderMonitor.log.debug("calling callback in " + listener);
+		log.debug("calling callback in " + this.listener);
 		try {
-			for (final Event event : eventArray)
+			for (Event event : eventArray)
 				switch (event.getID()) {
 				case 111:
-					TsapiProviderMonitor.log
-							.debug("calling providerInService in " + listener);
-					listener.providerInService((ProviderEvent) event);
-					TsapiProviderMonitor.log
-							.debug("returned from providerInService in "
-									+ listener);
+					log.debug("calling providerInService in " + this.listener);
+					this.listener.providerInService((ProviderEvent) event);
+					log.debug("returned from providerInService in "
+							+ this.listener);
 					break;
 				case 113:
-					TsapiProviderMonitor.log
-							.debug("calling providerOutOfService in "
-									+ listener);
-					listener.providerOutOfService((ProviderEvent) event);
-					TsapiProviderMonitor.log
-							.debug("returned from providerOutOfService in "
-									+ listener);
+					log.debug("calling providerOutOfService in "
+							+ this.listener);
+					this.listener.providerOutOfService((ProviderEvent) event);
+					log.debug("returned from providerOutOfService in "
+							+ this.listener);
 					break;
 				case 114:
-					TsapiProviderMonitor.log
-							.debug("calling providerShutdown in " + listener);
-					listener.providerShutdown((ProviderEvent) event);
-					TsapiProviderMonitor.log
-							.debug("returned from providerShutdown in "
-									+ listener);
+					log.debug("calling providerShutdown in " + this.listener);
+					this.listener.providerShutdown((ProviderEvent) event);
+					log.debug("returned from providerShutdown in "
+							+ this.listener);
 					break;
 				case 112:
-					TsapiProviderMonitor.log
-							.debug("calling providerEventTransmissionEnded in "
-									+ listener);
-					listener.providerEventTransmissionEnded((ProviderEvent) event);
-					TsapiProviderMonitor.log
-							.debug("returned from providerEventTransmissionEnded in "
-									+ listener);
+					log.debug("calling providerEventTransmissionEnded in "
+							+ this.listener);
+					this.listener
+							.providerEventTransmissionEnded((ProviderEvent) event);
+					log.debug("returned from providerEventTransmissionEnded in "
+							+ this.listener);
 					break;
 				case 602:
-					if (listener instanceof PrivateDataProviderListener) {
-						TsapiProviderMonitor.log
-								.debug("calling providerPrivateData in "
-										+ listener);
-						((PrivateDataProviderListener) listener)
+					if ((this.listener instanceof PrivateDataProviderListener)) {
+						log.debug("calling providerPrivateData in "
+								+ this.listener);
+						((PrivateDataProviderListener) this.listener)
 								.providerPrivateData((PrivateDataEvent) event);
-						TsapiProviderMonitor.log
-								.debug("returned from providerPrivateData in "
-										+ listener);
+						log.debug("returned from providerPrivateData in "
+								+ this.listener);
 					}
+					break;
 				}
-		} catch (final Exception e) {
-			TsapiProviderMonitor.log.error("EXCEPTION thrown by callback in "
-					+ listener + " - " + e.getMessage(), e);
+		} catch (Exception e) {
+			log.error("EXCEPTION thrown by callback in " + this.listener
+					+ " - " + e.getMessage(), e);
 		}
-		TsapiProviderMonitor.log.debug("returned from callback in " + listener);
+		log.debug("returned from callback in " + this.listener);
 	}
 
 	private void notifyObserver() {
 		ProvEv[] eventArray = null;
-		synchronized (observerEventList) {
-			TsapiProviderMonitor.log.debug("Got this for ProviderObserver - "
-					+ observer);
-			eventArray = new ProvEv[observerEventList.size()];
-			observerEventList.copyInto(eventArray);
-			observerEventList.clear();
+		synchronized (this.observerEventList) {
+			log.debug("Got this for ProviderObserver - " + this.observer);
+			eventArray = new ProvEv[this.observerEventList.size()];
+			this.observerEventList.copyInto(eventArray);
+			this.observerEventList.clear();
 		}
-		TsapiProviderMonitor.log.debug("calling providerChangedEvent in "
-				+ observer);
+		log.debug("calling providerChangedEvent in " + this.observer);
 		try {
-			observer.providerChangedEvent(eventArray);
-		} catch (final Exception e) {
-			TsapiProviderMonitor.log.error(
-					"EXCEPTION thrown by providerChangedEvent in " + observer
-							+ " - " + e.getMessage(), e);
+			this.observer.providerChangedEvent(eventArray);
+		} catch (Exception e) {
+			log.error("EXCEPTION thrown by providerChangedEvent in "
+					+ this.observer + " - " + e.getMessage(), e);
 		}
-		TsapiProviderMonitor.log.debug("returned from providerChangedEvent in "
-				+ observer);
-	}
-
-	@Override
-	public void run() {
-		TsapiTrace.traceEntry("run[]", this);
-		synchronized (syncObject) {
-			if (listener != null)
-				notifyListener();
-			else
-				notifyObserver();
-		}
-		TsapiTrace.traceExit("run[]", this);
+		log.debug("returned from providerChangedEvent in " + this.observer);
 	}
 }

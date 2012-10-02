@@ -7,8 +7,10 @@ public abstract interface LucentAddress extends ITsapiAddress {
 	public static final int MWI_LWC = 134217728;
 	public static final int MWI_CTI = 268435456;
 
-	public abstract String getDirectoryName();
-
 	public abstract int getMessageWaitingBits()
 			throws TsapiMethodNotSupportedException;
+
+	public abstract String getDirectoryName();
+
+	public abstract boolean isOnSwitch();
 }

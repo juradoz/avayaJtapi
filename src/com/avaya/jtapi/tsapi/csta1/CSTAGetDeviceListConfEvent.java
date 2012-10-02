@@ -1,12 +1,10 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class CSTAGetDeviceListConfEvent extends CSTAConfirmation {
 	short driverSdbLevel;
@@ -17,80 +15,77 @@ public final class CSTAGetDeviceListConfEvent extends CSTAConfirmation {
 	public static final int NO_SDB_CHECKING = -1;
 	public static final int ACS_ONLY = 1;
 
-	public static CSTAGetDeviceListConfEvent decode(final InputStream in) {
-		final CSTAGetDeviceListConfEvent _this = new CSTAGetDeviceListConfEvent();
+	public static CSTAGetDeviceListConfEvent decode(InputStream in) {
+		CSTAGetDeviceListConfEvent _this = new CSTAGetDeviceListConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		driverSdbLevel = ASNEnumerated.decode(memberStream);
-		level = ASNEnumerated.decode(memberStream);
-		index = ASNInteger.decode(memberStream);
-		devList = DeviceList.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		SDBLevel.encode(this.driverSdbLevel, memberStream);
+		CSTALevel.encode(this.level, memberStream);
+		ASNInteger.encode(this.index, memberStream);
+		DeviceList.encode(this.devList, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(driverSdbLevel, memberStream);
-		ASNEnumerated.encode(level, memberStream);
-		ASNInteger.encode(index, memberStream);
-		DeviceList.encode(devList, memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.driverSdbLevel = SDBLevel.decode(memberStream);
+		this.level = CSTALevel.decode(memberStream);
+		this.index = ASNInteger.decode(memberStream);
+		this.devList = DeviceList.decode(memberStream);
 	}
 
-	public String[] getDevList() {
-		return devList;
-	}
-
-	public short getDriverSdbLevel() {
-		return driverSdbLevel;
-	}
-
-	public int getIndex() {
-		return index;
-	}
-
-	public short getLevel() {
-		return level;
-	}
-
-	@Override
-	public int getPDU() {
-		return 127;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAGetDeviceListConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(SDBLevel.print(driverSdbLevel, "driverSdbLevel", indent));
-		lines.addAll(CSTALevel.print(level, "level", indent));
-		lines.addAll(ASNInteger.print(index, "index", indent));
-		lines.addAll(DeviceList.print(devList, "devList", indent));
+		lines.addAll(SDBLevel.print(this.driverSdbLevel, "driverSdbLevel",
+				indent));
+		lines.addAll(CSTALevel.print(this.level, "level", indent));
+		lines.addAll(ASNInteger.print(this.index, "index", indent));
+		lines.addAll(DeviceList.print(this.devList, "devList", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDevList(final String[] devList) {
+	public int getPDU() {
+		return 127;
+	}
+
+	public String[] getDevList() {
+		return this.devList;
+	}
+
+	public void setDevList(String[] devList) {
 		this.devList = devList;
 	}
 
-	public void setDriverSdbLevel(final short driverSdbLevel) {
+	public short getDriverSdbLevel() {
+		return this.driverSdbLevel;
+	}
+
+	public void setDriverSdbLevel(short driverSdbLevel) {
 		this.driverSdbLevel = driverSdbLevel;
 	}
 
-	public void setIndex(final int index) {
+	public int getIndex() {
+		return this.index;
+	}
+
+	public void setIndex(int index) {
 		this.index = index;
 	}
 
-	public void setLevel(final short level) {
+	public short getLevel() {
+		return this.level;
+	}
+
+	public void setLevel(short level) {
 		this.level = level;
 	}
 }

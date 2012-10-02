@@ -4,8 +4,8 @@ public class LucentAgentStateInfo {
 	public int state;
 	public int workMode;
 
-	public LucentAgentStateInfo(final int _state, final int _workMode) {
-		state = _state;
-		workMode = _workMode;
+	public LucentAgentStateInfo(int _state, int _workMode) {
+		this.state = _state;
+		this.workMode = _workMode;
 	}
 }

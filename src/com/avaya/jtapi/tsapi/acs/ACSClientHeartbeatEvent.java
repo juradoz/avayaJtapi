@@ -7,28 +7,25 @@ import java.util.Collection;
 public final class ACSClientHeartbeatEvent extends ACSUnsolicited {
 	public static final int PDU = 16;
 
-	public static ACSClientHeartbeatEvent decode(final InputStream in) {
-		final ACSClientHeartbeatEvent _this = new ACSClientHeartbeatEvent();
+	public static ACSClientHeartbeatEvent decode(InputStream in) {
+		ACSClientHeartbeatEvent _this = new ACSClientHeartbeatEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
+	public void decodeMembers(InputStream memberStream) {
 	}
 
-	@Override
-	public int getPDU() {
-		return 16;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("ACSClientHeartbeatEvent ::=");
 		lines.add("{");
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 16;
 	}
 }

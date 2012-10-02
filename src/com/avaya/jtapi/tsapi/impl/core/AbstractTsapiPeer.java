@@ -1,21 +1,16 @@
 package com.avaya.jtapi.tsapi.impl.core;
 
-import java.util.Vector;
-
 import com.avaya.jtapi.tsapi.tsapiInterface.Tsapi;
 import com.avaya.jtapi.tsapi.tsapiInterface.TsapiVendor;
+import java.util.Vector;
 
 public abstract class AbstractTsapiPeer {
-	protected Vector<TsapiVendor> vendors;
+	protected Vector<TsapiVendor> vendors = null;
 
-	public AbstractTsapiPeer() {
-		vendors = null;
-	}
-
-	public void addVendor(final String name, final String versions) {
-		if (vendors == null)
-			vendors = new Vector<TsapiVendor>();
-		vendors.addElement(new TsapiVendor(name, versions));
+	public void addVendor(String name, String versions) {
+		if (this.vendors == null)
+			this.vendors = new Vector<TsapiVendor>();
+		this.vendors.addElement(new TsapiVendor(name, versions));
 	}
 
 	public String[] getServices() {

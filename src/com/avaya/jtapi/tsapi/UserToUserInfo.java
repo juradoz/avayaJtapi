@@ -4,34 +4,34 @@ public class UserToUserInfo {
 	protected short type;
 	protected byte[] data;
 
-	public UserToUserInfo(final byte[] _data) {
-		type = 0;
-		data = _data;
+	public UserToUserInfo(String _data) {
+		this.type = 4;
+		this.data = _data.getBytes();
 	}
 
-	public UserToUserInfo(final byte[] _data, final short _type) {
-		type = _type;
-		data = _data;
-	}
-
-	public UserToUserInfo(final String _data) {
-		type = 4;
-		data = _data.getBytes();
-	}
-
-	public byte[] getBytes() {
-		return data;
+	public UserToUserInfo(byte[] _data) {
+		this.type = 0;
+		this.data = _data;
 	}
 
 	public String getString() {
-		return new String(data);
+		return new String(this.data);
 	}
 
-	public short getType() {
-		return type;
+	public byte[] getBytes() {
+		return this.data;
 	}
 
 	public boolean isAscii() {
-		return type == 4;
+		return this.type == 4;
+	}
+
+	public UserToUserInfo(byte[] _data, short _type) {
+		this.type = _type;
+		this.data = _data;
+	}
+
+	public short getType() {
+		return this.type;
 	}
 }

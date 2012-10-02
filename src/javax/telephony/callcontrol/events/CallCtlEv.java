@@ -3,7 +3,6 @@ package javax.telephony.callcontrol.events;
 import javax.telephony.events.Ev;
 
 /** @deprecated */
-@Deprecated
 public abstract interface CallCtlEv extends Ev {
 	public static final int CAUSE_ALTERNATE = 202;
 	public static final int CAUSE_BUSY = 203;

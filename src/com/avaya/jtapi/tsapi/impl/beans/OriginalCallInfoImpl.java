@@ -16,66 +16,59 @@ public class OriginalCallInfoImpl implements OriginalCallInfo {
 	private ITsapiAddress calledDevice;
 	private TsapiTrunk trunk;
 
-	@Override
-	public ITsapiAddress getCalledDevice() {
-		return calledDevice;
-	}
-
-	@Override
-	public ITsapiAddress getCallingDevice() {
-		return callingDevice;
-	}
-
-	@Override
-	public LookaheadInfo getLookaheadInfo() {
-		return lookaheadInfo;
-	}
-
-	@Override
 	public short getReason() {
-		return reason;
+		return this.reason;
 	}
 
-	@Override
+	public ITsapiAddress getCallingDevice() {
+		return this.callingDevice;
+	}
+
+	public ITsapiAddress getCalledDevice() {
+		return this.calledDevice;
+	}
+
 	public TsapiTrunk getTrunk() {
-		return trunk;
+		return this.trunk;
 	}
 
-	@Override
-	public UserEnteredCode getUserEnteredCode() {
-		return userEnteredCode;
-	}
-
-	@Override
 	public UserToUserInfo getUserToUserInfo() {
-		return userInfo;
+		return this.userInfo;
 	}
 
-	public void setCalledDevice(final ITsapiAddress _dev) {
-		calledDevice = _dev;
+	public LookaheadInfo getLookaheadInfo() {
+		return this.lookaheadInfo;
 	}
 
-	public void setCallingDevice(final ITsapiAddress _dev) {
-		callingDevice = _dev;
+	public UserEnteredCode getUserEnteredCode() {
+		return this.userEnteredCode;
 	}
 
-	public void setLookaheadInfo(final LookaheadInfo _lookaheadInfo) {
-		lookaheadInfo = _lookaheadInfo;
+	public void setReason(short _reason) {
+		this.reason = _reason;
 	}
 
-	public void setReason(final short _reason) {
-		reason = _reason;
+	public void setLookaheadInfo(LookaheadInfo _lookaheadInfo) {
+		this.lookaheadInfo = _lookaheadInfo;
 	}
 
-	public void setTrunk(final TsapiTrunk _trunk) {
-		trunk = _trunk;
+	public void setUserEnteredCode(UserEnteredCode _userEnteredCode) {
+		this.userEnteredCode = _userEnteredCode;
 	}
 
-	public void setUserEnteredCode(final UserEnteredCode _userEnteredCode) {
-		userEnteredCode = _userEnteredCode;
+	public void setUserInfo(UserToUserInfo _userInfo) {
+		this.userInfo = _userInfo;
 	}
 
-	public void setUserInfo(final UserToUserInfo _userInfo) {
-		userInfo = _userInfo;
+	public void setCallingDevice(ITsapiAddress _dev) {
+		this.callingDevice = _dev;
+	}
+
+	public void setCalledDevice(ITsapiAddress _dev) {
+		this.calledDevice = _dev;
+	}
+
+	public void setTrunk(TsapiTrunk _trunk) {
+		this.trunk = _trunk;
 	}
 }

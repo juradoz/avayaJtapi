@@ -1,13 +1,10 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
 
 public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 		HasUCID {
@@ -16,106 +13,99 @@ public class LucentV5EstablishedEvent extends LucentEstablishedEvent implements
 	boolean flexibleBilling;
 	static final int PDU = 81;
 
-	public static LucentEstablishedEvent decode(final InputStream in) {
-		final LucentV5EstablishedEvent _this = new LucentV5EstablishedEvent();
+	public static LucentEstablishedEvent decode(InputStream in) {
+		LucentV5EstablishedEvent _this = new LucentV5EstablishedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
+	public void decodeMembers(InputStream memberStream) {
+		super.decodeMembers(memberStream);
+		this.ucid = UCID.decode(memberStream);
+		this.callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
+		this.flexibleBilling = ASNBoolean.decode(memberStream);
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		super.encodeMembers(memberStream);
+		UCID.encode(this.ucid, memberStream);
+		CSTACallOriginatorInfo.encode(this.callOriginatorInfo, memberStream);
+		ASNBoolean.encode(this.flexibleBilling, memberStream);
+	}
+
+	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
 		return LucentV5LookaheadInfo.decode(memberStream);
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		super.decodeMembers(memberStream);
-		ucid = ASNIA5String.decode(memberStream);
-		callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
-		flexibleBilling = ASNBoolean.decode(memberStream);
+	public void encodeLookahead(LucentLookaheadInfo lookaheadInfo,
+			OutputStream memberStream) {
+		LucentV5LookaheadInfo.encode(lookaheadInfo, memberStream);
 	}
 
-	@Override
-	public LucentOriginalCallInfo decodeOCI(final InputStream memberStream) {
+	public LucentOriginalCallInfo decodeOCI(InputStream memberStream) {
 		return LucentV5OriginalCallInfo.decode(memberStream);
 	}
 
-	@Override
-	public void encodeLookahead(final LucentLookaheadInfo lookaheadInfo,
-			final OutputStream memberStream) {
-		ASNSequence.encode(lookaheadInfo, memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		super.encodeMembers(memberStream);
-		ASNIA5String.encode(ucid, memberStream);
-		ASNSequence.encode(callOriginatorInfo, memberStream);
-		ASNBoolean.encode(flexibleBilling, memberStream);
-	}
-
-	public CSTACallOriginatorInfo getCallOriginatorInfo() {
-		return callOriginatorInfo;
-	}
-
-	@Override
-	public int getPDU() {
-		return 81;
-	}
-
-	@Override
-	public String getUcid() {
-		return ucid;
-	}
-
-	public boolean isFlexibleBilling() {
-		return flexibleBilling;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV5EstablishedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(trunkGroup, "trunkGroup", indent));
-		lines.addAll(ASNIA5String.print(trunkMember, "trunkMember", indent));
-		lines.addAll(ASNIA5String.print(split_asn, "split", indent));
-		lines.addAll(LucentLookaheadInfo.print(lookaheadInfo, "lookaheadInfo",
+		lines.addAll(DeviceID.print(this.trunkGroup, "trunkGroup", indent));
+		lines.addAll(DeviceID.print(this.trunkMember, "trunkMember", indent));
+		lines.addAll(DeviceID.print(this.split_asn, "split", indent));
+		lines.addAll(LucentV5LookaheadInfo.print(
+				(LucentV5LookaheadInfo) this.lookaheadInfo, "lookaheadInfo",
 				indent));
-		lines.addAll(LucentUserEnteredCode.print(userEnteredCode,
+		lines.addAll(LucentUserEnteredCode.print(this.userEnteredCode,
 				"userEnteredCode", indent));
-		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
-		lines.addAll(LucentReasonCode.print(reason, "reason", indent));
+		lines.addAll(LucentUserToUserInfo.print(this.userInfo, "userInfo",
+				indent));
+		lines.addAll(LucentReasonCode.print(this.reason, "reason", indent));
 		lines.addAll(LucentV5OriginalCallInfo.print(
-				(LucentV5OriginalCallInfo) originalCallInfo,
+				(LucentV5OriginalCallInfo) this.originalCallInfo,
 				"originalCallInfo", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(distributingDevice_asn,
+		lines.addAll(CSTAExtendedDeviceID.print(this.distributingDevice_asn,
 				"distributingDevice", indent));
-		lines.addAll(ASNIA5String.print(ucid, "ucid", indent));
-		lines.addAll(CSTACallOriginatorInfo.print(callOriginatorInfo,
+		lines.addAll(UCID.print(this.ucid, "ucid", indent));
+		lines.addAll(CSTACallOriginatorInfo.print(this.callOriginatorInfo,
 				"callOriginatorInfo", indent));
-		lines.addAll(ASNBoolean.print(flexibleBilling, "flexibleBilling",
+		lines.addAll(ASNBoolean.print(this.flexibleBilling, "flexibleBilling",
 				indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCallOriginatorInfo(
-			final CSTACallOriginatorInfo callOriginatorInfo) {
+	public int getPDU() {
+		return 81;
+	}
+
+	public CSTACallOriginatorInfo getCallOriginatorInfo() {
+		return this.callOriginatorInfo;
+	}
+
+	public boolean isFlexibleBilling() {
+		return this.flexibleBilling;
+	}
+
+	public String getUcid() {
+		return this.ucid;
+	}
+
+	public void setCallOriginatorInfo(CSTACallOriginatorInfo callOriginatorInfo) {
 		this.callOriginatorInfo = callOriginatorInfo;
 	}
 
-	public void setFlexibleBilling(final boolean flexibleBilling) {
+	public void setFlexibleBilling(boolean flexibleBilling) {
 		this.flexibleBilling = flexibleBilling;
 	}
 
-	public void setUcid(final String ucid) {
+	public void setUcid(String ucid) {
 		this.ucid = ucid;
 	}
 }

@@ -1,15 +1,13 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNInteger;
+import java.util.Collection;
 
 public final class RetryValue extends ASNInteger {
 	public static final short noListAvailable = -1;
 	public static final short noCountAvailable = -2;
 
-	public static Collection<String> print(final int value, final String name,
-			final String indent) {
+	public static Collection<String> print(int value, String name, String indent) {
 		String str;
 		switch (value) {
 		case -1:
@@ -22,6 +20,6 @@ public final class RetryValue extends ASNInteger {
 			str = String.valueOf(value);
 		}
 
-		return ASNInteger.print(str, name, indent);
+		return print(str, name, indent);
 	}
 }

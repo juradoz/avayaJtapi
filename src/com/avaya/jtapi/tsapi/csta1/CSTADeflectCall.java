@@ -5,74 +5,68 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class CSTADeflectCall extends CSTARequest {
 	CSTAConnectionID deflectCall;
 	String calledDevice;
 	public static final int PDU = 15;
 
-	public static CSTADeflectCall decode(final InputStream in) {
-		final CSTADeflectCall _this = new CSTADeflectCall();
+	public CSTADeflectCall() {
+	}
+
+	public CSTADeflectCall(CSTAConnectionID _deflectCall, String _calledDevice) {
+		this.deflectCall = _deflectCall;
+		this.calledDevice = _calledDevice;
+	}
+
+	public static CSTADeflectCall decode(InputStream in) {
+		CSTADeflectCall _this = new CSTADeflectCall();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public CSTADeflectCall() {
+	public void decodeMembers(InputStream memberStream) {
+		this.deflectCall = CSTAConnectionID.decode(memberStream);
+		this.calledDevice = DeviceID.decode(memberStream);
 	}
 
-	public CSTADeflectCall(final CSTAConnectionID _deflectCall,
-			final String _calledDevice) {
-		deflectCall = _deflectCall;
-		calledDevice = _calledDevice;
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.deflectCall, memberStream);
+		DeviceID.encode(this.calledDevice, memberStream);
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		deflectCall = CSTAConnectionID.decode(memberStream);
-		calledDevice = ASNIA5String.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(deflectCall, memberStream);
-		ASNIA5String.encode(calledDevice, memberStream);
-	}
-
-	public String getCalledDevice() {
-		return calledDevice;
-	}
-
-	public CSTAConnectionID getDeflectCall() {
-		return deflectCall;
-	}
-
-	@Override
-	public int getPDU() {
-		return 15;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTADeflectCall ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAConnectionID.print(deflectCall, "deflectCall", indent));
-		lines.addAll(ASNIA5String.print(calledDevice, "calledDevice", indent));
+		lines.addAll(CSTAConnectionID.print(this.deflectCall, "deflectCall",
+				indent));
+		lines.addAll(DeviceID.print(this.calledDevice, "calledDevice", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCalledDevice(final String _calledDevice) {
-		calledDevice = _calledDevice;
+	public int getPDU() {
+		return 15;
 	}
 
-	public void setDeflectCall(final CSTAConnectionID _deflectCall) {
-		deflectCall = _deflectCall;
+	public String getCalledDevice() {
+		return this.calledDevice;
+	}
+
+	public CSTAConnectionID getDeflectCall() {
+		return this.deflectCall;
+	}
+
+	public void setCalledDevice(String _calledDevice) {
+		this.calledDevice = _calledDevice;
+	}
+
+	public void setDeflectCall(CSTAConnectionID _deflectCall) {
+		this.deflectCall = _deflectCall;
 	}
 }

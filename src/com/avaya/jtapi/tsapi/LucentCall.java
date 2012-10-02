@@ -21,19 +21,19 @@ public abstract interface LucentCall extends ITsapiCall, LucentCallInfo {
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException;
 
-	public abstract Connection[] connectPredictive(
-			LucentTerminal paramLucentTerminal,
-			LucentAddress paramLucentAddress, String paramString,
-			int paramInt1, int paramInt2, int paramInt3, int paramInt4,
-			boolean paramBoolean, UserToUserInfo paramUserToUserInfo)
+	public abstract Connection[] connectSupervisorAssist(
+			LucentAgent paramLucentAgent, String paramString,
+			UserToUserInfo paramUserToUserInfo)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,
 			TsapiMethodNotSupportedException;
 
-	public abstract Connection[] connectSupervisorAssist(
-			LucentAgent paramLucentAgent, String paramString,
-			UserToUserInfo paramUserToUserInfo)
+	public abstract Connection[] connectPredictive(
+			LucentTerminal paramLucentTerminal,
+			LucentAddress paramLucentAddress, String paramString,
+			int paramInt1, int paramInt2, int paramInt3, int paramInt4,
+			boolean paramBoolean, UserToUserInfo paramUserToUserInfo)
 			throws TsapiResourceUnavailableException,
 			TsapiPrivilegeViolationException, TsapiInvalidPartyException,
 			TsapiInvalidArgumentException, TsapiInvalidStateException,

@@ -5,9 +5,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTAConferencedEvent extends CSTAUnsolicited {
 	CSTAConnectionID primaryOldCall;
 	CSTAConnectionID secondaryOldCall;
@@ -18,120 +15,116 @@ public final class CSTAConferencedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 55;
 
-	public static CSTAConferencedEvent decode(final InputStream in) {
-		final CSTAConferencedEvent _this = new CSTAConferencedEvent();
+	public static CSTAConferencedEvent decode(InputStream in) {
+		CSTAConferencedEvent _this = new CSTAConferencedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		primaryOldCall = CSTAConnectionID.decode(memberStream);
-		secondaryOldCall = CSTAConnectionID.decode(memberStream);
-		confController = CSTAExtendedDeviceID.decode(memberStream);
-		addedParty = CSTAExtendedDeviceID.decode(memberStream);
-		conferenceConnections = ConnectionList.decode(memberStream);
-		localConnectionInfo = ASNEnumerated.decode(memberStream);
-		cause = ASNEnumerated.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.primaryOldCall, memberStream);
+		CSTAConnectionID.encode(this.secondaryOldCall, memberStream);
+		CSTAExtendedDeviceID.encode(this.confController, memberStream);
+		CSTAExtendedDeviceID.encode(this.addedParty, memberStream);
+		ConnectionList.encode(this.conferenceConnections, memberStream);
+		LocalConnectionState.encode(this.localConnectionInfo, memberStream);
+		CSTAEventCause.encode(this.cause, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(primaryOldCall, memberStream);
-		CSTAConnectionID.encode(secondaryOldCall, memberStream);
-		ASNSequence.encode(confController, memberStream);
-		ASNSequence.encode(addedParty, memberStream);
-		ConnectionList.encode(conferenceConnections, memberStream);
-		ASNEnumerated.encode(localConnectionInfo, memberStream);
-		ASNEnumerated.encode(cause, memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.primaryOldCall = CSTAConnectionID.decode(memberStream);
+		this.secondaryOldCall = CSTAConnectionID.decode(memberStream);
+		this.confController = CSTAExtendedDeviceID.decode(memberStream);
+		this.addedParty = CSTAExtendedDeviceID.decode(memberStream);
+		this.conferenceConnections = ConnectionList.decode(memberStream);
+		this.localConnectionInfo = LocalConnectionState.decode(memberStream);
+		this.cause = CSTAEventCause.decode(memberStream);
 	}
 
-	public CSTAExtendedDeviceID getAddedParty() {
-		return addedParty;
-	}
-
-	public short getCause() {
-		return cause;
-	}
-
-	public CSTAExtendedDeviceID getConfController() {
-		return confController;
-	}
-
-	public CSTAConnection[] getConferenceConnections() {
-		return conferenceConnections;
-	}
-
-	public short getLocalConnectionInfo() {
-		return localConnectionInfo;
-	}
-
-	@Override
-	public int getPDU() {
-		return 55;
-	}
-
-	public CSTAConnectionID getPrimaryOldCall() {
-		return primaryOldCall;
-	}
-
-	public CSTAConnectionID getSecondaryOldCall() {
-		return secondaryOldCall;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAConferencedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAConnectionID.print(primaryOldCall, "primaryOldCall",
-				indent));
-		lines.addAll(CSTAConnectionID.print(secondaryOldCall,
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAConnectionID.print(this.primaryOldCall,
+				"primaryOldCall", indent));
+		lines.addAll(CSTAConnectionID.print(this.secondaryOldCall,
 				"secondaryOldCall", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(confController,
+		lines.addAll(CSTAExtendedDeviceID.print(this.confController,
 				"confController", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(addedParty, "addedParty",
+		lines.addAll(CSTAExtendedDeviceID.print(this.addedParty, "addedParty",
 				indent));
-		lines.addAll(ConnectionList.print(conferenceConnections,
+		lines.addAll(ConnectionList.print(this.conferenceConnections,
 				"conferenceConnections", indent));
-		lines.addAll(LocalConnectionState.print(localConnectionInfo,
+		lines.addAll(LocalConnectionState.print(this.localConnectionInfo,
 				"localConnectionInfo", indent));
-		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
+		lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setAddedParty(final CSTAExtendedDeviceID _conferencedDevice) {
-		addedParty = _conferencedDevice;
+	public int getPDU() {
+		return 55;
 	}
 
-	public void setCause(final short _cause) {
-		cause = _cause;
+	public CSTAExtendedDeviceID getAddedParty() {
+		return this.addedParty;
 	}
 
-	public void setConfController(final CSTAExtendedDeviceID _conferencingDevice) {
-		confController = _conferencingDevice;
+	public short getCause() {
+		return this.cause;
+	}
+
+	public CSTAExtendedDeviceID getConfController() {
+		return this.confController;
+	}
+
+	public CSTAConnection[] getConferenceConnections() {
+		return this.conferenceConnections;
+	}
+
+	public short getLocalConnectionInfo() {
+		return this.localConnectionInfo;
+	}
+
+	public CSTAConnectionID getPrimaryOldCall() {
+		return this.primaryOldCall;
+	}
+
+	public CSTAConnectionID getSecondaryOldCall() {
+		return this.secondaryOldCall;
+	}
+
+	public void setAddedParty(CSTAExtendedDeviceID _conferencedDevice) {
+		this.addedParty = _conferencedDevice;
+	}
+
+	public void setConfController(CSTAExtendedDeviceID _conferencingDevice) {
+		this.confController = _conferencingDevice;
+	}
+
+	public void setCause(short _cause) {
+		this.cause = _cause;
 	}
 
 	public void setConferencedConnections(
-			final CSTAConnection[] _conferenceConnections) {
-		conferenceConnections = _conferenceConnections;
+			CSTAConnection[] _conferenceConnections) {
+		this.conferenceConnections = _conferenceConnections;
 	}
 
-	public void setLocalConnectionInfo(final short _localConnectionInfo) {
-		localConnectionInfo = _localConnectionInfo;
+	public void setLocalConnectionInfo(short _localConnectionInfo) {
+		this.localConnectionInfo = _localConnectionInfo;
 	}
 
-	public void setPrimaryOldCall(final CSTAConnectionID _primaryOldCall) {
-		primaryOldCall = _primaryOldCall;
+	public void setPrimaryOldCall(CSTAConnectionID _primaryOldCall) {
+		this.primaryOldCall = _primaryOldCall;
 	}
 
-	public void setSecondaryOldCall(final CSTAConnectionID _secondaryOldCall) {
-		secondaryOldCall = _secondaryOldCall;
+	public void setSecondaryOldCall(CSTAConnectionID _secondaryOldCall) {
+		this.secondaryOldCall = _secondaryOldCall;
 	}
 }

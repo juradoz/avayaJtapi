@@ -8,29 +8,25 @@ public final class TsapiInvalidStateException extends InvalidStateException
 	int errorType = 0;
 	int errorCode = 0;
 
-	public TsapiInvalidStateException(final int _errorType,
-			final int _errorCode, final Object object, final int type,
-			final int state) {
-		super(object, type, state);
-		errorType = _errorType;
-		errorCode = _errorCode;
-	}
-
-	public TsapiInvalidStateException(final int _errorType,
-			final int _errorCode, final Object object, final int type,
-			final int state, final String s) {
-		super(object, type, state, s);
-		errorType = _errorType;
-		errorCode = _errorCode;
-	}
-
-	@Override
-	public int getErrorCode() {
-		return errorCode;
-	}
-
-	@Override
 	public int getErrorType() {
-		return errorType;
+		return this.errorType;
+	}
+
+	public int getErrorCode() {
+		return this.errorCode;
+	}
+
+	public TsapiInvalidStateException(int _errorType, int _errorCode,
+			Object object, int type, int state) {
+		super(object, type, state);
+		this.errorType = _errorType;
+		this.errorCode = _errorCode;
+	}
+
+	public TsapiInvalidStateException(int _errorType, int _errorCode,
+			Object object, int type, int state, String s) {
+		super(object, type, state, s);
+		this.errorType = _errorType;
+		this.errorCode = _errorCode;
 	}
 }

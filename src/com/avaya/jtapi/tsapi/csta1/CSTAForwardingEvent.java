@@ -5,66 +5,60 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTAForwardingEvent extends CSTAUnsolicited {
 	CSTAExtendedDeviceID device;
 	CSTAForwardingInfo forwardingInformation;
 	public static final int PDU = 70;
 
-	public static CSTAForwardingEvent decode(final InputStream in) {
-		final CSTAForwardingEvent _this = new CSTAForwardingEvent();
+	public static CSTAForwardingEvent decode(InputStream in) {
+		CSTAForwardingEvent _this = new CSTAForwardingEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		device = CSTAExtendedDeviceID.decode(memberStream);
-		forwardingInformation = CSTAForwardingInfo.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.device = CSTAExtendedDeviceID.decode(memberStream);
+		this.forwardingInformation = CSTAForwardingInfo.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNSequence.encode(device, memberStream);
-		ASNSequence.encode(forwardingInformation, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAExtendedDeviceID.encode(this.device, memberStream);
+		CSTAForwardingInfo.encode(this.forwardingInformation, memberStream);
 	}
 
-	public CSTAExtendedDeviceID getDevice() {
-		return device;
-	}
-
-	public CSTAForwardingInfo getForwardingInformation() {
-		return forwardingInformation;
-	}
-
-	@Override
-	public int getPDU() {
-		return 70;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAForwardingEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAExtendedDeviceID.print(device, "device", indent));
-		lines.addAll(CSTAForwardingInfo.print(forwardingInformation,
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAExtendedDeviceID.print(this.device, "device", indent));
+		lines.addAll(CSTAForwardingInfo.print(this.forwardingInformation,
 				"forwardingInformation", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDevice(final CSTAExtendedDeviceID device) {
+	public int getPDU() {
+		return 70;
+	}
+
+	public CSTAExtendedDeviceID getDevice() {
+		return this.device;
+	}
+
+	public void setDevice(CSTAExtendedDeviceID device) {
 		this.device = device;
 	}
 
-	public void setForwardingInformation(final CSTAForwardingInfo fwdInfo) {
-		forwardingInformation = fwdInfo;
+	public CSTAForwardingInfo getForwardingInformation() {
+		return this.forwardingInformation;
+	}
+
+	public void setForwardingInformation(CSTAForwardingInfo fwdInfo) {
+		this.forwardingInformation = fwdInfo;
 	}
 }

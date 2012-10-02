@@ -8,46 +8,41 @@ import javax.telephony.callcenter.events.RouteEvent;
 
 public final class TsapiRouteEvent extends TsapiRouteSessionEvent implements
 		RouteEvent {
-	private final RouteAddress currentRouteAddress;
-	private final Address callingAddress;
-	private final Terminal callingTerminal;
-	private final int routeSelectAlgorithm;
-	private final String isdnSetupMessage;
+	private RouteAddress currentRouteAddress;
+	private Address callingAddress;
+	private Terminal callingTerminal;
+	private int routeSelectAlgorithm;
+	private String isdnSetupMessage;
 
-	public TsapiRouteEvent(final RouteSession routeSession,
-			final RouteAddress currentRouteAddress,
-			final Address callingAddress, final Terminal callingTerminal,
-			final int routeSelectAlgorithm, final String isdnSetupMessage) {
+	public RouteAddress getCurrentRouteAddress() {
+		return this.currentRouteAddress;
+	}
+
+	public Address getCallingAddress() {
+		return this.callingAddress;
+	}
+
+	public Terminal getCallingTerminal() {
+		return this.callingTerminal;
+	}
+
+	public int getRouteSelectAlgorithm() {
+		return this.routeSelectAlgorithm;
+	}
+
+	public String getSetupInformation() {
+		return this.isdnSetupMessage;
+	}
+
+	public TsapiRouteEvent(RouteSession routeSession,
+			RouteAddress currentRouteAddress, Address callingAddress,
+			Terminal callingTerminal, int routeSelectAlgorithm,
+			String isdnSetupMessage) {
 		super(routeSession);
 		this.currentRouteAddress = currentRouteAddress;
 		this.callingAddress = callingAddress;
 		this.callingTerminal = callingTerminal;
 		this.routeSelectAlgorithm = routeSelectAlgorithm;
 		this.isdnSetupMessage = isdnSetupMessage;
-	}
-
-	@Override
-	public Address getCallingAddress() {
-		return callingAddress;
-	}
-
-	@Override
-	public Terminal getCallingTerminal() {
-		return callingTerminal;
-	}
-
-	@Override
-	public RouteAddress getCurrentRouteAddress() {
-		return currentRouteAddress;
-	}
-
-	@Override
-	public int getRouteSelectAlgorithm() {
-		return routeSelectAlgorithm;
-	}
-
-	@Override
-	public String getSetupInformation() {
-		return isdnSetupMessage;
 	}
 }

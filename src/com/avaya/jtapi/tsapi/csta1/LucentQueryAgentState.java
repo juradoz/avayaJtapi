@@ -5,54 +5,47 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class LucentQueryAgentState extends LucentPrivateData {
-	public static LucentQueryAgentState decode(final InputStream in) {
-		final LucentQueryAgentState _this = new LucentQueryAgentState();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	String split;
-
 	public static final int PDU = 16;
 
 	public LucentQueryAgentState() {
 	}
 
-	public LucentQueryAgentState(final String _split) {
-		split = _split;
+	public LucentQueryAgentState(String _split) {
+		this.split = _split;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		split = ASNIA5String.decode(memberStream);
+	public static LucentQueryAgentState decode(InputStream in) {
+		LucentQueryAgentState _this = new LucentQueryAgentState();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(split, memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.split = DeviceID.decode(memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 16;
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.split, memberStream);
 	}
 
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAgentState ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(split, "split", indent));
+		lines.addAll(DeviceID.print(this.split, "split", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 16;
 	}
 }

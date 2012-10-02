@@ -5,66 +5,60 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public class LucentQueryAgentStateConfEvent extends LucentPrivateData {
 	short workMode;
 	short talkState;
 	static final int PDU = 17;
 
-	static LucentQueryAgentStateConfEvent decode(final InputStream in) {
-		final LucentQueryAgentStateConfEvent _this = new LucentQueryAgentStateConfEvent();
+	static LucentQueryAgentStateConfEvent decode(InputStream in) {
+		LucentQueryAgentStateConfEvent _this = new LucentQueryAgentStateConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		workMode = ASNEnumerated.decode(memberStream);
-		talkState = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.workMode = LucentWorkMode.decode(memberStream);
+		this.talkState = LucentTalkState.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(workMode, memberStream);
-		ASNEnumerated.encode(talkState, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentWorkMode.encode(this.workMode, memberStream);
+		LucentTalkState.encode(this.talkState, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 17;
-	}
-
-	public short getTalkState() {
-		return talkState;
-	}
-
-	public short getWorkMode() {
-		return workMode;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAgentStateConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
-		lines.addAll(LucentTalkState.print(talkState, "talkState", indent));
+		lines.addAll(LucentWorkMode.print(this.workMode, "workMode", indent));
+		lines.addAll(LucentTalkState.print(this.talkState, "talkState", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setTalkState(final short talkState) {
+	public int getPDU() {
+		return 17;
+	}
+
+	public short getTalkState() {
+		return this.talkState;
+	}
+
+	public short getWorkMode() {
+		return this.workMode;
+	}
+
+	public void setTalkState(short talkState) {
 		this.talkState = talkState;
 	}
 
-	public void setWorkMode(final short workMode) {
+	public void setWorkMode(short workMode) {
 		this.workMode = workMode;
 	}
 }

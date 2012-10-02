@@ -9,48 +9,45 @@ public class LucentConnectionClearedEvent extends LucentPrivateData {
 	LucentUserToUserInfo userInfo;
 	static final int PDU = 36;
 
-	static LucentConnectionClearedEvent decode(final InputStream in) {
-		final LucentConnectionClearedEvent _this = new LucentConnectionClearedEvent();
+	static LucentConnectionClearedEvent decode(InputStream in) {
+		LucentConnectionClearedEvent _this = new LucentConnectionClearedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		userInfo = LucentUserToUserInfo.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		LucentUserToUserInfo.encode(userInfo, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentUserToUserInfo.encode(this.userInfo, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 36;
-	}
-
-	public LucentUserToUserInfo getUserInfo() {
-		return userInfo;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentConnectionClearedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
+		lines.addAll(LucentUserToUserInfo.print(this.userInfo, "userInfo",
+				indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setUserInfo(final LucentUserToUserInfo userInfo) {
+	public int getPDU() {
+		return 36;
+	}
+
+	public LucentUserToUserInfo getUserInfo() {
+		return this.userInfo;
+	}
+
+	public void setUserInfo(LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }

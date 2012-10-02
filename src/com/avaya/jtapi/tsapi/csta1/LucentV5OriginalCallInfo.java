@@ -1,57 +1,101 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
-	public static LucentOriginalCallInfo decode(final InputStream in) {
-		final LucentV5OriginalCallInfo _this = new LucentV5OriginalCallInfo();
+	String ucid;
+	CSTACallOriginatorInfo callOriginatorInfo;
+	boolean flexibleBilling;
+
+	public String getUCID() {
+		return this.ucid;
+	}
+
+	public void setUCID(String _ucid) {
+		this.ucid = _ucid;
+	}
+
+	public int getCallOriginatorType() {
+		if (hasCallOriginatorType()) {
+			return this.callOriginatorInfo.getCallOriginatorType();
+		}
+		return -1;
+	}
+
+	public boolean hasCallOriginatorType() {
+		return this.callOriginatorInfo != null;
+	}
+
+	public boolean canSetBillRate() {
+		return this.flexibleBilling;
+	}
+
+	public static LucentOriginalCallInfo decode(InputStream in) {
+		LucentV5OriginalCallInfo _this = new LucentV5OriginalCallInfo();
 		_this.doDecode(in);
-		if (_this.callingDevice_asn == null && _this.calledDevice_asn == null
-				&& _this.trunkGroup == null && _this.trunkMember == null
-				&& _this.lookaheadInfo == null && _this.userEnteredCode == null
-				&& _this.userInfo == null && _this.ucid == null
-				&& _this.callOriginatorInfo == null)
+		if ((_this.callingDevice_asn == null)
+				&& (_this.calledDevice_asn == null)
+				&& (_this.trunkGroup == null) && (_this.trunkMember == null)
+				&& (_this.lookaheadInfo == null)
+				&& (_this.userEnteredCode == null) && (_this.userInfo == null)
+				&& (_this.ucid == null) && (_this.callOriginatorInfo == null)) {
 			return null;
+		}
 		return _this;
 	}
 
-	public static Collection<String> print(
-			final LucentV5OriginalCallInfo _this, final String name,
-			final String _indent) {
-		final Collection<String> lines = new ArrayList<String>();
+	public void encodeMembers(OutputStream memberStream) {
+		super.encodeMembers(memberStream);
+		UCID.encode(this.ucid, memberStream);
+		CSTACallOriginatorInfo.encode(this.callOriginatorInfo, memberStream);
+		ASNBoolean.encode(this.flexibleBilling, memberStream);
+	}
+
+	public void decodeMembers(InputStream memberStream) {
+		super.decodeMembers(memberStream);
+		this.ucid = UCID.decode(memberStream);
+		this.callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
+		this.flexibleBilling = ASNBoolean.decode(memberStream);
+	}
+
+	public LucentLookaheadInfo decodeLookahead(InputStream memberStream) {
+		return LucentV5LookaheadInfo.decode(memberStream);
+	}
+
+	public static Collection<String> print(LucentV5OriginalCallInfo _this,
+			String name, String _indent) {
+		Collection<String> lines = new ArrayList<String>();
 
 		if (_this == null) {
 			lines.add(_indent + name + " <null>");
 			return lines;
 		}
-		if (name != null)
+		if (name != null) {
 			lines.add(_indent + name);
+		}
 		lines.add(_indent + "{");
 
-		final String indent = _indent + "  ";
+		String indent = _indent + "  ";
 
 		lines.addAll(ReasonForCallInfo.print(_this.reason, "reason", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.callingDevice_asn,
 				"callingDevice", indent));
 		lines.addAll(CSTAExtendedDeviceID.print(_this.calledDevice_asn,
 				"calledDevice", indent));
-		lines.addAll(ASNIA5String.print(_this.trunkGroup, "trunkGroup", indent));
-		lines.addAll(ASNIA5String.print(_this.trunkMember, "trunkMember",
+		lines.addAll(DeviceID.print(_this.trunkGroup, "trunkGroup", indent));
+		lines.addAll(DeviceID.print(_this.trunkMember, "trunkMember", indent));
+		lines.addAll(LucentV5LookaheadInfo.print(
+				(LucentV5LookaheadInfo) _this.lookaheadInfo, "lookaheadInfo",
 				indent));
-		lines.addAll(LucentLookaheadInfo.print(_this.lookaheadInfo,
-				"lookaheadInfo", indent));
 		lines.addAll(LucentUserEnteredCode.print(_this.userEnteredCode,
 				"userEnteredCode", indent));
 		lines.addAll(LucentUserToUserInfo.print(_this.userInfo, "userInfo",
 				indent));
-		lines.addAll(ASNIA5String.print(_this.ucid, "ucid", indent));
+		lines.addAll(UCID.print(_this.ucid, "ucid", indent));
 		lines.addAll(CSTACallOriginatorInfo.print(_this.callOriginatorInfo,
 				"callOriginatorInfo", indent));
 		lines.addAll(ASNBoolean.print(_this.flexibleBilling, "flexibleBilling",
@@ -61,65 +105,15 @@ public class LucentV5OriginalCallInfo extends LucentOriginalCallInfo {
 		return lines;
 	}
 
-	String ucid;
-
-	CSTACallOriginatorInfo callOriginatorInfo;
-
-	boolean flexibleBilling;
-
-	public boolean canSetBillRate() {
-		return flexibleBilling;
-	}
-
-	@Override
-	public LucentLookaheadInfo decodeLookahead(final InputStream memberStream) {
-		return LucentV5LookaheadInfo.decode(memberStream);
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		super.decodeMembers(memberStream);
-		ucid = ASNIA5String.decode(memberStream);
-		callOriginatorInfo = CSTACallOriginatorInfo.decode(memberStream);
-		flexibleBilling = ASNBoolean.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		super.encodeMembers(memberStream);
-		ASNIA5String.encode(ucid, memberStream);
-		ASNSequence.encode(callOriginatorInfo, memberStream);
-		ASNBoolean.encode(flexibleBilling, memberStream);
+	public void setCallOriginatorInfo(CSTACallOriginatorInfo _callOriginatorInfo) {
+		this.callOriginatorInfo = _callOriginatorInfo;
 	}
 
 	public CSTACallOriginatorInfo getCallOriginatorInfo() {
-		return callOriginatorInfo;
+		return this.callOriginatorInfo;
 	}
 
-	public int getCallOriginatorType() {
-		if (hasCallOriginatorType())
-			return callOriginatorInfo.getCallOriginatorType();
-		return -1;
-	}
-
-	public String getUCID() {
-		return ucid;
-	}
-
-	public boolean hasCallOriginatorType() {
-		return callOriginatorInfo != null;
-	}
-
-	public void setCallOriginatorInfo(
-			final CSTACallOriginatorInfo _callOriginatorInfo) {
-		callOriginatorInfo = _callOriginatorInfo;
-	}
-
-	public void setFlexibleBilling(final boolean flexibleBilling) {
+	public void setFlexibleBilling(boolean flexibleBilling) {
 		this.flexibleBilling = flexibleBilling;
-	}
-
-	public void setUCID(final String _ucid) {
-		ucid = _ucid;
 	}
 }

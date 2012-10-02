@@ -8,19 +8,19 @@ public final class ACSEventHeader {
 	public static final int CSTAUNSOLICITED = 4;
 	public static final int CSTACONFIRMATION = 5;
 	public static final int CSTAEVENTREPORT = 6;
-	private final int eventClass;
-	private final int eventType;
-
-	public ACSEventHeader(final int _eventClass, final int _eventType) {
-		eventClass = _eventClass;
-		eventType = _eventType;
-	}
+	private int eventClass;
+	private int eventType;
 
 	public int getEventClass() {
-		return eventClass;
+		return this.eventClass;
 	}
 
 	public int getEventType() {
-		return eventType;
+		return this.eventType;
+	}
+
+	public ACSEventHeader(int _eventClass, int _eventType) {
+		this.eventClass = _eventClass;
+		this.eventType = _eventType;
 	}
 }

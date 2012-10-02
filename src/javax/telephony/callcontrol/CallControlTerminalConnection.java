@@ -23,15 +23,15 @@ public abstract interface CallControlTerminalConnection extends
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
+	public abstract void unhold() throws InvalidStateException,
+			MethodNotSupportedException, PrivilegeViolationException,
+			ResourceUnavailableException;
+
 	public abstract void join() throws InvalidStateException,
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 
 	public abstract void leave() throws InvalidStateException,
-			MethodNotSupportedException, PrivilegeViolationException,
-			ResourceUnavailableException;
-
-	public abstract void unhold() throws InvalidStateException,
 			MethodNotSupportedException, PrivilegeViolationException,
 			ResourceUnavailableException;
 }

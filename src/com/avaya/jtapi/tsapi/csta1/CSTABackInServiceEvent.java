@@ -4,52 +4,46 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class CSTABackInServiceEvent extends CSTAUnsolicited {
 	String device;
 	short cause;
 	static final int PDU = 96;
 
-	public static CSTABackInServiceEvent decode(final InputStream in) {
-		final CSTABackInServiceEvent _this = new CSTABackInServiceEvent();
+	public static CSTABackInServiceEvent decode(InputStream in) {
+		CSTABackInServiceEvent _this = new CSTABackInServiceEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		device = ASNIA5String.decode(memberStream);
-		cause = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.device = DeviceID.decode(memberStream);
+		this.cause = CSTAEventCause.decode(memberStream);
 	}
 
-	public short getCause() {
-		return cause;
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+		lines.add("CSTABackInServiceEvent ::=");
+		lines.add("{");
+
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(DeviceID.print(this.device, "device", indent));
+		lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
+
+		lines.add("}");
+		return lines;
 	}
 
-	public String getDevice() {
-		return device;
-	}
-
-	@Override
 	public int getPDU() {
 		return 96;
 	}
 
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-		lines.add("CSTABackInServiceEvent ::=");
-		lines.add("{");
+	public short getCause() {
+		return this.cause;
+	}
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(ASNIA5String.print(device, "device", indent));
-		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
-
-		lines.add("}");
-		return lines;
+	public String getDevice() {
+		return this.device;
 	}
 }

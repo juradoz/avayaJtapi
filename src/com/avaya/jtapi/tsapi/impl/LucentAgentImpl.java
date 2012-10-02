@@ -5,20 +5,19 @@ import com.avaya.jtapi.tsapi.impl.core.TSAgent;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class LucentAgentImpl extends TsapiAgent implements LucentAgent {
-	LucentAgentImpl(final TSAgent _tsAgent) {
-		super(_tsAgent);
-		TsapiTrace.traceConstruction(this, LucentAgentImpl.class);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof LucentAgentImpl)
-			return tsAgent.equals(((LucentAgentImpl) obj).tsAgent);
+	public boolean equals(Object obj) {
+		if ((obj instanceof LucentAgentImpl)) {
+			return this.tsAgent.equals(((LucentAgentImpl) obj).tsAgent);
+		}
 
 		return false;
 	}
 
-	@Override
+	LucentAgentImpl(TSAgent _tsAgent) {
+		super(_tsAgent);
+		TsapiTrace.traceConstruction(this, LucentAgentImpl.class);
+	}
+
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, LucentAgentImpl.class);

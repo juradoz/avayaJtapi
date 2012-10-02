@@ -4,8 +4,7 @@ import com.avaya.jtapi.tsapi.LucentV5CallInfo;
 
 public final class LucentV5ConnQueuedEventImpl extends
 		LucentConnQueuedEventImpl implements LucentV5CallInfo {
-	public LucentV5ConnQueuedEventImpl(final ConnEventParams params,
-			final int numberQueued) {
+	public LucentV5ConnQueuedEventImpl(ConnEventParams params, int numberQueued) {
 		super(params, numberQueued);
 	}
 }

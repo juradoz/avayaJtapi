@@ -4,7 +4,7 @@ import com.avaya.jtapi.tsapi.LucentCallInfo;
 
 public class LucentTermConnDroppedEventCCImpl extends
 		TsapiTermConnDroppedEventCC implements LucentCallInfo {
-	public LucentTermConnDroppedEventCCImpl(final TermConnEventParams params) {
+	public LucentTermConnDroppedEventCCImpl(TermConnEventParams params) {
 		super(params);
 	}
 }

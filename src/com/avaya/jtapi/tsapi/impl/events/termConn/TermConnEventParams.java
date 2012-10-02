@@ -1,21 +1,16 @@
 package com.avaya.jtapi.tsapi.impl.events.termConn;
 
+import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
 import javax.telephony.TerminalConnection;
 
-import com.avaya.jtapi.tsapi.impl.events.call.CallEventParams;
-
 public class TermConnEventParams extends CallEventParams {
-	private TerminalConnection termConn;
-
-	public TermConnEventParams() {
-		termConn = null;
-	}
+	private TerminalConnection termConn = null;
 
 	public TerminalConnection getTermConn() {
-		return termConn;
+		return this.termConn;
 	}
 
-	public void setTermConn(final TerminalConnection termConn) {
+	public void setTermConn(TerminalConnection termConn) {
 		this.termConn = termConn;
 	}
 }

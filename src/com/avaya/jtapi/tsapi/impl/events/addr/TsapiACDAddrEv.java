@@ -8,33 +8,33 @@ import javax.telephony.callcenter.CallCenterTrunk;
 public abstract class TsapiACDAddrEv extends TsapiCallCentAddrEv {
 	Agent agent = null;
 
-	public TsapiACDAddrEv(final Address _device, final Agent _agent,
-			final int _cause, final int _metaCode, final Object _privateData) {
-		super(_device, _cause, _metaCode, _privateData);
-		agent = _agent;
-	}
-
 	public final Agent getAgent() {
-		return agent;
-	}
-
-	public final Address getAgentAddress() {
-		return agent.getAgentAddress();
-	}
-
-	public final String getAgentID() {
-		return agent.getAgentID();
+		return this.agent;
 	}
 
 	public final AgentTerminal getAgentTerminal() {
-		return agent.getAgentTerminal();
+		return this.agent.getAgentTerminal();
+	}
+
+	public final String getAgentID() {
+		return this.agent.getAgentID();
 	}
 
 	public final int getState() {
-		return agent.getState();
+		return this.agent.getState();
+	}
+
+	public final Address getAgentAddress() {
+		return this.agent.getAgentAddress();
 	}
 
 	public final CallCenterTrunk[] getTrunks() {
 		return null;
+	}
+
+	public TsapiACDAddrEv(Address _device, Agent _agent, int _cause,
+			int _metaCode, Object _privateData) {
+		super(_device, _cause, _metaCode, _privateData);
+		this.agent = _agent;
 	}
 }

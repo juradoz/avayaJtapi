@@ -3,12 +3,11 @@ package com.avaya.jtapi.tsapi.impl.events.call;
 import javax.telephony.callcenter.CallCenterTrunk;
 
 abstract class TsapiCallCtrTrunkEvent extends TsapiCallEvent {
-	TsapiCallCtrTrunkEvent(final CallEventParams params) {
-		super(params, 2);
+	public final CallCenterTrunk getTrunk() {
+		return this.params.getTrunk();
 	}
 
-	@Override
-	public final CallCenterTrunk getTrunk() {
-		return params.getTrunk();
+	TsapiCallCtrTrunkEvent(CallEventParams params) {
+		super(params, 2);
 	}
 }

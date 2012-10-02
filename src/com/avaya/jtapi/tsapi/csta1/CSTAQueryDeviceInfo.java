@@ -5,60 +5,54 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public final class CSTAQueryDeviceInfo extends CSTARequest {
 	String device;
 	public static final int PDU = 37;
 
-	public static CSTAQueryDeviceInfo decode(final InputStream in) {
-		final CSTAQueryDeviceInfo _this = new CSTAQueryDeviceInfo();
-		_this.doDecode(in);
-
-		return _this;
+	public CSTAQueryDeviceInfo(String _device) {
+		this.device = _device;
 	}
 
 	public CSTAQueryDeviceInfo() {
 	}
 
-	public CSTAQueryDeviceInfo(final String _device) {
-		device = _device;
+	public static CSTAQueryDeviceInfo decode(InputStream in) {
+		CSTAQueryDeviceInfo _this = new CSTAQueryDeviceInfo();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		device = ASNIA5String.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.device = DeviceID.decode(memberStream);
 	}
 
-	public String getDevice() {
-		return device;
-	}
-
-	@Override
-	public int getPDU() {
-		return 37;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAQueryDeviceInfo ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(device, "device", indent));
+		lines.addAll(DeviceID.print(this.device, "device", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setDevice(final String device) {
+	public int getPDU() {
+		return 37;
+	}
+
+	public String getDevice() {
+		return this.device;
+	}
+
+	public void setDevice(String device) {
 		this.device = device;
 	}
 }

@@ -1,41 +1,51 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
 
 public class LucentQueryStationStatus extends LucentPrivateData {
 	String device;
 	static final int PDU = 22;
 
-	LucentQueryStationStatus(final String _device) {
-		device = _device;
+	public LucentQueryStationStatus() {
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(device, memberStream);
+	public LucentQueryStationStatus(String _device) {
+		this.device = _device;
 	}
 
-	@Override
-	public int getPDU() {
-		return 22;
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.device, memberStream);
 	}
 
-	@Override
+	public static LucentQueryStationStatus decode(InputStream in) {
+		LucentQueryStationStatus _this = new LucentQueryStationStatus();
+		_this.doDecode(in);
+
+		return _this;
+	}
+
+	public void decodeMembers(InputStream memberStream) {
+		this.device = DeviceID.decode(memberStream);
+	}
+
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryStationStatus ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(device, "device", indent));
+		lines.addAll(DeviceID.print(this.device, "device", indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 22;
 	}
 }

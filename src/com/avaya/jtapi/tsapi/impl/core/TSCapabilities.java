@@ -86,738 +86,738 @@ public final class TSCapabilities {
 	int sysStatEvent;
 
 	public int getAddParty() {
-		return addParty;
+		return this.addParty;
+	}
+
+	void setAddParty(int _addParty) {
+		this.addParty = _addParty;
 	}
 
 	public int getAlternateCall() {
-		return alternateCall;
+		return this.alternateCall;
+	}
+
+	void setAlternateCall(int _alternateCall) {
+		this.alternateCall = _alternateCall;
 	}
 
 	public int getAnswerCall() {
-		return answerCall;
+		return this.answerCall;
 	}
 
-	public int getBackInServiceEvent() {
-		return backInServiceEvent;
-	}
-
-	public int getCallClearedEvent() {
-		return callClearedEvent;
+	void setAnswerCall(int _answerCall) {
+		this.answerCall = _answerCall;
 	}
 
 	public int getCallCompletion() {
-		return callCompletion;
+		return this.callCompletion;
 	}
 
-	public int getCallInformationEvent() {
-		return callInformationEvent;
-	}
-
-	public int getChangeMonitorFilter() {
-		return changeMonitorFilter;
-	}
-
-	public int getChangeSysStatFilter() {
-		return changeSysStatFilter;
+	void setCallCompletion(int _callCompletion) {
+		this.callCompletion = _callCompletion;
 	}
 
 	public int getClearCall() {
-		return clearCall;
+		return this.clearCall;
+	}
+
+	void setClearCall(int _clearCall) {
+		this.clearCall = _clearCall;
 	}
 
 	public int getClearConnection() {
-		return clearConnection;
+		return this.clearConnection;
+	}
+
+	void setClearConnection(int _clearConnection) {
+		this.clearConnection = _clearConnection;
 	}
 
 	public int getConferenceCall() {
-		return conferenceCall;
+		return this.conferenceCall;
 	}
 
-	public int getConferencedEvent() {
-		return conferencedEvent;
-	}
-
-	public int getConnectionClearedEvent() {
-		return connectionClearedEvent;
+	void setConferenceCall(int _conferenceCall) {
+		this.conferenceCall = _conferenceCall;
 	}
 
 	public int getConsultationCall() {
-		return consultationCall;
+		return this.consultationCall;
+	}
+
+	void setConsultationCall(int _consultationCall) {
+		this.consultationCall = _consultationCall;
 	}
 
 	public int getDeflectCall() {
-		return deflectCall;
+		return this.deflectCall;
 	}
 
-	public int getDeliveredEvent() {
-		return deliveredEvent;
-	}
-
-	public int getDivertedEvent() {
-		return divertedEvent;
-	}
-
-	public int getDoNotDisturbEvent() {
-		return doNotDisturbEvent;
-	}
-
-	public int getEscapeService() {
-		return escapeService;
-	}
-
-	public int getEscapeServiceConf() {
-		return escapeServiceConf;
-	}
-
-	public int getEscapeServiceEvent() {
-		return escapeServiceEvent;
-	}
-
-	public int getEstablishedEvent() {
-		return establishedEvent;
-	}
-
-	public int getEventReport() {
-		return eventReport;
-	}
-
-	public int getFailedEvent() {
-		return failedEvent;
-	}
-
-	public int getForwardingEvent() {
-		return forwardingEvent;
-	}
-
-	public int getGroupPickupCall() {
-		return groupPickupCall;
-	}
-
-	public int getHeldEvent() {
-		return heldEvent;
-	}
-
-	public int getHoldCall() {
-		return holdCall;
-	}
-
-	public int getLoggedOffEvent() {
-		return loggedOffEvent;
-	}
-
-	public int getLoggedOnEvent() {
-		return loggedOnEvent;
-	}
-
-	public int getMakeCall() {
-		return makeCall;
-	}
-
-	public int getMakePredictiveCall() {
-		return makePredictiveCall;
-	}
-
-	public int getMessageWaitingEvent() {
-		return messageWaitingEvent;
-	}
-
-	public int getMonitorCall() {
-		return monitorCall;
-	}
-
-	public int getMonitorCallsViaDevice() {
-		return monitorCallsViaDevice;
-	}
-
-	public int getMonitorDevice() {
-		return monitorDevice;
-	}
-
-	public int getMonitorEnded() {
-		return monitorEnded;
-	}
-
-	public int getMonitorStop() {
-		return monitorStop;
-	}
-
-	public int getNetworkReachedEvent() {
-		return networkReachedEvent;
-	}
-
-	public int getNotReadyEvent() {
-		return notReadyEvent;
-	}
-
-	public int getOriginatedEvent() {
-		return originatedEvent;
-	}
-
-	public int getOutOfServiceEvent() {
-		return outOfServiceEvent;
+	void setDeflectCall(int _deflectCall) {
+		this.deflectCall = _deflectCall;
 	}
 
 	public int getPickupCall() {
-		return pickupCall;
+		return this.pickupCall;
 	}
 
-	public int getPrivateEvent() {
-		return privateEvent;
+	void setPickupCall(int _pickupCall) {
+		this.pickupCall = _pickupCall;
 	}
 
-	public int getPrivateStatusEvent() {
-		return privateStatusEvent;
+	public int getGroupPickupCall() {
+		return this.groupPickupCall;
 	}
 
-	public int getQueryAgentState() {
-		return queryAgentState;
+	void setGroupPickupCall(int _groupPickupCall) {
+		this.groupPickupCall = _groupPickupCall;
 	}
 
-	public int getQueryDeviceInfo() {
-		return queryDeviceInfo;
+	public int getHoldCall() {
+		return this.holdCall;
 	}
 
-	public int getQueryDnd() {
-		return queryDnd;
+	void setHoldCall(int _holdCall) {
+		this.holdCall = _holdCall;
 	}
 
-	public int getQueryFwd() {
-		return queryFwd;
+	public int getMakeCall() {
+		return this.makeCall;
 	}
 
-	public int getQueryLastNumber() {
-		return queryLastNumber;
+	void setMakeCall(int _makeCall) {
+		this.makeCall = _makeCall;
+	}
+
+	public int getMakePredictiveCall() {
+		return this.makePredictiveCall;
+	}
+
+	void setMakePredictiveCall(int _makePredictiveCall) {
+		this.makePredictiveCall = _makePredictiveCall;
 	}
 
 	public int getQueryMwi() {
-		return queryMwi;
+		return this.queryMwi;
 	}
 
-	public int getQueuedEvent() {
-		return queuedEvent;
+	void setQueryMwi(int _queryMwi) {
+		this.queryMwi = _queryMwi;
 	}
 
-	public int getReadyEvent() {
-		return readyEvent;
+	public int getQueryDnd() {
+		return this.queryDnd;
+	}
+
+	void setQueryDnd(int _queryDnd) {
+		this.queryDnd = _queryDnd;
+	}
+
+	public int getQueryFwd() {
+		return this.queryFwd;
+	}
+
+	void setQueryFwd(int _queryFwd) {
+		this.queryFwd = _queryFwd;
+	}
+
+	public int getQueryAgentState() {
+		return this.queryAgentState;
+	}
+
+	void setQueryAgentState(int _queryAgentState) {
+		this.queryAgentState = _queryAgentState;
+	}
+
+	public int getQueryLastNumber() {
+		return this.queryLastNumber;
+	}
+
+	void setQueryLastNumber(int _queryLastNumber) {
+		this.queryLastNumber = _queryLastNumber;
+	}
+
+	public int getQueryDeviceInfo() {
+		return this.queryDeviceInfo;
+	}
+
+	void setQueryDeviceInfo(int _queryDeviceInfo) {
+		this.queryDeviceInfo = _queryDeviceInfo;
 	}
 
 	public int getReconnectCall() {
-		return reconnectCall;
+		return this.reconnectCall;
 	}
 
-	public int getReRoute() {
-		return reRoute;
+	void setReconnectCall(int _reconnectCall) {
+		this.reconnectCall = _reconnectCall;
 	}
 
 	public int getRetrieveCall() {
-		return retrieveCall;
+		return this.retrieveCall;
 	}
 
-	public int getRetrievedEvent() {
-		return retrievedEvent;
-	}
-
-	public int getRouteEndEvent() {
-		return routeEndEvent;
-	}
-
-	public int getRouteRequestEvent() {
-		return routeRequestEvent;
-	}
-
-	public int getRouteSelect() {
-		return routeSelect;
-	}
-
-	public int getRouteUsedEvent() {
-		return routeUsedEvent;
-	}
-
-	public int getSendPrivateEvent() {
-		return sendPrivateEvent;
-	}
-
-	public int getServiceInitiatedEvent() {
-		return serviceInitiatedEvent;
-	}
-
-	public int getSetAgentState() {
-		return setAgentState;
-	}
-
-	public int getSetDnd() {
-		return setDnd;
-	}
-
-	public int getSetFwd() {
-		return setFwd;
+	void setRetrieveCall(int _retrieveCall) {
+		this.retrieveCall = _retrieveCall;
 	}
 
 	public int getSetMwi() {
-		return setMwi;
+		return this.setMwi;
 	}
 
-	public int getSnapshotCallReq() {
-		return snapshotCallReq;
+	void setSetMwi(int _setMwi) {
+		this.setMwi = _setMwi;
 	}
 
-	public int getSnapshotDeviceReq() {
-		return snapshotDeviceReq;
+	public int getSetDnd() {
+		return this.setDnd;
 	}
 
-	public int getSysStatEvent() {
-		return sysStatEvent;
+	void setSetDnd(int _setDnd) {
+		this.setDnd = _setDnd;
 	}
 
-	public int getSysStatReq() {
-		return sysStatReq;
+	public int getSetFwd() {
+		return this.setFwd;
 	}
 
-	public int getSysStatReqConf() {
-		return sysStatReqConf;
+	void setSetFwd(int _setFwd) {
+		this.setFwd = _setFwd;
 	}
 
-	public int getSysStatReqEvent() {
-		return sysStatReqEvent;
+	public int getSetAgentState() {
+		return this.setAgentState;
 	}
 
-	public int getSysStatStart() {
-		return sysStatStart;
-	}
-
-	public int getSysStatStop() {
-		return sysStatStop;
+	void setSetAgentState(int _setAgentState) {
+		this.setAgentState = _setAgentState;
 	}
 
 	public int getTransferCall() {
-		return transferCall;
+		return this.transferCall;
+	}
+
+	void setTransferCall(int _transferCall) {
+		this.transferCall = _transferCall;
+	}
+
+	public int getEventReport() {
+		return this.eventReport;
+	}
+
+	void setEventReport(int _eventReport) {
+		this.eventReport = _eventReport;
+	}
+
+	public int getCallClearedEvent() {
+		return this.callClearedEvent;
+	}
+
+	void setCallClearedEvent(int _callClearedEvent) {
+		this.callClearedEvent = _callClearedEvent;
+	}
+
+	public int getConferencedEvent() {
+		return this.conferencedEvent;
+	}
+
+	void setConferencedEvent(int _conferencedEvent) {
+		this.conferencedEvent = _conferencedEvent;
+	}
+
+	public int getConnectionClearedEvent() {
+		return this.connectionClearedEvent;
+	}
+
+	void setConnectionClearedEvent(int _connectionClearedEvent) {
+		this.connectionClearedEvent = _connectionClearedEvent;
+	}
+
+	public int getDeliveredEvent() {
+		return this.deliveredEvent;
+	}
+
+	void setDeliveredEvent(int _deliveredEvent) {
+		this.deliveredEvent = _deliveredEvent;
+	}
+
+	public int getDivertedEvent() {
+		return this.divertedEvent;
+	}
+
+	void setDivertedEvent(int _divertedEvent) {
+		this.divertedEvent = _divertedEvent;
+	}
+
+	public int getEstablishedEvent() {
+		return this.establishedEvent;
+	}
+
+	void setEstablishedEvent(int _establishedEvent) {
+		this.establishedEvent = _establishedEvent;
+	}
+
+	public int getFailedEvent() {
+		return this.failedEvent;
+	}
+
+	void setFailedEvent(int _failedEvent) {
+		this.failedEvent = _failedEvent;
+	}
+
+	public int getHeldEvent() {
+		return this.heldEvent;
+	}
+
+	void setHeldEvent(int _heldEvent) {
+		this.heldEvent = _heldEvent;
+	}
+
+	public int getNetworkReachedEvent() {
+		return this.networkReachedEvent;
+	}
+
+	void setNetworkReachedEvent(int _networkReachedEvent) {
+		this.networkReachedEvent = _networkReachedEvent;
+	}
+
+	public int getOriginatedEvent() {
+		return this.originatedEvent;
+	}
+
+	void setOriginatedEvent(int _originatedEvent) {
+		this.originatedEvent = _originatedEvent;
+	}
+
+	public int getQueuedEvent() {
+		return this.queuedEvent;
+	}
+
+	void setQueuedEvent(int _queuedEvent) {
+		this.queuedEvent = _queuedEvent;
+	}
+
+	public int getRetrievedEvent() {
+		return this.retrievedEvent;
+	}
+
+	void setRetrievedEvent(int _retrievedEvent) {
+		this.retrievedEvent = _retrievedEvent;
+	}
+
+	public int getServiceInitiatedEvent() {
+		return this.serviceInitiatedEvent;
+	}
+
+	void setServiceInitiatedEvent(int _serviceInitiatedEvent) {
+		this.serviceInitiatedEvent = _serviceInitiatedEvent;
 	}
 
 	public int getTransferredEvent() {
-		return transferredEvent;
+		return this.transferredEvent;
+	}
+
+	void setTransferredEvent(int _transferredEvent) {
+		this.transferredEvent = _transferredEvent;
+	}
+
+	public int getCallInformationEvent() {
+		return this.callInformationEvent;
+	}
+
+	void setCallInformationEvent(int _callInformationEvent) {
+		this.callInformationEvent = _callInformationEvent;
+	}
+
+	public int getDoNotDisturbEvent() {
+		return this.doNotDisturbEvent;
+	}
+
+	void setDoNotDisturbEvent(int _doNotDisturbEvent) {
+		this.doNotDisturbEvent = _doNotDisturbEvent;
+	}
+
+	public int getForwardingEvent() {
+		return this.forwardingEvent;
+	}
+
+	void setForwardingEvent(int _forwardingEvent) {
+		this.forwardingEvent = _forwardingEvent;
+	}
+
+	public int getMessageWaitingEvent() {
+		return this.messageWaitingEvent;
+	}
+
+	void setMessageWaitingEvent(int _messageWaitingEvent) {
+		this.messageWaitingEvent = _messageWaitingEvent;
+	}
+
+	public int getLoggedOnEvent() {
+		return this.loggedOnEvent;
+	}
+
+	void setLoggedOnEvent(int _loggedOnEvent) {
+		this.loggedOnEvent = _loggedOnEvent;
+	}
+
+	public int getLoggedOffEvent() {
+		return this.loggedOffEvent;
+	}
+
+	void setLoggedOffEvent(int _loggedOffEvent) {
+		this.loggedOffEvent = _loggedOffEvent;
+	}
+
+	public int getNotReadyEvent() {
+		return this.notReadyEvent;
+	}
+
+	void setNotReadyEvent(int _notReadyEvent) {
+		this.notReadyEvent = _notReadyEvent;
+	}
+
+	public int getReadyEvent() {
+		return this.readyEvent;
+	}
+
+	void setReadyEvent(int _readyEvent) {
+		this.readyEvent = _readyEvent;
 	}
 
 	public int getWorkNotReadyEvent() {
-		return workNotReadyEvent;
+		return this.workNotReadyEvent;
+	}
+
+	void setWorkNotReadyEvent(int _workNotReadyEvent) {
+		this.workNotReadyEvent = _workNotReadyEvent;
 	}
 
 	public int getWorkReadyEvent() {
-		return workReadyEvent;
+		return this.workReadyEvent;
+	}
+
+	void setWorkReadyEvent(int _workReadyEvent) {
+		this.workReadyEvent = _workReadyEvent;
+	}
+
+	public int getBackInServiceEvent() {
+		return this.backInServiceEvent;
+	}
+
+	void setBackInServiceEvent(int _backInServiceEvent) {
+		this.backInServiceEvent = _backInServiceEvent;
+	}
+
+	public int getOutOfServiceEvent() {
+		return this.outOfServiceEvent;
+	}
+
+	void setOutOfServiceEvent(int _outOfServiceEvent) {
+		this.outOfServiceEvent = _outOfServiceEvent;
+	}
+
+	public int getPrivateEvent() {
+		return this.privateEvent;
+	}
+
+	void setPrivateEvent(int _privateEvent) {
+		this.privateEvent = _privateEvent;
+	}
+
+	public int getRouteRequestEvent() {
+		return this.routeRequestEvent;
+	}
+
+	void setRouteRequestEvent(int _routeRequestEvent) {
+		this.routeRequestEvent = _routeRequestEvent;
+	}
+
+	public int getReRoute() {
+		return this.reRoute;
+	}
+
+	void setReRoute(int _reRoute) {
+		this.reRoute = _reRoute;
+	}
+
+	public int getRouteSelect() {
+		return this.routeSelect;
+	}
+
+	void setRouteSelect(int _routeSelect) {
+		this.routeSelect = _routeSelect;
+	}
+
+	public int getRouteUsedEvent() {
+		return this.routeUsedEvent;
+	}
+
+	void setRouteUsedEvent(int _routeUsedEvent) {
+		this.routeUsedEvent = _routeUsedEvent;
+	}
+
+	public int getRouteEndEvent() {
+		return this.routeEndEvent;
+	}
+
+	void setRouteEndEvent(int _routeEndEvent) {
+		this.routeEndEvent = _routeEndEvent;
+	}
+
+	public int getMonitorDevice() {
+		return this.monitorDevice;
+	}
+
+	void setMonitorDevice(int _monitorDevice) {
+		this.monitorDevice = _monitorDevice;
+	}
+
+	public int getMonitorCall() {
+		return this.monitorCall;
+	}
+
+	void setMonitorCall(int _monitorCall) {
+		this.monitorCall = _monitorCall;
+	}
+
+	public int getMonitorCallsViaDevice() {
+		return this.monitorCallsViaDevice;
+	}
+
+	void setMonitorCallsViaDevice(int _monitorCallsViaDevice) {
+		this.monitorCallsViaDevice = _monitorCallsViaDevice;
+	}
+
+	public int getChangeMonitorFilter() {
+		return this.changeMonitorFilter;
+	}
+
+	void setChangeMonitorFilter(int _changeMonitorFilter) {
+		this.changeMonitorFilter = _changeMonitorFilter;
+	}
+
+	public int getMonitorStop() {
+		return this.monitorStop;
+	}
+
+	void setMonitorStop(int _monitorStop) {
+		this.monitorStop = _monitorStop;
+	}
+
+	public int getMonitorEnded() {
+		return this.monitorEnded;
+	}
+
+	void setMonitorEnded(int _monitorEnded) {
+		this.monitorEnded = _monitorEnded;
+	}
+
+	public int getSnapshotDeviceReq() {
+		return this.snapshotDeviceReq;
+	}
+
+	void setSnapshotDeviceReq(int _snapshotDeviceReq) {
+		this.snapshotDeviceReq = _snapshotDeviceReq;
+	}
+
+	public int getSnapshotCallReq() {
+		return this.snapshotCallReq;
+	}
+
+	void setSnapshotCallReq(int _snapshotCallReq) {
+		this.snapshotCallReq = _snapshotCallReq;
+	}
+
+	public int getEscapeService() {
+		return this.escapeService;
+	}
+
+	void setEscapeService(int _escapeService) {
+		this.escapeService = _escapeService;
+	}
+
+	public int getPrivateStatusEvent() {
+		return this.privateStatusEvent;
+	}
+
+	void setPrivateStatusEvent(int _privateStatusEvent) {
+		this.privateStatusEvent = _privateStatusEvent;
+	}
+
+	public int getEscapeServiceEvent() {
+		return this.escapeServiceEvent;
+	}
+
+	void setEscapeServiceEvent(int _escapeServiceEvent) {
+		this.escapeServiceEvent = _escapeServiceEvent;
+	}
+
+	public int getEscapeServiceConf() {
+		return this.escapeServiceConf;
+	}
+
+	void setEscapeServiceConf(int _escapeServiceConf) {
+		this.escapeServiceConf = _escapeServiceConf;
+	}
+
+	public int getSendPrivateEvent() {
+		return this.sendPrivateEvent;
+	}
+
+	void setSendPrivateEvent(int _sendPrivateEvent) {
+		this.sendPrivateEvent = _sendPrivateEvent;
+	}
+
+	public int getSysStatReq() {
+		return this.sysStatReq;
+	}
+
+	void setSysStatReq(int _sysStatReq) {
+		this.sysStatReq = _sysStatReq;
+	}
+
+	public int getSysStatStart() {
+		return this.sysStatStart;
+	}
+
+	void setSysStatStart(int _sysStatStart) {
+		this.sysStatStart = _sysStatStart;
+	}
+
+	public int getSysStatStop() {
+		return this.sysStatStop;
+	}
+
+	void setSysStatStop(int _sysStatStop) {
+		this.sysStatStop = _sysStatStop;
+	}
+
+	public int getChangeSysStatFilter() {
+		return this.changeSysStatFilter;
+	}
+
+	void setChangeSysStatFilter(int _changeSysStatFilter) {
+		this.changeSysStatFilter = _changeSysStatFilter;
+	}
+
+	public int getSysStatReqEvent() {
+		return this.sysStatReqEvent;
+	}
+
+	void setSysStatReqEvent(int _sysStatReqEvent) {
+		this.sysStatReqEvent = _sysStatReqEvent;
+	}
+
+	public int getSysStatReqConf() {
+		return this.sysStatReqConf;
+	}
+
+	void setSysStatReqConf(int _sysStatReqConf) {
+		this.sysStatReqConf = _sysStatReqConf;
+	}
+
+	public int getSysStatEvent() {
+		return this.sysStatEvent;
+	}
+
+	void setSysStatEvent(int _sysStatEvent) {
+		this.sysStatEvent = _sysStatEvent;
 	}
 
 	public boolean isLucent() {
-		return isLucentVar;
+		return this.isLucentVar;
 	}
 
 	public boolean isLucentV8() {
-		return isLucentVar && lucentPDV >= 8;
+		return (this.isLucentVar) && (this.lucentPDV >= 8);
 	}
 
-	void setAddParty(final int _addParty) {
-		addParty = _addParty;
+	void setLucent(int pdv) {
+		this.isLucentVar = true;
+		this.lucentPDV = pdv;
 	}
 
 	void setAll() {
-		addParty = 1;
-		alternateCall = 1;
-		answerCall = 1;
-		callCompletion = 1;
-		clearCall = 1;
-		clearConnection = 1;
-		conferenceCall = 1;
-		consultationCall = 1;
-		deflectCall = 1;
-		pickupCall = 1;
-		groupPickupCall = 1;
-		holdCall = 1;
-		makeCall = 1;
-		makePredictiveCall = 1;
-		queryMwi = 1;
-		queryDnd = 1;
-		queryFwd = 1;
-		queryAgentState = 1;
-		queryLastNumber = 1;
-		queryDeviceInfo = 1;
-		reconnectCall = 1;
-		retrieveCall = 1;
-		setMwi = 1;
-		setDnd = 1;
-		setFwd = 1;
-		setAgentState = 1;
-		transferCall = 1;
-		eventReport = 1;
-		callClearedEvent = 1;
-		conferencedEvent = 1;
-		connectionClearedEvent = 1;
-		deliveredEvent = 1;
-		divertedEvent = 1;
-		establishedEvent = 1;
-		failedEvent = 1;
-		heldEvent = 1;
-		networkReachedEvent = 1;
-		originatedEvent = 1;
-		queuedEvent = 1;
-		retrievedEvent = 1;
-		serviceInitiatedEvent = 1;
-		transferredEvent = 1;
-		callInformationEvent = 1;
-		doNotDisturbEvent = 1;
-		forwardingEvent = 1;
-		messageWaitingEvent = 1;
-		loggedOnEvent = 1;
-		loggedOffEvent = 1;
-		notReadyEvent = 1;
-		readyEvent = 1;
-		workNotReadyEvent = 1;
-		workReadyEvent = 1;
-		backInServiceEvent = 1;
-		outOfServiceEvent = 1;
-		privateEvent = 1;
-		routeRequestEvent = 1;
-		reRoute = 1;
-		routeSelect = 1;
-		routeUsedEvent = 1;
-		routeEndEvent = 1;
-		monitorDevice = 1;
-		monitorCall = 1;
-		monitorCallsViaDevice = 1;
-		changeMonitorFilter = 1;
-		monitorStop = 1;
-		monitorEnded = 1;
-		snapshotDeviceReq = 1;
-		snapshotCallReq = 1;
-		escapeService = 1;
-		privateStatusEvent = 1;
-		escapeServiceEvent = 1;
-		escapeServiceConf = 1;
-		sendPrivateEvent = 1;
-		sysStatReq = 1;
-		sysStatStart = 1;
-		sysStatStop = 1;
-		changeSysStatFilter = 1;
-		sysStatReqEvent = 1;
-		sysStatReqConf = 1;
-		sysStatEvent = 1;
-	}
-
-	void setAlternateCall(final int _alternateCall) {
-		alternateCall = _alternateCall;
-	}
-
-	void setAnswerCall(final int _answerCall) {
-		answerCall = _answerCall;
-	}
-
-	void setBackInServiceEvent(final int _backInServiceEvent) {
-		backInServiceEvent = _backInServiceEvent;
-	}
-
-	void setCallClearedEvent(final int _callClearedEvent) {
-		callClearedEvent = _callClearedEvent;
-	}
-
-	void setCallCompletion(final int _callCompletion) {
-		callCompletion = _callCompletion;
-	}
-
-	void setCallInformationEvent(final int _callInformationEvent) {
-		callInformationEvent = _callInformationEvent;
-	}
-
-	void setChangeMonitorFilter(final int _changeMonitorFilter) {
-		changeMonitorFilter = _changeMonitorFilter;
-	}
-
-	void setChangeSysStatFilter(final int _changeSysStatFilter) {
-		changeSysStatFilter = _changeSysStatFilter;
-	}
-
-	void setClearCall(final int _clearCall) {
-		clearCall = _clearCall;
-	}
-
-	void setClearConnection(final int _clearConnection) {
-		clearConnection = _clearConnection;
-	}
-
-	void setConferenceCall(final int _conferenceCall) {
-		conferenceCall = _conferenceCall;
-	}
-
-	void setConferencedEvent(final int _conferencedEvent) {
-		conferencedEvent = _conferencedEvent;
-	}
-
-	void setConnectionClearedEvent(final int _connectionClearedEvent) {
-		connectionClearedEvent = _connectionClearedEvent;
-	}
-
-	void setConsultationCall(final int _consultationCall) {
-		consultationCall = _consultationCall;
-	}
-
-	void setDeflectCall(final int _deflectCall) {
-		deflectCall = _deflectCall;
-	}
-
-	void setDeliveredEvent(final int _deliveredEvent) {
-		deliveredEvent = _deliveredEvent;
-	}
-
-	void setDivertedEvent(final int _divertedEvent) {
-		divertedEvent = _divertedEvent;
-	}
-
-	void setDoNotDisturbEvent(final int _doNotDisturbEvent) {
-		doNotDisturbEvent = _doNotDisturbEvent;
-	}
-
-	void setEscapeService(final int _escapeService) {
-		escapeService = _escapeService;
-	}
-
-	void setEscapeServiceConf(final int _escapeServiceConf) {
-		escapeServiceConf = _escapeServiceConf;
-	}
-
-	void setEscapeServiceEvent(final int _escapeServiceEvent) {
-		escapeServiceEvent = _escapeServiceEvent;
-	}
-
-	void setEstablishedEvent(final int _establishedEvent) {
-		establishedEvent = _establishedEvent;
-	}
-
-	void setEventReport(final int _eventReport) {
-		eventReport = _eventReport;
-	}
-
-	void setFailedEvent(final int _failedEvent) {
-		failedEvent = _failedEvent;
-	}
-
-	void setForwardingEvent(final int _forwardingEvent) {
-		forwardingEvent = _forwardingEvent;
-	}
-
-	void setGroupPickupCall(final int _groupPickupCall) {
-		groupPickupCall = _groupPickupCall;
-	}
-
-	void setHeldEvent(final int _heldEvent) {
-		heldEvent = _heldEvent;
-	}
-
-	void setHoldCall(final int _holdCall) {
-		holdCall = _holdCall;
-	}
-
-	void setLoggedOffEvent(final int _loggedOffEvent) {
-		loggedOffEvent = _loggedOffEvent;
-	}
-
-	void setLoggedOnEvent(final int _loggedOnEvent) {
-		loggedOnEvent = _loggedOnEvent;
-	}
-
-	void setLucent(final int pdv) {
-		isLucentVar = true;
-		lucentPDV = pdv;
-	}
-
-	void setMakeCall(final int _makeCall) {
-		makeCall = _makeCall;
-	}
-
-	void setMakePredictiveCall(final int _makePredictiveCall) {
-		makePredictiveCall = _makePredictiveCall;
-	}
-
-	void setMessageWaitingEvent(final int _messageWaitingEvent) {
-		messageWaitingEvent = _messageWaitingEvent;
-	}
-
-	void setMonitorCall(final int _monitorCall) {
-		monitorCall = _monitorCall;
-	}
-
-	void setMonitorCallsViaDevice(final int _monitorCallsViaDevice) {
-		monitorCallsViaDevice = _monitorCallsViaDevice;
-	}
-
-	void setMonitorDevice(final int _monitorDevice) {
-		monitorDevice = _monitorDevice;
-	}
-
-	void setMonitorEnded(final int _monitorEnded) {
-		monitorEnded = _monitorEnded;
-	}
-
-	void setMonitorStop(final int _monitorStop) {
-		monitorStop = _monitorStop;
-	}
-
-	void setNetworkReachedEvent(final int _networkReachedEvent) {
-		networkReachedEvent = _networkReachedEvent;
-	}
-
-	void setNotReadyEvent(final int _notReadyEvent) {
-		notReadyEvent = _notReadyEvent;
-	}
-
-	void setOriginatedEvent(final int _originatedEvent) {
-		originatedEvent = _originatedEvent;
-	}
-
-	void setOutOfServiceEvent(final int _outOfServiceEvent) {
-		outOfServiceEvent = _outOfServiceEvent;
-	}
-
-	void setPickupCall(final int _pickupCall) {
-		pickupCall = _pickupCall;
-	}
-
-	void setPrivateEvent(final int _privateEvent) {
-		privateEvent = _privateEvent;
-	}
-
-	void setPrivateStatusEvent(final int _privateStatusEvent) {
-		privateStatusEvent = _privateStatusEvent;
-	}
-
-	void setQueryAgentState(final int _queryAgentState) {
-		queryAgentState = _queryAgentState;
-	}
-
-	void setQueryDeviceInfo(final int _queryDeviceInfo) {
-		queryDeviceInfo = _queryDeviceInfo;
-	}
-
-	void setQueryDnd(final int _queryDnd) {
-		queryDnd = _queryDnd;
-	}
-
-	void setQueryFwd(final int _queryFwd) {
-		queryFwd = _queryFwd;
-	}
-
-	void setQueryLastNumber(final int _queryLastNumber) {
-		queryLastNumber = _queryLastNumber;
-	}
-
-	void setQueryMwi(final int _queryMwi) {
-		queryMwi = _queryMwi;
-	}
-
-	void setQueuedEvent(final int _queuedEvent) {
-		queuedEvent = _queuedEvent;
-	}
-
-	void setReadyEvent(final int _readyEvent) {
-		readyEvent = _readyEvent;
-	}
-
-	void setReconnectCall(final int _reconnectCall) {
-		reconnectCall = _reconnectCall;
-	}
-
-	void setReRoute(final int _reRoute) {
-		reRoute = _reRoute;
-	}
-
-	void setRetrieveCall(final int _retrieveCall) {
-		retrieveCall = _retrieveCall;
-	}
-
-	void setRetrievedEvent(final int _retrievedEvent) {
-		retrievedEvent = _retrievedEvent;
-	}
-
-	void setRouteEndEvent(final int _routeEndEvent) {
-		routeEndEvent = _routeEndEvent;
-	}
-
-	void setRouteRequestEvent(final int _routeRequestEvent) {
-		routeRequestEvent = _routeRequestEvent;
-	}
-
-	void setRouteSelect(final int _routeSelect) {
-		routeSelect = _routeSelect;
-	}
-
-	void setRouteUsedEvent(final int _routeUsedEvent) {
-		routeUsedEvent = _routeUsedEvent;
-	}
-
-	void setSendPrivateEvent(final int _sendPrivateEvent) {
-		sendPrivateEvent = _sendPrivateEvent;
-	}
-
-	void setServiceInitiatedEvent(final int _serviceInitiatedEvent) {
-		serviceInitiatedEvent = _serviceInitiatedEvent;
-	}
-
-	void setSetAgentState(final int _setAgentState) {
-		setAgentState = _setAgentState;
-	}
-
-	void setSetDnd(final int _setDnd) {
-		setDnd = _setDnd;
-	}
-
-	void setSetFwd(final int _setFwd) {
-		setFwd = _setFwd;
-	}
-
-	void setSetMwi(final int _setMwi) {
-		setMwi = _setMwi;
-	}
-
-	void setSnapshotCallReq(final int _snapshotCallReq) {
-		snapshotCallReq = _snapshotCallReq;
-	}
-
-	void setSnapshotDeviceReq(final int _snapshotDeviceReq) {
-		snapshotDeviceReq = _snapshotDeviceReq;
-	}
-
-	void setSysStatEvent(final int _sysStatEvent) {
-		sysStatEvent = _sysStatEvent;
-	}
-
-	void setSysStatReq(final int _sysStatReq) {
-		sysStatReq = _sysStatReq;
-	}
-
-	void setSysStatReqConf(final int _sysStatReqConf) {
-		sysStatReqConf = _sysStatReqConf;
-	}
-
-	void setSysStatReqEvent(final int _sysStatReqEvent) {
-		sysStatReqEvent = _sysStatReqEvent;
-	}
-
-	void setSysStatStart(final int _sysStatStart) {
-		sysStatStart = _sysStatStart;
-	}
-
-	void setSysStatStop(final int _sysStatStop) {
-		sysStatStop = _sysStatStop;
-	}
-
-	void setTransferCall(final int _transferCall) {
-		transferCall = _transferCall;
-	}
-
-	void setTransferredEvent(final int _transferredEvent) {
-		transferredEvent = _transferredEvent;
-	}
-
-	void setWorkNotReadyEvent(final int _workNotReadyEvent) {
-		workNotReadyEvent = _workNotReadyEvent;
-	}
-
-	void setWorkReadyEvent(final int _workReadyEvent) {
-		workReadyEvent = _workReadyEvent;
+		this.addParty = 1;
+		this.alternateCall = 1;
+		this.answerCall = 1;
+		this.callCompletion = 1;
+		this.clearCall = 1;
+		this.clearConnection = 1;
+		this.conferenceCall = 1;
+		this.consultationCall = 1;
+		this.deflectCall = 1;
+		this.pickupCall = 1;
+		this.groupPickupCall = 1;
+		this.holdCall = 1;
+		this.makeCall = 1;
+		this.makePredictiveCall = 1;
+		this.queryMwi = 1;
+		this.queryDnd = 1;
+		this.queryFwd = 1;
+		this.queryAgentState = 1;
+		this.queryLastNumber = 1;
+		this.queryDeviceInfo = 1;
+		this.reconnectCall = 1;
+		this.retrieveCall = 1;
+		this.setMwi = 1;
+		this.setDnd = 1;
+		this.setFwd = 1;
+		this.setAgentState = 1;
+		this.transferCall = 1;
+		this.eventReport = 1;
+		this.callClearedEvent = 1;
+		this.conferencedEvent = 1;
+		this.connectionClearedEvent = 1;
+		this.deliveredEvent = 1;
+		this.divertedEvent = 1;
+		this.establishedEvent = 1;
+		this.failedEvent = 1;
+		this.heldEvent = 1;
+		this.networkReachedEvent = 1;
+		this.originatedEvent = 1;
+		this.queuedEvent = 1;
+		this.retrievedEvent = 1;
+		this.serviceInitiatedEvent = 1;
+		this.transferredEvent = 1;
+		this.callInformationEvent = 1;
+		this.doNotDisturbEvent = 1;
+		this.forwardingEvent = 1;
+		this.messageWaitingEvent = 1;
+		this.loggedOnEvent = 1;
+		this.loggedOffEvent = 1;
+		this.notReadyEvent = 1;
+		this.readyEvent = 1;
+		this.workNotReadyEvent = 1;
+		this.workReadyEvent = 1;
+		this.backInServiceEvent = 1;
+		this.outOfServiceEvent = 1;
+		this.privateEvent = 1;
+		this.routeRequestEvent = 1;
+		this.reRoute = 1;
+		this.routeSelect = 1;
+		this.routeUsedEvent = 1;
+		this.routeEndEvent = 1;
+		this.monitorDevice = 1;
+		this.monitorCall = 1;
+		this.monitorCallsViaDevice = 1;
+		this.changeMonitorFilter = 1;
+		this.monitorStop = 1;
+		this.monitorEnded = 1;
+		this.snapshotDeviceReq = 1;
+		this.snapshotCallReq = 1;
+		this.escapeService = 1;
+		this.privateStatusEvent = 1;
+		this.escapeServiceEvent = 1;
+		this.escapeServiceConf = 1;
+		this.sendPrivateEvent = 1;
+		this.sysStatReq = 1;
+		this.sysStatStart = 1;
+		this.sysStatStop = 1;
+		this.changeSysStatFilter = 1;
+		this.sysStatReqEvent = 1;
+		this.sysStatReqConf = 1;
+		this.sysStatEvent = 1;
 	}
 }

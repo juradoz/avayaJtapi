@@ -1,8 +1,7 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.util.Collection;
-
 import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
+import java.util.Collection;
 
 public final class CSTALevel extends ASNEnumerated {
 	public static final short CSTA_HOME_WORK_TOP = 1;
@@ -13,8 +12,7 @@ public final class CSTALevel extends ASNEnumerated {
 	public static final short CSTA_ROUTING = 6;
 	public static final short CSTA_CALL_CALL_MONITOR = 7;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
 		case 1:
@@ -42,6 +40,6 @@ public final class CSTALevel extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

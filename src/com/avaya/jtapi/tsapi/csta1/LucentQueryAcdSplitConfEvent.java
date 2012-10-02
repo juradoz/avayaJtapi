@@ -1,11 +1,10 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class LucentQueryAcdSplitConfEvent extends LucentPrivateData {
 	int availableAgents;
@@ -13,71 +12,69 @@ public final class LucentQueryAcdSplitConfEvent extends LucentPrivateData {
 	int agentsLoggedIn;
 	public static final int PDU = 12;
 
-	public static LucentQueryAcdSplitConfEvent decode(final InputStream in) {
-		final LucentQueryAcdSplitConfEvent _this = new LucentQueryAcdSplitConfEvent();
+	public static LucentQueryAcdSplitConfEvent decode(InputStream in) {
+		LucentQueryAcdSplitConfEvent _this = new LucentQueryAcdSplitConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		availableAgents = ASNInteger.decode(memberStream);
-		callsInQueue = ASNInteger.decode(memberStream);
-		agentsLoggedIn = ASNInteger.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.availableAgents = ASNInteger.decode(memberStream);
+		this.callsInQueue = ASNInteger.decode(memberStream);
+		this.agentsLoggedIn = ASNInteger.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNInteger.encode(availableAgents, memberStream);
-		ASNInteger.encode(callsInQueue, memberStream);
-		ASNInteger.encode(agentsLoggedIn, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ASNInteger.encode(this.availableAgents, memberStream);
+		ASNInteger.encode(this.callsInQueue, memberStream);
+		ASNInteger.encode(this.agentsLoggedIn, memberStream);
 	}
 
-	public int getAgentsLoggedIn() {
-		return agentsLoggedIn;
-	}
-
-	public int getAvailableAgents() {
-		return availableAgents;
-	}
-
-	public int getCallsInQueue() {
-		return callsInQueue;
-	}
-
-	@Override
-	public int getPDU() {
-		return 12;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentQueryAcdSplitConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNInteger.print(availableAgents, "availableAgents",
+		lines.addAll(ASNInteger.print(this.availableAgents, "availableAgents",
 				indent));
-		lines.addAll(ASNInteger.print(callsInQueue, "callsInQueue", indent));
-		lines.addAll(ASNInteger.print(agentsLoggedIn, "agentsLoggedIn", indent));
+		lines.addAll(ASNInteger
+				.print(this.callsInQueue, "callsInQueue", indent));
+		lines.addAll(ASNInteger.print(this.agentsLoggedIn, "agentsLoggedIn",
+				indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setAgentsLoggedIn(final int agentsLoggedIn) {
+	public int getPDU() {
+		return 12;
+	}
+
+	public int getAgentsLoggedIn() {
+		return this.agentsLoggedIn;
+	}
+
+	public int getAvailableAgents() {
+		return this.availableAgents;
+	}
+
+	public int getCallsInQueue() {
+		return this.callsInQueue;
+	}
+
+	public void setAgentsLoggedIn(int agentsLoggedIn) {
 		this.agentsLoggedIn = agentsLoggedIn;
 	}
 
-	public void setAvailableAgents(final int availableAgents) {
+	public void setAvailableAgents(int availableAgents) {
 		this.availableAgents = availableAgents;
 	}
 
-	public void setCallsInQueue(final int callsInQueue) {
+	public void setCallsInQueue(int callsInQueue) {
 		this.callsInQueue = callsInQueue;
 	}
 }

@@ -4,7 +4,7 @@ import com.avaya.jtapi.tsapi.LucentV5CallInfo;
 
 public final class LucentV5TermConnInUseEventImpl extends
 		LucentTermConnInUseEventImpl implements LucentV5CallInfo {
-	public LucentV5TermConnInUseEventImpl(final TermConnEventParams params) {
+	public LucentV5TermConnInUseEventImpl(TermConnEventParams params) {
 		super(params);
 	}
 }

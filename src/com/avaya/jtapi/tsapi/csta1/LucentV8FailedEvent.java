@@ -5,62 +5,52 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class LucentV8FailedEvent extends LucentFailedEvent {
-	CSTAExtendedDeviceID callingDevice_asn;
+	CSTAExtendedDeviceID callingDevice_asn = null;
 	static final int PDU = 141;
 
-	static LucentFailedEvent decode(final InputStream in) {
-		final LucentV8FailedEvent _this = new LucentV8FailedEvent();
+	static LucentFailedEvent decode(InputStream in) {
+		LucentV8FailedEvent _this = new LucentV8FailedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	public LucentV8FailedEvent() {
-		callingDevice_asn = null;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
+	public void decodeMembers(InputStream memberStream) {
 		super.decodeMembers(memberStream);
-		callingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
+		this.callingDevice_asn = CSTAExtendedDeviceID.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
+	public void encodeMembers(OutputStream memberStream) {
 		super.encodeMembers(memberStream);
-		ASNSequence.encode(callingDevice_asn, memberStream);
+		CSTAExtendedDeviceID.encode(this.callingDevice_asn, memberStream);
 	}
 
-	public CSTAExtendedDeviceID getCallingDevice() {
-		return callingDevice_asn;
-	}
-
-	@Override
-	public int getPDU() {
-		return 141;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("LucentV8FailedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAExtendedDeviceID.print(callingDevice_asn,
+		lines.addAll(CSTAExtendedDeviceID.print(this.callingDevice_asn,
 				"callingDevice", indent));
-		lines.addAll(CSTADeviceHistoryData.print(deviceHistory,
+		lines.addAll(CSTADeviceHistoryData.print(this.deviceHistory,
 				"deviceHistory", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCallingDevice(final CSTAExtendedDeviceID device) {
-		callingDevice_asn = device;
+	public int getPDU() {
+		return 141;
+	}
+
+	public CSTAExtendedDeviceID getCallingDevice() {
+		return this.callingDevice_asn;
+	}
+
+	public void setCallingDevice(CSTAExtendedDeviceID device) {
+		this.callingDevice_asn = device;
 	}
 }

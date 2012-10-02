@@ -41,94 +41,52 @@ public final class Crypt {
 	static final byte[] encodePositionTable = { 3, 14, 15, 2, 13, 12, 4, 5, 9,
 			6, 0, 1, 11, 7, 10, 8 };
 
-	public static byte[] encode(final String password, final byte[] key) {
-		final byte[] output = new byte[40];
-		final byte[] buffer = new byte[8];
-
-		byte[] passBytes = new byte[password.length()];
-		passBytes = password.getBytes();
-
-		for (int i = 0; i < passBytes.length && i < output.length; ++i)
-			output[i] = passBytes[i];
-
-		for (int j = 0; j < 40; j += 8)
-			for (int loop = 0; loop < 16; ++loop) {
-				for (int i = 0; i < 8; ++i)
-					buffer[i] = output[(i + j)];
-
-				for (int i = 0; i < 8; ++i) {
-					final int temp = (buffer[i] ^ key[i]) & 0xFF;
-
-					buffer[i] = (byte) (Crypt.encodeSubstitutionTable[(i * 2)][(temp & 0xF)] | Crypt.encodeSubstitutionTable[(i * 2 + 1)][(temp >>> 4)] << 4);
-				}
-
-				for (int i = 0; i < 16; ++i) {
-					int temp = Crypt.encodePositionTable[i] & 0xFF;
-					if ((temp & 0x1) != 0)
-						temp = buffer[(temp / 2)] >>> 4 & 0xF;
-					else
-						temp = buffer[(temp / 2)] & 0xF;
-
-					if ((i & 0x1) == 0)
-						output[(i / 2 + j)] = (byte) temp;
-					else {
-						final int tmp258_257 = i / 2 + j;
-						final byte[] tmp258_250 = output;
-						tmp258_250[tmp258_257] = (byte) (tmp258_250[tmp258_257] | (byte) (temp << 4));
-					}
-				}
-
-				final int temp = key[7] & 0xFF;
-				for (int i = 7; i > 0; --i)
-					key[i] = (byte) (key[i] << 4 | key[(i - 1)] >>> 4 & 0xF);
-				key[0] = (byte) (key[0] << 4 | temp >>> 4);
-			}
-		return output;
-	}
-
-	static byte[] encrypt(final byte[] input) {
+	static byte[] encrypt(byte[] input) {
 		byte encryptionSum = 0;
 
-		for (int loop = 0; loop < 2; ++loop)
-			for (int i = 0; i < 32; ++i) {
-				final byte encryptedByte = (byte) (input[i] + encryptionSum ^ input[(i
+		for (int loop = 0; loop < 2; loop++) {
+			for (int i = 0; i < 32; i++) {
+				byte encryptedByte = (byte) (input[i] + encryptionSum ^ input[(i
 						+ encryptionSum & 0x1F)]
-						- Crypt.positionTable[i]);
+						- positionTable[i]);
 
 				encryptionSum = (byte) (encryptionSum + encryptedByte);
 
 				input[i] = encryptedByte;
 			}
 
-		final byte[] output = new byte[16];
+		}
 
-		for (int i = 0; i < 32; ++i)
-			if ((i & 0x1) == 0)
-				output[(i / 2)] = Crypt.Substitution[(input[i] & 0xFF)];
-			else {
-				final int tmp114_113 = i / 2;
-				final byte[] tmp114_109 = output;
-				tmp114_109[tmp114_113] = (byte) (tmp114_109[tmp114_113] | Crypt.Substitution[(input[i] & 0xFF)] << 4);
+		byte[] output = new byte[16];
+
+		for (int i = 0; i < 32; i++) {
+			if ((i & 0x1) == 0) {
+				output[(i / 2)] = Substitution[(input[i] & 0xFF)];
+			} else {
+				int tmp114_113 = (i / 2);
+				byte[] tmp114_109 = output;
+				tmp114_109[tmp114_113] = (byte) (tmp114_109[tmp114_113] | Substitution[(input[i] & 0xFF)] << 4);
 			}
+		}
 		return output;
 	}
 
-	static byte[] encryptPassword(final byte[] id, final int idOffset,
-			final byte[] password) {
+	static byte[] encryptPassword(byte[] id, int idOffset, byte[] password) {
 		int length = password.length;
 		int charPos = length - 1;
 		int pwIdx = 0;
 
-		while (length != 0 && password[charPos--] == 0)
-			--length;
+		while ((length != 0) && (password[(charPos--)] == 0)) {
+			length--;
+		}
 
-		final byte[] tempBuffer = new byte[32];
+		byte[] tempBuffer = new byte[32];
 
 		while (length >= 32) {
-			for (int i = 0; i < 32; ++i) {
-				final int tmp59_57 = i;
-				final byte[] tmp59_55 = tempBuffer;
-				tmp59_55[tmp59_57] = (byte) (tmp59_55[tmp59_57] ^ password[pwIdx++]);
+			for (int i = 0; i < 32; i++) {
+				int tmp57_55 = i;
+				byte[] tmp57_53 = tempBuffer;
+				tmp57_53[tmp57_55] = (byte) (tmp57_53[tmp57_55] ^ password[(pwIdx++)]);
 			}
 			length -= 32;
 		}
@@ -136,53 +94,104 @@ public final class Crypt {
 		if (length > 0) {
 			charPos = pwIdx;
 
-			for (int i = 0; i < 32; ++i)
+			for (int i = 0; i < 32; i++) {
 				if (charPos == length) {
 					charPos = pwIdx;
-					final int tmp115_113 = i;
-					final byte[] tmp115_111 = tempBuffer;
-					tmp115_111[tmp115_113] = (byte) (tmp115_111[tmp115_113] ^ Crypt.positionTable[i]);
+					int tmp113_111 = i;
+					byte[] tmp113_109 = tempBuffer;
+					tmp113_109[tmp113_111] = (byte) (tmp113_109[tmp113_111] ^ positionTable[i]);
 				} else {
-					final int tmp133_131 = i;
-					final byte[] tmp133_129 = tempBuffer;
-					tmp133_129[tmp133_131] = (byte) (tmp133_129[tmp133_131] ^ password[charPos++]);
+					int tmp131_129 = i;
+					byte[] tmp131_127 = tempBuffer;
+					tmp131_127[tmp131_129] = (byte) (tmp131_127[tmp131_129] ^ password[(charPos++)]);
 				}
+			}
 		}
-		for (int i = 0; i < 32; ++i) {
-			final int tmp165_163 = i;
-			final byte[] tmp165_161 = tempBuffer;
-			tmp165_161[tmp165_163] = (byte) (tmp165_161[tmp165_163] ^ id[((i & 0x3) + idOffset)]);
+		for (int i = 0; i < 32; i++) {
+			int tmp163_161 = i;
+			byte[] tmp163_159 = tempBuffer;
+			tmp163_159[tmp163_161] = (byte) (tmp163_159[tmp163_161] ^ id[((i & 0x3) + idOffset)]);
 		}
 
-		return Crypt.encrypt(tempBuffer);
+		return encrypt(tempBuffer);
 	}
 
-	static byte[] scramblePassword(final String password, final int objectID,
-			final byte[] challengeKey) {
-		final byte[] idBytes = new byte[4];
+	static byte[] scramblePassword(String password, int objectID,
+			byte[] challengeKey) {
+		byte[] idBytes = new byte[4];
 
-		final byte[] passBytes = password.toUpperCase().getBytes();
+		byte[] passBytes = password.toUpperCase().getBytes();
 
 		idBytes[0] = (byte) (objectID >>> 0 & 0xFF);
 		idBytes[1] = (byte) (objectID >>> 8 & 0xFF);
 		idBytes[2] = (byte) (objectID >>> 16 & 0xFF);
 		idBytes[3] = (byte) (objectID >>> 24 & 0xFF);
 
-		final byte[] cryptPass = Crypt.encryptPassword(idBytes, 0, passBytes);
+		byte[] cryptPass = encryptPassword(idBytes, 0, passBytes);
 
-		final byte[] temp1 = Crypt.encryptPassword(challengeKey, 0, cryptPass);
+		byte[] temp1 = encryptPassword(challengeKey, 0, cryptPass);
 
-		final byte[] temp2 = Crypt.encryptPassword(challengeKey, 4, cryptPass);
+		byte[] temp2 = encryptPassword(challengeKey, 4, cryptPass);
 
-		for (int i = 0; i < 16; ++i) {
-			final int tmp104_102 = i;
-			final byte[] tmp104_100 = temp1;
+		for (int i = 0; i < 16; i++) {
+			int tmp104_102 = i;
+			byte[] tmp104_100 = temp1;
 			tmp104_100[tmp104_102] = (byte) (tmp104_100[tmp104_102] ^ temp2[(15 - i)]);
 		}
-		final byte[] output = new byte[8];
+		byte[] output = new byte[8];
 
-		for (int i = 0; i < 8; ++i)
+		for (int i = 0; i < 8; i++) {
 			output[i] = (byte) (temp1[i] ^ temp1[(15 - i)]);
+		}
+		return output;
+	}
+
+	public static byte[] encode(String password, byte[] key) {
+		byte[] output = new byte[40];
+		byte[] buffer = new byte[8];
+
+		byte[] passBytes = new byte[password.length()];
+		passBytes = password.getBytes();
+
+		for (int i = 0; (i < passBytes.length) && (i < output.length); i++) {
+			output[i] = passBytes[i];
+		}
+
+		for (int j = 0; j < 40; j += 8) {
+			for (int loop = 0; loop < 16; loop++) {
+				for (int i = 0; i < 8; i++) {
+					buffer[i] = output[(i + j)];
+				}
+
+				for (int i = 0; i < 8; i++) {
+					int temp = (buffer[i] ^ key[i]) & 0xFF;
+
+					buffer[i] = (byte) (encodeSubstitutionTable[(i * 2)][(temp & 0xF)] | encodeSubstitutionTable[(i * 2 + 1)][(temp >>> 4)] << 4);
+				}
+
+				for (int i = 0; i < 16; i++) {
+					int temp = encodePositionTable[i] & 0xFF;
+					if ((temp & 0x1) != 0)
+						temp = buffer[(temp / 2)] >>> 4 & 0xF;
+					else {
+						temp = buffer[(temp / 2)] & 0xF;
+					}
+
+					if ((i & 0x1) == 0) {
+						output[(i / 2 + j)] = (byte) temp;
+					} else {
+						int tmp258_257 = (i / 2 + j);
+						byte[] tmp258_250 = output;
+						tmp258_250[tmp258_257] = (byte) (tmp258_250[tmp258_257] | (byte) (temp << 4));
+					}
+				}
+
+				int temp = key[7] & 0xFF;
+				for (int i = 7; i > 0; i--)
+					key[i] = (byte) (key[i] << 4 | key[(i - 1)] >>> 4 & 0xF);
+				key[0] = (byte) (key[0] << 4 | temp >>> 4);
+			}
+		}
 		return output;
 	}
 }

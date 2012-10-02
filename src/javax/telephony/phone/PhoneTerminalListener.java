@@ -9,9 +9,6 @@ public abstract interface PhoneTerminalListener extends TerminalListener {
 	public abstract void terminalButtonPressed(
 			PhoneTerminalEvent paramPhoneTerminalEvent);
 
-	public abstract void terminalButtonPressThresholdExceeded(
-			PhoneTerminalEvent paramPhoneTerminalEvent);
-
 	public abstract void terminalDisplayUpdated(
 			PhoneTerminalEvent paramPhoneTerminalEvent);
 
@@ -31,5 +28,8 @@ public abstract interface PhoneTerminalListener extends TerminalListener {
 			PhoneTerminalEvent paramPhoneTerminalEvent);
 
 	public abstract void terminalSpeakerVolumeChanged(
+			PhoneTerminalEvent paramPhoneTerminalEvent);
+
+	public abstract void terminalButtonPressThresholdExceeded(
 			PhoneTerminalEvent paramPhoneTerminalEvent);
 }

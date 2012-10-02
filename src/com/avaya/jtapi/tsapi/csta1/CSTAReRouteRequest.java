@@ -4,62 +4,57 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-
 public final class CSTAReRouteRequest extends CSTARequest {
 	int routeRegisterReqID;
 	int routingCrossRefID;
 	public static final int PDU = 85;
 
-	public static CSTAReRouteRequest decode(final InputStream in) {
-		final CSTAReRouteRequest _this = new CSTAReRouteRequest();
+	public static CSTAReRouteRequest decode(InputStream in) {
+		CSTAReRouteRequest _this = new CSTAReRouteRequest();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		routeRegisterReqID = ASNInteger.decode(memberStream);
-		routingCrossRefID = ASNInteger.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.routeRegisterReqID = RouteRegisterReqID.decode(memberStream);
+		this.routingCrossRefID = RoutingCrossRefID.decode(memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 85;
-	}
-
-	public int getRouteRegisterReqID() {
-		return routeRegisterReqID;
-	}
-
-	public int getRoutingCrossRefID() {
-		return routingCrossRefID;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTAReRouteRequest ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
-				indent));
-		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
-				indent));
+		lines.addAll(RouteRegisterReqID.print(this.routeRegisterReqID,
+				"routeRegisterReqID", indent));
+		lines.addAll(RoutingCrossRefID.print(this.routingCrossRefID,
+				"routingCrossRefID", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setRouteRegisterReqID(final int routeRegisterReqID) {
+	public int getPDU() {
+		return 85;
+	}
+
+	public int getRouteRegisterReqID() {
+		return this.routeRegisterReqID;
+	}
+
+	public int getRoutingCrossRefID() {
+		return this.routingCrossRefID;
+	}
+
+	public void setRouteRegisterReqID(int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(final int routingCrossRefID) {
+	public void setRoutingCrossRefID(int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
 	}
 }

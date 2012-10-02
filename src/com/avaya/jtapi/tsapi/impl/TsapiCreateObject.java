@@ -10,76 +10,85 @@ import com.avaya.jtapi.tsapi.impl.core.TSTrunk;
 import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 public final class TsapiCreateObject {
-	public static Object getTsapiObject(final Object _object,
-			final boolean isAddress) {
+	public static Object getTsapiObject(Object _object, boolean isAddress) {
 		Object retval = null;
 		TsapiTrace.traceEntry(
 				"getTsapiObject[Object _object, boolean isAddress]", null);
-		if (_object instanceof TSProviderImpl) {
-			final TSProviderImpl TSProviderImpl = (TSProviderImpl) _object;
-			if (TSProviderImpl.isLucentV7())
+		if ((_object instanceof TSProviderImpl)) {
+			TSProviderImpl TSProviderImpl = (TSProviderImpl) _object;
+			if (TSProviderImpl.isLucentV7()) {
 				retval = new LucentV7ProviderImpl(TSProviderImpl);
-			else if (TSProviderImpl.isLucentV5())
+			} else if (TSProviderImpl.isLucentV5()) {
 				retval = new LucentV5ProviderImpl(TSProviderImpl);
-			else if (TSProviderImpl.isLucent())
+			} else if (TSProviderImpl.isLucent()) {
 				retval = new LucentProviderImpl(TSProviderImpl);
-			else
+			} else {
 				retval = new TsapiProvider(TSProviderImpl);
-		} else if (_object instanceof TSCall) {
-			final TSCall tsCall = (TSCall) _object;
-			if (tsCall.getTSProviderImpl().isLucentV7())
+			}
+		} else if ((_object instanceof TSCall)) {
+			TSCall tsCall = (TSCall) _object;
+			if (tsCall.getTSProviderImpl().isLucentV7()) {
 				retval = new LucentV7CallImpl(tsCall);
-			else if (tsCall.getTSProviderImpl().isLucentV5())
+			} else if (tsCall.getTSProviderImpl().isLucentV5()) {
 				retval = new LucentV5CallImpl(tsCall);
-			else if (tsCall.getTSProviderImpl().isLucent())
+			} else if (tsCall.getTSProviderImpl().isLucent()) {
 				retval = new LucentCallEx2Impl(tsCall);
-			else
+			} else {
 				retval = new TsapiCall(tsCall);
-		} else if (_object instanceof TSConnection) {
-			final TSConnection tsConn = (TSConnection) _object;
+			}
+		} else if ((_object instanceof TSConnection)) {
+			TSConnection tsConn = (TSConnection) _object;
 			if (tsConn.getTSProviderImpl().isLucentV6()) {
 				if (isAddress) {
 					if (tsConn.getTSDevice().getDeviceType() == 1)
 						retval = new LucentV5ACDManagerConnectionImpl(tsConn);
 					else if (tsConn.getTSDevice().getDeviceType() == 2)
 						retval = new LucentV5ACDConnectionImpl(tsConn);
-					else
+					else {
 						retval = new LucentV6ConnectionImpl(tsConn);
-				} else
+					}
+				} else {
 					retval = new LucentV5TerminalConnectionExImpl(tsConn);
+				}
 			} else if (tsConn.getTSProviderImpl().isLucentV5()) {
 				if (isAddress) {
 					if (tsConn.getTSDevice().getDeviceType() == 1)
 						retval = new LucentV5ACDManagerConnectionImpl(tsConn);
 					else if (tsConn.getTSDevice().getDeviceType() == 2)
 						retval = new LucentV5ACDConnectionImpl(tsConn);
-					else
+					else {
 						retval = new LucentV5ConnectionImpl(tsConn);
-				} else
+					}
+				} else {
 					retval = new LucentV5TerminalConnectionExImpl(tsConn);
+				}
 			} else if (tsConn.getTSProviderImpl().isLucent()) {
 				if (isAddress) {
 					if (tsConn.getTSDevice().getDeviceType() == 1)
 						retval = new LucentACDManagerConnectionImpl(tsConn);
 					else if (tsConn.getTSDevice().getDeviceType() == 2)
 						retval = new LucentACDConnectionImpl(tsConn);
-					else
+					else {
 						retval = new LucentConnectionImpl(tsConn);
-				} else
+					}
+				} else {
 					retval = new LucentTerminalConnectionImpl(tsConn);
+				}
 
 			} else if (isAddress) {
 				if (tsConn.getTSDevice().getDeviceType() == 1)
 					retval = new TsapiACDManagerConnection(tsConn);
 				else if (tsConn.getTSDevice().getDeviceType() == 2)
 					retval = new TsapiACDConnection(tsConn);
-				else
+				else {
 					retval = new TsapiConnection(tsConn);
-			} else
+				}
+			} else {
 				retval = new TsapiTerminalConnection(tsConn);
+			}
 
-		} else if (_object instanceof TSDevice) {
-			final TSDevice tsDevice = (TSDevice) _object;
+		} else if ((_object instanceof TSDevice)) {
+			TSDevice tsDevice = (TSDevice) _object;
 			if (tsDevice.getTSProviderImpl().isLucentV7()) {
 				if (isAddress) {
 					if (tsDevice.getDeviceType() == 1) {
@@ -90,81 +99,93 @@ public final class TsapiCreateObject {
 							retval = new LucentACDManagerAddressImpl(tsDevice);
 					} else if (tsDevice.getDeviceType() == 2)
 						retval = new LucentACDAddressImpl(tsDevice);
-					else
+					else {
 						retval = new LucentAddressImpl(tsDevice);
+					}
 
 				} else if (tsDevice.isTerminal())
 					retval = new LucentV5TerminalExImpl(tsDevice);
-				else
+				else {
 					retval = null;
+				}
 			} else if (tsDevice.getTSProviderImpl().isLucentV5()) {
 				if (isAddress) {
 					if (tsDevice.getDeviceType() == 1)
 						retval = new LucentACDManagerAddressImpl(tsDevice);
 					else if (tsDevice.getDeviceType() == 2)
 						retval = new LucentACDAddressImpl(tsDevice);
-					else
+					else {
 						retval = new LucentAddressImpl(tsDevice);
+					}
 
 				} else if (tsDevice.isTerminal())
 					retval = new LucentV5TerminalExImpl(tsDevice);
-				else
+				else {
 					retval = null;
+				}
 			} else if (tsDevice.getTSProviderImpl().isLucent()) {
 				if (isAddress) {
 					if (tsDevice.getDeviceType() == 1)
 						retval = new LucentACDManagerAddressImpl(tsDevice);
 					else if (tsDevice.getDeviceType() == 2)
 						retval = new LucentACDAddressImpl(tsDevice);
-					else
+					else {
 						retval = new LucentAddressImpl(tsDevice);
+					}
 
 				} else if (tsDevice.isTerminal())
 					retval = new LucentTerminalImpl(tsDevice);
-				else
+				else {
 					retval = null;
+				}
 
 			} else if (isAddress) {
 				if (tsDevice.getDeviceType() == 1)
 					retval = new TsapiACDManagerAddress(tsDevice);
 				else if (tsDevice.getDeviceType() == 2)
 					retval = new TsapiACDAddress(tsDevice);
-				else
+				else {
 					retval = new TsapiAddress(tsDevice);
+				}
 
 			} else if (tsDevice.isTerminal())
 				retval = new TsapiTerminal(tsDevice);
-			else
+			else {
 				retval = null;
+			}
 
-		} else if (_object instanceof TSAgent) {
-			final TSAgent tsAgent = (TSAgent) _object;
-			if (tsAgent.getTSProviderImpl().isLucentV7())
+		} else if ((_object instanceof TSAgent)) {
+			TSAgent tsAgent = (TSAgent) _object;
+			if (tsAgent.getTSProviderImpl().isLucentV7()) {
 				retval = new LucentV7AgentImpl(tsAgent);
-			else if (tsAgent.getTSProviderImpl().isLucentV6())
+			} else if (tsAgent.getTSProviderImpl().isLucentV6()) {
 				retval = new LucentV6AgentImpl(tsAgent);
-			else if (tsAgent.getTSProviderImpl().isLucent())
+			} else if (tsAgent.getTSProviderImpl().isLucent()) {
 				retval = new LucentAgentImpl(tsAgent);
-			else
+			} else {
 				retval = new TsapiAgent(tsAgent);
-		} else if (_object instanceof TSRouteSession) {
-			final TSRouteSession tsSession = (TSRouteSession) _object;
-			if (tsSession.getTSProviderImpl().isLucentV7())
+			}
+		} else if ((_object instanceof TSRouteSession)) {
+			TSRouteSession tsSession = (TSRouteSession) _object;
+			if (tsSession.getTSProviderImpl().isLucentV7()) {
 				retval = new LucentV7RouteSessionImpl(tsSession);
-			else if (tsSession.getTSProviderImpl().isLucentV5())
+			} else if (tsSession.getTSProviderImpl().isLucentV5()) {
 				retval = new LucentV5RouteSessionImpl(tsSession);
-			else if (tsSession.getTSProviderImpl().isLucent())
+			} else if (tsSession.getTSProviderImpl().isLucent()) {
 				retval = new LucentRouteSessionImpl(tsSession);
-			else
+			} else {
 				retval = new TsapiRouteSession(tsSession);
-		} else if (_object instanceof TSTrunk) {
-			final TSTrunk tsTrunk = (TSTrunk) _object;
-			if (tsTrunk.getTSProviderImpl().isLucentV6())
+			}
+		} else if ((_object instanceof TSTrunk)) {
+			TSTrunk tsTrunk = (TSTrunk) _object;
+			if (tsTrunk.getTSProviderImpl().isLucentV6()) {
 				retval = new LucentTrunkImpl(tsTrunk);
-			else
+			} else {
 				retval = new TsapiTrunkImpl(tsTrunk);
-		} else
+			}
+		} else {
 			retval = null;
+		}
 		TsapiTrace.traceExit(
 				"getTsapiObject[Object _object, boolean isAddress]", null);
 		return retval;
@@ -174,7 +195,6 @@ public final class TsapiCreateObject {
 		TsapiTrace.traceConstruction(this, TsapiCreateObject.class);
 	}
 
-	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, TsapiCreateObject.class);

@@ -1,13 +1,12 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
+import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
+import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
 
 public final class LucentV7GetAPICapsConfEvent extends
 		LucentV5GetAPICapsConfEvent {
@@ -18,142 +17,145 @@ public final class LucentV7GetAPICapsConfEvent extends
 	private String serverType;
 	static final int PDU = 127;
 
-	static LucentGetAPICapsConfEvent decode(final InputStream in) {
-		final LucentV7GetAPICapsConfEvent _this = new LucentV7GetAPICapsConfEvent();
+	static LucentGetAPICapsConfEvent decode(InputStream in) {
+		LucentV7GetAPICapsConfEvent _this = new LucentV7GetAPICapsConfEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
+	public void decodeMembers(InputStream memberStream) {
 		super.decodeMembers(memberStream);
-		maxDeviceHistoryCount = ASNInteger.decode(memberStream);
-		administeredSwitchSoftwareVersion = ASNIA5String.decode(memberStream);
-		switchSoftwareVersion = ASNIA5String.decode(memberStream);
-		offerType = ASNIA5String.decode(memberStream);
-		serverType = ASNIA5String.decode(memberStream);
+		this.maxDeviceHistoryCount = ASNInteger.decode(memberStream);
+		this.administeredSwitchSoftwareVersion = ASNIA5String
+				.decode(memberStream);
+		this.switchSoftwareVersion = ASNIA5String.decode(memberStream);
+		this.offerType = ASNIA5String.decode(memberStream);
+		this.serverType = ASNIA5String.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
+	public void encodeMembers(OutputStream memberStream) {
 		super.encodeMembers(memberStream);
-		ASNInteger.encode(maxDeviceHistoryCount, memberStream);
-		ASNIA5String.encode(administeredSwitchSoftwareVersion, memberStream);
-		ASNIA5String.encode(switchSoftwareVersion, memberStream);
-		ASNIA5String.encode(offerType, memberStream);
-		ASNIA5String.encode(serverType, memberStream);
+		ASNInteger.encode(this.maxDeviceHistoryCount, memberStream);
+		ASNIA5String.encode(this.administeredSwitchSoftwareVersion,
+				memberStream);
+		ASNIA5String.encode(this.switchSoftwareVersion, memberStream);
+		ASNIA5String.encode(this.offerType, memberStream);
+		ASNIA5String.encode(this.serverType, memberStream);
 	}
 
-	public String getAdministeredSwitchSoftwareVersion() {
-		return administeredSwitchSoftwareVersion;
-	}
-
-	public int getMaxDeviceHistoryCount() {
-		return maxDeviceHistoryCount;
-	}
-
-	public boolean getMonitorCallsViaDevice() {
-		return reserved2;
-	}
-
-	public String getOfferType() {
-		return offerType;
-	}
-
-	@Override
-	public int getPDU() {
-		return 127;
-	}
-
-	public String getServerType() {
-		return serverType;
-	}
-
-	public boolean getSingleStepTransfer() {
-		return reserved1;
-	}
-
-	public String getSwitchSoftwareVersion() {
-		return switchSoftwareVersion;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentV7GetAPICapsConfEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(switchVersion, "switchVersion", indent));
-		lines.addAll(ASNBoolean.print(sendDTMFTone, "sendDTMFTone", indent));
-		lines.addAll(ASNBoolean.print(enteredDigitsEvent, "enteredDigitsEvent",
+		lines.addAll(ASNIA5String.print(this.switchVersion, "switchVersion",
 				indent));
+		lines.addAll(ASNBoolean
+				.print(this.sendDTMFTone, "sendDTMFTone", indent));
+		lines.addAll(ASNBoolean.print(this.enteredDigitsEvent,
+				"enteredDigitsEvent", indent));
 
-		lines.addAll(ASNBoolean.print(queryDeviceName, "queryDeviceName",
+		lines.addAll(ASNBoolean.print(this.queryDeviceName, "queryDeviceName",
 				indent));
-		lines.addAll(ASNBoolean.print(queryAgentMeas, "queryAgentMeas", indent));
-		lines.addAll(ASNBoolean.print(querySplitSkillMeas,
+		lines.addAll(ASNBoolean.print(this.queryAgentMeas, "queryAgentMeas",
+				indent));
+		lines.addAll(ASNBoolean.print(this.querySplitSkillMeas,
 				"querySplitSkillMeas", indent));
 
-		lines.addAll(ASNBoolean.print(queryTrunkGroupMeas,
+		lines.addAll(ASNBoolean.print(this.queryTrunkGroupMeas,
 				"queryTrunkGroupMeas", indent));
 
-		lines.addAll(ASNBoolean.print(queryVdnMeas, "queryVdnMeas", indent));
-		lines.addAll(ASNBoolean.print(singleStepConference,
+		lines.addAll(ASNBoolean
+				.print(this.queryVdnMeas, "queryVdnMeas", indent));
+		lines.addAll(ASNBoolean.print(this.singleStepConference,
 				"singleStepConference", indent));
 
-		lines.addAll(ASNBoolean.print(selectiveListeningHold,
+		lines.addAll(ASNBoolean.print(this.selectiveListeningHold,
 				"selectiveListeningHold", indent));
 
-		lines.addAll(ASNBoolean.print(selectiveListeningRetrieve,
+		lines.addAll(ASNBoolean.print(this.selectiveListeningRetrieve,
 				"selectiveListeningRetrieve", indent));
 
-		lines.addAll(ASNBoolean.print(setBillingRate, "setBillingRate", indent));
-		lines.addAll(ASNBoolean.print(queryUCID, "queryUCID", indent));
-		lines.addAll(ASNBoolean.print(chargeAdviceEvent, "chargeAdviceEvent",
+		lines.addAll(ASNBoolean.print(this.setBillingRate, "setBillingRate",
 				indent));
+		lines.addAll(ASNBoolean.print(this.queryUCID, "queryUCID", indent));
+		lines.addAll(ASNBoolean.print(this.chargeAdviceEvent,
+				"chargeAdviceEvent", indent));
 
-		lines.addAll(ASNBoolean.print(reserved1,
+		lines.addAll(ASNBoolean.print(this.reserved1,
 				"reserved1(singleStepTransfer)", indent));
-		lines.addAll(ASNBoolean.print(reserved2,
+		lines.addAll(ASNBoolean.print(this.reserved2,
 				"reserved2(monitorCallsViaDevice)", indent));
-		lines.addAll(ASNInteger.print(maxDeviceHistoryCount,
+		lines.addAll(ASNInteger.print(this.maxDeviceHistoryCount,
 				"maxDeviceHistoryCount", indent));
 
-		lines.addAll(ASNIA5String.print(administeredSwitchSoftwareVersion,
+		lines.addAll(ASNIA5String.print(this.administeredSwitchSoftwareVersion,
 				"administeredSwitchSoftwareVersion", indent));
 
-		lines.addAll(ASNIA5String.print(switchSoftwareVersion,
+		lines.addAll(ASNIA5String.print(this.switchSoftwareVersion,
 				"switchSoftwareVersion", indent));
 
-		lines.addAll(ASNIA5String.print(offerType, "offerType", indent));
-		lines.addAll(ASNIA5String.print(serverType, "serverType", indent));
+		lines.addAll(ASNIA5String.print(this.offerType, "offerType", indent));
+		lines.addAll(ASNIA5String.print(this.serverType, "serverType", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setAdministeredSwitchSoftwareVersion(
-			final String administeredSwitchSoftwareVersion) {
-		this.administeredSwitchSoftwareVersion = administeredSwitchSoftwareVersion;
+	public String getOfferType() {
+		return this.offerType;
 	}
 
-	public void setMaxDeviceHistoryCount(final int maxDeviceHistoryCount) {
+	public String getServerType() {
+		return this.serverType;
+	}
+
+	public String getSwitchSoftwareVersion() {
+		return this.switchSoftwareVersion;
+	}
+
+	public String getAdministeredSwitchSoftwareVersion() {
+		return this.administeredSwitchSoftwareVersion;
+	}
+
+	public boolean getSingleStepTransfer() {
+		return this.reserved1;
+	}
+
+	public boolean getMonitorCallsViaDevice() {
+		return this.reserved2;
+	}
+
+	public int getPDU() {
+		return 127;
+	}
+
+	public int getMaxDeviceHistoryCount() {
+		return this.maxDeviceHistoryCount;
+	}
+
+	public void setMaxDeviceHistoryCount(int maxDeviceHistoryCount) {
 		this.maxDeviceHistoryCount = maxDeviceHistoryCount;
 	}
 
-	public void setOfferType(final String offerType) {
+	public void setAdministeredSwitchSoftwareVersion(
+			String administeredSwitchSoftwareVersion) {
+		this.administeredSwitchSoftwareVersion = administeredSwitchSoftwareVersion;
+	}
+
+	public void setSwitchSoftwareVersion(String switchSoftwareVersion) {
+		this.switchSoftwareVersion = switchSoftwareVersion;
+	}
+
+	public void setOfferType(String offerType) {
 		this.offerType = offerType;
 	}
 
-	public void setServerType(final String serverType) {
+	public void setServerType(String serverType) {
 		this.serverType = serverType;
-	}
-
-	public void setSwitchSoftwareVersion(final String switchSoftwareVersion) {
-		this.switchSoftwareVersion = switchSoftwareVersion;
 	}
 }

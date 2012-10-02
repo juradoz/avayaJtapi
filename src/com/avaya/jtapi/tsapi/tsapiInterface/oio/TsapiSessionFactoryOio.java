@@ -1,18 +1,15 @@
 package com.avaya.jtapi.tsapi.tsapiInterface.oio;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.Enumeration;
-import java.util.Properties;
-
-import javax.net.SocketFactory;
-
-import org.apache.log4j.Logger;
-
 import com.avaya.jtapi.tsapi.tsapiInterface.TsapiChannel;
 import com.avaya.jtapi.tsapi.tsapiInterface.TsapiLightweightUnsolicitedHandler;
 import com.avaya.jtapi.tsapi.tsapiInterface.TsapiSession;
 import com.avaya.jtapi.tsapi.tsapiInterface.TsapiSessionFactory;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.Enumeration;
+import java.util.Properties;
+import javax.net.SocketFactory;
+import org.apache.log4j.Logger;
 
 public class TsapiSessionFactoryOio extends TsapiSessionFactory {
 	private static Logger log = Logger.getLogger(TsapiSessionFactoryOio.class);
@@ -24,113 +21,101 @@ public class TsapiSessionFactoryOio extends TsapiSessionFactory {
 	private static boolean verifyServerCertificate = Boolean.valueOf("false")
 			.booleanValue();
 
-	static boolean isSecureTlink(final String tlink) {
-		final String[] tokens = tlink.split("#");
-		try {
-			if (tokens[2].equalsIgnoreCase("CSTA-S"))
-				return true;
-		} catch (final ArrayIndexOutOfBoundsException e) {
-			return false;
-		}
-
-		return false;
-	}
-
-	@Override
-	public void configure(final Properties props) {
-		final Enumeration<?> eprop = props.propertyNames();
+	public void configure(Properties props) {
+		Enumeration<?> eprop = props.propertyNames();
 
 		while (eprop.hasMoreElements()) {
-			final String tsapiProperty = (String) eprop.nextElement();
+			String tsapiProperty = (String) eprop.nextElement();
 
 			if (tsapiProperty.equalsIgnoreCase("trustStoreLocation")) {
-				TsapiSessionFactoryOio.trustStoreLocation = props
-						.getProperty(tsapiProperty);
+				trustStoreLocation = props.getProperty(tsapiProperty);
 
-				if (TsapiSessionFactoryOio.trustStoreLocation.length() == 0)
-					TsapiSessionFactoryOio.trustStoreLocation = null;
+				if (trustStoreLocation.length() == 0) {
+					trustStoreLocation = null;
+				}
 
-				if (TsapiSessionFactoryOio.trustStoreLocation != null)
-					TsapiSessionFactoryOio.log
-							.info("Property \"trustStoreLocation\" is \""
-									+ TsapiSessionFactoryOio.trustStoreLocation
-									+ "\"");
-				else
-					TsapiSessionFactoryOio.log
-							.info("Property \"trustStoreLocation\" is null");
+				if (trustStoreLocation != null) {
+					log.info("Property \"trustStoreLocation\" is \""
+							+ trustStoreLocation + "\"");
+				} else {
+					log.info("Property \"trustStoreLocation\" is null");
+				}
 			} else if (tsapiProperty.equalsIgnoreCase("trustStorePassword")) {
-				TsapiSessionFactoryOio.trustStorePassword = props
-						.getProperty(tsapiProperty);
+				trustStorePassword = props.getProperty(tsapiProperty);
 
-				if (TsapiSessionFactoryOio.trustStorePassword != null)
-					TsapiSessionFactoryOio.log
-							.info("Property \"trustStorePassword\" is \"****\"");
-				else
-					TsapiSessionFactoryOio.log
-							.info("Property \"trustStorePassword\" is null");
+				if (trustStorePassword != null) {
+					log.info("Property \"trustStorePassword\" is \"****\"");
+				} else {
+					log.info("Property \"trustStorePassword\" is null");
+				}
 			} else if (tsapiProperty
 					.equalsIgnoreCase("verifyServerCertificate")) {
-				final String propertyValue = props.getProperty(tsapiProperty,
-						"false");
+				String propertyValue = props
+						.getProperty(tsapiProperty, "false");
 
-				TsapiSessionFactoryOio.verifyServerCertificate = Boolean
-						.valueOf(propertyValue).booleanValue();
+				verifyServerCertificate = Boolean.valueOf(propertyValue)
+						.booleanValue();
 
-				TsapiSessionFactoryOio.log
-						.info("Property \"verifyServerCertificate\" is "
-								+ TsapiSessionFactoryOio.verifyServerCertificate);
+				log.info("Property \"verifyServerCertificate\" is "
+						+ verifyServerCertificate);
 			}
 		}
 	}
 
-	@Override
-	public TsapiSession getLightweightTsapiSession(final InetSocketAddress addr)
+	public void setDebugID(String _debugID) {
+		this.debugID = _debugID;
+	}
+
+	public TsapiSession getTsapiSession(InetSocketAddress addr)
 			throws IOException {
-		TsapiSessionFactoryOio.log.debug("Attempting to connect to server <"
-				+ addr + ">");
-		final TsapiChannel channel = new TsapiChannelOio(addr,
+		TsapiChannel channel = new TsapiChannelOio(addr,
 				SocketFactory.getDefault());
 
-		TsapiSessionFactoryOio.log.debug("Successfully  connected to server <"
-				+ addr + ">");
+		return new TsapiSession(channel, true, this.debugID);
+	}
 
-		final TsapiSession sess = new TsapiSession(channel, false, debugID);
+	public TsapiSession getTsapiSession(InetSocketAddress addr, String tlink)
+			throws IOException {
+		SocketFactory socketFactory;
+		if (isSecureTlink(tlink)) {
+			TsapiSSLContext.getInstance(trustStoreLocation, trustStorePassword,
+					verifyServerCertificate);
+
+			socketFactory = TsapiSSLContext.getSocketFactory();
+		} else {
+			socketFactory = SocketFactory.getDefault();
+		}
+
+		TsapiChannel channel = new TsapiChannelOio(addr, socketFactory);
+
+		return new TsapiSession(channel, true, this.debugID);
+	}
+
+	public TsapiSession getLightweightTsapiSession(InetSocketAddress addr)
+			throws IOException {
+		log.debug("Attempting to connect to server <" + addr + ">");
+		TsapiChannel channel = new TsapiChannelOio(addr,
+				SocketFactory.getDefault());
+
+		log.debug("Successfully  connected to server <" + addr + ">");
+
+		TsapiSession sess = new TsapiSession(channel, false, this.debugID);
 
 		sess.setHandler(new TsapiLightweightUnsolicitedHandler(sess));
 
 		return sess;
 	}
 
-	@Override
-	public TsapiSession getTsapiSession(final InetSocketAddress addr)
-			throws IOException {
-		final TsapiChannel channel = new TsapiChannelOio(addr,
-				SocketFactory.getDefault());
+	static boolean isSecureTlink(String tlink) {
+		String[] tokens = tlink.split("#");
+		try {
+			if (tokens[2].equalsIgnoreCase("CSTA-S")) {
+				return true;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
 
-		return new TsapiSession(channel, true, debugID);
-	}
-
-	@Override
-	public TsapiSession getTsapiSession(final InetSocketAddress addr,
-			final String tlink) throws IOException {
-		SocketFactory socketFactory;
-		if (TsapiSessionFactoryOio.isSecureTlink(tlink)) {
-			TsapiSSLContext.getInstance(
-					TsapiSessionFactoryOio.trustStoreLocation,
-					TsapiSessionFactoryOio.trustStorePassword,
-					TsapiSessionFactoryOio.verifyServerCertificate);
-
-			socketFactory = TsapiSSLContext.getSocketFactory();
-		} else
-			socketFactory = SocketFactory.getDefault();
-
-		final TsapiChannel channel = new TsapiChannelOio(addr, socketFactory);
-
-		return new TsapiSession(channel, true, debugID);
-	}
-
-	@Override
-	public void setDebugID(final String _debugID) {
-		debugID = _debugID;
+		return false;
 	}
 }

@@ -5,13 +5,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public class LucentNetworkProgressInfo extends LucentPrivateData {
+	public static final short PL_NONE = -1;
 	public static final short PL_USER = 0;
 	public static final short PL_PUB_LOCAL = 1;
 	public static final short PL_PUB_REMOTE = 4;
 	public static final short PL_PRIV_REMOTE = 5;
+	public static final short PD_NONE = -1;
 	public static final short PD_CALL_OFF_ISDN = 1;
 	public static final short PD_DEST_NOT_ISDN = 2;
 	public static final short PD_ORIG_NOT_ISDN = 3;
@@ -21,61 +21,57 @@ public class LucentNetworkProgressInfo extends LucentPrivateData {
 	public short progressDescription;
 	static final int PDU = 40;
 
-	static LucentNetworkProgressInfo decode(final InputStream in) {
-		final LucentNetworkProgressInfo _this = new LucentNetworkProgressInfo();
+	static LucentNetworkProgressInfo decode(InputStream in) {
+		LucentNetworkProgressInfo _this = new LucentNetworkProgressInfo();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		progressLocation = ASNEnumerated.decode(memberStream);
-		progressDescription = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.progressLocation = ProgressLocation.decode(memberStream);
+		this.progressDescription = ProgressDescription.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(progressLocation, memberStream);
-		ASNEnumerated.encode(progressDescription, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ProgressLocation.encode(this.progressLocation, memberStream);
+		ProgressDescription.encode(this.progressDescription, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 40;
-	}
-
-	public short getProgressDescription() {
-		return progressDescription;
-	}
-
-	public short getProgressLocation() {
-		return progressLocation;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("NetworkProgressInfo ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ProgressLocation.print(progressLocation,
+		lines.addAll(ProgressLocation.print(this.progressLocation,
 				"progressLocation", indent));
-		lines.addAll(ProgressDescription.print(progressDescription,
+		lines.addAll(ProgressDescription.print(this.progressDescription,
 				"progressDescription", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setProgressDescription(final short progressDescription) {
+	public int getPDU() {
+		return 40;
+	}
+
+	public short getProgressDescription() {
+		return this.progressDescription;
+	}
+
+	public void setProgressDescription(short progressDescription) {
 		this.progressDescription = progressDescription;
 	}
 
-	public void setProgressLocation(final short progressLocation) {
+	public short getProgressLocation() {
+		return this.progressLocation;
+	}
+
+	public void setProgressLocation(short progressLocation) {
 		this.progressLocation = progressLocation;
 	}
 }

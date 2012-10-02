@@ -6,55 +6,50 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTAAnswerCall extends CSTARequest {
-	public static CSTAAnswerCall decode(final InputStream in) {
-		final CSTAAnswerCall _this = new CSTAAnswerCall();
+	CSTAConnectionID alertingCall;
+	public static final int PDU = 3;
+
+	public CSTAConnectionID getAlertingCall() {
+		return this.alertingCall;
+	}
+
+	public CSTAAnswerCall(CSTAConnectionID _alertingCall) {
+		this.alertingCall = _alertingCall;
+	}
+
+	public CSTAAnswerCall() {
+	}
+
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.alertingCall, memberStream);
+	}
+
+	public static CSTAAnswerCall decode(InputStream in) {
+		CSTAAnswerCall _this = new CSTAAnswerCall();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	CSTAConnectionID alertingCall;
-
-	public static final int PDU = 3;
-
-	public CSTAAnswerCall() {
+	public void decodeMembers(InputStream memberStream) {
+		this.alertingCall = CSTAConnectionID.decode(memberStream);
 	}
 
-	public CSTAAnswerCall(final CSTAConnectionID _alertingCall) {
-		alertingCall = _alertingCall;
-	}
-
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		alertingCall = CSTAConnectionID.decode(memberStream);
-	}
-
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(alertingCall, memberStream);
-	}
-
-	public CSTAConnectionID getAlertingCall() {
-		return alertingCall;
-	}
-
-	@Override
-	public int getPDU() {
-		return 3;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 		lines.add("CSTAAnswerCall ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(CSTAConnectionID.print(alertingCall, "alertingCall",
+		lines.addAll(CSTAConnectionID.print(this.alertingCall, "alertingCall",
 				indent));
 
 		lines.add("}");
 		return lines;
+	}
+
+	public int getPDU() {
+		return 3;
 	}
 }

@@ -1,32 +1,42 @@
 package com.avaya.jtapi.tsapi.csta1;
 
-import java.io.OutputStream;
-import java.util.Collection;
-import java.util.Collections;
-
 import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 class LucentPResponse extends LucentPrivateData {
 	byte[] value;
 	static final int PDU = 122;
 
-	LucentPResponse(final byte[] _val) {
-		value = _val;
+	LucentPResponse(byte[] _val) {
+		this.value = _val;
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNOctetString.encode(value, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		ASNOctetString.encode(this.value, memberStream);
 	}
 
-	@Override
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+
+		lines.add("LucentPResponse ::=");
+		lines.add("{");
+
+		String indent = "   ";
+		lines.add(new StringBuilder()
+				.append(indent)
+				.append("value ")
+				.append(this.value != null ? Arrays
+						.asList(new byte[][] { this.value }) : "<null>")
+				.toString());
+
+		lines.add("}");
+		return lines;
+	}
+
 	public int getPDU() {
 		return 122;
 	}
-
-	@Override
-	public Collection<String> print() {
-		return Collections.emptyList();
-	}
-
 }

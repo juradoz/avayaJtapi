@@ -11,61 +11,59 @@ final class TSInitializationThread extends Thread {
 	private static Logger log = Logger.getLogger(TSInitializationThread.class);
 	TSProviderImpl provider;
 
-	TSInitializationThread(final TSProviderImpl _provider) {
+	TSInitializationThread(TSProviderImpl _provider) {
 		super("ProviderInitialization");
-		provider = _provider;
+		this.provider = _provider;
 	}
 
-	@Override
 	public void run() {
 		try {
 			Vector<TSEvent> eventList = new Vector<TSEvent>();
-			provider.setState(1, eventList);
+			this.provider.setState(1, eventList);
 			if (eventList.size() > 0) {
-				final Vector<?> observers = provider.getMonitors();
+				Vector<?> observers = this.provider.getMonitors();
 
-				for (int j = 0; j < observers.size(); ++j) {
-					final TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
+				for (int j = 0; j < observers.size(); j++) {
+					TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 							.elementAt(j);
 					callback.deliverEvents(eventList, false);
 				}
 
 			}
 
-			final List<String> monitorableDevices = provider
-					.getMonitorableDevices();
-			if (monitorableDevices != null && monitorableDevices.size() != 0)
-				provider.tsMonitorableDevices.addAll(monitorableDevices);
+			List<String> monitorableDevices = this.provider.getMonitorableDevices();
+			if ((monitorableDevices != null)
+					&& (monitorableDevices.size() != 0)) {
+				this.provider.tsMonitorableDevices.addAll(monitorableDevices);
+			}
 
-			provider.setRouteDevices();
+			this.provider.setRouteDevices();
 
 			eventList = new Vector<TSEvent>();
-			provider.setState(2, eventList);
+			this.provider.setState(2, eventList);
 			if (eventList.size() > 0) {
-				final Vector<TsapiProviderMonitor> observers = provider
-						.getMonitors();
+				Vector<?> observers = this.provider.getMonitors();
 
-				for (int j = 0; j < observers.size(); ++j) {
-					final TsapiProviderMonitor callback = observers
+				for (int j = 0; j < observers.size(); j++) {
+					TsapiProviderMonitor callback = (TsapiProviderMonitor) observers
 							.elementAt(j);
 					callback.deliverEvents(eventList, false);
 				}
 			}
 
 			synchronized (this) {
-				super.notify();
+				notify();
 			}
-		} catch (final Exception e) {
-			TSInitializationThread.log
-					.error("INIT Thread Exception - shutting down provider "
-							+ provider);
-			TSInitializationThread.log.error(e.getMessage(), e);
+		} catch (Exception e) {
+			log.error("INIT Thread Exception - shutting down provider "
+					+ this.provider);
+			log.error(e.getMessage(), e);
 			try {
-				provider.shutdown();
-			} catch (final Exception e1) {
+				this.provider.shutdown();
+			} catch (Exception e1) {
 				try {
-					provider.tsapi.shutdown();
-				} catch (final Exception e2) {
+					this.provider.tsapi.shutdown();
+				} catch (Exception e2) {
 				}
 			}
 		}

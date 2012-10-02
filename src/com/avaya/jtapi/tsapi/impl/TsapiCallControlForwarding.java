@@ -7,50 +7,51 @@ public final class TsapiCallControlForwarding {
 	int type;
 	int whichCalls;
 
-	public TsapiCallControlForwarding(final String _destAddress, final int _type) {
-		destAddress = _destAddress;
-		type = _type;
-		whichCalls = 1;
-		TsapiTrace.traceConstruction(this, TsapiCallControlForwarding.class);
-	}
-
-	public TsapiCallControlForwarding(final String _destAddress,
-			final int _type, final boolean internalCalls) {
-		destAddress = _destAddress;
-		type = _type;
-		if (internalCalls)
-			whichCalls = 2;
-		else
-			whichCalls = 3;
-		TsapiTrace.traceConstruction(this, TsapiCallControlForwarding.class);
-	}
-
-	public boolean equals(final TsapiCallControlForwarding other) {
-		return destAddress == other.destAddress && type == other.type
-				&& whichCalls == other.whichCalls;
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		TsapiTrace.traceDestruction(this, TsapiCallControlForwarding.class);
-	}
-
 	public String getDestinationAddress() {
 		TsapiTrace.traceEntry("getDestinationAddress[]", this);
 		TsapiTrace.traceExit("getDestinationAddress[]", this);
-		return destAddress;
-	}
-
-	public int getFilter() {
-		TsapiTrace.traceEntry("getFilter[]", this);
-		TsapiTrace.traceExit("getFilter[]", this);
-		return whichCalls;
+		return this.destAddress;
 	}
 
 	public int getType() {
 		TsapiTrace.traceEntry("getType[]", this);
 		TsapiTrace.traceExit("getType[]", this);
-		return type;
+		return this.type;
+	}
+
+	public int getFilter() {
+		TsapiTrace.traceEntry("getFilter[]", this);
+		TsapiTrace.traceExit("getFilter[]", this);
+		return this.whichCalls;
+	}
+
+	public TsapiCallControlForwarding(String _destAddress, int _type) {
+		this.destAddress = _destAddress;
+		this.type = _type;
+		this.whichCalls = 1;
+		TsapiTrace.traceConstruction(this, TsapiCallControlForwarding.class);
+	}
+
+	public TsapiCallControlForwarding(String _destAddress, int _type,
+			boolean internalCalls) {
+		this.destAddress = _destAddress;
+		this.type = _type;
+		if (internalCalls) {
+			this.whichCalls = 2;
+		} else {
+			this.whichCalls = 3;
+		}
+		TsapiTrace.traceConstruction(this, TsapiCallControlForwarding.class);
+	}
+
+	public boolean equals(TsapiCallControlForwarding other) {
+		return (this.destAddress == other.destAddress)
+				&& (this.type == other.type)
+				&& (this.whichCalls == other.whichCalls);
+	}
+
+	protected void finalize() throws Throwable {
+		super.finalize();
+		TsapiTrace.traceDestruction(this, TsapiCallControlForwarding.class);
 	}
 }

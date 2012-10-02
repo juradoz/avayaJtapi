@@ -3,33 +3,32 @@ package com.avaya.jtapi.tsapi.tsapiInterface;
 import java.util.Vector;
 
 public class TsapiFactory {
-	// private static final String OVERRIDE_IMPL = "tsapi_impl_class_name";
+	static final String OVERRIDE_IMPL = "tsapi_impl_class_name";
 
-	@SuppressWarnings("rawtypes")
-	public static Tsapi getTsapi(final String tlink, final String login,
-			final String passwd, final Vector<TsapiVendor> vendors,
-			final TsapiUnsolicitedHandler handler) {
+	public static Tsapi getTsapi(String tlink, String login, String passwd,
+			Vector<TsapiVendor> vendors, TsapiUnsolicitedHandler handler) {
 		Tsapi tsapi = null;
 		String className = null;
 
-		if (vendors != null && !vendors.isEmpty()
-				&& vendors.get(0) instanceof TsapiVendor) {
-			final TsapiVendor vendor = vendors.get(0);
+		if ((vendors != null) && (!vendors.isEmpty())
+				&& ((vendors.get(0) instanceof TsapiVendor))) {
+			TsapiVendor vendor = (TsapiVendor) vendors.get(0);
 
 			if (vendor.name.equals("tsapi_impl_class_name"))
 				className = vendor.versions;
 			else
 				className = Tsapi.class.getName();
-		} else
+		} else {
 			className = Tsapi.class.getName();
+		}
 		try {
-			final Class theClass = Class.forName(className);
+			Class<?> theClass = Class.forName(className);
 			tsapi = (Tsapi) theClass.newInstance();
-		} catch (final ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Class not found", e);
-		} catch (final InstantiationException e) {
+		} catch (InstantiationException e) {
 			throw new RuntimeException("Could not instantiate", e);
-		} catch (final IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			throw new RuntimeException("Could not access", e);
 		}
 

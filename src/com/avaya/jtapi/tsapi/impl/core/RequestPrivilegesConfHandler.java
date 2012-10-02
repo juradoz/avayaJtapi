@@ -8,19 +8,20 @@ final class RequestPrivilegesConfHandler implements ConfHandler {
 	TSProviderImpl provider;
 	String nonce;
 
-	RequestPrivilegesConfHandler(final TSProviderImpl provider) {
+	RequestPrivilegesConfHandler(TSProviderImpl provider) {
 		this.provider = provider;
 	}
 
-	public String get_nonce() {
-		return nonce;
+	public void handleConf(CSTAEvent event) {
+		if ((event == null)
+				|| (!(event.getEvent() instanceof ACSRequestPrivilegesConfEvent))) {
+			return;
+		}
+		this.nonce = ((ACSRequestPrivilegesConfEvent) event.getEvent())
+				.get_nonce();
 	}
 
-	@Override
-	public void handleConf(final CSTAEvent event) {
-		if (event == null
-				|| !(event.getEvent() instanceof ACSRequestPrivilegesConfEvent))
-			return;
-		nonce = ((ACSRequestPrivilegesConfEvent) event.getEvent()).get_nonce();
+	public String get_nonce() {
+		return this.nonce;
 	}
 }

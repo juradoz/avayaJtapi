@@ -1,18 +1,16 @@
 package com.avaya.jtapi.tsapi.impl.events.termConn;
 
-import javax.telephony.callcontrol.events.CallCtlTermConnDroppedEv;
-
 import com.avaya.jtapi.tsapi.ITsapiCallInfo;
+import javax.telephony.callcontrol.events.CallCtlTermConnDroppedEv;
 
 @SuppressWarnings("deprecation")
 public class TsapiTermConnDroppedEventCC extends TsapiCallCtlTermConnEvent
 		implements CallCtlTermConnDroppedEv, ITsapiCallInfo {
-	public TsapiTermConnDroppedEventCC(final TermConnEventParams params) {
-		super(params);
-	}
-
-	@Override
 	public final int getID() {
 		return 215;
+	}
+
+	public TsapiTermConnDroppedEventCC(TermConnEventParams params) {
+		super(params);
 	}
 }

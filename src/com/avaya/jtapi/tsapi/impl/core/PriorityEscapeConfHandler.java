@@ -5,8 +5,7 @@ import com.avaya.jtapi.tsapi.tsapiInterface.HandleConfOnCurrentThread;
 
 final class PriorityEscapeConfHandler extends EscapeConfHandler implements
 		HandleConfOnCurrentThread {
-	PriorityEscapeConfHandler(final TSProviderImpl _prov,
-			final ConfHandler _extraHandler) {
+	PriorityEscapeConfHandler(TSProviderImpl _prov, ConfHandler _extraHandler) {
 		super(_prov, _extraHandler);
 	}
 }

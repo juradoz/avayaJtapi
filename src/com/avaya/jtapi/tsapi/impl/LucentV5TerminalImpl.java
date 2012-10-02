@@ -8,39 +8,37 @@ import com.avaya.jtapi.tsapi.util.TsapiTrace;
 
 class LucentV5TerminalImpl extends LucentTerminalImpl implements
 		LucentV5Terminal {
-	LucentV5TerminalImpl(final LucentV5ProviderImpl _provider,
-			final String _name) throws TsapiInvalidArgumentException {
-		super(_provider, _name, false);
-		TsapiTrace.traceConstruction(this, LucentV5TerminalImpl.class);
+	public boolean equals(Object obj) {
+		if ((obj instanceof LucentV5TerminalImpl)) {
+			return this.tsDevice.equals(((LucentV5TerminalImpl) obj).tsDevice);
+		}
+
+		return false;
 	}
 
-	LucentV5TerminalImpl(final LucentV5ProviderImpl _provider,
-			final String _name, final boolean checkValidity)
-			throws TsapiInvalidArgumentException {
+	LucentV5TerminalImpl(LucentV5ProviderImpl _provider, String _name,
+			boolean checkValidity) throws TsapiInvalidArgumentException {
 		super(_provider, _name, checkValidity);
 		TsapiTrace.traceConstruction(this, LucentV5TerminalImpl.class);
 	}
 
-	LucentV5TerminalImpl(final TSDevice _tsDevice) {
-		super(_tsDevice);
-		TsapiTrace.traceConstruction(this, LucentV5TerminalImpl.class);
-	}
-
-	LucentV5TerminalImpl(final TSProviderImpl _provider, final String _name)
+	LucentV5TerminalImpl(TSProviderImpl _provider, String _name)
 			throws TsapiInvalidArgumentException {
 		super(_provider, _name);
 		TsapiTrace.traceConstruction(this, LucentV5TerminalImpl.class);
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj instanceof LucentV5TerminalImpl)
-			return tsDevice.equals(((LucentV5TerminalImpl) obj).tsDevice);
-
-		return false;
+	LucentV5TerminalImpl(LucentV5ProviderImpl _provider, String _name)
+			throws TsapiInvalidArgumentException {
+		super(_provider, _name, false);
+		TsapiTrace.traceConstruction(this, LucentV5TerminalImpl.class);
 	}
 
-	@Override
+	LucentV5TerminalImpl(TSDevice _tsDevice) {
+		super(_tsDevice);
+		TsapiTrace.traceConstruction(this, LucentV5TerminalImpl.class);
+	}
+
 	protected void finalize() throws Throwable {
 		super.finalize();
 		TsapiTrace.traceDestruction(this, LucentV5TerminalImpl.class);

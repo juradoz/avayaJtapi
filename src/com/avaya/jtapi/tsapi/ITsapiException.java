@@ -10,7 +10,7 @@ public abstract interface ITsapiException {
 	public static final int EC_INVALID_CONF = 1;
 	public static final int EC_PROVIDER_OUT_OF_SERVICE = 2;
 
-	public abstract int getErrorCode();
-
 	public abstract int getErrorType();
+
+	public abstract int getErrorCode();
 }

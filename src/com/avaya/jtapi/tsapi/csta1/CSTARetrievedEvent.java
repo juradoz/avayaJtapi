@@ -5,9 +5,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNSequence;
-
 public final class CSTARetrievedEvent extends CSTAUnsolicited {
 	CSTAConnectionID retrievedConnection;
 	CSTAExtendedDeviceID retrievingDevice;
@@ -15,85 +12,80 @@ public final class CSTARetrievedEvent extends CSTAUnsolicited {
 	short cause;
 	public static final int PDU = 65;
 
-	public static CSTARetrievedEvent decode(final InputStream in) {
-		final CSTARetrievedEvent _this = new CSTARetrievedEvent();
+	public static CSTARetrievedEvent decode(InputStream in) {
+		CSTARetrievedEvent _this = new CSTARetrievedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		retrievedConnection = CSTAConnectionID.decode(memberStream);
-		retrievingDevice = CSTAExtendedDeviceID.decode(memberStream);
-		localConnectionInfo = ASNEnumerated.decode(memberStream);
-		cause = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.retrievedConnection = CSTAConnectionID.decode(memberStream);
+		this.retrievingDevice = CSTAExtendedDeviceID.decode(memberStream);
+		this.localConnectionInfo = LocalConnectionState.decode(memberStream);
+		this.cause = CSTAEventCause.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTAConnectionID.encode(retrievedConnection, memberStream);
-		ASNSequence.encode(retrievingDevice, memberStream);
-		ASNEnumerated.encode(localConnectionInfo, memberStream);
-		ASNEnumerated.encode(cause, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTAConnectionID.encode(this.retrievedConnection, memberStream);
+		CSTAExtendedDeviceID.encode(this.retrievingDevice, memberStream);
+		LocalConnectionState.encode(this.localConnectionInfo, memberStream);
+		CSTAEventCause.encode(this.cause, memberStream);
 	}
 
-	public short getCause() {
-		return cause;
-	}
-
-	public short getLocalConnectionInfo() {
-		return localConnectionInfo;
-	}
-
-	@Override
-	public int getPDU() {
-		return 65;
-	}
-
-	public CSTAConnectionID getRetrievedConnection() {
-		return retrievedConnection;
-	}
-
-	public CSTAExtendedDeviceID getRetrievingDevice() {
-		return retrievingDevice;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARetrievedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
-		lines.add(indent + "monitorCrossRefID " + monitorCrossRefID);
-		lines.addAll(CSTAConnectionID.print(retrievedConnection,
+		String indent = "  ";
+		lines.add(indent + "monitorCrossRefID " + this.monitorCrossRefID);
+		lines.addAll(CSTAConnectionID.print(this.retrievedConnection,
 				"retrievedConnection", indent));
-		lines.addAll(CSTAExtendedDeviceID.print(retrievingDevice,
+		lines.addAll(CSTAExtendedDeviceID.print(this.retrievingDevice,
 				"retrievingDevice", indent));
-		lines.addAll(LocalConnectionState.print(localConnectionInfo,
+		lines.addAll(LocalConnectionState.print(this.localConnectionInfo,
 				"localConnectionInfo", indent));
-		lines.addAll(CSTAEventCause.print(cause, "cause", indent));
+		lines.addAll(CSTAEventCause.print(this.cause, "cause", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCause(final short cause) {
-		this.cause = cause;
+	public int getPDU() {
+		return 65;
 	}
 
-	public void setLocalConnectionInfo(final short localConnectionInfo) {
+	public short getCause() {
+		return this.cause;
+	}
+
+	public short getLocalConnectionInfo() {
+		return this.localConnectionInfo;
+	}
+
+	public CSTAConnectionID getRetrievedConnection() {
+		return this.retrievedConnection;
+	}
+
+	public CSTAExtendedDeviceID getRetrievingDevice() {
+		return this.retrievingDevice;
+	}
+
+	public void setLocalConnectionInfo(short localConnectionInfo) {
 		this.localConnectionInfo = localConnectionInfo;
 	}
 
-	public void setRetrievedConnection(
-			final CSTAConnectionID retrievedConnection) {
+	public void setRetrievedConnection(CSTAConnectionID retrievedConnection) {
 		this.retrievedConnection = retrievedConnection;
 	}
 
-	public void setRetrievingDevice(final CSTAExtendedDeviceID retrievingDevice) {
+	public void setRetrievingDevice(CSTAExtendedDeviceID retrievingDevice) {
 		this.retrievingDevice = retrievingDevice;
+	}
+
+	public void setCause(short cause) {
+		this.cause = cause;
 	}
 }

@@ -7,13 +7,12 @@ import javax.telephony.callcenter.events.AgentTermWorkReadyEv;
 @SuppressWarnings("deprecation")
 public final class TsapiTermWorkReadyEv extends TsapiAgentTermEv implements
 		AgentTermWorkReadyEv {
-	public TsapiTermWorkReadyEv(final Terminal _device, final Agent _agent,
-			final int _cause, final int _metaCode, final Object _privateData) {
-		super(_device, _agent, _cause, _metaCode, _privateData);
-	}
-
-	@Override
 	public int getID() {
 		return 315;
+	}
+
+	public TsapiTermWorkReadyEv(Terminal _device, Agent _agent, int _cause,
+			int _metaCode, Object _privateData) {
+		super(_device, _agent, _cause, _metaCode, _privateData);
 	}
 }

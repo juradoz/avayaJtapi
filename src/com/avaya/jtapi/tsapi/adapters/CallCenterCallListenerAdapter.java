@@ -6,15 +6,12 @@ import javax.telephony.callcenter.CallCenterTrunkEvent;
 
 public class CallCenterCallListenerAdapter extends CallListenerAdapter
 		implements CallCenterCallListener {
-	@Override
-	public void applicationData(final CallCenterCallEvent event) {
+	public void applicationData(CallCenterCallEvent event) {
 	}
 
-	@Override
-	public void trunkInvalid(final CallCenterTrunkEvent event) {
+	public void trunkInvalid(CallCenterTrunkEvent event) {
 	}
 
-	@Override
-	public void trunkValid(final CallCenterTrunkEvent event) {
+	public void trunkValid(CallCenterTrunkEvent event) {
 	}
 }

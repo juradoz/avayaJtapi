@@ -1,14 +1,9 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.avaya.jtapi.tsapi.asn1.ASNBoolean;
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-import com.avaya.jtapi.tsapi.asn1.ASNInteger;
-import com.avaya.jtapi.tsapi.asn1.ASNOctetString;
 
 public final class CSTARouteRequestEv extends CSTARequest {
 	int routeRegisterReqID;
@@ -21,113 +16,112 @@ public final class CSTARouteRequestEv extends CSTARequest {
 	byte[] setupInformation;
 	public static final int PDU = 83;
 
-	public static CSTARouteRequestEv decode(final InputStream in) {
-		final CSTARouteRequestEv _this = new CSTARouteRequestEv();
+	public static CSTARouteRequestEv decode(InputStream in) {
+		CSTARouteRequestEv _this = new CSTARouteRequestEv();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		routeRegisterReqID = ASNInteger.decode(memberStream);
-		routingCrossRefID = ASNInteger.decode(memberStream);
-		currentRoute = ASNIA5String.decode(memberStream);
-		callingDevice = ASNIA5String.decode(memberStream);
-		routedCall = CSTAConnectionID.decode(memberStream);
-		routedSelAlgorithm = ASNEnumerated.decode(memberStream);
-		priority = ASNBoolean.decode(memberStream);
-		setupInformation = ASNOctetString.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.routeRegisterReqID = RouteRegisterReqID.decode(memberStream);
+		this.routingCrossRefID = RoutingCrossRefID.decode(memberStream);
+		this.currentRoute = DeviceID.decode(memberStream);
+		this.callingDevice = DeviceID.decode(memberStream);
+		this.routedCall = CSTAConnectionID.decode(memberStream);
+		this.routedSelAlgorithm = SelectValue.decode(memberStream);
+		this.priority = ASNBoolean.decode(memberStream);
+		this.setupInformation = SetUpValues.decode(memberStream);
 	}
 
-	public String getCallingDevice() {
-		return callingDevice;
-	}
-
-	public String getCurrentRoute() {
-		return currentRoute;
-	}
-
-	@Override
-	public int getPDU() {
-		return 83;
-	}
-
-	public CSTAConnectionID getRoutedCall() {
-		return routedCall;
-	}
-
-	public short getRoutedSelAlgorithm() {
-		return routedSelAlgorithm;
-	}
-
-	public int getRouteRegisterReqID() {
-		return routeRegisterReqID;
-	}
-
-	public int getRoutingCrossRefID() {
-		return routingCrossRefID;
-	}
-
-	public byte[] getSetupInformation() {
-		return setupInformation;
-	}
-
-	public boolean isPriority() {
-		return priority;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("CSTARouteRequestEv ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNInteger.print(routeRegisterReqID, "routeRegisterReqID",
+		lines.addAll(RouteRegisterReqID.print(this.routeRegisterReqID,
+				"routeRegisterReqID", indent));
+		lines.addAll(RoutingCrossRefID.print(this.routingCrossRefID,
+				"routingCrossRefID", indent));
+		lines.addAll(DeviceID.print(this.currentRoute, "currentRoute", indent));
+		lines.addAll(DeviceID
+				.print(this.callingDevice, "callingDevice", indent));
+		lines.addAll(CSTAConnectionID.print(this.routedCall, "routedCall",
 				indent));
-		lines.addAll(ASNInteger.print(routingCrossRefID, "routingCrossRefID",
-				indent));
-		lines.addAll(ASNIA5String.print(currentRoute, "currentRoute", indent));
-		lines.addAll(ASNIA5String.print(callingDevice, "callingDevice", indent));
-		lines.addAll(CSTAConnectionID.print(routedCall, "routedCall", indent));
-		lines.addAll(SelectValue.print(routedSelAlgorithm,
+		lines.addAll(SelectValue.print(this.routedSelAlgorithm,
 				"routedSelAlgorithm", indent));
-		lines.addAll(ASNBoolean.print(priority, "priority", indent));
-		lines.addAll(ASNOctetString.print(setupInformation, "setupInformation",
-				indent));
+		lines.addAll(ASNBoolean.print(this.priority, "priority", indent));
+		lines.addAll(SetUpValues.print(this.setupInformation,
+				"setupInformation", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setCallingDevice(final String callingDevice) {
-		this.callingDevice = callingDevice;
+	public int getPDU() {
+		return 83;
 	}
 
-	public void setCurrentRoute(final String currentRoute) {
-		this.currentRoute = currentRoute;
+	public String getCallingDevice() {
+		return this.callingDevice;
 	}
 
-	public void setPriority(final boolean priority) {
-		this.priority = priority;
+	public String getCurrentRoute() {
+		return this.currentRoute;
 	}
 
-	public void setRoutedCall(final CSTAConnectionID routedCall) {
-		this.routedCall = routedCall;
+	public boolean isPriority() {
+		return this.priority;
 	}
 
-	public void setRoutedSelAlgorithm(final short routedSelAlgorithm) {
-		this.routedSelAlgorithm = routedSelAlgorithm;
+	public CSTAConnectionID getRoutedCall() {
+		return this.routedCall;
 	}
 
-	public void setRouteRegisterReqID(final int routeRegisterReqID) {
+	public short getRoutedSelAlgorithm() {
+		return this.routedSelAlgorithm;
+	}
+
+	public int getRouteRegisterReqID() {
+		return this.routeRegisterReqID;
+	}
+
+	public int getRoutingCrossRefID() {
+		return this.routingCrossRefID;
+	}
+
+	public byte[] getSetupInformation() {
+		return this.setupInformation;
+	}
+
+	public void setRouteRegisterReqID(int routeRegisterReqID) {
 		this.routeRegisterReqID = routeRegisterReqID;
 	}
 
-	public void setRoutingCrossRefID(final int routingCrossRefID) {
+	public void setRoutingCrossRefID(int routingCrossRefID) {
 		this.routingCrossRefID = routingCrossRefID;
+	}
+
+	public void setCurrentRoute(String currentRoute) {
+		this.currentRoute = currentRoute;
+	}
+
+	public void setRoutedCall(CSTAConnectionID routedCall) {
+		this.routedCall = routedCall;
+	}
+
+	public void setRoutedSelAlgorithm(short routedSelAlgorithm) {
+		this.routedSelAlgorithm = routedSelAlgorithm;
+	}
+
+	public void setPriority(boolean priority) {
+		this.priority = priority;
+	}
+
+	public void setCallingDevice(String callingDevice) {
+		this.callingDevice = callingDevice;
 	}
 }

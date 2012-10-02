@@ -5,67 +5,62 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNIA5String;
-
 public class LucentOriginatedEvent extends LucentPrivateData {
 	String physicalTerminal_asn;
 	LucentUserToUserInfo userInfo;
 	static final int PDU = 47;
 
-	public static LucentOriginatedEvent decode(final InputStream in) {
-		final LucentOriginatedEvent _this = new LucentOriginatedEvent();
+	public static LucentOriginatedEvent decode(InputStream in) {
+		LucentOriginatedEvent _this = new LucentOriginatedEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		physicalTerminal_asn = ASNIA5String.decode(memberStream);
-		userInfo = LucentUserToUserInfo.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.physicalTerminal_asn = DeviceID.decode(memberStream);
+		this.userInfo = LucentUserToUserInfo.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNIA5String.encode(physicalTerminal_asn, memberStream);
-		LucentUserToUserInfo.encode(userInfo, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		DeviceID.encode(this.physicalTerminal_asn, memberStream);
+		LucentUserToUserInfo.encode(this.userInfo, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 47;
-	}
-
-	public String getPhysicalTerminal_asn() {
-		return physicalTerminal_asn;
-	}
-
-	public LucentUserToUserInfo getUserInfo() {
-		return userInfo;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentOriginatedEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(ASNIA5String.print(physicalTerminal_asn,
+		lines.addAll(DeviceID.print(this.physicalTerminal_asn,
 				"physicalTerminal", indent));
-		lines.addAll(LucentUserToUserInfo.print(userInfo, "userInfo", indent));
+		lines.addAll(LucentUserToUserInfo.print(this.userInfo, "userInfo",
+				indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setPhysicalTerminal_asn(final String physicalTerminal_asn) {
+	public int getPDU() {
+		return 47;
+	}
+
+	public String getPhysicalTerminal_asn() {
+		return this.physicalTerminal_asn;
+	}
+
+	public LucentUserToUserInfo getUserInfo() {
+		return this.userInfo;
+	}
+
+	public void setPhysicalTerminal_asn(String physicalTerminal_asn) {
 		this.physicalTerminal_asn = physicalTerminal_asn;
 	}
 
-	public void setUserInfo(final LucentUserToUserInfo userInfo) {
+	public void setUserInfo(LucentUserToUserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 }

@@ -9,11 +9,11 @@ public abstract interface CallCenterTrunk {
 	public static final int OUTGOING_TRUNK = 2;
 	public static final int UNKNOWN_TRUNK = 3;
 
-	public abstract Call getCall();
-
 	public abstract String getName();
 
 	public abstract int getState();
 
 	public abstract int getType();
+
+	public abstract Call getCall();
 }

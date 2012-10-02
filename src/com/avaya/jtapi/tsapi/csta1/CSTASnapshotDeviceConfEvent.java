@@ -6,57 +6,52 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public final class CSTASnapshotDeviceConfEvent extends CSTAConfirmation {
-	public static CSTASnapshotDeviceConfEvent decode(final InputStream in) {
-		final CSTASnapshotDeviceConfEvent _this = new CSTASnapshotDeviceConfEvent();
-		_this.doDecode(in);
-
-		return _this;
-	}
-
 	CSTASnapshotDeviceResponseInfo[] snapshotData;
-
 	public static final int PDU = 123;
 
 	public CSTASnapshotDeviceConfEvent() {
 	}
 
 	public CSTASnapshotDeviceConfEvent(
-			final CSTASnapshotDeviceResponseInfo[] _snapshotData) {
-		snapshotData = _snapshotData;
+			CSTASnapshotDeviceResponseInfo[] _snapshotData) {
+		this.snapshotData = _snapshotData;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		snapshotData = CSTASnapshotDeviceData.decode(memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		CSTASnapshotDeviceData.encode(this.snapshotData, memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		CSTASnapshotDeviceData.encode(snapshotData, memberStream);
+	public static CSTASnapshotDeviceConfEvent decode(InputStream in) {
+		CSTASnapshotDeviceConfEvent _this = new CSTASnapshotDeviceConfEvent();
+		_this.doDecode(in);
+
+		return _this;
 	}
 
-	@Override
+	public void decodeMembers(InputStream memberStream) {
+		this.snapshotData = CSTASnapshotDeviceData.decode(memberStream);
+	}
+
+	public Collection<String> print() {
+		Collection<String> lines = new ArrayList<String>();
+
+		lines.add("CSTASnapshotDeviceConfEvent ::=");
+		lines.add("{");
+
+		String indent = "  ";
+
+		lines.addAll(CSTASnapshotDeviceData.print(this.snapshotData,
+				"snapshotData", indent));
+
+		lines.add("}");
+		return lines;
+	}
+
 	public int getPDU() {
 		return 123;
 	}
 
 	public CSTASnapshotDeviceResponseInfo[] getSnapshotData() {
-		return snapshotData;
-	}
-
-	@Override
-	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
-
-		lines.add("CSTASnapshotDeviceConfEvent ::=");
-		lines.add("{");
-
-		final String indent = "  ";
-
-		lines.addAll(CSTASnapshotDeviceData.print(snapshotData, "snapshotData",
-				indent));
-
-		lines.add("}");
-		return lines;
+		return this.snapshotData;
 	}
 }

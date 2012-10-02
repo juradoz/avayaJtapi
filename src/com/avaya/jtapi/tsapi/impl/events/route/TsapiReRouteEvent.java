@@ -5,7 +5,7 @@ import javax.telephony.callcenter.events.ReRouteEvent;
 
 public final class TsapiReRouteEvent extends TsapiRouteSessionEvent implements
 		ReRouteEvent {
-	public TsapiReRouteEvent(final RouteSession routeSession) {
+	public TsapiReRouteEvent(RouteSession routeSession) {
 		super(routeSession);
 	}
 }

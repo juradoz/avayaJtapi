@@ -5,54 +5,48 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public final class LucentLoggedOnEvent extends LucentPrivateData {
 	short workMode;
 	static final int PDU = 48;
 
-	public static LucentLoggedOnEvent decode(final InputStream in) {
-		final LucentLoggedOnEvent _this = new LucentLoggedOnEvent();
+	public static LucentLoggedOnEvent decode(InputStream in) {
+		LucentLoggedOnEvent _this = new LucentLoggedOnEvent();
 		_this.doDecode(in);
 
 		return _this;
 	}
 
-	@Override
-	public void decodeMembers(final InputStream memberStream) {
-		workMode = ASNEnumerated.decode(memberStream);
+	public void decodeMembers(InputStream memberStream) {
+		this.workMode = LucentWorkMode.decode(memberStream);
 	}
 
-	@Override
-	public void encodeMembers(final OutputStream memberStream) {
-		ASNEnumerated.encode(workMode, memberStream);
+	public void encodeMembers(OutputStream memberStream) {
+		LucentWorkMode.encode(this.workMode, memberStream);
 	}
 
-	@Override
-	public int getPDU() {
-		return 48;
-	}
-
-	public short getWorkMode() {
-		return workMode;
-	}
-
-	@Override
 	public Collection<String> print() {
-		final Collection<String> lines = new ArrayList<String>();
+		Collection<String> lines = new ArrayList<String>();
 
 		lines.add("LucentLoggedOnEvent ::=");
 		lines.add("{");
 
-		final String indent = "  ";
+		String indent = "  ";
 
-		lines.addAll(LucentWorkMode.print(workMode, "workMode", indent));
+		lines.addAll(LucentWorkMode.print(this.workMode, "workMode", indent));
 
 		lines.add("}");
 		return lines;
 	}
 
-	public void setWorkMode(final short workMode) {
+	public int getPDU() {
+		return 48;
+	}
+
+	public short getWorkMode() {
+		return this.workMode;
+	}
+
+	public void setWorkMode(short workMode) {
 		this.workMode = workMode;
 	}
 }

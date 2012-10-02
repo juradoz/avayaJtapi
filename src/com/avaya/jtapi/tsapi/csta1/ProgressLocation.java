@@ -1,19 +1,21 @@
 package com.avaya.jtapi.tsapi.csta1;
 
+import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
 import java.util.Collection;
 
-import com.avaya.jtapi.tsapi.asn1.ASNEnumerated;
-
 public final class ProgressLocation extends ASNEnumerated {
+	public static final short PL_NONE = -1;
 	public static final short PL_USER = 0;
 	public static final short PL_PUB_LOCAL = 1;
 	public static final short PL_PUB_REMOTE = 4;
 	public static final short PL_PRIV_REMOTE = 5;
 
-	static Collection<String> print(final short value, final String name,
-			final String indent) {
+	static Collection<String> print(short value, String name, String indent) {
 		String str;
 		switch (value) {
+		case -1:
+			str = "PL_NONE";
+			break;
 		case 0:
 			str = "PL_USER";
 			break;
@@ -32,6 +34,6 @@ public final class ProgressLocation extends ASNEnumerated {
 			str = "?? " + value + " ??";
 		}
 
-		return ASNEnumerated.print(value, str, name, indent);
+		return print(value, str, name, indent);
 	}
 }

@@ -1,9 +1,9 @@
 package javax.telephony.callcontrol;
 
 public class CallControlForwarding {
-	private final String destAddress;
-	private final String caller;
-	private final int type;
+	private String destAddress;
+	private String caller;
+	private int type;
 	private int whichCalls;
 	public static final int ALL_CALLS = 1;
 	public static final int INTERNAL_CALLS = 2;
@@ -13,52 +13,51 @@ public class CallControlForwarding {
 	public static final int FORWARD_ON_BUSY = 2;
 	public static final int FORWARD_ON_NOANSWER = 3;
 
-	public CallControlForwarding(final String destAddress) {
+	public CallControlForwarding(String destAddress) {
 		this.destAddress = destAddress;
-		type = 1;
-		caller = null;
-		whichCalls = 1;
+		this.type = 1;
+		this.caller = null;
+		this.whichCalls = 1;
 	}
 
-	public CallControlForwarding(final String destAddress, final int type) {
-		this.destAddress = destAddress;
-		this.type = type;
-		caller = null;
-		whichCalls = 1;
-	}
-
-	public CallControlForwarding(final String destAddress, final int type,
-			final boolean internalCalls) {
+	public CallControlForwarding(String destAddress, int type) {
 		this.destAddress = destAddress;
 		this.type = type;
-		caller = null;
-		if (internalCalls)
-			whichCalls = 2;
-		else
-			whichCalls = 3;
+		this.caller = null;
+		this.whichCalls = 1;
 	}
 
-	public CallControlForwarding(final String destAddress, final int type,
-			final String caller) {
+	public CallControlForwarding(String destAddress, int type,
+			boolean internalCalls) {
+		this.destAddress = destAddress;
+		this.type = type;
+		this.caller = null;
+		if (internalCalls) {
+			this.whichCalls = 2;
+		} else
+			this.whichCalls = 3;
+	}
+
+	public CallControlForwarding(String destAddress, int type, String caller) {
 		this.destAddress = destAddress;
 		this.type = type;
 		this.caller = caller;
-		whichCalls = 4;
+		this.whichCalls = 4;
 	}
 
 	public String getDestinationAddress() {
-		return destAddress;
-	}
-
-	public int getFilter() {
-		return whichCalls;
-	}
-
-	public String getSpecificCaller() {
-		return caller;
+		return this.destAddress;
 	}
 
 	public int getType() {
-		return type;
+		return this.type;
+	}
+
+	public int getFilter() {
+		return this.whichCalls;
+	}
+
+	public String getSpecificCaller() {
+		return this.caller;
 	}
 }
